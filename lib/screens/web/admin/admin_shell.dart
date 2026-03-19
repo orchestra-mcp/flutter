@@ -56,8 +56,8 @@ class _AdminShellNotifier extends Notifier<_AdminShellState> {
 
 final _adminShellProvider =
     NotifierProvider<_AdminShellNotifier, _AdminShellState>(
-  _AdminShellNotifier.new,
-);
+      _AdminShellNotifier.new,
+    );
 
 // ── Admin shell widget ──────────────────────────────────────────────────────
 
@@ -82,8 +82,7 @@ class AdminShell extends ConsumerWidget {
           _AdminSidebar(
             tokens: tokens,
             selectedIndex: shellState.selectedIndex,
-            onSelect: (i) =>
-                ref.read(_adminShellProvider.notifier).select(i),
+            onSelect: (i) => ref.read(_adminShellProvider.notifier).select(i),
           ),
           VerticalDivider(thickness: 1, width: 1, color: tokens.border),
           // ── Body ────────────────────────────────────────────────────────
@@ -127,7 +126,11 @@ class _AdminSidebar extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
             child: Row(
               children: [
-                Icon(Icons.admin_panel_settings, color: tokens.accent, size: 22),
+                Icon(
+                  Icons.admin_panel_settings,
+                  color: tokens.accent,
+                  size: 22,
+                ),
                 const SizedBox(width: 10),
                 Text(
                   AppLocalizations.of(context).adminPanel,

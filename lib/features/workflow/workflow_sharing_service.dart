@@ -16,12 +16,12 @@ class ShareLink {
   final DateTime? expiresAt;
 
   factory ShareLink.fromJson(Map<String, dynamic> json) => ShareLink(
-        url: json['url'] as String? ?? '',
-        token: json['token'] as String? ?? '',
-        expiresAt: json['expires_at'] != null
-            ? DateTime.tryParse(json['expires_at'] as String)
-            : null,
-      );
+    url: json['url'] as String? ?? '',
+    token: json['token'] as String? ?? '',
+    expiresAt: json['expires_at'] != null
+        ? DateTime.tryParse(json['expires_at'] as String)
+        : null,
+  );
 }
 
 /// A workflow that has been shared to team or public.
@@ -62,40 +62,34 @@ class SharedWorkflow {
 
   int get totalItems => skillCount + agentCount + hookCount;
 
-  factory SharedWorkflow.fromJson(Map<String, dynamic> json) =>
-      SharedWorkflow(
-        id: json['id'] as String? ?? '',
-        name: json['name'] as String? ?? '',
-        description: json['description'] as String? ?? '',
-        author: json['author'] as String? ?? '',
-        authorAvatar: json['author_avatar'] as String? ?? '',
-        downloads: json['downloads'] as int? ?? 0,
-        rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
-        ratingCount: json['rating_count'] as int? ?? 0,
-        visibility: (json['visibility'] as String?) == 'public'
-            ? WorkflowVisibility.public
-            : WorkflowVisibility.team,
-        category: json['category'] as String? ?? 'general',
-        skillCount: json['skill_count'] as int? ?? 0,
-        agentCount: json['agent_count'] as int? ?? 0,
-        hookCount: json['hook_count'] as int? ?? 0,
-        createdAt:
-            DateTime.tryParse(json['created_at'] as String? ?? '') ??
-                DateTime.now(),
-        tags: (json['tags'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            [],
-      );
+  factory SharedWorkflow.fromJson(Map<String, dynamic> json) => SharedWorkflow(
+    id: json['id'] as String? ?? '',
+    name: json['name'] as String? ?? '',
+    description: json['description'] as String? ?? '',
+    author: json['author'] as String? ?? '',
+    authorAvatar: json['author_avatar'] as String? ?? '',
+    downloads: json['downloads'] as int? ?? 0,
+    rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+    ratingCount: json['rating_count'] as int? ?? 0,
+    visibility: (json['visibility'] as String?) == 'public'
+        ? WorkflowVisibility.public
+        : WorkflowVisibility.team,
+    category: json['category'] as String? ?? 'general',
+    skillCount: json['skill_count'] as int? ?? 0,
+    agentCount: json['agent_count'] as int? ?? 0,
+    hookCount: json['hook_count'] as int? ?? 0,
+    createdAt:
+        DateTime.tryParse(json['created_at'] as String? ?? '') ??
+        DateTime.now(),
+    tags:
+        (json['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+        [],
+  );
 }
 
 /// Filter for listing shared workflows.
 class SharedWorkflowFilter {
-  const SharedWorkflowFilter({
-    this.query,
-    this.category,
-    this.visibility,
-  });
+  const SharedWorkflowFilter({this.query, this.category, this.visibility});
 
   final String? query;
   final String? category;
@@ -155,16 +149,17 @@ class WorkflowSharingService {
     if (filter.query != null && filter.query!.isNotEmpty) {
       final q = filter.query!.toLowerCase();
       results = results
-          .where((w) =>
-              w.name.toLowerCase().contains(q) ||
-              w.description.toLowerCase().contains(q) ||
-              w.tags.any((t) => t.toLowerCase().contains(q)))
+          .where(
+            (w) =>
+                w.name.toLowerCase().contains(q) ||
+                w.description.toLowerCase().contains(q) ||
+                w.tags.any((t) => t.toLowerCase().contains(q)),
+          )
           .toList();
     }
 
     if (filter.category != null) {
-      results =
-          results.where((w) => w.category == filter.category).toList();
+      results = results.where((w) => w.category == filter.category).toList();
     }
 
     if (filter.visibility != null) {

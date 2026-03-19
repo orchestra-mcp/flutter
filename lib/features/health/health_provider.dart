@@ -67,12 +67,16 @@ class HealthNotifier extends Notifier<SummaryHealthData> {
     final nutritionScore = nutrition.safetyScore;
     // TODO(health): Wire to sleep provider when available.
     const sleepScore = 75.0;
-    final shutdownScore = shutdown.completedTasks.isEmpty && shutdown.plannedTasks.isEmpty
+    final shutdownScore =
+        shutdown.completedTasks.isEmpty && shutdown.plannedTasks.isEmpty
         ? 100.0
         : shutdown.plannedTasks.isEmpty
-            ? 100.0
-            : (shutdown.completedTasks.length / shutdown.plannedTasks.length)
-                  .clamp(0.0, 1.0) * 100;
+        ? 100.0
+        : (shutdown.completedTasks.length / shutdown.plannedTasks.length).clamp(
+                0.0,
+                1.0,
+              ) *
+              100;
 
     final ctx = analyticsEngine.compute(
       hydrationScore: hydrationScore,
@@ -133,5 +137,6 @@ class HealthNotifier extends Notifier<SummaryHealthData> {
   }
 }
 
-final healthProvider =
-    NotifierProvider<HealthNotifier, SummaryHealthData>(HealthNotifier.new);
+final healthProvider = NotifierProvider<HealthNotifier, SummaryHealthData>(
+  HealthNotifier.new,
+);

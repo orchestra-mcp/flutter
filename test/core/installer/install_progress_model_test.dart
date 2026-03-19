@@ -50,16 +50,19 @@ void main() {
 
   group('InstallStage values', () {
     test('all expected stages exist', () {
-      expect(InstallStage.values, containsAll([
-        InstallStage.checking,
-        InstallStage.fetchingVersion,
-        InstallStage.downloading,
-        InstallStage.extracting,
-        InstallStage.installing,
-        InstallStage.verifying,
-        InstallStage.done,
-        InstallStage.error,
-      ]));
+      expect(
+        InstallStage.values,
+        containsAll([
+          InstallStage.checking,
+          InstallStage.fetchingVersion,
+          InstallStage.downloading,
+          InstallStage.extracting,
+          InstallStage.installing,
+          InstallStage.verifying,
+          InstallStage.done,
+          InstallStage.error,
+        ]),
+      );
     });
   });
 }

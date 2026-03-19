@@ -90,7 +90,8 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                         isLoading: _isLoading,
                         error: _error,
                         tokens: tokens,
-                        validateEmail: (v) => _validateEmail(v, AppLocalizations.of(context)),
+                        validateEmail: (v) =>
+                            _validateEmail(v, AppLocalizations.of(context)),
                         onSubmit: _submit,
                         onBack: () => context.go('/login'),
                       ),
@@ -186,8 +187,11 @@ class _FormView extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: l10n.emailAddress,
                     hintText: l10n.emailHint,
-                    prefixIcon: Icon(Icons.mail_outline_rounded,
-                        color: tokens.fgDim, size: 20),
+                    prefixIcon: Icon(
+                      Icons.mail_outline_rounded,
+                      color: tokens.fgDim,
+                      size: 20,
+                    ),
                   ),
                   validator: validateEmail,
                   onFieldSubmitted: (_) => isLoading ? null : onSubmit(),
@@ -200,10 +204,12 @@ class _FormView extends StatelessWidget {
                     onPressed: isLoading ? null : onSubmit,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: tokens.accent,
-                      foregroundColor:
-                          tokens.isLight ? Colors.white : Colors.black,
-                      disabledBackgroundColor:
-                          tokens.accent.withValues(alpha: 0.4),
+                      foregroundColor: tokens.isLight
+                          ? Colors.white
+                          : Colors.black,
+                      disabledBackgroundColor: tokens.accent.withValues(
+                        alpha: 0.4,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -223,7 +229,9 @@ class _FormView extends StatelessWidget {
                         : Text(
                             l10n.sendMagicLink,
                             style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w600),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                   ),
                 ),
@@ -239,7 +247,10 @@ class _FormView extends StatelessWidget {
               foregroundColor: tokens.fgMuted,
               tapTargetSize: MaterialTapTargetSize.padded,
             ),
-            child: Text(l10n.backToSignIn, style: const TextStyle(fontSize: 14)),
+            child: Text(
+              l10n.backToSignIn,
+              style: const TextStyle(fontSize: 14),
+            ),
           ),
         ),
       ],
@@ -276,8 +287,11 @@ class _SuccessView extends StatelessWidget {
             color: Colors.green.withValues(alpha: 0.15),
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.mark_email_read_outlined,
-              color: Colors.green, size: 32),
+          child: const Icon(
+            Icons.mark_email_read_outlined,
+            color: Colors.green,
+            size: 32,
+          ),
         ),
         const SizedBox(height: 24),
         Text(
@@ -354,7 +368,11 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 18),
+          const Icon(
+            Icons.error_outline_rounded,
+            color: Colors.redAccent,
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

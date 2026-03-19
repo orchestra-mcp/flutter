@@ -39,7 +39,10 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     if (!_formKey.currentState!.validate()) return;
     final token = widget.token;
     if (token == null || token.isEmpty) {
-      setState(() => _error = 'Missing reset token. Please use the link from your email.');
+      setState(
+        () => _error =
+            'Missing reset token. Please use the link from your email.',
+      );
       return;
     }
     setState(() {
@@ -50,16 +53,16 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       final dio = ref.read(dioProvider);
       await dio.post<Map<String, dynamic>>(
         Endpoints.authResetPassword,
-        data: {
-          'token': token,
-          'password': _passwordController.text,
-        },
+        data: {'token': token, 'password': _passwordController.text},
       );
       if (mounted) setState(() => _success = true);
     } on DioException catch (e) {
       if (mounted) {
-        setState(() => _error =
-            e.response?.data?['error']?.toString() ?? 'Failed to reset password');
+        setState(
+          () => _error =
+              e.response?.data?['error']?.toString() ??
+              'Failed to reset password',
+        );
       }
     } catch (e) {
       if (mounted) setState(() => _error = e.toString());
@@ -118,12 +121,15 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                         isLoading: _isLoading,
                         error: _error,
                         tokens: tokens,
-                        validatePassword: (v) => _validatePassword(v, AppLocalizations.of(context)),
-                        validateConfirm: (v) => _validateConfirm(v, AppLocalizations.of(context)),
+                        validatePassword: (v) =>
+                            _validatePassword(v, AppLocalizations.of(context)),
+                        validateConfirm: (v) =>
+                            _validateConfirm(v, AppLocalizations.of(context)),
                         onTogglePassword: () => setState(
-                            () => _obscurePassword = !_obscurePassword),
-                        onToggleConfirm: () => setState(
-                            () => _obscureConfirm = !_obscureConfirm),
+                          () => _obscurePassword = !_obscurePassword,
+                        ),
+                        onToggleConfirm: () =>
+                            setState(() => _obscureConfirm = !_obscureConfirm),
                         onSubmit: _submit,
                       ),
               ),
@@ -227,8 +233,11 @@ class _FormView extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: l10n.newPassword,
                     hintText: l10n.minEightCharacters,
-                    prefixIcon: Icon(Icons.lock_outline_rounded,
-                        color: tokens.fgDim, size: 20),
+                    prefixIcon: Icon(
+                      Icons.lock_outline_rounded,
+                      color: tokens.fgDim,
+                      size: 20,
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         obscurePassword
@@ -254,8 +263,11 @@ class _FormView extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: l10n.confirmNewPassword,
                     hintText: l10n.repeatPassword,
-                    prefixIcon: Icon(Icons.lock_outline_rounded,
-                        color: tokens.fgDim, size: 20),
+                    prefixIcon: Icon(
+                      Icons.lock_outline_rounded,
+                      color: tokens.fgDim,
+                      size: 20,
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         obscureConfirm
@@ -277,10 +289,12 @@ class _FormView extends StatelessWidget {
                     onPressed: isLoading ? null : onSubmit,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: tokens.accent,
-                      foregroundColor:
-                          tokens.isLight ? Colors.white : Colors.black,
-                      disabledBackgroundColor:
-                          tokens.accent.withValues(alpha: 0.4),
+                      foregroundColor: tokens.isLight
+                          ? Colors.white
+                          : Colors.black,
+                      disabledBackgroundColor: tokens.accent.withValues(
+                        alpha: 0.4,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -300,7 +314,9 @@ class _FormView extends StatelessWidget {
                         : Text(
                             l10n.resetPassword,
                             style: const TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w600),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                   ),
                 ),
@@ -340,8 +356,11 @@ class _SuccessView extends StatelessWidget {
             color: Colors.green.withValues(alpha: 0.15),
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.check_circle_outline_rounded,
-              color: Colors.green, size: 32),
+          child: const Icon(
+            Icons.check_circle_outline_rounded,
+            color: Colors.green,
+            size: 32,
+          ),
         ),
         const SizedBox(height: 24),
         Text(
@@ -402,7 +421,11 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 18),
+          const Icon(
+            Icons.error_outline_rounded,
+            color: Colors.redAccent,
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

@@ -53,7 +53,8 @@ class _SecuritySettingsTabState extends ConsumerState<SecuritySettingsTab> {
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 13),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: Text(AppLocalizations.of(context).updatePassword),
           ),
@@ -117,14 +118,20 @@ class _SecuritySettingsTabState extends ConsumerState<SecuritySettingsTab> {
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () {},
-                icon: Icon(Icons.fingerprint_rounded,
-                    size: 16, color: tokens.accent),
-                label: Text(AppLocalizations.of(context).registerPasskey,
-                    style: TextStyle(color: tokens.accent)),
+                icon: Icon(
+                  Icons.fingerprint_rounded,
+                  size: 16,
+                  color: tokens.accent,
+                ),
+                label: Text(
+                  AppLocalizations.of(context).registerPasskey,
+                  style: TextStyle(color: tokens.accent),
+                ),
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(color: tokens.accent),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ],
@@ -149,13 +156,13 @@ class _SecuritySettingsTabState extends ConsumerState<SecuritySettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _passwordField(
     OrchestraColorTokens tokens,
@@ -171,8 +178,10 @@ class _SecuritySettingsTabState extends ConsumerState<SecuritySettingsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),
@@ -213,7 +222,9 @@ class _ConnectedAppsListState extends ConsumerState<_ConnectedAppsList> {
   Future<void> _fetchApps() async {
     try {
       final dio = ref.read(dioProvider);
-      final res = await dio.get<Map<String, dynamic>>(Endpoints.settingsConnectedApps);
+      final res = await dio.get<Map<String, dynamic>>(
+        Endpoints.settingsConnectedApps,
+      );
       final items = res.data?['apps'];
       if (mounted) {
         setState(() {
@@ -232,9 +243,9 @@ class _ConnectedAppsListState extends ConsumerState<_ConnectedAppsList> {
       await dio.delete<dynamic>(Endpoints.settingsRevokeApp(appId));
       setState(() => _apps.removeWhere((a) => a['app_id'].toString() == appId));
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('App access revoked')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('App access revoked')));
       }
     } on DioException {
       if (mounted) {
@@ -252,7 +263,12 @@ class _ConnectedAppsListState extends ConsumerState<_ConnectedAppsList> {
     if (_loading) {
       return Padding(
         padding: const EdgeInsets.all(24),
-        child: Center(child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2)),
+        child: Center(
+          child: CircularProgressIndicator(
+            color: tokens.accent,
+            strokeWidth: 2,
+          ),
+        ),
       );
     }
 
@@ -288,7 +304,11 @@ class _ConnectedAppsListState extends ConsumerState<_ConnectedAppsList> {
         children: [
           for (int i = 0; i < _apps.length; i++) ...[
             if (i > 0)
-              Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+              Divider(
+                height: 1,
+                indent: 56,
+                color: tokens.border.withValues(alpha: 0.4),
+              ),
             _ConnectedAppRow(
               app: _apps[i],
               tokens: tokens,
@@ -336,17 +356,27 @@ class _ConnectedAppRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name,
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: tokens.fgBright)),
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: tokens.fgBright,
+                  ),
+                ),
                 if (scopes.isNotEmpty) ...[
                   const SizedBox(height: 2),
-                  Text('Scopes: $scopes',
-                      style: TextStyle(fontSize: 10, color: tokens.fgDim)),
+                  Text(
+                    'Scopes: $scopes',
+                    style: TextStyle(fontSize: 10, color: tokens.fgDim),
+                  ),
                 ],
                 if (authorizedAt.isNotEmpty) ...[
                   const SizedBox(height: 2),
-                  Text('Authorized: $authorizedAt',
-                      style: TextStyle(fontSize: 10, color: tokens.fgDim)),
+                  Text(
+                    'Authorized: $authorizedAt',
+                    style: TextStyle(fontSize: 10, color: tokens.fgDim),
+                  ),
                 ],
               ],
             ),
@@ -359,8 +389,10 @@ class _ConnectedAppRow extends StatelessWidget {
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: const Text('Revoke',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+            child: const Text(
+              'Revoke',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            ),
           ),
         ],
       ),

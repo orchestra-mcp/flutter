@@ -165,10 +165,13 @@ class _PanelHeader extends StatelessWidget {
     final statusColor = hasError
         ? const Color(0xFFEF4444)
         : isStreaming
-            ? tokens.accent
-            : const Color(0xFF22C55E);
-    final statusLabel =
-        hasError ? 'Error' : isStreaming ? 'Streaming...' : 'Complete';
+        ? tokens.accent
+        : const Color(0xFF22C55E);
+    final statusLabel = hasError
+        ? 'Error'
+        : isStreaming
+        ? 'Streaming...'
+        : 'Complete';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -222,11 +225,7 @@ class _PanelHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
             child: Padding(
               padding: const EdgeInsets.all(4),
-              child: Icon(
-                Icons.close_rounded,
-                size: 16,
-                color: tokens.fgDim,
-              ),
+              child: Icon(Icons.close_rounded, size: 16, color: tokens.fgDim),
             ),
           ),
         ],
@@ -259,10 +258,7 @@ class _LoadingBody extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             'Processing...',
-            style: TextStyle(
-              fontSize: 13,
-              color: tokens.fgMuted,
-            ),
+            style: TextStyle(fontSize: 13, color: tokens.fgMuted),
           ),
         ],
       ),
@@ -345,16 +341,16 @@ class _ErrorBody extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.error_outline_rounded,
-                  size: 18, color: Color(0xFFEF4444)),
+              const Icon(
+                Icons.error_outline_rounded,
+                size: 18,
+                color: Color(0xFFEF4444),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   errorText,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: tokens.fgMuted,
-                  ),
+                  style: TextStyle(fontSize: 13, color: tokens.fgMuted),
                 ),
               ),
             ],
@@ -423,11 +419,7 @@ class _PanelFooter extends StatelessWidget {
               // Dismiss button.
               TextButton.icon(
                 onPressed: onDismiss,
-                icon: Icon(
-                  Icons.close_rounded,
-                  size: 14,
-                  color: tokens.fgDim,
-                ),
+                icon: Icon(Icons.close_rounded, size: 14, color: tokens.fgDim),
                 label: Text(
                   'Dismiss',
                   style: TextStyle(fontSize: 12, color: tokens.fgDim),

@@ -60,7 +60,9 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -75,7 +77,9 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -88,15 +92,18 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
             // Meta Title
             _fieldLabel(tokens, l10n.adminMetaTitle),
             const SizedBox(height: 6),
-            _field(tokens, _metaTitleCtrl,
-                hint: l10n.adminMetaTitleHint),
+            _field(tokens, _metaTitleCtrl, hint: l10n.adminMetaTitleHint),
             const SizedBox(height: 16),
 
             // Meta Description
             _fieldLabel(tokens, l10n.adminMetaDescription),
             const SizedBox(height: 6),
-            _field(tokens, _metaDescriptionCtrl,
-                hint: l10n.adminMetaDescHint, maxLines: 3),
+            _field(
+              tokens,
+              _metaDescriptionCtrl,
+              hint: l10n.adminMetaDescHint,
+              maxLines: 3,
+            ),
             const SizedBox(height: 16),
 
             // OG Image URL
@@ -111,8 +118,7 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
             _sectionHeader(tokens, l10n.adminSitemap),
             const SizedBox(height: 12),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
                 color: tokens.bgAlt,
                 borderRadius: BorderRadius.circular(10),
@@ -144,8 +150,12 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
             // Robots.txt
             _sectionHeader(tokens, l10n.adminRobotsTxt),
             const SizedBox(height: 12),
-            _field(tokens, _robotsTxtCtrl,
-                hint: 'User-agent: *\nAllow: /', maxLines: 8),
+            _field(
+              tokens,
+              _robotsTxtCtrl,
+              hint: 'User-agent: *\nAllow: /',
+              maxLines: 8,
+            ),
 
             const SizedBox(height: 28),
             SizedBox(
@@ -157,14 +167,17 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -176,23 +189,23 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -209,8 +222,10 @@ class _AdminSeoTabState extends ConsumerState<AdminSeoTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

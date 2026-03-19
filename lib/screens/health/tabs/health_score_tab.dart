@@ -22,8 +22,10 @@ class HealthScoreTab extends ConsumerWidget {
     return insightAsync.when(
       loading: () => const _ShimmerLoading(),
       error: (e, _) => Center(
-        child: Text('${l10n.error}: $e',
-            style: TextStyle(color: tokens.fgMuted)),
+        child: Text(
+          '${l10n.error}: $e',
+          style: TextStyle(color: tokens.fgMuted),
+        ),
       ),
       data: (state) {
         if (state.isLoading) return const _ShimmerLoading();
@@ -31,10 +33,9 @@ class HealthScoreTab extends ConsumerWidget {
         return _HealthScoreContent(
           tokens: tokens,
           insights: insights,
-          onRefresh: () => ref.read(aiInsightProvider.notifier).generateInsights(
-                const HealthContext(),
-                l10n,
-              ),
+          onRefresh: () => ref
+              .read(aiInsightProvider.notifier)
+              .generateInsights(const HealthContext(), l10n),
         );
       },
     );
@@ -82,8 +83,10 @@ class _HealthScoreContent extends StatelessWidget {
           child: TextButton.icon(
             onPressed: onRefresh,
             icon: Icon(Icons.refresh_rounded, size: 16, color: tokens.accent),
-            label: Text(l10n.refreshInsights,
-                style: TextStyle(color: tokens.accent, fontSize: 13)),
+            label: Text(
+              l10n.refreshInsights,
+              style: TextStyle(color: tokens.accent, fontSize: 13),
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -118,14 +121,19 @@ class _HealthScoreContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.triggerAnalysis,
-                  style: TextStyle(
-                      color: tokens.fgBright,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14)),
+              Text(
+                l10n.triggerAnalysis,
+                style: TextStyle(
+                  color: tokens.fgBright,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
               const SizedBox(height: 8),
-              Text(insights.triggerAnalysis,
-                  style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+              Text(
+                insights.triggerAnalysis,
+                style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+              ),
             ],
           ),
         ),
@@ -200,7 +208,11 @@ class _RingPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const stroke = 12.0;
     final rect = Rect.fromLTWH(
-        stroke / 2, stroke / 2, size.width - stroke, size.height - stroke);
+      stroke / 2,
+      stroke / 2,
+      size.width - stroke,
+      size.height - stroke,
+    );
 
     final trackPaint = Paint()
       ..color = trackColor
@@ -218,7 +230,12 @@ class _RingPainter extends CustomPainter {
     canvas.drawArc(rect, -math.pi / 2, math.pi * 2, false, trackPaint);
     // Arc
     canvas.drawArc(
-        rect, -math.pi / 2, math.pi * 2 * (score / 100), false, ringPaint);
+      rect,
+      -math.pi / 2,
+      math.pi * 2 * (score / 100),
+      false,
+      ringPaint,
+    );
   }
 
   @override
@@ -248,27 +265,36 @@ class _ChipSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: TextStyle(
-                color: tokens.fgBright,
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        Text(
+          title,
+          style: TextStyle(
+            color: tokens.fgBright,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
           runSpacing: 8,
           children: items
-              .map((item) => Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.15),
-                      border: Border.all(color: color.withValues(alpha: 0.4)),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(item,
-                        style: TextStyle(color: color, fontSize: 12)),
-                  ))
+              .map(
+                (item) => Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.15),
+                    border: Border.all(color: color.withValues(alpha: 0.4)),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    item,
+                    style: TextStyle(color: color, fontSize: 12),
+                  ),
+                ),
+              )
               .toList(),
         ),
       ],
@@ -303,22 +329,31 @@ class _RecommendationsCardState extends State<_RecommendationsCard> {
       child: ExpansionTile(
         initiallyExpanded: _expanded,
         onExpansionChanged: (v) => setState(() => _expanded = v),
-        title: Text(AppLocalizations.of(context).recommendations,
-            style: TextStyle(
-                color: widget.tokens.fgBright,
-                fontWeight: FontWeight.w600,
-                fontSize: 14)),
+        title: Text(
+          AppLocalizations.of(context).recommendations,
+          style: TextStyle(
+            color: widget.tokens.fgBright,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
+        ),
         iconColor: widget.tokens.accent,
         collapsedIconColor: widget.tokens.fgMuted,
         children: widget.recommendations
-            .map((rec) => ListTile(
-                  dense: true,
-                  leading: Icon(Icons.check_circle_outline,
-                      color: widget.tokens.accent, size: 16),
-                  title: Text(rec,
-                      style: TextStyle(
-                          color: widget.tokens.fgMuted, fontSize: 13)),
-                ))
+            .map(
+              (rec) => ListTile(
+                dense: true,
+                leading: Icon(
+                  Icons.check_circle_outline,
+                  color: widget.tokens.accent,
+                  size: 16,
+                ),
+                title: Text(
+                  rec,
+                  style: TextStyle(color: widget.tokens.fgMuted, fontSize: 13),
+                ),
+              ),
+            )
             .toList(),
       ),
     );

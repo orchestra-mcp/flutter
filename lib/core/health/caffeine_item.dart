@@ -58,18 +58,19 @@ class CaffeineItem {
       title: titleMap,
       mg: (json['mg'] as num?)?.toInt() ?? 0,
       icon: Icons.coffee_rounded,
-      isSugarBased: json['is_sugar_based'] == true || json['is_sugar_based'] == 1,
+      isSugarBased:
+          json['is_sugar_based'] == true || json['is_sugar_based'] == 1,
       sortOrder: (json['sort_order'] as num?)?.toInt() ?? 0,
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'mg': mg,
-        'is_sugar_based': isSugarBased,
-        'sort_order': sortOrder,
-      };
+    'id': id,
+    'title': title,
+    'mg': mg,
+    'is_sugar_based': isSugarBased,
+    'sort_order': sortOrder,
+  };
 }
 
 /// Preset caffeine items — seeds the local database on first launch.

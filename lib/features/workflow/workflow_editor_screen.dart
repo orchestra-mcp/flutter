@@ -107,25 +107,24 @@ class _WorkflowEditorState {
     List<HookConfig>? hooks,
     int? selectedTab,
     String? Function()? generatedPreview,
-  }) =>
-      _WorkflowEditorState(
-        skills: skills ?? this.skills,
-        agents: agents ?? this.agents,
-        hooks: hooks ?? this.hooks,
-        selectedTab: selectedTab ?? this.selectedTab,
-        generatedPreview: generatedPreview != null
-            ? generatedPreview()
-            : this.generatedPreview,
-      );
+  }) => _WorkflowEditorState(
+    skills: skills ?? this.skills,
+    agents: agents ?? this.agents,
+    hooks: hooks ?? this.hooks,
+    selectedTab: selectedTab ?? this.selectedTab,
+    generatedPreview: generatedPreview != null
+        ? generatedPreview()
+        : this.generatedPreview,
+  );
 }
 
 class _WorkflowEditorNotifier extends Notifier<_WorkflowEditorState> {
   @override
   _WorkflowEditorState build() => _WorkflowEditorState(
-        skills: List.of(_defaultSkills),
-        agents: List.of(_defaultAgents),
-        hooks: List.of(_defaultHooks),
-      );
+    skills: List.of(_defaultSkills),
+    agents: List.of(_defaultAgents),
+    hooks: List.of(_defaultHooks),
+  );
 
   void setTab(int tab) => state = state.copyWith(selectedTab: tab);
 
@@ -188,14 +187,13 @@ class _WorkflowEditorNotifier extends Notifier<_WorkflowEditorState> {
     state = state.copyWith(generatedPreview: () => md);
   }
 
-  void clearPreview() =>
-      state = state.copyWith(generatedPreview: () => null);
+  void clearPreview() => state = state.copyWith(generatedPreview: () => null);
 }
 
 final _workflowEditorProvider =
     NotifierProvider<_WorkflowEditorNotifier, _WorkflowEditorState>(
-  _WorkflowEditorNotifier.new,
-);
+      _WorkflowEditorNotifier.new,
+    );
 
 // ── Screen ──────────────────────────────────────────────────────────────────
 
@@ -204,7 +202,11 @@ final _workflowEditorProvider =
 class WorkflowEditorScreen extends ConsumerWidget {
   const WorkflowEditorScreen({super.key});
 
-  List<String> _tabs(AppLocalizations l10n) => [l10n.skills, l10n.agents, l10n.hooks];
+  List<String> _tabs(AppLocalizations l10n) => [
+    l10n.skills,
+    l10n.agents,
+    l10n.hooks,
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -267,13 +269,12 @@ class WorkflowEditorScreen extends ConsumerWidget {
                     count: i == 0
                         ? editorState.skills.length
                         : i == 1
-                            ? editorState.agents.length
-                            : editorState.hooks.length,
+                        ? editorState.agents.length
+                        : editorState.hooks.length,
                     isSelected: editorState.selectedTab == i,
                     tokens: tokens,
-                    onTap: () => ref
-                        .read(_workflowEditorProvider.notifier)
-                        .setTab(i),
+                    onTap: () =>
+                        ref.read(_workflowEditorProvider.notifier).setTab(i),
                   ),
                 ),
             ],
@@ -327,11 +328,13 @@ class WorkflowEditorScreen extends ConsumerWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  icon: Icon(Icons.close_rounded,
-                      color: tokens.fgMuted, size: 18),
-                  onPressed: () => ref
-                      .read(_workflowEditorProvider.notifier)
-                      .clearPreview(),
+                  icon: Icon(
+                    Icons.close_rounded,
+                    color: tokens.fgMuted,
+                    size: 18,
+                  ),
+                  onPressed: () =>
+                      ref.read(_workflowEditorProvider.notifier).clearPreview(),
                 ),
               ],
             ),
@@ -354,8 +357,7 @@ class WorkflowEditorScreen extends ConsumerWidget {
     );
   }
 
-  void _exportToClipboard(
-      BuildContext context, _WorkflowEditorState state) {
+  void _exportToClipboard(BuildContext context, _WorkflowEditorState state) {
     const gen = WorkflowGenerator();
     const project = ProjectInfo(
       name: 'Orchestra Agents',
@@ -401,10 +403,8 @@ class _SkillsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: skills.length,
       onReorder: onReorder,
-      proxyDecorator: (child, _, __) => Material(
-        color: Colors.transparent,
-        child: child,
-      ),
+      proxyDecorator: (child, _, __) =>
+          Material(color: Colors.transparent, child: child),
       itemBuilder: (ctx, i) {
         final skill = skills[i];
         return _ConfigItemTile(
@@ -444,10 +444,8 @@ class _AgentsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: agents.length,
       onReorder: onReorder,
-      proxyDecorator: (child, _, __) => Material(
-        color: Colors.transparent,
-        child: child,
-      ),
+      proxyDecorator: (child, _, __) =>
+          Material(color: Colors.transparent, child: child),
       itemBuilder: (ctx, i) {
         final agent = agents[i];
         return _ConfigItemTile(
@@ -487,10 +485,8 @@ class _HooksList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: hooks.length,
       onReorder: onReorder,
-      proxyDecorator: (child, _, __) => Material(
-        color: Colors.transparent,
-        child: child,
-      ),
+      proxyDecorator: (child, _, __) =>
+          Material(color: Colors.transparent, child: child),
       itemBuilder: (ctx, i) {
         final hook = hooks[i];
         return _ConfigItemTile(
@@ -539,20 +535,23 @@ class _ConfigItemTile extends StatelessWidget {
         child: Row(
           children: [
             // Drag handle.
-            Icon(Icons.drag_indicator_rounded,
-                color: tokens.fgDim, size: 18),
+            Icon(Icons.drag_indicator_rounded, color: tokens.fgDim, size: 18),
             const SizedBox(width: 12),
             // Icon.
             Container(
               width: 36,
               height: 36,
               decoration: BoxDecoration(
-                color: (enabled ? tokens.accent : tokens.fgDim)
-                    .withValues(alpha: 0.12),
+                color: (enabled ? tokens.accent : tokens.fgDim).withValues(
+                  alpha: 0.12,
+                ),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon,
-                  color: enabled ? tokens.accent : tokens.fgDim, size: 18),
+              child: Icon(
+                icon,
+                color: enabled ? tokens.accent : tokens.fgDim,
+                size: 18,
+              ),
             ),
             const SizedBox(width: 14),
             // Text.
@@ -566,18 +565,14 @@ class _ConfigItemTile extends StatelessWidget {
                       color: enabled ? tokens.fgBright : tokens.fgDim,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      decoration:
-                          enabled ? null : TextDecoration.lineThrough,
+                      decoration: enabled ? null : TextDecoration.lineThrough,
                     ),
                   ),
                   if (subtitle.isNotEmpty) ...[
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        color: tokens.fgMuted,
-                        fontSize: 11,
-                      ),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

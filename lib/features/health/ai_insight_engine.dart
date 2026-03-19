@@ -101,7 +101,8 @@ class AiInsightEngine {
     final recs = <String>[];
     if (ctx.hydrationScore < 75) recs.add('Drink a glass of water now');
     if (ctx.pomodoroScore < 75) recs.add('Start a 25-minute focus session');
-    if (ctx.nutritionScore < 75) recs.add('Choose a safe food for your next meal');
+    if (ctx.nutritionScore < 75)
+      recs.add('Choose a safe food for your next meal');
     if (ctx.shutdownScore < 75) recs.add('Begin your digital shutdown routine');
     return recs.take(3).toList();
   }

@@ -45,15 +45,21 @@ class CaffeineWidgetCard extends ConsumerWidget {
                     if (state.overDailyLimit)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF44336).withValues(alpha: 0.15),
+                          color: const Color(
+                            0xFFF44336,
+                          ).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           l10n.overLimit,
                           style: const TextStyle(
-                              color: Color(0xFFF44336), fontSize: 9),
+                            color: Color(0xFFF44336),
+                            fontSize: 9,
+                          ),
                         ),
                       ),
                   ],

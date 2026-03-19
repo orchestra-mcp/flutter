@@ -18,8 +18,11 @@ class AuthRepository {
   }
 
   Future<User> register(String email, String password, String name) async {
-    final body =
-        await client.register({'email': email, 'password': password, 'name': name});
+    final body = await client.register({
+      'email': email,
+      'password': password,
+      'name': name,
+    });
     await _saveToken(body);
     return User.fromJson(body['user'] as Map<String, dynamic>);
   }
@@ -39,10 +42,7 @@ class AuthRepository {
   Future<void> _saveToken(Map<String, dynamic> body) async {
     final token = (body['access_token'] ?? body['token'] ?? '') as String;
     final refresh = (body['refresh_token'] ?? '') as String;
-    await tokenStorage.saveTokens(
-      accessToken: token,
-      refreshToken: refresh,
-    );
+    await tokenStorage.saveTokens(accessToken: token, refreshToken: refresh);
     final user = User.fromJson(body['user'] as Map<String, dynamic>);
     await Future.wait<void>([
       AnalyticsService.logLogin(method: 'password'),

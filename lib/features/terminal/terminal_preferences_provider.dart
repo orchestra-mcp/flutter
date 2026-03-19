@@ -12,8 +12,8 @@ const kTerminalFontSizeStep = 1.0;
 /// Persisted terminal font size preference.
 final terminalFontSizeProvider =
     NotifierProvider<TerminalFontSizeNotifier, double>(
-  TerminalFontSizeNotifier.new,
-);
+      TerminalFontSizeNotifier.new,
+    );
 
 class TerminalFontSizeNotifier extends Notifier<double> {
   @override
@@ -25,7 +25,8 @@ class TerminalFontSizeNotifier extends Notifier<double> {
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getDouble(_kFontSizeKey);
-    if (saved != null) state = saved.clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+    if (saved != null)
+      state = saved.clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
   }
 
   Future<void> _persist() async {
@@ -35,14 +36,20 @@ class TerminalFontSizeNotifier extends Notifier<double> {
 
   void increase() {
     if (state < kTerminalFontSizeMax) {
-      state = (state + kTerminalFontSizeStep).clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+      state = (state + kTerminalFontSizeStep).clamp(
+        kTerminalFontSizeMin,
+        kTerminalFontSizeMax,
+      );
       _persist();
     }
   }
 
   void decrease() {
     if (state > kTerminalFontSizeMin) {
-      state = (state - kTerminalFontSizeStep).clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+      state = (state - kTerminalFontSizeStep).clamp(
+        kTerminalFontSizeMin,
+        kTerminalFontSizeMax,
+      );
       _persist();
     }
   }

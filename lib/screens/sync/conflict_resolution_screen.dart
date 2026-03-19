@@ -14,8 +14,9 @@ import 'package:orchestra/widgets/glass_card.dart';
 // ---------------------------------------------------------------------------
 
 /// Loads all unresolved conflicts from the [ChangeTracker].
-final unresolvedConflictsProvider =
-    FutureProvider<List<ConflictRecord>>((ref) async {
+final unresolvedConflictsProvider = FutureProvider<List<ConflictRecord>>((
+  ref,
+) async {
   final tracker = ref.watch(changeTrackerProvider);
   return tracker.getUnresolvedConflicts();
 });
@@ -52,9 +53,8 @@ class ConflictResolutionScreen extends ConsumerWidget {
         ],
       ),
       body: conflictsAsync.when(
-        loading: () => Center(
-          child: CircularProgressIndicator(color: tokens.accent),
-        ),
+        loading: () =>
+            Center(child: CircularProgressIndicator(color: tokens.accent)),
         error: (error, _) => Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -141,10 +141,7 @@ class ConflictResolutionScreen extends ConsumerWidget {
 // ---------------------------------------------------------------------------
 
 class _ConflictTile extends StatelessWidget {
-  const _ConflictTile({
-    required this.conflict,
-    required this.onTap,
-  });
+  const _ConflictTile({required this.conflict, required this.onTap});
 
   final ConflictRecord conflict;
   final VoidCallback onTap;
@@ -232,8 +229,7 @@ class _ConflictDetailScreen extends ConsumerStatefulWidget {
       _ConflictDetailScreenState();
 }
 
-class _ConflictDetailScreenState
-    extends ConsumerState<_ConflictDetailScreen> {
+class _ConflictDetailScreenState extends ConsumerState<_ConflictDetailScreen> {
   bool _isResolving = false;
 
   @override
@@ -280,8 +276,11 @@ class _ConflictDetailScreenState
                 SizedBox(
                   width: 32,
                   child: Center(
-                    child: Icon(Icons.compare_arrows,
-                        color: tokens.fgDim, size: 16),
+                    child: Icon(
+                      Icons.compare_arrows,
+                      color: tokens.fgDim,
+                      size: 16,
+                    ),
                   ),
                 ),
                 Expanded(
@@ -319,8 +318,8 @@ class _ConflictDetailScreenState
                       final key = allKeys[index];
                       final localVal = localData[key];
                       final remoteVal = remoteData[key];
-                      final isDifferent = localVal?.toString() !=
-                          remoteVal?.toString();
+                      final isDifferent =
+                          localVal?.toString() != remoteVal?.toString();
 
                       return _DiffRow(
                         fieldName: key,
@@ -419,15 +418,17 @@ class _ConflictDetailScreenState
 
   void _openMergeEditor(BuildContext context) {
     final conflict = widget.conflict;
-    Navigator.of(context).push(
-      MaterialPageRoute<Map<String, dynamic>?>(
-        builder: (_) => _MergeEditorScreen(conflict: conflict),
-      ),
-    ).then((mergedData) {
-      if (mergedData != null) {
-        _resolveWithMergedData(mergedData);
-      }
-    });
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<Map<String, dynamic>?>(
+            builder: (_) => _MergeEditorScreen(conflict: conflict),
+          ),
+        )
+        .then((mergedData) {
+          if (mergedData != null) {
+            _resolveWithMergedData(mergedData);
+          }
+        });
   }
 
   Future<void> _resolveWithMergedData(Map<String, dynamic> mergedData) async {
@@ -581,10 +582,7 @@ class _DiffRow extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _MergeButton extends StatelessWidget {
-  const _MergeButton({
-    required this.isLoading,
-    required this.onPressed,
-  });
+  const _MergeButton({required this.isLoading, required this.onPressed});
 
   final bool isLoading;
   final VoidCallback onPressed;
@@ -677,7 +675,10 @@ class _MergeEditorScreenState extends State<_MergeEditorScreen> {
     return Scaffold(
       backgroundColor: tokens.bg,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).mergeEditor, style: const TextStyle(fontSize: 15)),
+        title: Text(
+          AppLocalizations.of(context).mergeEditor,
+          style: const TextStyle(fontSize: 15),
+        ),
         backgroundColor: tokens.bg,
         foregroundColor: tokens.fgBright,
         elevation: 0,
@@ -831,7 +832,9 @@ class _PickHint extends StatelessWidget {
           border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Text(
-          label == 'Local' ? AppLocalizations.of(context).useLocal : AppLocalizations.of(context).useRemote,
+          label == 'Local'
+              ? AppLocalizations.of(context).useLocal
+              : AppLocalizations.of(context).useRemote,
           style: TextStyle(
             color: color,
             fontSize: 10,

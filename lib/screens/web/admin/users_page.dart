@@ -7,8 +7,9 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 // ── Data provider ────────────────────────────────────────────────────────────
 
-final _usersProvider =
-    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+final _usersProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final api = ref.watch(apiClientProvider);
   final result = await api.listAdminUsers();
   final raw = result['users'];
@@ -24,8 +25,9 @@ class _UserSearchNotifier extends Notifier<String> {
   void update(String query) => state = query;
 }
 
-final _userSearchProvider =
-    NotifierProvider<_UserSearchNotifier, String>(_UserSearchNotifier.new);
+final _userSearchProvider = NotifierProvider<_UserSearchNotifier, String>(
+  _UserSearchNotifier.new,
+);
 
 class _RoleFilterNotifier extends Notifier<String> {
   @override
@@ -33,8 +35,9 @@ class _RoleFilterNotifier extends Notifier<String> {
   void update(String role) => state = role;
 }
 
-final _roleFilterProvider =
-    NotifierProvider<_RoleFilterNotifier, String>(_RoleFilterNotifier.new);
+final _roleFilterProvider = NotifierProvider<_RoleFilterNotifier, String>(
+  _RoleFilterNotifier.new,
+);
 
 class _StatusFilterNotifier extends Notifier<String> {
   @override
@@ -42,8 +45,9 @@ class _StatusFilterNotifier extends Notifier<String> {
   void update(String status) => state = status;
 }
 
-final _statusFilterProvider =
-    NotifierProvider<_StatusFilterNotifier, String>(_StatusFilterNotifier.new);
+final _statusFilterProvider = NotifierProvider<_StatusFilterNotifier, String>(
+  _StatusFilterNotifier.new,
+);
 
 // ── Role helpers ─────────────────────────────────────────────────────────────
 
@@ -60,9 +64,18 @@ const _roleFilterOrder = ['all', 'admin', 'team_owner', 'team_manager', 'user'];
 /// reference: admin = red, team_owner = purple, team_manager = cyan, user = grey.
 (Color, Color) _roleBadgeColors(String role, OrchestraColorTokens tokens) {
   return switch (role) {
-    'admin' => (const Color(0xFFEF4444).withValues(alpha: 0.12), const Color(0xFFEF4444)),
-    'team_owner' => (const Color(0xFFA900FF).withValues(alpha: 0.12), const Color(0xFFA900FF)),
-    'team_manager' => (const Color(0xFF00E5FF).withValues(alpha: 0.12), const Color(0xFF00E5FF)),
+    'admin' => (
+      const Color(0xFFEF4444).withValues(alpha: 0.12),
+      const Color(0xFFEF4444),
+    ),
+    'team_owner' => (
+      const Color(0xFFA900FF).withValues(alpha: 0.12),
+      const Color(0xFFA900FF),
+    ),
+    'team_manager' => (
+      const Color(0xFF00E5FF).withValues(alpha: 0.12),
+      const Color(0xFF00E5FF),
+    ),
     _ => (tokens.fgDim.withValues(alpha: 0.12), tokens.fgDim),
   };
 }
@@ -85,28 +98,28 @@ class UsersPage extends ConsumerWidget {
     return ColoredBox(
       color: tokens.bg,
       child: usersAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-            const SizedBox(height: 12),
-            Text(
-              AppLocalizations.of(context).failedToLoadUsers,
-              style: TextStyle(color: tokens.fgBright, fontSize: 16),
-            ),
-            const SizedBox(height: 4),
-            Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => ref.invalidate(_usersProvider),
-              child: Text(AppLocalizations.of(context).retry),
-            ),
-          ],
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context).failedToLoadUsers,
+                style: TextStyle(color: tokens.fgBright, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.invalidate(_usersProvider),
+                child: Text(AppLocalizations.of(context).retry),
+              ),
+            ],
+          ),
         ),
-      ),
-      data: (users) => _UsersContent(users: users),
+        data: (users) => _UsersContent(users: users),
       ),
     );
   }
@@ -184,12 +197,17 @@ class _UsersContent extends ConsumerWidget {
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).searchNameOrEmail,
                     hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                    prefixIcon:
-                        Icon(Icons.search, size: 18, color: tokens.fgDim),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      size: 18,
+                      color: tokens.fgDim,
+                    ),
                     filled: true,
                     fillColor: tokens.bgAlt,
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 10),
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(9),
                       borderSide: BorderSide(color: tokens.border),
@@ -209,8 +227,9 @@ class _UsersContent extends ConsumerWidget {
               // Role filter chips
               ..._roleFilterOrder.map((role) {
                 final isSelected = roleFilter == role;
-                final label =
-                    role == 'all' ? AppLocalizations.of(context).allRoles : (_roleLabels[role] ?? role);
+                final label = role == 'all'
+                    ? AppLocalizations.of(context).allRoles
+                    : (_roleLabels[role] ?? role);
                 return _FilterChip(
                   label: label,
                   isSelected: isSelected,
@@ -233,16 +252,19 @@ class _UsersContent extends ConsumerWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.group_outlined,
-                            size: 36, color: tokens.fgDim),
+                        Icon(
+                          Icons.group_outlined,
+                          size: 36,
+                          color: tokens.fgDim,
+                        ),
                         const SizedBox(height: 10),
                         Text(
-                          query.isEmpty && roleFilter == 'all' &&
+                          query.isEmpty &&
+                                  roleFilter == 'all' &&
                                   statusFilter == 'all'
                               ? AppLocalizations.of(context).noUsersFound
                               : AppLocalizations.of(context).noMatchingUsers,
-                          style:
-                              TextStyle(color: tokens.fgMuted, fontSize: 14),
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 14),
                         ),
                       ],
                     ),
@@ -325,10 +347,22 @@ class _StatusDropdown extends ConsumerWidget {
           style: TextStyle(color: tokens.fgBright, fontSize: 12),
           icon: Icon(Icons.expand_more, size: 16, color: tokens.fgMuted),
           items: [
-            DropdownMenuItem(value: 'all', child: Text(AppLocalizations.of(context).allStatuses)),
-            DropdownMenuItem(value: 'active', child: Text(AppLocalizations.of(context).active)),
-            DropdownMenuItem(value: 'invited', child: Text(AppLocalizations.of(context).invited)),
-            DropdownMenuItem(value: 'suspended', child: Text(AppLocalizations.of(context).blocked)),
+            DropdownMenuItem(
+              value: 'all',
+              child: Text(AppLocalizations.of(context).allStatuses),
+            ),
+            DropdownMenuItem(
+              value: 'active',
+              child: Text(AppLocalizations.of(context).active),
+            ),
+            DropdownMenuItem(
+              value: 'invited',
+              child: Text(AppLocalizations.of(context).invited),
+            ),
+            DropdownMenuItem(
+              value: 'suspended',
+              child: Text(AppLocalizations.of(context).blocked),
+            ),
           ],
           onChanged: (v) {
             if (v != null) {
@@ -361,12 +395,12 @@ class _UserTile extends ConsumerWidget {
     // Avatar initials — up to 2 chars from first letters of words
     final initials = name.isNotEmpty
         ? name
-            .split(' ')
-            .where((w) => w.isNotEmpty)
-            .map((w) => w[0])
-            .take(2)
-            .join()
-            .toUpperCase()
+              .split(' ')
+              .where((w) => w.isNotEmpty)
+              .map((w) => w[0])
+              .take(2)
+              .join()
+              .toUpperCase()
         : (email.isNotEmpty ? email[0].toUpperCase() : '?');
 
     final statusColor = switch (status.toLowerCase()) {
@@ -440,9 +474,7 @@ class _UserTile extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: badgeBg,
                 borderRadius: BorderRadius.circular(100),
-                border: Border.all(
-                  color: badgeText.withValues(alpha: 0.25),
-                ),
+                border: Border.all(color: badgeText.withValues(alpha: 0.25)),
               ),
               child: Text(
                 _roleLabels[role] ?? role,
@@ -523,24 +555,46 @@ class _ActionsPopupMenu extends ConsumerWidget {
       elevation: 8,
       padding: EdgeInsets.zero,
       itemBuilder: (_) => [
-        _menuItem('view_profile', Icons.account_circle_outlined,
-            AppLocalizations.of(context).viewProfile, const Color(0xFF00E5FF)),
-        _menuItem('change_role', Icons.shield_outlined, AppLocalizations.of(context).changeRole,
-            const Color(0xFFA900FF)),
-        _menuItem('change_password', Icons.lock_outline, AppLocalizations.of(context).changePassword,
-            const Color(0xFFF97316)),
-        _menuItem('send_notification', Icons.notifications_outlined,
-            AppLocalizations.of(context).sendNotification, const Color(0xFF00E5FF)),
+        _menuItem(
+          'view_profile',
+          Icons.account_circle_outlined,
+          AppLocalizations.of(context).viewProfile,
+          const Color(0xFF00E5FF),
+        ),
+        _menuItem(
+          'change_role',
+          Icons.shield_outlined,
+          AppLocalizations.of(context).changeRole,
+          const Color(0xFFA900FF),
+        ),
+        _menuItem(
+          'change_password',
+          Icons.lock_outline,
+          AppLocalizations.of(context).changePassword,
+          const Color(0xFFF97316),
+        ),
+        _menuItem(
+          'send_notification',
+          Icons.notifications_outlined,
+          AppLocalizations.of(context).sendNotification,
+          const Color(0xFF00E5FF),
+        ),
         const PopupMenuDivider(),
         _menuItem(
           'toggle_block',
           isSuspended ? Icons.check_circle_outline : Icons.block,
-          isSuspended ? AppLocalizations.of(context).unblockLabel : AppLocalizations.of(context).blockLabel,
+          isSuspended
+              ? AppLocalizations.of(context).unblockLabel
+              : AppLocalizations.of(context).blockLabel,
           isSuspended ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
         ),
         const PopupMenuDivider(),
         _menuItem(
-            'delete', Icons.delete_outline, AppLocalizations.of(context).delete, const Color(0xFFEF4444)),
+          'delete',
+          Icons.delete_outline,
+          AppLocalizations.of(context).delete,
+          const Color(0xFFEF4444),
+        ),
       ],
       onSelected: (action) {
         switch (action) {
@@ -562,7 +616,11 @@ class _ActionsPopupMenu extends ConsumerWidget {
   }
 
   PopupMenuItem<String> _menuItem(
-      String value, IconData icon, String label, Color iconColor) {
+    String value,
+    IconData icon,
+    String label,
+    Color iconColor,
+  ) {
     return PopupMenuItem<String>(
       value: value,
       height: 36,
@@ -574,8 +632,10 @@ class _ActionsPopupMenu extends ConsumerWidget {
             label,
             style: TextStyle(
               fontSize: 12.5,
-              color: value == 'delete' || (value == 'toggle_block' &&
-                      userStatus.toLowerCase() != 'suspended')
+              color:
+                  value == 'delete' ||
+                      (value == 'toggle_block' &&
+                          userStatus.toLowerCase() != 'suspended')
                   ? iconColor
                   : null,
             ),
@@ -636,14 +696,26 @@ class _ActionsPopupMenu extends ConsumerWidget {
                       style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       decoration: _inputDecoration(tokens),
                       items: [
-                        DropdownMenuItem(value: 'user', child: Text(AppLocalizations.of(context).user)),
                         DropdownMenuItem(
-                            value: 'team_manager',
-                            child: Text(AppLocalizations.of(context).teamManagerTarget)),
+                          value: 'user',
+                          child: Text(AppLocalizations.of(context).user),
+                        ),
                         DropdownMenuItem(
-                            value: 'team_owner', child: Text(AppLocalizations.of(context).teamOwnerTarget)),
+                          value: 'team_manager',
+                          child: Text(
+                            AppLocalizations.of(context).teamManagerTarget,
+                          ),
+                        ),
                         DropdownMenuItem(
-                            value: 'admin', child: Text(AppLocalizations.of(context).adminTarget)),
+                          value: 'team_owner',
+                          child: Text(
+                            AppLocalizations.of(context).teamOwnerTarget,
+                          ),
+                        ),
+                        DropdownMenuItem(
+                          value: 'admin',
+                          child: Text(AppLocalizations.of(context).adminTarget),
+                        ),
                       ],
                       onChanged: (v) {
                         if (v != null) setState(() => selectedRole = v);
@@ -655,15 +727,18 @@ class _ActionsPopupMenu extends ConsumerWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(),
-                  child: Text(AppLocalizations.of(context).cancel,
-                      style: TextStyle(color: tokens.fgMuted)),
+                  child: Text(
+                    AppLocalizations.of(context).cancel,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
                 ),
                 FilledButton(
                   onPressed: () async {
                     Navigator.of(ctx).pop();
                     final api = ref.read(apiClientProvider);
-                    await api
-                        .updateAdminUserRole(userId, {'role': selectedRole});
+                    await api.updateAdminUserRole(userId, {
+                      'role': selectedRole,
+                    });
                     ref.invalidate(_usersProvider);
                   },
                   style: FilledButton.styleFrom(
@@ -732,9 +807,9 @@ class _ActionsPopupMenu extends ConsumerWidget {
                       obscureText: true,
                       style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       decoration: _inputDecoration(tokens).copyWith(
-                        hintText: '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022',
-                        hintStyle:
-                            TextStyle(color: tokens.fgDim, fontSize: 13),
+                        hintText:
+                            '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022',
+                        hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -752,9 +827,9 @@ class _ActionsPopupMenu extends ConsumerWidget {
                       obscureText: true,
                       style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       decoration: _inputDecoration(tokens).copyWith(
-                        hintText: '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022',
-                        hintStyle:
-                            TextStyle(color: tokens.fgDim, fontSize: 13),
+                        hintText:
+                            '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022',
+                        hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       ),
                     ),
                     if (errorText != null) ...[
@@ -762,7 +837,9 @@ class _ActionsPopupMenu extends ConsumerWidget {
                       Text(
                         errorText!,
                         style: const TextStyle(
-                            color: Color(0xFFEF4444), fontSize: 12),
+                          color: Color(0xFFEF4444),
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ],
@@ -771,23 +848,34 @@ class _ActionsPopupMenu extends ConsumerWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(),
-                  child: Text(AppLocalizations.of(context).cancel,
-                      style: TextStyle(color: tokens.fgMuted)),
+                  child: Text(
+                    AppLocalizations.of(context).cancel,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
                 ),
                 FilledButton(
                   onPressed: () async {
                     if (passwordCtrl.text != confirmCtrl.text) {
-                      setState(() => errorText = AppLocalizations.of(context).passwordsDoNotMatch);
+                      setState(
+                        () => errorText = AppLocalizations.of(
+                          context,
+                        ).passwordsDoNotMatch,
+                      );
                       return;
                     }
                     if (passwordCtrl.text.isEmpty) {
-                      setState(() => errorText = AppLocalizations.of(context).passwordCannotBeEmpty);
+                      setState(
+                        () => errorText = AppLocalizations.of(
+                          context,
+                        ).passwordCannotBeEmpty,
+                      );
                       return;
                     }
                     Navigator.of(ctx).pop();
                     final api = ref.read(apiClientProvider);
-                    await api.updateAdminUser(
-                        userId, {'password': passwordCtrl.text});
+                    await api.updateAdminUser(userId, {
+                      'password': passwordCtrl.text,
+                    });
                     ref.invalidate(_usersProvider);
                   },
                   style: FilledButton.styleFrom(
@@ -854,9 +942,10 @@ class _ActionsPopupMenu extends ConsumerWidget {
                       controller: titleCtrl,
                       style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       decoration: _inputDecoration(tokens).copyWith(
-                        hintText: AppLocalizations.of(context).notificationTitleHint,
-                        hintStyle:
-                            TextStyle(color: tokens.fgDim, fontSize: 13),
+                        hintText: AppLocalizations.of(
+                          context,
+                        ).notificationTitleHint,
+                        hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -875,8 +964,7 @@ class _ActionsPopupMenu extends ConsumerWidget {
                       style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       decoration: _inputDecoration(tokens).copyWith(
                         hintText: AppLocalizations.of(context).writeYourMessage,
-                        hintStyle:
-                            TextStyle(color: tokens.fgDim, fontSize: 13),
+                        hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       ),
                     ),
                   ],
@@ -885,8 +973,10 @@ class _ActionsPopupMenu extends ConsumerWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(ctx).pop(),
-                  child: Text(AppLocalizations.of(context).cancel,
-                      style: TextStyle(color: tokens.fgMuted)),
+                  child: Text(
+                    AppLocalizations.of(context).cancel,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
                 ),
                 FilledButton(
                   onPressed: () async {
@@ -919,9 +1009,12 @@ class _ActionsPopupMenu extends ConsumerWidget {
     final tokens = ThemeTokens.of(context);
     final isActive = userStatus.toLowerCase() != 'suspended';
     final newStatus = isActive ? 'suspended' : 'active';
-    final actionLabel = isActive ? AppLocalizations.of(context).blockLabel : AppLocalizations.of(context).unblockLabel;
-    final actionColor =
-        isActive ? const Color(0xFFEF4444) : const Color(0xFF22C55E);
+    final actionLabel = isActive
+        ? AppLocalizations.of(context).blockLabel
+        : AppLocalizations.of(context).unblockLabel;
+    final actionColor = isActive
+        ? const Color(0xFFEF4444)
+        : const Color(0xFF22C55E);
 
     showDialog<void>(
       context: context,
@@ -949,15 +1042,16 @@ class _ActionsPopupMenu extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child:
-                  Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: TextStyle(color: tokens.fgMuted),
+              ),
             ),
             FilledButton(
               onPressed: () async {
                 Navigator.of(ctx).pop();
                 final api = ref.read(apiClientProvider);
-                await api
-                    .updateAdminUserStatus(userId, {'status': newStatus});
+                await api.updateAdminUserStatus(userId, {'status': newStatus});
                 ref.invalidate(_usersProvider);
               },
               style: FilledButton.styleFrom(
@@ -1001,8 +1095,10 @@ class _ActionsPopupMenu extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child:
-                  Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: TextStyle(color: tokens.fgMuted),
+              ),
             ),
             FilledButton(
               onPressed: () async {

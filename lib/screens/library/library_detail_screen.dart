@@ -32,29 +32,29 @@ class _TypeMeta {
   static _TypeMeta of(LibraryItemType type, AppLocalizations l10n) =>
       switch (type) {
         LibraryItemType.agent => _TypeMeta(
-            label: l10n.agents,
-            icon: Icons.smart_toy_rounded,
-            color: const Color(0xFFA78BFA),
-            listRoute: Routes.agents,
-          ),
+          label: l10n.agents,
+          icon: Icons.smart_toy_rounded,
+          color: const Color(0xFFA78BFA),
+          listRoute: Routes.agents,
+        ),
         LibraryItemType.skill => _TypeMeta(
-            label: l10n.skills,
-            icon: Icons.bolt_rounded,
-            color: const Color(0xFFF97316),
-            listRoute: Routes.skills,
-          ),
+          label: l10n.skills,
+          icon: Icons.bolt_rounded,
+          color: const Color(0xFFF97316),
+          listRoute: Routes.skills,
+        ),
         LibraryItemType.workflow => _TypeMeta(
-            label: l10n.workflows,
-            icon: Icons.account_tree_rounded,
-            color: const Color(0xFFEC4899),
-            listRoute: Routes.workflows,
-          ),
+          label: l10n.workflows,
+          icon: Icons.account_tree_rounded,
+          color: const Color(0xFFEC4899),
+          listRoute: Routes.workflows,
+        ),
         LibraryItemType.doc => _TypeMeta(
-            label: l10n.docs,
-            icon: Icons.description_rounded,
-            color: const Color(0xFF60A5FA),
-            listRoute: Routes.docs,
-          ),
+          label: l10n.docs,
+          icon: Icons.description_rounded,
+          color: const Color(0xFF60A5FA),
+          listRoute: Routes.docs,
+        ),
       };
 }
 
@@ -63,45 +63,48 @@ class _TypeMeta {
 /// Family provider that looks up a single library item by [itemType] and
 /// [itemId]. First tries the cached list, then fetches the full item from
 /// the API to ensure all fields (content, description, etc.) are present.
-final _libraryItemProvider = FutureProvider.family<Map<String, dynamic>?,
-    ({LibraryItemType type, String id})>((ref, params) async {
-  final api = ref.watch(apiClientProvider);
+final _libraryItemProvider =
+    FutureProvider.family<
+      Map<String, dynamic>?,
+      ({LibraryItemType type, String id})
+    >((ref, params) async {
+      final api = ref.watch(apiClientProvider);
 
-  // Try fetching the full item directly from the API first.
-  try {
-    final item = await switch (params.type) {
-      LibraryItemType.agent => api.getAgent(params.id),
-      LibraryItemType.skill => api.getSkill(params.id),
-      LibraryItemType.workflow => api.getWorkflow(params.id),
-      LibraryItemType.doc => api.getDoc(params.id),
-    };
-    return item;
-  } catch (_) {
-    // API fetch failed — fall back to list provider lookup.
-  }
-
-  final listProvider = switch (params.type) {
-    LibraryItemType.agent => agentsProvider,
-    LibraryItemType.skill => skillsProvider,
-    LibraryItemType.workflow => workflowsProvider,
-    LibraryItemType.doc => docsProvider,
-  };
-  final items = await ref.watch(listProvider.future);
-  if (items == null) return null;
-  try {
-    return items.firstWhere((item) => item['id'] == params.id);
-  } catch (_) {
-    try {
-      return items.firstWhere((item) => item['name'] == params.id);
-    } catch (_) {
+      // Try fetching the full item directly from the API first.
       try {
-        return items.firstWhere((item) => item['title'] == params.id);
+        final item = await switch (params.type) {
+          LibraryItemType.agent => api.getAgent(params.id),
+          LibraryItemType.skill => api.getSkill(params.id),
+          LibraryItemType.workflow => api.getWorkflow(params.id),
+          LibraryItemType.doc => api.getDoc(params.id),
+        };
+        return item;
       } catch (_) {
-        return null;
+        // API fetch failed — fall back to list provider lookup.
       }
-    }
-  }
-});
+
+      final listProvider = switch (params.type) {
+        LibraryItemType.agent => agentsProvider,
+        LibraryItemType.skill => skillsProvider,
+        LibraryItemType.workflow => workflowsProvider,
+        LibraryItemType.doc => docsProvider,
+      };
+      final items = await ref.watch(listProvider.future);
+      if (items == null) return null;
+      try {
+        return items.firstWhere((item) => item['id'] == params.id);
+      } catch (_) {
+        try {
+          return items.firstWhere((item) => item['name'] == params.id);
+        } catch (_) {
+          try {
+            return items.firstWhere((item) => item['title'] == params.id);
+          } catch (_) {
+            return null;
+          }
+        }
+      }
+    });
 
 // -- Screen -------------------------------------------------------------------
 
@@ -138,9 +141,8 @@ class _LibraryDetailScreenState extends ConsumerState<LibraryDetailScreen> {
       backgroundColor: tokens.bg,
       body: SafeArea(
         child: asyncItem.when(
-          loading: () => Center(
-            child: CircularProgressIndicator(color: tokens.accent),
-          ),
+          loading: () =>
+              Center(child: CircularProgressIndicator(color: tokens.accent)),
           error: (e, _) => _ErrorState(tokens: tokens, meta: meta),
           data: (item) {
             if (item == null) {
@@ -189,7 +191,8 @@ class _DetailContent extends StatelessWidget {
     switch (itemType) {
       case LibraryItemType.agent:
         // Desktop MCP returns 'system_prompt', PowerSync has 'content'.
-        final body = (item['system_prompt'] as String?) ??
+        final body =
+            (item['system_prompt'] as String?) ??
             (item['systemPrompt'] as String?) ??
             (item['content'] as String?);
         if (body != null && body.isNotEmpty) {
@@ -217,8 +220,12 @@ class _DetailContent extends StatelessWidget {
           for (final entry in states.entries) {
             final s = entry.value;
             final label = s is Map ? (s['label'] ?? entry.key) : entry.key;
-            final terminal = s is Map ? (s['terminal'] == true ? 'yes' : 'no') : 'no';
-            final activeWork = s is Map ? (s['active_work'] == true ? 'yes' : 'no') : 'no';
+            final terminal = s is Map
+                ? (s['terminal'] == true ? 'yes' : 'no')
+                : 'no';
+            final activeWork = s is Map
+                ? (s['active_work'] == true ? 'yes' : 'no')
+                : 'no';
             sb.writeln('| ${entry.key} | $label | $terminal | $activeWork |');
           }
           parts.add(sb.toString());
@@ -232,7 +239,9 @@ class _DetailContent extends StatelessWidget {
           sb.writeln('|---|---|---|');
           for (final t in transitions) {
             if (t is Map) {
-              final gate = (t['gate'] as String?)?.isNotEmpty == true ? t['gate'] : '(free)';
+              final gate = (t['gate'] as String?)?.isNotEmpty == true
+                  ? t['gate']
+                  : '(free)';
               sb.writeln('| ${t['from'] ?? ''} | ${t['to'] ?? ''} | $gate |');
             }
           }
@@ -248,7 +257,9 @@ class _DetailContent extends StatelessWidget {
           for (final entry in gates.entries) {
             final g = entry.value;
             final label = g is Map ? (g['label'] ?? entry.key) : entry.key;
-            final reqSection = g is Map ? (g['required_section'] ?? '--') : '--';
+            final reqSection = g is Map
+                ? (g['required_section'] ?? '--')
+                : '--';
             sb.writeln('| ${entry.key} | $label | $reqSection |');
           }
           parts.add(sb.toString());
@@ -301,26 +312,14 @@ class _DetailContent extends StatelessWidget {
         final projectId = (item['project_id'] as String?) ?? '--';
         final initialState = (item['initial_state'] as String?) ?? 'todo';
         return [
-          _MetadataEntry(
-            label: l10n.projectLabel,
-            value: projectId,
-          ),
-          _MetadataEntry(
-            label: l10n.initialStateLabel,
-            value: initialState,
-          ),
-          _MetadataEntry(
-            label: l10n.statesLabel,
-            value: '$stateCount',
-          ),
+          _MetadataEntry(label: l10n.projectLabel, value: projectId),
+          _MetadataEntry(label: l10n.initialStateLabel, value: initialState),
+          _MetadataEntry(label: l10n.statesLabel, value: '$stateCount'),
           _MetadataEntry(
             label: l10n.transitionsLabel,
             value: '$transitionCount',
           ),
-          _MetadataEntry(
-            label: l10n.gatesLabel,
-            value: '$gateCount',
-          ),
+          _MetadataEntry(label: l10n.gatesLabel, value: '$gateCount'),
         ];
 
       case LibraryItemType.doc:
@@ -331,7 +330,8 @@ class _DetailContent extends StatelessWidget {
           ),
           _MetadataEntry(
             label: l10n.projectLabel,
-            value: (item['project_id'] as String?) ??
+            value:
+                (item['project_id'] as String?) ??
                 (item['projectId'] as String?) ??
                 '--',
           ),
@@ -379,10 +379,7 @@ class _DetailContent extends StatelessWidget {
                     const SizedBox(height: 12),
                     for (var i = 0; i < entries.length; i++) ...[
                       if (i > 0) const SizedBox(height: 8),
-                      _MetadataRow(
-                        entry: entries[i],
-                        tokens: tokens,
-                      ),
+                      _MetadataRow(entry: entries[i], tokens: tokens),
                     ],
                   ],
                 ),
@@ -398,8 +395,8 @@ class _DetailContent extends StatelessWidget {
                       itemType == LibraryItemType.agent
                           ? l10n.systemPromptLabel
                           : itemType == LibraryItemType.doc
-                              ? l10n.contentLabel
-                              : l10n.descriptionLabel,
+                          ? l10n.contentLabel
+                          : l10n.descriptionLabel,
                       style: TextStyle(
                         color: tokens.fgBright,
                         fontSize: 15,
@@ -407,9 +404,7 @@ class _DetailContent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    MarkdownRendererWidget(
-                      content: _markdownContent(l10n),
-                    ),
+                    MarkdownRendererWidget(content: _markdownContent(l10n)),
                   ],
                 ),
               ),
@@ -440,11 +435,11 @@ class _Header extends ConsumerWidget {
   final _TypeMeta meta;
 
   String get _editRoute => switch (itemType) {
-        LibraryItemType.agent => '/library/agents/$itemId/edit',
-        LibraryItemType.skill => '/library/skills/$itemId/edit',
-        LibraryItemType.workflow => '/library/workflows/$itemId/edit',
-        LibraryItemType.doc => '/library/docs/$itemId/edit',
-      };
+    LibraryItemType.agent => '/library/agents/$itemId/edit',
+    LibraryItemType.skill => '/library/skills/$itemId/edit',
+    LibraryItemType.workflow => '/library/workflows/$itemId/edit',
+    LibraryItemType.doc => '/library/docs/$itemId/edit',
+  };
 
   Future<void> _delete(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context);
@@ -454,10 +449,16 @@ class _Header extends ConsumerWidget {
         title: Text(l10n.deleteItemTitle(meta.label)),
         content: Text(l10n.deleteItemMessage(title)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text(l10n.delete, style: const TextStyle(color: Color(0xFFEF4444))),
+            child: Text(
+              l10n.delete,
+              style: const TextStyle(color: Color(0xFFEF4444)),
+            ),
           ),
         ],
       ),
@@ -487,7 +488,9 @@ class _Header extends ConsumerWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToDelete}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToDelete}: $e'),
+          ),
         );
       }
     }
@@ -538,7 +541,11 @@ class _Header extends ConsumerWidget {
           const SizedBox(width: 12),
           GestureDetector(
             onTap: () => _delete(context, ref),
-            child: const Icon(Icons.delete_outline_rounded, color: Color(0xFFEF4444), size: 20),
+            child: const Icon(
+              Icons.delete_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 20,
+            ),
           ),
         ],
       ),
@@ -644,8 +651,7 @@ class _ErrorState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 48, color: tokens.fgDim),
+              Icon(Icons.error_outline_rounded, size: 48, color: tokens.fgDim),
               const SizedBox(height: 16),
               Text(
                 l10n.failedToLoadItem(meta.label),

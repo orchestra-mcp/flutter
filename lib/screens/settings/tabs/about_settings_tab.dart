@@ -249,8 +249,7 @@ class _AboutSettingsTabState extends ConsumerState<AboutSettingsTab> {
                 value: updateState.downloadProgress,
                 minHeight: 4,
                 backgroundColor: tokens.border,
-                valueColor:
-                    const AlwaysStoppedAnimation(Color(0xFF8B5CF6)),
+                valueColor: const AlwaysStoppedAnimation(Color(0xFF8B5CF6)),
               ),
             ),
           ],
@@ -275,11 +274,17 @@ class _AboutSettingsTabState extends ConsumerState<AboutSettingsTab> {
       case UpdateStatus.checking:
         return l10n.aboutSettingsCheckingForUpdates;
       case UpdateStatus.available:
-        return l10n.aboutSettingsVersionAvailable(state.info?.latestVersion ?? '');
+        return l10n.aboutSettingsVersionAvailable(
+          state.info?.latestVersion ?? '',
+        );
       case UpdateStatus.downloading:
-        return l10n.aboutSettingsDownloadingVersion(state.info?.latestVersion ?? '');
+        return l10n.aboutSettingsDownloadingVersion(
+          state.info?.latestVersion ?? '',
+        );
       case UpdateStatus.readyToInstall:
-        return l10n.aboutSettingsReadyToInstall(state.info?.latestVersion ?? '');
+        return l10n.aboutSettingsReadyToInstall(
+          state.info?.latestVersion ?? '',
+        );
       case UpdateStatus.error:
         return l10n.aboutSettingsUpdateCheckFailed;
     }
@@ -336,7 +341,10 @@ class _AboutSettingsTabState extends ConsumerState<AboutSettingsTab> {
     );
   }
 
-  Widget _buildIssueHistory(OrchestraColorTokens tokens, AppLocalizations l10n) {
+  Widget _buildIssueHistory(
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n,
+  ) {
     const issues = [
       _IssueEntry(
         title: 'Theme not persisting on restart',
@@ -429,13 +437,13 @@ class _AboutSettingsTabState extends ConsumerState<AboutSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 }
 
 // ── Issue entry model ───────────────────────────────────────────────────────
@@ -467,8 +475,9 @@ class _IssueRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isOpen = issue.status == 'Open';
-    final statusColor =
-        isOpen ? const Color(0xFFF59E0B) : const Color(0xFF22C55E);
+    final statusColor = isOpen
+        ? const Color(0xFFF59E0B)
+        : const Color(0xFF22C55E);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),

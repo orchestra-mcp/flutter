@@ -17,28 +17,29 @@ class IntegrationsSettingsTab extends ConsumerStatefulWidget {
 class _IntegrationsSettingsTabState
     extends ConsumerState<IntegrationsSettingsTab> {
   /// Known provider metadata for icons and descriptions.
-  static const _providerMeta = <String, ({IconData icon, Color color, String description})>{
-    'google': (
-      icon: Icons.g_mobiledata_rounded,
-      color: Color(0xFF4285F4),
-      description: 'Sign in with Google and sync calendars.',
-    ),
-    'github': (
-      icon: Icons.code_rounded,
-      color: Color(0xFF6E5494),
-      description: 'Link repositories and track commits.',
-    ),
-    'discord': (
-      icon: Icons.headset_mic_rounded,
-      color: Color(0xFF5865F2),
-      description: 'Receive notifications in Discord channels.',
-    ),
-    'slack': (
-      icon: Icons.tag_rounded,
-      color: Color(0xFFE01E5A),
-      description: 'Post updates and alerts to Slack.',
-    ),
-  };
+  static const _providerMeta =
+      <String, ({IconData icon, Color color, String description})>{
+        'google': (
+          icon: Icons.g_mobiledata_rounded,
+          color: Color(0xFF4285F4),
+          description: 'Sign in with Google and sync calendars.',
+        ),
+        'github': (
+          icon: Icons.code_rounded,
+          color: Color(0xFF6E5494),
+          description: 'Link repositories and track commits.',
+        ),
+        'discord': (
+          icon: Icons.headset_mic_rounded,
+          color: Color(0xFF5865F2),
+          description: 'Receive notifications in Discord channels.',
+        ),
+        'slack': (
+          icon: Icons.tag_rounded,
+          color: Color(0xFFE01E5A),
+          description: 'Post updates and alerts to Slack.',
+        ),
+      };
 
   Future<void> _unlinkAccount(String provider) async {
     try {
@@ -46,13 +47,21 @@ class _IntegrationsSettingsTabState
       ref.invalidate(connectedAccountsProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('$provider ${AppLocalizations.of(context).disconnect}ed')),
+          SnackBar(
+            content: Text(
+              '$provider ${AppLocalizations.of(context).disconnect}ed',
+            ),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToDisconnect} $provider: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToDisconnect} $provider: $e',
+            ),
+          ),
         );
       }
     }
@@ -71,8 +80,7 @@ class _IntegrationsSettingsTabState
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 40, color: tokens.fgDim),
+              Icon(Icons.error_outline_rounded, size: 40, color: tokens.fgDim),
               const SizedBox(height: 12),
               Text(
                 'Failed to load integrations',
@@ -86,8 +94,7 @@ class _IntegrationsSettingsTabState
               ),
               const SizedBox(height: 16),
               TextButton(
-                onPressed: () =>
-                    ref.invalidate(connectedAccountsProvider),
+                onPressed: () => ref.invalidate(connectedAccountsProvider),
                 child: Text(AppLocalizations.of(context).retry),
               ),
             ],
@@ -127,22 +134,25 @@ class _IntegrationsSettingsTabState
   }
 
   Widget _buildIntegrationCard(
-      OrchestraColorTokens tokens, Map<String, dynamic> account) {
-    final provider =
-        (account['provider'] ?? '').toString().toLowerCase();
-    final name = (account['name'] ??
-            account['provider_name'] ??
-            provider[0].toUpperCase() + provider.substring(1))
-        .toString();
-    final connected = account['connected'] == true ||
-        account['status'] == 'connected';
+    OrchestraColorTokens tokens,
+    Map<String, dynamic> account,
+  ) {
+    final provider = (account['provider'] ?? '').toString().toLowerCase();
+    final name =
+        (account['name'] ??
+                account['provider_name'] ??
+                provider[0].toUpperCase() + provider.substring(1))
+            .toString();
+    final connected =
+        account['connected'] == true || account['status'] == 'connected';
     final meta = _providerMeta[provider];
     final iconData = meta?.icon ?? Icons.extension_rounded;
     final iconColor = meta?.color ?? tokens.accent;
-    final description = (account['description'] ??
-            meta?.description ??
-            'Third-party integration.')
-        .toString();
+    final description =
+        (account['description'] ??
+                meta?.description ??
+                'Third-party integration.')
+            .toString();
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -184,10 +194,13 @@ class _IntegrationsSettingsTabState
                     if (connected)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF22C55E)
-                              .withValues(alpha: 0.15),
+                          color: const Color(
+                            0xFF22C55E,
+                          ).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
@@ -222,16 +235,21 @@ class _IntegrationsSettingsTabState
                 foregroundColor: const Color(0xFFEF4444),
                 side: const BorderSide(color: Color(0xFFEF4444)),
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 8),
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               child: Text(
                 AppLocalizations.of(context).disconnect,
-                style:
-                    const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             )
           else
@@ -243,16 +261,21 @@ class _IntegrationsSettingsTabState
                 backgroundColor: tokens.accent,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 8),
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
               child: Text(
                 AppLocalizations.of(context).connect,
-                style:
-                    const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
         ],
@@ -261,11 +284,11 @@ class _IntegrationsSettingsTabState
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 }

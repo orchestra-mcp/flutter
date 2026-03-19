@@ -14,8 +14,7 @@ class AuthCallbackScreen extends ConsumerStatefulWidget {
   final String? error;
 
   @override
-  ConsumerState<AuthCallbackScreen> createState() =>
-      _AuthCallbackScreenState();
+  ConsumerState<AuthCallbackScreen> createState() => _AuthCallbackScreenState();
 }
 
 class _AuthCallbackScreenState extends ConsumerState<AuthCallbackScreen> {
@@ -90,8 +89,11 @@ class _AuthCallbackScreenState extends ConsumerState<AuthCallbackScreen> {
                 : Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.error_outline_rounded,
-                          size: 48, color: Colors.redAccent),
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        size: 48,
+                        color: Colors.redAccent,
+                      ),
                       const SizedBox(height: 16),
                       Text(
                         _error ?? 'Authentication failed',
@@ -103,8 +105,9 @@ class _AuthCallbackScreenState extends ConsumerState<AuthCallbackScreen> {
                         onPressed: () => context.go('/login'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: tokens.accent,
-                          foregroundColor:
-                              tokens.isLight ? Colors.white : Colors.black,
+                          foregroundColor: tokens.isLight
+                              ? Colors.white
+                              : Colors.black,
                         ),
                         child: Text(l10n.backToSignIn),
                       ),

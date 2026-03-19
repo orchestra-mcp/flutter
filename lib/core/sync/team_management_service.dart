@@ -26,7 +26,9 @@ class TeamManagementService {
 
   /// Fetches teams the current user belongs to. Uses a 5-minute cache.
   Future<List<Team>> getTeams({bool forceRefresh = false}) async {
-    if (!forceRefresh && _isCacheValid(_teamsCacheTime) && _teamsCache != null) {
+    if (!forceRefresh &&
+        _isCacheValid(_teamsCacheTime) &&
+        _teamsCache != null) {
       return _teamsCache!;
     }
     final teams = await apiClient.getTeams();
@@ -71,11 +73,7 @@ class TeamManagementService {
   Future<List<TeamShare>> getEntityShares({
     required String entityType,
     required String entityId,
-  }) =>
-      apiClient.getEntityShares(
-        entityType: entityType,
-        entityId: entityId,
-      );
+  }) => apiClient.getEntityShares(entityType: entityType, entityId: entityId);
 
   /// Revokes a specific share.
   Future<void> revokeShare(String shareId) => apiClient.revokeShare(shareId);
@@ -87,22 +85,22 @@ class TeamManagementService {
   ///
   /// Returns an empty [TeamSelectorData] on network/auth errors so the
   /// dialog shows "No teams found" instead of spinning forever.
-  Future<TeamSelectorData> loadSelectorData({
-    bool forceRefresh = false,
-  }) async {
+  Future<TeamSelectorData> loadSelectorData({bool forceRefresh = false}) async {
     List<Team> teams;
     try {
-      teams = await getTeams(forceRefresh: forceRefresh)
-          .timeout(const Duration(seconds: 8));
+      teams = await getTeams(
+        forceRefresh: forceRefresh,
+      ).timeout(const Duration(seconds: 8));
     } catch (_) {
       return const TeamSelectorData(teams: [], membersByTeamId: {});
     }
     final membersMap = <String, List<TeamMember>>{};
     for (final team in teams) {
       try {
-        membersMap[team.id] = await getTeamMembers(team.id,
-                forceRefresh: forceRefresh)
-            .timeout(const Duration(seconds: 8));
+        membersMap[team.id] = await getTeamMembers(
+          team.id,
+          forceRefresh: forceRefresh,
+        ).timeout(const Duration(seconds: 8));
       } catch (_) {
         membersMap[team.id] = const [];
       }
@@ -113,10 +111,7 @@ class TeamManagementService {
 
 /// Pre-fetched data for the team selector dialog.
 class TeamSelectorData {
-  const TeamSelectorData({
-    required this.teams,
-    required this.membersByTeamId,
-  });
+  const TeamSelectorData({required this.teams, required this.membersByTeamId});
 
   /// All teams the user belongs to.
   final List<Team> teams;

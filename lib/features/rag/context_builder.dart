@@ -62,8 +62,10 @@ class ContextBuilder {
   ///
   /// Useful when you specifically want feature context (e.g., for status
   /// updates, code reviews, or sprint planning prompts).
-  Future<String> getRelevantFeatures(String query,
-      {int maxTokens = 1500}) async {
+  Future<String> getRelevantFeatures(
+    String query, {
+    int maxTokens = 1500,
+  }) async {
     if (query.trim().isEmpty) return '';
 
     final maxChars = maxTokens * _charsPerToken;
@@ -111,8 +113,7 @@ class ContextBuilder {
   ///
   /// Useful for providing documentation or knowledge-base context to
   /// AI prompts.
-  Future<String> getRelevantNotes(String query,
-      {int maxTokens = 1500}) async {
+  Future<String> getRelevantNotes(String query, {int maxTokens = 1500}) async {
     if (query.trim().isEmpty) return '';
 
     final maxChars = maxTokens * _charsPerToken;
@@ -132,8 +133,10 @@ class ContextBuilder {
       section.writeln('### ${n.title}');
       if (n.content.isNotEmpty) {
         // Truncate content to avoid blowing the budget on one note.
-        final contentPreview =
-            n.content.substring(0, min(800, n.content.length));
+        final contentPreview = n.content.substring(
+          0,
+          min(800, n.content.length),
+        );
         section.writeln(contentPreview);
       }
       if (n.tags != '[]') {

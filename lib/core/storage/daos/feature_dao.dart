@@ -14,43 +14,37 @@ class FeatureDao {
 
   /// Returns all features ordered by most recently updated first.
   Future<List<LocalFeature>> listAll() {
-    return (_db.select(_db.localFeatures)
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
-        .get();
+    return (_db.select(
+      _db.localFeatures,
+    )..orderBy([(t) => OrderingTerm.desc(t.updatedAt)])).get();
   }
 
   /// Watch all features as a reactive stream.
   Stream<List<LocalFeature>> watchAll() {
-    return (_db.select(_db.localFeatures)
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
-        .watch();
+    return (_db.select(
+      _db.localFeatures,
+    )..orderBy([(t) => OrderingTerm.desc(t.updatedAt)])).watch();
   }
 
   /// Returns a single feature by [id], or `null` if not found.
   Future<LocalFeature?> getById(String id) {
-    return (_db.select(_db.localFeatures)
-          ..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (_db.select(
+      _db.localFeatures,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   /// Watch a single feature by [id].
   Stream<LocalFeature?> watchById(String id) {
-    return (_db.select(_db.localFeatures)
-          ..where((t) => t.id.equals(id)))
-        .watchSingleOrNull();
+    return (_db.select(
+      _db.localFeatures,
+    )..where((t) => t.id.equals(id))).watchSingleOrNull();
   }
 
   /// Returns all features belonging to [projectId].
   Future<List<LocalFeature>> listByProject(String projectId) {
     return (_db.select(_db.localFeatures)
           ..where((t) => t.projectId.equals(projectId))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .get();
   }
 
@@ -58,9 +52,7 @@ class FeatureDao {
   Stream<List<LocalFeature>> watchByProject(String projectId) {
     return (_db.select(_db.localFeatures)
           ..where((t) => t.projectId.equals(projectId))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .watch();
   }
 
@@ -68,9 +60,7 @@ class FeatureDao {
   Future<List<LocalFeature>> listByStatus(String status) {
     return (_db.select(_db.localFeatures)
           ..where((t) => t.status.equals(status))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .get();
   }
 
@@ -78,9 +68,7 @@ class FeatureDao {
   Future<List<LocalFeature>> listByKind(String kind) {
     return (_db.select(_db.localFeatures)
           ..where((t) => t.kind.equals(kind))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .get();
   }
 
@@ -89,9 +77,7 @@ class FeatureDao {
   Future<List<LocalFeature>> listByLabel(String label) {
     return (_db.select(_db.localFeatures)
           ..where((t) => t.labels.like('%"$label"%'))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .get();
   }
 
@@ -102,13 +88,14 @@ class FeatureDao {
     final ftsResults = await _db.searchFeatures(query);
     if (ftsResults.isEmpty) return [];
     final ids = ftsResults.map((r) => r.id).toList();
-    final features = await (_db.select(_db.localFeatures)
-          ..where((t) => t.id.isIn(ids)))
-        .get();
+    final features = await (_db.select(
+      _db.localFeatures,
+    )..where((t) => t.id.isIn(ids))).get();
     // Preserve FTS ranking order.
     final idOrder = {for (var i = 0; i < ids.length; i++) ids[i]: i};
     features.sort(
-        (a, b) => (idOrder[a.id] ?? 999).compareTo(idOrder[b.id] ?? 999));
+      (a, b) => (idOrder[a.id] ?? 999).compareTo(idOrder[b.id] ?? 999),
+    );
     return features;
   }
 
@@ -159,8 +146,9 @@ class FeatureDao {
 
   /// Updates an existing feature by [id].
   Future<int> update(String id, LocalFeaturesCompanion companion) {
-    return (_db.update(_db.localFeatures)..where((t) => t.id.equals(id)))
-        .write(companion);
+    return (_db.update(
+      _db.localFeatures,
+    )..where((t) => t.id.equals(id))).write(companion);
   }
 
   /// Deletes a feature by [id]. Returns the number of deleted rows.
@@ -175,9 +163,9 @@ class FeatureDao {
 
   /// Returns features that have not been synced to the server.
   Future<List<LocalFeature>> listUnsynced() {
-    return (_db.select(_db.localFeatures)
-          ..where((t) => t.synced.equals(false)))
-        .get();
+    return (_db.select(
+      _db.localFeatures,
+    )..where((t) => t.synced.equals(false))).get();
   }
 
   /// Returns the feature count, optionally filtered by [projectId].

@@ -28,7 +28,11 @@ class _FileAccessScreenState extends ConsumerState<FileAccessScreen> {
       ref.read(startupGateProvider.notifier).recheck();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).fileAccessRequiredToContinue)),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context).fileAccessRequiredToContinue,
+          ),
+        ),
       );
     }
   }

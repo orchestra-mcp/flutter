@@ -59,22 +59,22 @@ class PinStoreNotifier extends Notifier<Set<String>> {
 }
 
 /// One provider per entity type.
-final agentsPinProvider =
-    NotifierProvider<PinStoreNotifier, Set<String>>(
-        () => PinStoreNotifier('pinned_agents'));
+final agentsPinProvider = NotifierProvider<PinStoreNotifier, Set<String>>(
+  () => PinStoreNotifier('pinned_agents'),
+);
 
-final skillsPinProvider =
-    NotifierProvider<PinStoreNotifier, Set<String>>(
-        () => PinStoreNotifier('pinned_skills'));
+final skillsPinProvider = NotifierProvider<PinStoreNotifier, Set<String>>(
+  () => PinStoreNotifier('pinned_skills'),
+);
 
-final workflowsPinProvider =
-    NotifierProvider<PinStoreNotifier, Set<String>>(
-        () => PinStoreNotifier('pinned_workflows'));
+final workflowsPinProvider = NotifierProvider<PinStoreNotifier, Set<String>>(
+  () => PinStoreNotifier('pinned_workflows'),
+);
 
-final docsPinProvider =
-    NotifierProvider<PinStoreNotifier, Set<String>>(
-        () => PinStoreNotifier('pinned_docs'));
+final docsPinProvider = NotifierProvider<PinStoreNotifier, Set<String>>(
+  () => PinStoreNotifier('pinned_docs'),
+);
 
-final delegationsPinProvider =
-    NotifierProvider<PinStoreNotifier, Set<String>>(
-        () => PinStoreNotifier('pinned_delegations'));
+final delegationsPinProvider = NotifierProvider<PinStoreNotifier, Set<String>>(
+  () => PinStoreNotifier('pinned_delegations'),
+);

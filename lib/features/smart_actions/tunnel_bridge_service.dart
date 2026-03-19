@@ -32,10 +32,7 @@ class TunnelBridgeService {
 
   /// Connects to the desktop's MCP server automatically.
   /// Tries local WiFi first, falls back to cloud tunnel.
-  Future<bool> autoConnect({
-    String? tunnelId,
-    String? authToken,
-  }) async {
+  Future<bool> autoConnect({String? tunnelId, String? authToken}) async {
     if (_connected) return true;
 
     // Step 1: Try local WiFi.
@@ -61,10 +58,12 @@ class TunnelBridgeService {
       }
     }
 
-    _messageController.add(const BridgeMessage(
-      type: BridgeMessageType.system,
-      payload: 'Failed to connect — no local or tunnel connection available',
-    ));
+    _messageController.add(
+      const BridgeMessage(
+        type: BridgeMessageType.system,
+        payload: 'Failed to connect — no local or tunnel connection available',
+      ),
+    );
     return false;
   }
 
@@ -79,18 +78,22 @@ class TunnelBridgeService {
       _socketSub = _channel!.stream.listen(
         _onData,
         onError: (Object e) {
-          _messageController.add(BridgeMessage(
-            type: BridgeMessageType.system,
-            payload: 'Connection error: $e',
-          ));
+          _messageController.add(
+            BridgeMessage(
+              type: BridgeMessageType.system,
+              payload: 'Connection error: $e',
+            ),
+          );
           _connected = false;
         },
         onDone: () {
           _connected = false;
-          _messageController.add(const BridgeMessage(
-            type: BridgeMessageType.system,
-            payload: 'Disconnected from bridge',
-          ));
+          _messageController.add(
+            const BridgeMessage(
+              type: BridgeMessageType.system,
+              payload: 'Disconnected from bridge',
+            ),
+          );
         },
       );
 
@@ -101,10 +104,12 @@ class TunnelBridgeService {
         'clientInfo': {'name': 'orchestra-mobile-bridge', 'version': '1.0.0'},
       });
 
-      _messageController.add(BridgeMessage(
-        type: BridgeMessageType.system,
-        payload: 'Connected ($_connectionMode)',
-      ));
+      _messageController.add(
+        BridgeMessage(
+          type: BridgeMessageType.system,
+          payload: 'Connected ($_connectionMode)',
+        ),
+      );
 
       return true;
     } catch (e) {
@@ -136,10 +141,9 @@ class TunnelBridgeService {
       throw StateError('Bridge not connected. Call autoConnect() first.');
     }
 
-    _messageController.add(BridgeMessage(
-      type: BridgeMessageType.request,
-      payload: prompt,
-    ));
+    _messageController.add(
+      BridgeMessage(type: BridgeMessageType.request, payload: prompt),
+    );
 
     try {
       final result = await _callTool('ai_prompt', {
@@ -166,7 +170,9 @@ class TunnelBridgeService {
 
   /// Calls any MCP tool through the bridge.
   Future<Map<String, dynamic>> callTool(
-      String name, Map<String, dynamic> arguments) async {
+    String name,
+    Map<String, dynamic> arguments,
+  ) async {
     if (!_connected) {
       throw StateError('Bridge not connected. Call autoConnect() first.');
     }
@@ -185,8 +191,11 @@ class TunnelBridgeService {
 
   Future<bool> _canReach(String host, int port) async {
     try {
-      final socket = await Socket.connect(host, port,
-          timeout: const Duration(seconds: 2));
+      final socket = await Socket.connect(
+        host,
+        port,
+        timeout: const Duration(seconds: 2),
+      );
       socket.destroy();
       return true;
     } catch (_) {
@@ -200,9 +209,8 @@ class TunnelBridgeService {
       // Handle relay envelope (tunnel proxy wraps responses).
       final message = data.containsKey('message')
           ? (data['message'] is String
-              ? jsonDecode(data['message'] as String)
-                  as Map<String, dynamic>
-              : data['message'] as Map<String, dynamic>)
+                ? jsonDecode(data['message'] as String) as Map<String, dynamic>
+                : data['message'] as Map<String, dynamic>)
           : data;
 
       final id = message['id'];
@@ -233,17 +241,21 @@ class TunnelBridgeService {
   }
 
   Future<Map<String, dynamic>> _sendRpc(
-      String method, Map<String, dynamic> params) async {
+    String method,
+    Map<String, dynamic> params,
+  ) async {
     final id = ++_rpcId;
     final completer = Completer<Map<String, dynamic>>();
     _pendingRequests[id] = completer;
 
-    _channel?.sink.add(jsonEncode({
-      'jsonrpc': '2.0',
-      'id': id,
-      'method': method,
-      'params': params,
-    }));
+    _channel?.sink.add(
+      jsonEncode({
+        'jsonrpc': '2.0',
+        'id': id,
+        'method': method,
+        'params': params,
+      }),
+    );
 
     return completer.future.timeout(
       const Duration(seconds: 30),
@@ -255,7 +267,9 @@ class TunnelBridgeService {
   }
 
   Future<Map<String, dynamic>> _callTool(
-      String name, Map<String, dynamic> arguments) {
+    String name,
+    Map<String, dynamic> arguments,
+  ) {
     return _sendRpc('tools/call', {'name': name, 'arguments': arguments});
   }
 

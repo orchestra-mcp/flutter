@@ -100,7 +100,11 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToRevokeSession}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToRevokeSession}: $e',
+            ),
+          ),
         );
       }
     }
@@ -118,13 +122,19 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
       ref.invalidate(settingsSessionsProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).allSessionsRevoked)),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).allSessionsRevoked),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToRevokeSessions}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToRevokeSessions}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -145,8 +155,7 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 40, color: tokens.fgDim),
+              Icon(Icons.error_outline_rounded, size: 40, color: tokens.fgDim),
               const SizedBox(height: 12),
               Text(
                 'Failed to load sessions',
@@ -218,9 +227,7 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
-              onPressed: _revokingAll
-                  ? null
-                  : () => _revokeAllOthers(sessions),
+              onPressed: _revokingAll ? null : () => _revokeAllOthers(sessions),
               icon: _revokingAll
                   ? SizedBox(
                       width: 16,
@@ -230,8 +237,7 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
                         color: tokens.accent,
                       ),
                     )
-                  : Icon(Icons.logout_rounded,
-                      size: 16, color: tokens.accent),
+                  : Icon(Icons.logout_rounded, size: 16, color: tokens.accent),
               label: Text(
                 'Revoke All Other Sessions',
                 style: TextStyle(color: tokens.accent),
@@ -240,7 +246,8 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
                 side: BorderSide(color: tokens.accent),
                 padding: const EdgeInsets.symmetric(vertical: 13),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ),
@@ -250,7 +257,9 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
   }
 
   Widget _buildSessionRow(
-      OrchestraColorTokens tokens, Map<String, dynamic> session) {
+    OrchestraColorTokens tokens,
+    Map<String, dynamic> session,
+  ) {
     final isCurrent = session['is_current'] == true;
     final deviceName =
         (session['device'] ?? session['device_name'] ?? 'Unknown device')
@@ -260,7 +269,11 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
     final userAgent = (session['user_agent'] ?? '').toString();
     final ip = (session['ip'] ?? session['ip_address'] ?? '').toString();
     final lastActive =
-        (session['last_active'] ?? session['last_active_at'] ?? session['last_seen'] ?? '').toString();
+        (session['last_active'] ??
+                session['last_active_at'] ??
+                session['last_seen'] ??
+                '')
+            .toString();
     final tunnelActive = session['tunnel_active'] == true;
 
     // Build a friendly description from parsed fields or user-agent
@@ -284,8 +297,11 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
                   color: tokens.accent.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(_deviceIcon(deviceName),
-                    size: 18, color: tokens.accent),
+                child: Icon(
+                  _deviceIcon(deviceName),
+                  size: 18,
+                  color: tokens.accent,
+                ),
               ),
               Positioned(
                 right: -2,
@@ -329,10 +345,13 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF22C55E)
-                              .withValues(alpha: 0.15),
+                          color: const Color(
+                            0xFF22C55E,
+                          ).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: const Text(
@@ -352,9 +371,13 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
                   [
                     if (os.isNotEmpty) os,
                     if (browser.isNotEmpty) browser,
-                    if (uaParsed.isNotEmpty && os.isEmpty && browser.isEmpty) uaParsed,
+                    if (uaParsed.isNotEmpty && os.isEmpty && browser.isEmpty)
+                      uaParsed,
                     if (ip.isNotEmpty) ip else 'Unknown IP',
-                    if (relTime.isNotEmpty) relTime else if (lastActive.isNotEmpty) lastActive,
+                    if (relTime.isNotEmpty)
+                      relTime
+                    else if (lastActive.isNotEmpty)
+                      lastActive,
                   ].join(' · '),
                   style: TextStyle(fontSize: 11, color: tokens.fgDim),
                 ),
@@ -373,7 +396,10 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
                       const SizedBox(width: 4),
                       const Text(
                         'Tunnel connected',
-                        style: TextStyle(fontSize: 10, color: Color(0xFF22C55E)),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF22C55E),
+                        ),
                       ),
                     ],
                   ),
@@ -385,12 +411,13 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
           // Revoke button (not for current session)
           if (!isCurrent)
             TextButton(
-              onPressed: () =>
-                  _revokeSession(session['id'].toString()),
+              onPressed: () => _revokeSession(session['id'].toString()),
               style: TextButton.styleFrom(
                 foregroundColor: const Color(0xFFEF4444),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -405,11 +432,11 @@ class _SessionsSettingsTabState extends ConsumerState<SessionsSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 }

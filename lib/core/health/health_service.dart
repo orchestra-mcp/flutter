@@ -82,9 +82,7 @@ class HealthServiceImpl implements HealthService {
     if (kIsWeb) return [];
     if (Platform.isMacOS) {
       // macOS HealthKit supports a limited subset — exclude mobile-only types.
-      return _allTypes
-          .where((t) => !_mobileOnlyTypes.contains(t))
-          .toList();
+      return _allTypes.where((t) => !_mobileOnlyTypes.contains(t)).toList();
     }
     return _allTypes;
   }
@@ -177,8 +175,7 @@ class HealthServiceImpl implements HealthService {
       if (data.isEmpty) return null;
       var totalMinutes = 0.0;
       for (final point in data) {
-        totalMinutes +=
-            point.dateTo.difference(point.dateFrom).inMinutes;
+        totalMinutes += point.dateTo.difference(point.dateFrom).inMinutes;
       }
       return totalMinutes / 60.0;
     } catch (_) {
@@ -253,8 +250,7 @@ class HealthServiceImpl implements HealthService {
       );
       if (data.isEmpty) return null;
       final values = data
-          .map((d) =>
-              (d.value as NumericHealthValue).numericValue.toInt())
+          .map((d) => (d.value as NumericHealthValue).numericValue.toInt())
           .toList();
       values.sort();
       return (min: values.first, max: values.last);

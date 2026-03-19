@@ -21,16 +21,18 @@ class SelectionNotifier extends Notifier<Set<String>> {
   void selectAll(Iterable<String> ids) => state = ids.toSet();
 }
 
-final notesSelectionProvider =
-    NotifierProvider<SelectionNotifier, Set<String>>(SelectionNotifier.new);
+final notesSelectionProvider = NotifierProvider<SelectionNotifier, Set<String>>(
+  SelectionNotifier.new,
+);
 final agentsSelectionProvider =
     NotifierProvider<SelectionNotifier, Set<String>>(SelectionNotifier.new);
 final skillsSelectionProvider =
     NotifierProvider<SelectionNotifier, Set<String>>(SelectionNotifier.new);
 final workflowsSelectionProvider =
     NotifierProvider<SelectionNotifier, Set<String>>(SelectionNotifier.new);
-final docsSelectionProvider =
-    NotifierProvider<SelectionNotifier, Set<String>>(SelectionNotifier.new);
+final docsSelectionProvider = NotifierProvider<SelectionNotifier, Set<String>>(
+  SelectionNotifier.new,
+);
 final delegationsSelectionProvider =
     NotifierProvider<SelectionNotifier, Set<String>>(SelectionNotifier.new);
 final projectsSelectionProvider =

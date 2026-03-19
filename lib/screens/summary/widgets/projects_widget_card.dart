@@ -30,16 +30,19 @@ class ProjectsWidgetCard extends ConsumerWidget {
         loading: () => _body(tokens, l10n, total: null, active: null),
         error: (_, _) => _body(tokens, l10n, total: 0, active: 0),
         data: (projects) {
-          final active =
-              projects.where((p) => p['mode'] == 'active').length;
+          final active = projects.where((p) => p['mode'] == 'active').length;
           return _body(tokens, l10n, total: projects.length, active: active);
         },
       ),
     );
   }
 
-  Widget _body(OrchestraColorTokens tokens, AppLocalizations l10n,
-      {required int? total, required int? active}) {
+  Widget _body(
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n, {
+    required int? total,
+    required int? active,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -53,8 +56,7 @@ class ProjectsWidgetCard extends ConsumerWidget {
                 color: _color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(7),
               ),
-              child: const Icon(Icons.folder_rounded,
-                  color: _color, size: 16),
+              child: const Icon(Icons.folder_rounded, color: _color, size: 16),
             ),
             const SizedBox(width: 8),
             Text(

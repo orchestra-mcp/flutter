@@ -39,7 +39,15 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
     final data = ref.watch(healthProvider);
 
     // Placeholder step data for the 7-day sparkline.
-    const stepHistory = [6200.0, 8400.0, 5100.0, 9800.0, 7300.0, 10200.0, 8700.0];
+    const stepHistory = [
+      6200.0,
+      8400.0,
+      5100.0,
+      9800.0,
+      7300.0,
+      10200.0,
+      8700.0,
+    ];
     final stepsToday = data.todaySteps;
 
     return SingleChildScrollView(
@@ -98,7 +106,9 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                           dotData: const FlDotData(show: false),
                           belowBarData: BarAreaData(
                             show: true,
-                            color: const Color(0xFF4CAF50).withValues(alpha: 0.12),
+                            color: const Color(
+                              0xFF4CAF50,
+                            ).withValues(alpha: 0.12),
                           ),
                         ),
                       ],
@@ -127,7 +137,11 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Icon(Icons.trending_up, color: const Color(0xFF4CAF50), size: 20),
+                Icon(
+                  Icons.trending_up,
+                  color: const Color(0xFF4CAF50),
+                  size: 20,
+                ),
                 Text(
                   '+120 vs yesterday',
                   style: TextStyle(color: tokens.fgMuted, fontSize: 12),
@@ -157,10 +171,14 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l10n.vitalsMin(58),
-                        style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
-                    Text(l10n.vitalsMax(104),
-                        style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
+                    Text(
+                      l10n.vitalsMin(58),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 11),
+                    ),
+                    Text(
+                      l10n.vitalsMax(104),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 11),
+                    ),
                   ],
                 ),
               ],
@@ -179,13 +197,15 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
           ),
           const SizedBox(height: 12),
           _ZeppInput(
-              label: l10n.weightKg,
-              controller: _weightCtrl,
-              tokens: tokens),
+            label: l10n.weightKg,
+            controller: _weightCtrl,
+            tokens: tokens,
+          ),
           _ZeppInput(
-              label: l10n.bodyFatPercent,
-              controller: _bodyFatCtrl,
-              tokens: tokens),
+            label: l10n.bodyFatPercent,
+            controller: _bodyFatCtrl,
+            tokens: tokens,
+          ),
           _ZeppInputColored(
             label: l10n.metabolicAge,
             hint: l10n.vitalsMetabolicTarget,
@@ -194,13 +214,15 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
             targetBelow: 35,
           ),
           _ZeppInput(
-              label: l10n.visceralFatRange,
-              controller: _visceralCtrl,
-              tokens: tokens),
+            label: l10n.visceralFatRange,
+            controller: _visceralCtrl,
+            tokens: tokens,
+          ),
           _ZeppInput(
-              label: l10n.bodyWaterPercent,
-              controller: _bodyWaterCtrl,
-              tokens: tokens),
+            label: l10n.bodyWaterPercent,
+            controller: _bodyWaterCtrl,
+            tokens: tokens,
+          ),
         ],
       ),
     );
@@ -280,8 +302,10 @@ class _ZeppInput extends StatelessWidget {
         children: [
           SizedBox(
             width: 160,
-            child: Text(label,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+            child: Text(
+              label,
+              style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+            ),
           ),
           Expanded(
             child: TextField(
@@ -290,8 +314,10 @@ class _ZeppInput extends StatelessWidget {
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
               decoration: InputDecoration(
                 isDense: true,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
                 filled: true,
                 fillColor: tokens.bg,
                 border: OutlineInputBorder(
@@ -350,12 +376,14 @@ class _ZeppInputColoredState extends State<_ZeppInputColored> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.label,
-                    style:
-                        TextStyle(color: widget.tokens.fgMuted, fontSize: 13)),
-                Text(widget.hint,
-                    style:
-                        TextStyle(color: widget.tokens.fgMuted, fontSize: 10)),
+                Text(
+                  widget.label,
+                  style: TextStyle(color: widget.tokens.fgMuted, fontSize: 13),
+                ),
+                Text(
+                  widget.hint,
+                  style: TextStyle(color: widget.tokens.fgMuted, fontSize: 10),
+                ),
               ],
             ),
           ),
@@ -365,12 +393,13 @@ class _ZeppInputColoredState extends State<_ZeppInputColored> {
               builder: (_, v, __) => TextField(
                 controller: widget.controller,
                 keyboardType: TextInputType.number,
-                style: TextStyle(
-                    color: _valueColor(v.text), fontSize: 13),
+                style: TextStyle(color: _valueColor(v.text), fontSize: 13),
                 decoration: InputDecoration(
                   isDense: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 8,
+                  ),
                   filled: true,
                   fillColor: widget.tokens.bg,
                   border: OutlineInputBorder(

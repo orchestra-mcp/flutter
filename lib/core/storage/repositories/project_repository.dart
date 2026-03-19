@@ -52,20 +52,20 @@ class Project {
 class ProjectRepository {
   /// PowerSync-backed constructor (mobile/web).
   ProjectRepository({required PowerSyncDatabase db})
-      : _db = db,
-        _dao = null,
-        _client = null,
-        _localDb = null;
+    : _db = db,
+      _dao = null,
+      _client = null,
+      _localDb = null;
 
   /// Drift + MCP-backed constructor (desktop).
   ProjectRepository.fromDrift({
     required ProjectDao dao,
     required ApiClient client,
     required LocalDatabase db,
-  })  : _db = null,
-        _dao = dao,
-        _client = client,
-        _localDb = db;
+  }) : _db = null,
+       _dao = dao,
+       _client = client,
+       _localDb = db;
 
   final PowerSyncDatabase? _db;
   final ProjectDao? _dao;
@@ -100,10 +100,9 @@ class ProjectRepository {
 
   Future<Project?> getById(String id) async {
     if (_usePowerSync) {
-      final rows = await _db!.getAll(
-        'SELECT * FROM projects WHERE id = ?',
-        [id],
-      );
+      final rows = await _db!.getAll('SELECT * FROM projects WHERE id = ?', [
+        id,
+      ]);
       if (rows.isEmpty) return null;
       return Project.fromRow(rows.first);
     }
@@ -113,10 +112,9 @@ class ProjectRepository {
 
   Stream<Project?> watchById(String id) {
     if (_usePowerSync) {
-      return _db!.watch(
-        'SELECT * FROM projects WHERE id = ?',
-        parameters: [id],
-      ).map((rows) => rows.isEmpty ? null : Project.fromRow(rows.first));
+      return _db!
+          .watch('SELECT * FROM projects WHERE id = ?', parameters: [id])
+          .map((rows) => rows.isEmpty ? null : Project.fromRow(rows.first));
     }
     return Stream.fromFuture(getById(id)).asBroadcastStream();
   }
@@ -133,9 +131,13 @@ class ProjectRepository {
     }
     final all = await listAll();
     final q = query.trim().toLowerCase();
-    return all.where((p) =>
-        p.name.toLowerCase().contains(q) ||
-        (p.description?.toLowerCase().contains(q) ?? false)).toList();
+    return all
+        .where(
+          (p) =>
+              p.name.toLowerCase().contains(q) ||
+              (p.description?.toLowerCase().contains(q) ?? false),
+        )
+        .toList();
   }
 
   // ── Write ─────────────────────────────────────────────────────────────────
@@ -158,9 +160,16 @@ class ProjectRepository {
         'VALUES(?, ?, ?, ?, ?, ?, ?, ?)',
         [projectId, userId, name, description, mode, stacksJson, now, now],
       );
-      return Project(id: projectId, userId: userId, name: name,
-          description: description, mode: mode, stacks: stacksJson,
-          createdAt: now, updatedAt: now);
+      return Project(
+        id: projectId,
+        userId: userId,
+        name: name,
+        description: description,
+        mode: mode,
+        stacks: stacksJson,
+        createdAt: now,
+        updatedAt: now,
+      );
     }
 
     final data = await _client!.createProject({
@@ -182,15 +191,30 @@ class ProjectRepository {
     if (_usePowerSync) {
       final sets = <String>[];
       final params = <dynamic>[];
-      if (name != null) { sets.add('name = ?'); params.add(name); }
-      if (description != null) { sets.add('description = ?'); params.add(description); }
-      if (mode != null) { sets.add('mode = ?'); params.add(mode); }
-      if (stacks != null) { sets.add('stacks = ?'); params.add(jsonEncode(stacks)); }
+      if (name != null) {
+        sets.add('name = ?');
+        params.add(name);
+      }
+      if (description != null) {
+        sets.add('description = ?');
+        params.add(description);
+      }
+      if (mode != null) {
+        sets.add('mode = ?');
+        params.add(mode);
+      }
+      if (stacks != null) {
+        sets.add('stacks = ?');
+        params.add(jsonEncode(stacks));
+      }
       if (sets.isEmpty) return;
       sets.add('updated_at = ?');
       params.add(DateTime.now().toUtc().toIso8601String());
       params.add(id);
-      await _db!.execute('UPDATE projects SET ${sets.join(', ')} WHERE id = ?', params);
+      await _db!.execute(
+        'UPDATE projects SET ${sets.join(', ')} WHERE id = ?',
+        params,
+      );
       return;
     }
 

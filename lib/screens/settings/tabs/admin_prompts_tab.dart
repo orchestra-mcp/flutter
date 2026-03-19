@@ -32,8 +32,7 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
           key: m['key'] as String? ?? '',
           label: m['label'] as String? ?? '',
           description: m['description'] as String? ?? '',
-          promptCtrl:
-              TextEditingController(text: m['prompt'] as String? ?? ''),
+          promptCtrl: TextEditingController(text: m['prompt'] as String? ?? ''),
         );
       }).toList();
     }
@@ -51,12 +50,14 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
     setState(() => _saving = true);
     try {
       final promptsData = _prompts
-          .map((p) => {
-                'key': p.key,
-                'label': p.label,
-                'description': p.description,
-                'prompt': p.promptCtrl.text,
-              })
+          .map(
+            (p) => {
+              'key': p.key,
+              'label': p.label,
+              'description': p.description,
+              'prompt': p.promptCtrl.text,
+            },
+          )
           .toList();
 
       await ref.read(apiClientProvider).updateAdminSetting('smart_prompts', {
@@ -71,7 +72,9 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -82,12 +85,14 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
   void _addPrompt() {
     final l10n = AppLocalizations.of(context);
     setState(() {
-      _prompts.add(_PromptEntry(
-        key: 'new_prompt_${_prompts.length}',
-        label: l10n.adminNewPrompt,
-        description: '',
-        promptCtrl: TextEditingController(),
-      ));
+      _prompts.add(
+        _PromptEntry(
+          key: 'new_prompt_${_prompts.length}',
+          label: l10n.adminNewPrompt,
+          description: '',
+          promptCtrl: TextEditingController(),
+        ),
+      );
       _expandedIndex = _prompts.length - 1;
     });
   }
@@ -107,7 +112,9 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populatePrompts(data);
@@ -154,7 +161,8 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
                 side: BorderSide(color: tokens.border),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
 
@@ -170,14 +178,17 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -189,13 +200,13 @@ class _AdminPromptsTabState extends ConsumerState<AdminPromptsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 }
 
 class _PromptEntry {
@@ -241,7 +252,9 @@ class _PromptCard extends StatelessWidget {
         color: tokens.bgAlt,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-            color: expanded ? tokens.accent : tokens.border, width: 1),
+          color: expanded ? tokens.accent : tokens.border,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,8 +262,7 @@ class _PromptCard extends StatelessWidget {
           // Header
           InkWell(
             onTap: onToggle,
-            borderRadius:
-                BorderRadius.vertical(top: const Radius.circular(10)),
+            borderRadius: BorderRadius.vertical(top: const Radius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               child: Row(
@@ -264,8 +276,10 @@ class _PromptCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: tokens.accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(6),
@@ -293,8 +307,11 @@ class _PromptCard extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onRemove,
-                    icon: Icon(Icons.delete_outline_rounded,
-                        size: 18, color: tokens.fgDim),
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      size: 18,
+                      color: tokens.fgDim,
+                    ),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -314,22 +331,35 @@ class _PromptCard extends StatelessWidget {
                   // Key
                   _label(tokens, l10n.adminPromptKey),
                   const SizedBox(height: 6),
-                  _textField(tokens, entry.key, onKeyChanged,
-                      hint: l10n.adminPromptKeyHint),
+                  _textField(
+                    tokens,
+                    entry.key,
+                    onKeyChanged,
+                    hint: l10n.adminPromptKeyHint,
+                  ),
                   const SizedBox(height: 14),
 
                   // Label
                   _label(tokens, l10n.adminPromptLabel),
                   const SizedBox(height: 6),
-                  _textField(tokens, entry.label, onLabelChanged,
-                      hint: l10n.adminPromptLabelHint),
+                  _textField(
+                    tokens,
+                    entry.label,
+                    onLabelChanged,
+                    hint: l10n.adminPromptLabelHint,
+                  ),
                   const SizedBox(height: 14),
 
                   // Description
                   _label(tokens, l10n.adminPromptDescription),
                   const SizedBox(height: 6),
-                  _textField(tokens, entry.description, onDescChanged,
-                      hint: l10n.adminPromptDescHint, maxLines: 2),
+                  _textField(
+                    tokens,
+                    entry.description,
+                    onDescChanged,
+                    hint: l10n.adminPromptDescHint,
+                    maxLines: 2,
+                  ),
                   const SizedBox(height: 14),
 
                   // Prompt
@@ -339,9 +369,10 @@ class _PromptCard extends StatelessWidget {
                     controller: entry.promptCtrl,
                     maxLines: 10,
                     style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 13,
-                        fontFamily: 'monospace'),
+                      color: tokens.fgBright,
+                      fontSize: 13,
+                      fontFamily: 'monospace',
+                    ),
                     decoration: InputDecoration(
                       hintText: l10n.adminPromptSystemPromptHint,
                       hintStyle: TextStyle(color: tokens.fgDim),
@@ -372,14 +403,14 @@ class _PromptCard extends StatelessWidget {
   }
 
   Widget _label(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _textField(
     OrchestraColorTokens tokens,
@@ -398,8 +429,10 @@ class _PromptCard extends StatelessWidget {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bg,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: tokens.border),

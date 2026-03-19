@@ -71,7 +71,10 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
       final sessionId = beginRes.data?['session_id'] as String?;
 
       if (publicKey == null || sessionId == null) {
-        setState(() => _error = 'No passkeys found for this account. Register one from the web app.');
+        setState(
+          () => _error =
+              'No passkeys found for this account. Register one from the web app.',
+        );
         return;
       }
 
@@ -79,10 +82,14 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
       // platform-specific packages. Show success for the biometric step
       // and inform the user about the limitation.
       // For web platform (Flutter web), navigator.credentials would work here.
-      setState(() => _error = 'Passkey login requires the web app. Use password or magic link on mobile.');
+      setState(
+        () => _error =
+            'Passkey login requires the web app. Use password or magic link on mobile.',
+      );
     } on DioException catch (e) {
       if (mounted) {
-        final msg = e.response?.data?['error']?.toString() ?? 'Authentication failed';
+        final msg =
+            e.response?.data?['error']?.toString() ?? 'Authentication failed';
         setState(() => _error = msg);
       }
     } catch (e) {
@@ -134,9 +141,7 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
                               : tokens.accentSurface,
                         ),
                         child: Icon(
-                          _succeeded
-                              ? Icons.check_rounded
-                              : Icons.fingerprint,
+                          _succeeded ? Icons.check_rounded : Icons.fingerprint,
                           size: 40,
                           color: _succeeded ? Colors.green : tokens.accent,
                         ),
@@ -180,8 +185,11 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
                       decoration: InputDecoration(
                         labelText: l10n.email,
                         hintText: l10n.emailHint,
-                        prefixIcon: Icon(Icons.mail_outline_rounded,
-                            color: tokens.fgDim, size: 20),
+                        prefixIcon: Icon(
+                          Icons.mail_outline_rounded,
+                          color: tokens.fgDim,
+                          size: 20,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -190,7 +198,9 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
                     SizedBox(
                       height: 52,
                       child: ElevatedButton.icon(
-                        onPressed: (_loading || _succeeded) ? null : _authenticate,
+                        onPressed: (_loading || _succeeded)
+                            ? null
+                            : _authenticate,
                         icon: _loading
                             ? SizedBox(
                                 width: 18,
@@ -208,20 +218,23 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
                               ? l10n.authenticated
                               : l10n.authenticateWithPasskey,
                           style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: _succeeded
                               ? Colors.green
                               : tokens.accent,
-                          foregroundColor:
-                              tokens.isLight ? Colors.white : Colors.black,
-                          disabledBackgroundColor: (_succeeded
-                                  ? Colors.green
-                                  : tokens.accent)
-                              .withValues(alpha: 0.5),
+                          foregroundColor: tokens.isLight
+                              ? Colors.white
+                              : Colors.black,
+                          disabledBackgroundColor:
+                              (_succeeded ? Colors.green : tokens.accent)
+                                  .withValues(alpha: 0.5),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           elevation: 0,
                         ),
                       ),
@@ -233,9 +246,12 @@ class _PasskeyScreenState extends ConsumerState<PasskeyScreen> {
                     TextButton(
                       onPressed: () => context.go('/login'),
                       style: TextButton.styleFrom(
-                          foregroundColor: tokens.fgMuted),
-                      child: Text(l10n.useDifferentMethod,
-                          style: const TextStyle(fontSize: 13)),
+                        foregroundColor: tokens.fgMuted,
+                      ),
+                      child: Text(
+                        l10n.useDifferentMethod,
+                        style: const TextStyle(fontSize: 13),
+                      ),
                     ),
                   ],
                 ),
@@ -257,21 +273,21 @@ class _GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(
-          color: tokens.bg.withValues(alpha: tokens.isLight ? 0.85 : 0.72),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: tokens.borderFaint),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.12),
-              blurRadius: 24,
-              offset: const Offset(0, 8),
-            ),
-          ],
+    padding: const EdgeInsets.all(28),
+    decoration: BoxDecoration(
+      color: tokens.bg.withValues(alpha: tokens.isLight ? 0.85 : 0.72),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: tokens.borderFaint),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.12),
+          blurRadius: 24,
+          offset: const Offset(0, 8),
         ),
-        child: child,
-      );
+      ],
+    ),
+    child: child,
+  );
 }
 
 class _ErrorBanner extends StatelessWidget {
@@ -281,23 +297,27 @@ class _ErrorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    decoration: BoxDecoration(
+      color: Colors.red.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+    ),
+    child: Row(
+      children: [
+        const Icon(
+          Icons.error_outline_rounded,
+          color: Colors.redAccent,
+          size: 18,
         ),
-        child: Row(
-          children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Colors.redAccent, size: 18),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(message,
-                  style: const TextStyle(
-                      color: Colors.redAccent, fontSize: 13)),
-            ),
-          ],
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

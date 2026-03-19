@@ -11,10 +11,7 @@ import 'package:orchestra/l10n/app_localizations.dart';
 /// indicator dot, and a close button. An add (+) button at the end opens
 /// the [onNewSession] callback.
 class TerminalTabBar extends ConsumerWidget {
-  const TerminalTabBar({
-    super.key,
-    required this.onNewSession,
-  });
+  const TerminalTabBar({super.key, required this.onNewSession});
 
   final VoidCallback onNewSession;
 
@@ -28,9 +25,7 @@ class TerminalTabBar extends ConsumerWidget {
       height: 40,
       decoration: BoxDecoration(
         color: tokens.bgAlt,
-        border: Border(
-          bottom: BorderSide(color: tokens.border, width: 0.5),
-        ),
+        border: Border(bottom: BorderSide(color: tokens.border, width: 0.5)),
       ),
       child: Row(
         children: [
@@ -120,10 +115,15 @@ class _SessionTab extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
         padding: const EdgeInsets.only(left: 8, right: 2),
         decoration: BoxDecoration(
-          color: isActive ? tokens.accent.withValues(alpha: 0.15) : tokens.bgAlt,
+          color: isActive
+              ? tokens.accent.withValues(alpha: 0.15)
+              : tokens.bgAlt,
           borderRadius: BorderRadius.circular(6),
           border: isActive
-              ? Border.all(color: tokens.accent.withValues(alpha: 0.4), width: 0.5)
+              ? Border.all(
+                  color: tokens.accent.withValues(alpha: 0.4),
+                  width: 0.5,
+                )
               : null,
         ),
         child: Row(
@@ -170,11 +170,7 @@ class _SessionTab extends StatelessWidget {
               height: 24,
               child: IconButton(
                 onPressed: onClose,
-                icon: Icon(
-                  Icons.close_rounded,
-                  size: 12,
-                  color: tokens.fgDim,
-                ),
+                icon: Icon(Icons.close_rounded, size: 12, color: tokens.fgDim),
                 padding: EdgeInsets.zero,
                 splashRadius: 12,
                 tooltip: AppLocalizations.of(context).terminalTabCloseSession,

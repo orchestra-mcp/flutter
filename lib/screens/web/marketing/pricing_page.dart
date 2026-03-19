@@ -78,46 +78,52 @@ class PricingPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
         child: Column(
           children: [
-            Builder(builder: (context) => Text(
-              AppLocalizations.of(context).simplePricing,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 36,
-                fontWeight: FontWeight.w800,
+            Builder(
+              builder: (context) => Text(
+                AppLocalizations.of(context).simplePricing,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 36,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            )),
+            ),
             const SizedBox(height: 12),
-            Builder(builder: (context) => Text(
-              AppLocalizations.of(context).startFreeUpgrade,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Color(0xFF9090A8), fontSize: 18),
-            )),
+            Builder(
+              builder: (context) => Text(
+                AppLocalizations.of(context).startFreeUpgrade,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Color(0xFF9090A8), fontSize: 18),
+              ),
+            ),
             const SizedBox(height: 48),
-            LayoutBuilder(builder: (context, constraints) {
-              final useRow = constraints.maxWidth >= 800;
-              final cards = _tiers.map((t) => _TierCard(tier: t)).toList();
-              return useRow
-                  ? IntrinsicHeight(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final useRow = constraints.maxWidth >= 800;
+                final cards = _tiers.map((t) => _TierCard(tier: t)).toList();
+                return useRow
+                    ? IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            for (int i = 0; i < cards.length; i++) ...[
+                              if (i > 0) const SizedBox(width: 16),
+                              Expanded(child: cards[i]),
+                            ],
+                          ],
+                        ),
+                      )
+                    : Column(
                         children: [
                           for (int i = 0; i < cards.length; i++) ...[
-                            if (i > 0) const SizedBox(width: 16),
-                            Expanded(child: cards[i]),
+                            if (i > 0) const SizedBox(height: 16),
+                            cards[i],
                           ],
                         ],
-                      ),
-                    )
-                  : Column(
-                      children: [
-                        for (int i = 0; i < cards.length; i++) ...[
-                          if (i > 0) const SizedBox(height: 16),
-                          cards[i],
-                        ],
-                      ],
-                    );
-            }),
+                      );
+              },
+            ),
           ],
         ),
       ),
@@ -134,8 +140,7 @@ class _TierCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accent = const Color(0xFF7C6FFF);
-    final border =
-        tier.highlighted ? accent : const Color(0xFF2E2E42);
+    final border = tier.highlighted ? accent : const Color(0xFF2E2E42);
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -157,33 +162,54 @@ class _TierCard extends StatelessWidget {
                 color: accent,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Builder(builder: (context) => Text(AppLocalizations.of(context).mostPopular,
-                  style: const TextStyle(color: Colors.white, fontSize: 11))),
+              child: Builder(
+                builder: (context) => Text(
+                  AppLocalizations.of(context).mostPopular,
+                  style: const TextStyle(color: Colors.white, fontSize: 11),
+                ),
+              ),
             ),
-          Text(tier.name,
-              style: const TextStyle(
-                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700)),
+          Text(
+            tier.name,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           const SizedBox(height: 8),
-          Text(tier.price,
-              style: TextStyle(
-                  color: tier.highlighted ? accent : Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800)),
+          Text(
+            tier.price,
+            style: TextStyle(
+              color: tier.highlighted ? accent : Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
           const SizedBox(height: 6),
-          Text(tier.description,
-              style: const TextStyle(color: Color(0xFF9090A8), fontSize: 13)),
+          Text(
+            tier.description,
+            style: const TextStyle(color: Color(0xFF9090A8), fontSize: 13),
+          ),
           const SizedBox(height: 20),
           const Divider(color: Color(0xFF2E2E42)),
           const SizedBox(height: 16),
           for (final feature in tier.features) ...[
-            Row(children: [
-              Icon(Icons.check_circle_outline, size: 16, color: accent),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(feature,
-                    style: const TextStyle(color: Color(0xFFD0D0E0), fontSize: 13)),
-              ),
-            ]),
+            Row(
+              children: [
+                Icon(Icons.check_circle_outline, size: 16, color: accent),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    feature,
+                    style: const TextStyle(
+                      color: Color(0xFFD0D0E0),
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
           ],
           const Spacer(),

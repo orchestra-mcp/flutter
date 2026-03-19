@@ -109,7 +109,9 @@ class ChangeTracker {
     );
 
     // Persist to SQLite sync_queue.
-    await db.into(db.syncQueueTable).insert(
+    await db
+        .into(db.syncQueueTable)
+        .insert(
           SyncQueueTableCompanion.insert(
             entityType: entityType,
             entityId: entityId,
@@ -136,7 +138,8 @@ class ChangeTracker {
     return rows.map((row) {
       final payload = jsonDecode(row.payload) as Map<String, dynamic>;
       return SyncDelta(
-        id: payload['delta_id'] as String? ??
+        id:
+            payload['delta_id'] as String? ??
             '${row.entityType}_${row.entityId}_${row.id}',
         entityType: row.entityType,
         entityId: row.entityId,
@@ -164,9 +167,9 @@ class ChangeTracker {
       final payload = jsonDecode(row.payload) as Map<String, dynamic>;
       final id = payload['delta_id'] as String?;
       if (id != null && deltaIdSet.contains(id)) {
-        await (db.delete(db.syncQueueTable)
-              ..where((t) => t.id.equals(row.id)))
-            .go();
+        await (db.delete(
+          db.syncQueueTable,
+        )..where((t) => t.id.equals(row.id))).go();
       }
     }
   }
@@ -178,7 +181,9 @@ class ChangeTracker {
   /// Conflicts are persisted to the sync_queue table with a special
   /// `_conflict` operation so they survive app restarts.
   Future<void> storeConflict(ConflictRecord conflict) async {
-    await db.into(db.syncQueueTable).insert(
+    await db
+        .into(db.syncQueueTable)
+        .insert(
           SyncQueueTableCompanion.insert(
             entityType: conflict.entityType,
             entityId: conflict.entityId,
@@ -191,9 +196,9 @@ class ChangeTracker {
 
   /// Retrieve all unresolved conflicts.
   Future<List<ConflictRecord>> getUnresolvedConflicts() async {
-    final rows = await (db.select(db.syncQueueTable)
-          ..where((t) => t.operation.equals('_conflict')))
-        .get();
+    final rows = await (db.select(
+      db.syncQueueTable,
+    )..where((t) => t.operation.equals('_conflict'))).get();
     return rows.map((row) {
       final json = jsonDecode(row.payload) as Map<String, dynamic>;
       return ConflictRecord.fromJson(json);
@@ -202,15 +207,15 @@ class ChangeTracker {
 
   /// Remove a resolved conflict from storage.
   Future<void> removeConflict(String conflictId) async {
-    final rows = await (db.select(db.syncQueueTable)
-          ..where((t) => t.operation.equals('_conflict')))
-        .get();
+    final rows = await (db.select(
+      db.syncQueueTable,
+    )..where((t) => t.operation.equals('_conflict'))).get();
     for (final row in rows) {
       final json = jsonDecode(row.payload) as Map<String, dynamic>;
       if (json['id'] == conflictId) {
-        await (db.delete(db.syncQueueTable)
-              ..where((t) => t.id.equals(row.id)))
-            .go();
+        await (db.delete(
+          db.syncQueueTable,
+        )..where((t) => t.id.equals(row.id))).go();
         break;
       }
     }

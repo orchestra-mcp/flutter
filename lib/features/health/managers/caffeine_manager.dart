@@ -1,7 +1,15 @@
 import 'package:flutter/foundation.dart';
 
 /// Type of caffeinated drink.
-enum CaffeineType { redBull, coldBrew, matcha, greenTea, espresso, blackCoffee, other }
+enum CaffeineType {
+  redBull,
+  coldBrew,
+  matcha,
+  greenTea,
+  espresso,
+  blackCoffee,
+  other,
+}
 
 /// Cortisol-window awareness status.
 enum CaffeineStatus { clean, transitioning, redBullDependent, noIntake }
@@ -41,8 +49,7 @@ class CaffeineManager extends ChangeNotifier {
   }
 
   /// Returns `true` for sugar-based drinks.
-  bool isSugarBased(CaffeineType type) =>
-      type == CaffeineType.redBull;
+  bool isSugarBased(CaffeineType type) => type == CaffeineType.redBull;
 
   /// Percentage of today's drinks that are considered clean.
   double get cleanTransitionPercent {

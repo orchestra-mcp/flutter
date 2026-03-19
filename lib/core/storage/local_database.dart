@@ -176,25 +176,27 @@ class LocalDependencies extends Table {
 
 // ── Database ─────────────────────────────────────────────────────────────────
 
-@DriftDatabase(tables: [
-  LocalProjects,
-  LocalFeatures,
-  LocalNotes,
-  LocalAgents,
-  LocalSkills,
-  LocalWorkflows,
-  LocalDocs,
-  LocalSessions,
-  LocalDelegations,
-  LocalLabels,
-  LocalDependencies,
-  TeamSharesTable,
-  EntitySyncMetadataTable,
-  SyncVersionHistoryTable,
-])
+@DriftDatabase(
+  tables: [
+    LocalProjects,
+    LocalFeatures,
+    LocalNotes,
+    LocalAgents,
+    LocalSkills,
+    LocalWorkflows,
+    LocalDocs,
+    LocalSessions,
+    LocalDelegations,
+    LocalLabels,
+    LocalDependencies,
+    TeamSharesTable,
+    EntitySyncMetadataTable,
+    SyncVersionHistoryTable,
+  ],
+)
 class LocalDatabase extends _$LocalDatabase {
   LocalDatabase({String? workspacePath})
-      : super(_openConnection(workspacePath));
+    : super(_openConnection(workspacePath));
   LocalDatabase.forTesting(super.executor);
 
   @override
@@ -211,10 +213,10 @@ class LocalDatabase extends _$LocalDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (Migrator m) async {
-          await m.createAll();
-          // Create FTS5 virtual tables for full-text search.
-          await customStatement('''
+    onCreate: (Migrator m) async {
+      await m.createAll();
+      // Create FTS5 virtual tables for full-text search.
+      await customStatement('''
             CREATE VIRTUAL TABLE IF NOT EXISTS fts_projects USING fts5(
               id UNINDEXED,
               name,
@@ -225,7 +227,7 @@ class LocalDatabase extends _$LocalDatabase {
               content_rowid='rowid'
             )
           ''');
-          await customStatement('''
+      await customStatement('''
             CREATE VIRTUAL TABLE IF NOT EXISTS fts_features USING fts5(
               id UNINDEXED,
               title,
@@ -236,7 +238,7 @@ class LocalDatabase extends _$LocalDatabase {
               content_rowid='rowid'
             )
           ''');
-          await customStatement('''
+      await customStatement('''
             CREATE VIRTUAL TABLE IF NOT EXISTS fts_notes USING fts5(
               id UNINDEXED,
               title,
@@ -246,13 +248,13 @@ class LocalDatabase extends _$LocalDatabase {
               content_rowid='rowid'
             )
           ''');
-          // Triggers to keep FTS in sync with content tables.
-          await _createFtsTriggers();
-        },
-        onUpgrade: (Migrator m, int from, int to) async {
-          if (from < 2) {
-            // v2: Add FTS5 virtual tables.
-            await customStatement('''
+      // Triggers to keep FTS in sync with content tables.
+      await _createFtsTriggers();
+    },
+    onUpgrade: (Migrator m, int from, int to) async {
+      if (from < 2) {
+        // v2: Add FTS5 virtual tables.
+        await customStatement('''
               CREATE VIRTUAL TABLE IF NOT EXISTS fts_projects USING fts5(
                 id UNINDEXED,
                 name,
@@ -263,7 +265,7 @@ class LocalDatabase extends _$LocalDatabase {
                 content_rowid='rowid'
               )
             ''');
-            await customStatement('''
+        await customStatement('''
               CREATE VIRTUAL TABLE IF NOT EXISTS fts_features USING fts5(
                 id UNINDEXED,
                 title,
@@ -274,7 +276,7 @@ class LocalDatabase extends _$LocalDatabase {
                 content_rowid='rowid'
               )
             ''');
-            await customStatement('''
+        await customStatement('''
               CREATE VIRTUAL TABLE IF NOT EXISTS fts_notes USING fts5(
                 id UNINDEXED,
                 title,
@@ -284,18 +286,18 @@ class LocalDatabase extends _$LocalDatabase {
                 content_rowid='rowid'
               )
             ''');
-            await _createFtsTriggers();
-            // Rebuild FTS indexes with existing data.
-            await rebuildFtsIndexes();
-          }
-          if (from < 3) {
-            // v3: Add team sharing and sync metadata tables.
-            await m.createTable(teamSharesTable);
-            await m.createTable(entitySyncMetadataTable);
-            await m.createTable(syncVersionHistoryTable);
-          }
-        },
-      );
+        await _createFtsTriggers();
+        // Rebuild FTS indexes with existing data.
+        await rebuildFtsIndexes();
+      }
+      if (from < 3) {
+        // v3: Add team sharing and sync metadata tables.
+        await m.createTable(teamSharesTable);
+        await m.createTable(entitySyncMetadataTable);
+        await m.createTable(syncVersionHistoryTable);
+      }
+    },
+  );
 
   /// Creates triggers that keep the FTS5 indexes in sync with content tables.
   Future<void> _createFtsTriggers() async {
@@ -370,11 +372,12 @@ class LocalDatabase extends _$LocalDatabase {
   /// Call this after bulk imports or migration from v1.
   Future<void> rebuildFtsIndexes() async {
     await customStatement(
-        "INSERT INTO fts_projects(fts_projects) VALUES('rebuild')");
+      "INSERT INTO fts_projects(fts_projects) VALUES('rebuild')",
+    );
     await customStatement(
-        "INSERT INTO fts_features(fts_features) VALUES('rebuild')");
-    await customStatement(
-        "INSERT INTO fts_notes(fts_notes) VALUES('rebuild')");
+      "INSERT INTO fts_features(fts_features) VALUES('rebuild')",
+    );
+    await customStatement("INSERT INTO fts_notes(fts_notes) VALUES('rebuild')");
   }
 
   /// Full-text search across projects. Returns matching project IDs ranked
@@ -386,10 +389,12 @@ class LocalDatabase extends _$LocalDatabase {
       variables: [Variable.withString(escaped)],
     ).get();
     return results
-        .map((row) => FtsResult(
-              id: row.read<String>('id'),
-              rank: row.read<double>('rank'),
-            ))
+        .map(
+          (row) => FtsResult(
+            id: row.read<String>('id'),
+            rank: row.read<double>('rank'),
+          ),
+        )
         .toList();
   }
 
@@ -401,10 +406,12 @@ class LocalDatabase extends _$LocalDatabase {
       variables: [Variable.withString(escaped)],
     ).get();
     return results
-        .map((row) => FtsResult(
-              id: row.read<String>('id'),
-              rank: row.read<double>('rank'),
-            ))
+        .map(
+          (row) => FtsResult(
+            id: row.read<String>('id'),
+            rank: row.read<double>('rank'),
+          ),
+        )
         .toList();
   }
 
@@ -416,10 +423,12 @@ class LocalDatabase extends _$LocalDatabase {
       variables: [Variable.withString(escaped)],
     ).get();
     return results
-        .map((row) => FtsResult(
-              id: row.read<String>('id'),
-              rank: row.read<double>('rank'),
-            ))
+        .map(
+          (row) => FtsResult(
+            id: row.read<String>('id'),
+            rank: row.read<double>('rank'),
+          ),
+        )
         .toList();
   }
 

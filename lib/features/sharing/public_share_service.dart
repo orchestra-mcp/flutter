@@ -37,8 +37,7 @@ class PublicShareLink {
   final bool hasPassword;
   final List<String> allowedEntities;
 
-  bool get isExpired =>
-      expiresAt != null && DateTime.now().isAfter(expiresAt!);
+  bool get isExpired => expiresAt != null && DateTime.now().isAfter(expiresAt!);
 
   factory PublicShareLink.fromJson(Map<String, dynamic> json) =>
       PublicShareLink(
@@ -48,12 +47,13 @@ class PublicShareLink {
         projectId: json['project_id'] as String? ?? '',
         createdAt:
             DateTime.tryParse(json['created_at'] as String? ?? '') ??
-                DateTime.now(),
+            DateTime.now(),
         expiresAt: json['expires_at'] != null
             ? DateTime.tryParse(json['expires_at'] as String)
             : null,
         hasPassword: json['has_password'] as bool? ?? false,
-        allowedEntities: (json['allowed_entities'] as List<dynamic>?)
+        allowedEntities:
+            (json['allowed_entities'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             const ['features', 'notes', 'docs'],
@@ -80,28 +80,27 @@ class PublicProject {
   final List<PublicNote> notes;
   final List<PublicDoc> docs;
 
-  factory PublicProject.fromJson(Map<String, dynamic> json) =>
-      PublicProject(
-        id: json['id'] as String? ?? '',
-        name: json['name'] as String? ?? '',
-        description: json['description'] as String? ?? '',
-        avatarUrl: json['avatar_url'] as String? ?? '',
-        features: (json['features'] as List<dynamic>?)
-                ?.map(
-                    (e) => PublicFeature.fromJson(e as Map<String, dynamic>))
-                .toList() ??
-            [],
-        notes: (json['notes'] as List<dynamic>?)
-                ?.map(
-                    (e) => PublicNote.fromJson(e as Map<String, dynamic>))
-                .toList() ??
-            [],
-        docs: (json['docs'] as List<dynamic>?)
-                ?.map(
-                    (e) => PublicDoc.fromJson(e as Map<String, dynamic>))
-                .toList() ??
-            [],
-      );
+  factory PublicProject.fromJson(Map<String, dynamic> json) => PublicProject(
+    id: json['id'] as String? ?? '',
+    name: json['name'] as String? ?? '',
+    description: json['description'] as String? ?? '',
+    avatarUrl: json['avatar_url'] as String? ?? '',
+    features:
+        (json['features'] as List<dynamic>?)
+            ?.map((e) => PublicFeature.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+    notes:
+        (json['notes'] as List<dynamic>?)
+            ?.map((e) => PublicNote.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+    docs:
+        (json['docs'] as List<dynamic>?)
+            ?.map((e) => PublicDoc.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
+  );
 }
 
 class PublicFeature {
@@ -119,14 +118,13 @@ class PublicFeature {
   final String kind;
   final String description;
 
-  factory PublicFeature.fromJson(Map<String, dynamic> json) =>
-      PublicFeature(
-        id: json['id'] as String? ?? '',
-        title: json['title'] as String? ?? '',
-        status: json['status'] as String? ?? 'todo',
-        kind: json['kind'] as String? ?? 'feature',
-        description: json['description'] as String? ?? '',
-      );
+  factory PublicFeature.fromJson(Map<String, dynamic> json) => PublicFeature(
+    id: json['id'] as String? ?? '',
+    title: json['title'] as String? ?? '',
+    status: json['status'] as String? ?? 'todo',
+    kind: json['kind'] as String? ?? 'feature',
+    description: json['description'] as String? ?? '',
+  );
 }
 
 class PublicNote {
@@ -143,13 +141,13 @@ class PublicNote {
   final DateTime updatedAt;
 
   factory PublicNote.fromJson(Map<String, dynamic> json) => PublicNote(
-        id: json['id'] as String? ?? '',
-        title: json['title'] as String? ?? '',
-        content: json['content'] as String? ?? '',
-        updatedAt:
-            DateTime.tryParse(json['updated_at'] as String? ?? '') ??
-                DateTime.now(),
-      );
+    id: json['id'] as String? ?? '',
+    title: json['title'] as String? ?? '',
+    content: json['content'] as String? ?? '',
+    updatedAt:
+        DateTime.tryParse(json['updated_at'] as String? ?? '') ??
+        DateTime.now(),
+  );
 }
 
 class PublicDoc {
@@ -166,11 +164,11 @@ class PublicDoc {
   final String content;
 
   factory PublicDoc.fromJson(Map<String, dynamic> json) => PublicDoc(
-        id: json['id'] as String? ?? '',
-        title: json['title'] as String? ?? '',
-        path: json['path'] as String? ?? '',
-        content: json['content'] as String? ?? '',
-      );
+    id: json['id'] as String? ?? '',
+    title: json['title'] as String? ?? '',
+    path: json['path'] as String? ?? '',
+    content: json['content'] as String? ?? '',
+  );
 }
 
 // ── Service ─────────────────────────────────────────────────────────────────

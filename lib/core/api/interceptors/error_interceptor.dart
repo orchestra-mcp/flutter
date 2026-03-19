@@ -8,10 +8,15 @@ class ErrorInterceptor extends Interceptor {
       DioExceptionType.connectionError ||
       DioExceptionType.receiveTimeout ||
       DioExceptionType.sendTimeout ||
-      DioExceptionType.connectionTimeout =>
-        NetworkException(message: err.message ?? 'Network error', cause: err),
+      DioExceptionType.connectionTimeout => NetworkException(
+        message: err.message ?? 'Network error',
+        cause: err,
+      ),
       DioExceptionType.badResponse => _fromStatus(err),
-      _ => UnknownApiException(message: err.message ?? 'Unknown error', cause: err),
+      _ => UnknownApiException(
+        message: err.message ?? 'Unknown error',
+        cause: err,
+      ),
     };
     handler.reject(
       DioException(
@@ -29,7 +34,8 @@ class ErrorInterceptor extends Interceptor {
       return AuthException(message: 'Unauthorized ($code)', cause: err);
     }
     if (code == 404) return NotFoundException(message: 'Not found', cause: err);
-    if (code >= 500) return ServerException(message: 'Server error $code', cause: err);
+    if (code >= 500)
+      return ServerException(message: 'Server error $code', cause: err);
     return UnknownApiException(message: 'HTTP $code', cause: err);
   }
 }

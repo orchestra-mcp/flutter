@@ -60,7 +60,8 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
       String? jsonStr;
 
       if (isDesktop && !kIsWeb) {
-        _workspacePath = Platform.environment['ORCHESTRA_WORKSPACE'] ??
+        _workspacePath =
+            Platform.environment['ORCHESTRA_WORKSPACE'] ??
             Directory.current.path;
         final file = File('$_workspacePath/.claude/settings.json');
         if (file.existsSync()) {
@@ -139,15 +140,15 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
       await settings.set('claude_settings_json', encoded);
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.claudeSettingsSaved)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.claudeSettingsSaved)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.failedToSave}: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('${l10n.failedToSave}: $e')));
       }
     }
   }
@@ -161,7 +162,10 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
 
     if (_error != null) {
       return Center(
-        child: Text(l10n.errorWithDetails(_error!), style: const TextStyle(color: Colors.redAccent)),
+        child: Text(
+          l10n.errorWithDetails(_error!),
+          style: const TextStyle(color: Colors.redAccent),
+        ),
       );
     }
 
@@ -196,8 +200,13 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
 
         // ── Model ────────────────────────────────────────────────────
         _buildSection(tokens, l10n.claudeSettingsModel, [
-          _buildDropdown(tokens, l10n.claudeSettingsDefaultModel, _model, _modelOptions,
-              (v) => setState(() => _model = v!)),
+          _buildDropdown(
+            tokens,
+            l10n.claudeSettingsDefaultModel,
+            _model,
+            _modelOptions,
+            (v) => setState(() => _model = v!),
+          ),
         ]),
         const SizedBox(height: 16),
 
@@ -216,20 +225,48 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
 
         // ── Permissions ──────────────────────────────────────────────
         _buildSection(tokens, l10n.claudeSettingsToolPermissions, [
-          _buildToggle(tokens, 'Edit', _allowEdit,
-              (v) => setState(() => _allowEdit = v)),
-          _buildToggle(tokens, 'Bash', _allowBash,
-              (v) => setState(() => _allowBash = v)),
-          _buildToggle(tokens, 'Read', _allowRead,
-              (v) => setState(() => _allowRead = v)),
-          _buildToggle(tokens, 'Write', _allowWrite,
-              (v) => setState(() => _allowWrite = v)),
-          _buildToggle(tokens, 'Glob', _allowGlob,
-              (v) => setState(() => _allowGlob = v)),
-          _buildToggle(tokens, 'Grep', _allowGrep,
-              (v) => setState(() => _allowGrep = v)),
-          _buildToggle(tokens, 'Agent', _allowAgent,
-              (v) => setState(() => _allowAgent = v)),
+          _buildToggle(
+            tokens,
+            'Edit',
+            _allowEdit,
+            (v) => setState(() => _allowEdit = v),
+          ),
+          _buildToggle(
+            tokens,
+            'Bash',
+            _allowBash,
+            (v) => setState(() => _allowBash = v),
+          ),
+          _buildToggle(
+            tokens,
+            'Read',
+            _allowRead,
+            (v) => setState(() => _allowRead = v),
+          ),
+          _buildToggle(
+            tokens,
+            'Write',
+            _allowWrite,
+            (v) => setState(() => _allowWrite = v),
+          ),
+          _buildToggle(
+            tokens,
+            'Glob',
+            _allowGlob,
+            (v) => setState(() => _allowGlob = v),
+          ),
+          _buildToggle(
+            tokens,
+            'Grep',
+            _allowGrep,
+            (v) => setState(() => _allowGrep = v),
+          ),
+          _buildToggle(
+            tokens,
+            'Agent',
+            _allowAgent,
+            (v) => setState(() => _allowAgent = v),
+          ),
         ]),
         const SizedBox(height: 16),
 
@@ -244,17 +281,21 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
               ),
             )
           else
-            ..._allowedTools.asMap().entries.map((e) => ListTile(
-                  dense: true,
-                  title: Text(e.value,
-                      style: TextStyle(color: tokens.fgBright, fontSize: 13)),
-                  trailing: IconButton(
-                    icon: Icon(Icons.close, color: Colors.redAccent, size: 16),
-                    onPressed: () {
-                      setState(() => _allowedTools.removeAt(e.key));
-                    },
-                  ),
-                )),
+            ..._allowedTools.asMap().entries.map(
+              (e) => ListTile(
+                dense: true,
+                title: Text(
+                  e.value,
+                  style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.close, color: Colors.redAccent, size: 16),
+                  onPressed: () {
+                    setState(() => _allowedTools.removeAt(e.key));
+                  },
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
             child: OutlinedButton.icon(
@@ -271,7 +312,10 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
   }
 
   Widget _buildSection(
-      OrchestraColorTokens t, String title, List<Widget> children) {
+    OrchestraColorTokens t,
+    String title,
+    List<Widget> children,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: t.bgAlt,
@@ -299,7 +343,11 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
   }
 
   Widget _buildToggle(
-      OrchestraColorTokens t, String label, bool value, ValueChanged<bool> onChanged) {
+    OrchestraColorTokens t,
+    String label,
+    bool value,
+    ValueChanged<bool> onChanged,
+  ) {
     return SwitchListTile(
       dense: true,
       title: Text(label, style: TextStyle(color: t.fgBright, fontSize: 14)),
@@ -309,8 +357,13 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
     );
   }
 
-  Widget _buildDropdown(OrchestraColorTokens t, String label,
-      String value, List<String> options, ValueChanged<String?> onChanged) {
+  Widget _buildDropdown(
+    OrchestraColorTokens t,
+    String label,
+    String value,
+    List<String> options,
+    ValueChanged<String?> onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -332,16 +385,24 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
     );
   }
 
-  Widget _buildSlider(OrchestraColorTokens t, String label, double value,
-      double min, double max, ValueChanged<double> onChanged) {
+  Widget _buildSlider(
+    OrchestraColorTokens t,
+    String label,
+    double value,
+    double min,
+    double max,
+    ValueChanged<double> onChanged,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Row(
         children: [
           Text(label, style: TextStyle(color: t.fgBright, fontSize: 14)),
           const SizedBox(width: 12),
-          Text('${value.round()}',
-              style: TextStyle(color: t.accent, fontSize: 13)),
+          Text(
+            '${value.round()}',
+            style: TextStyle(color: t.accent, fontSize: 13),
+          ),
           Expanded(
             child: Slider(
               value: value,
@@ -366,9 +427,7 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
         title: Text(l10n.claudeSettingsAddToolTitle),
         content: TextField(
           controller: ctrl,
-          decoration: InputDecoration(
-            hintText: l10n.claudeSettingsAddToolHint,
-          ),
+          decoration: InputDecoration(hintText: l10n.claudeSettingsAddToolHint),
           autofocus: true,
         ),
         actions: [

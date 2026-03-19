@@ -48,9 +48,8 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
       appBar: inSelectionMode
           ? SelectionAppBar(
               selectedCount: selectedIds.length,
-              onClear: () => ref
-                  .read(delegationsSelectionProvider.notifier)
-                  .clear(),
+              onClear: () =>
+                  ref.read(delegationsSelectionProvider.notifier).clear(),
               onDelete: () {
                 showComingSoon(context, 'Delete Delegations');
                 ref.read(delegationsSelectionProvider.notifier).clear();
@@ -66,8 +65,11 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_ios_rounded,
-                          color: tokens.fgBright, size: 20),
+                      icon: Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: tokens.fgBright,
+                        size: 20,
+                      ),
                       onPressed: () {
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context);
@@ -92,8 +94,7 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
                     asyncDelegations.whenOrNull(
                           data: (items) => Text(
                             l10n.delegationsCount(items.length),
-                            style:
-                                TextStyle(color: tokens.fgDim, fontSize: 13),
+                            style: TextStyle(color: tokens.fgDim, fontSize: 13),
                           ),
                         ) ??
                         const SizedBox.shrink(),
@@ -113,11 +114,14 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
             Expanded(
               child: asyncDelegations.when(
                 loading: () => Center(
-                    child:
-                        CircularProgressIndicator(color: tokens.accent)),
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
                 error: (e, _) => Center(
-                    child: Text(l10n.failedToLoadDelegations,
-                        style: TextStyle(color: tokens.fgMuted))),
+                  child: Text(
+                    l10n.failedToLoadDelegations,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
+                ),
                 data: (delegations) {
                   if (delegations.isEmpty) {
                     return _EmptyState(tokens: tokens);
@@ -126,17 +130,19 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
                   final filtered = q.isEmpty
                       ? delegations
                       : delegations
-                          .where((d) =>
-                              ((d['feature_id'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((d['feature_title'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((d['assignee'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q))
-                          .toList();
+                            .where(
+                              (d) =>
+                                  ((d['feature_id'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((d['feature_title'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((d['assignee'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q),
+                            )
+                            .toList();
                   if (filtered.isEmpty) {
                     return Center(
                       child: Text(
@@ -145,56 +151,51 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
                       ),
                     );
                   }
-                  final sorted =
-                      List<Map<String, dynamic>>.from(filtered)
-                        ..sort((a, b) {
-                          final aId =
-                              '${a['feature_id'] ?? ''}:${a['feature_title'] ?? ''}';
-                          final bId =
-                              '${b['feature_id'] ?? ''}:${b['feature_title'] ?? ''}';
-                          final aPin = pinnedIds.contains(aId);
-                          final bPin = pinnedIds.contains(bId);
-                          if (aPin && !bPin) return -1;
-                          if (!aPin && bPin) return 1;
-                          return 0;
-                        });
+                  final sorted = List<Map<String, dynamic>>.from(filtered)
+                    ..sort((a, b) {
+                      final aId =
+                          '${a['feature_id'] ?? ''}:${a['feature_title'] ?? ''}';
+                      final bId =
+                          '${b['feature_id'] ?? ''}:${b['feature_title'] ?? ''}';
+                      final aPin = pinnedIds.contains(aId);
+                      final bPin = pinnedIds.contains(bId);
+                      if (aPin && !bPin) return -1;
+                      if (!aPin && bPin) return 1;
+                      return 0;
+                    });
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: sorted.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 6),
+                    separatorBuilder: (_, __) => const SizedBox(height: 6),
                     itemBuilder: (context, index) {
                       final d = sorted[index];
                       final assignee =
                           (d['assignee'] as String?) ?? l10n.unknown;
-                      final featureId =
-                          (d['feature_id'] as String?) ?? '';
+                      final featureId = (d['feature_id'] as String?) ?? '';
                       final featureTitle =
                           (d['feature_title'] as String?) ?? '';
-                      final status =
-                          (d['status'] as String?) ?? l10n.unknown;
+                      final status = (d['status'] as String?) ?? l10n.unknown;
                       final id = '$featureId:$featureTitle';
                       final isPinned = pinnedIds.contains(id);
                       return GlassListTile(
                         leadingIcon: _iconForStatus(status),
-                        leadingColor:
-                            _colorForStatus(status, tokens),
+                        leadingColor: _colorForStatus(status, tokens),
                         label: '$featureId: $featureTitle',
-                        description:
-                            l10n.assignedTo(assignee, status),
+                        description: l10n.assignedTo(assignee, status),
                         isPinned: isPinned,
                         isSelected: selectedIds.contains(id),
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(delegationsSelectionProvider
-                                    .notifier)
-                                .toggle(id)
+                                  .read(delegationsSelectionProvider.notifier)
+                                  .toggle(id)
                             : () => context.go(
-                                '/library/delegations/${d['id'] ?? ''}'),
+                                '/library/delegations/${d['id'] ?? ''}',
+                              ),
                         onSelect: () => ref
-                            .read(
-                                delegationsSelectionProvider.notifier)
+                            .read(delegationsSelectionProvider.notifier)
                             .toggle(id),
                         onPin: () => ref
                             .read(delegationsPinProvider.notifier)
@@ -202,8 +203,7 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
                         contextMenuActions: buildEntityContextActions(
                           l10n: AppLocalizations.of(context),
                           onSelect: () => ref
-                              .read(delegationsSelectionProvider
-                                  .notifier)
+                              .read(delegationsSelectionProvider.notifier)
                               .toggle(id),
                           onPin: () => ref
                               .read(delegationsPinProvider.notifier)
@@ -211,8 +211,7 @@ class _DelegationsScreenState extends ConsumerState<DelegationsScreen> {
                           isPinned: isPinned,
                           onExportMarkdown: () => exportAsMarkdown(
                             title: '$featureId: $featureTitle',
-                            content:
-                                'Assignee: $assignee\nStatus: $status',
+                            content: 'Assignee: $assignee\nStatus: $status',
                           ),
                         ),
                       );
@@ -264,8 +263,7 @@ class _EmptyState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.people_alt_rounded,
-                  size: 48, color: tokens.fgDim),
+              Icon(Icons.people_alt_rounded, size: 48, color: tokens.fgDim),
               const SizedBox(height: 16),
               Text(
                 l10n.noDelegationsFound,

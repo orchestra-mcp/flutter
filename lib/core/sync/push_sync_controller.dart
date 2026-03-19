@@ -56,17 +56,17 @@ class PushSyncController {
         errorMessage: response.errorMessage,
       );
     } catch (e) {
-      return PushSyncResult(
-        success: false,
-        errorMessage: e.toString(),
-      );
+      return PushSyncResult(success: false, errorMessage: e.toString());
     }
   }
 
   /// Batch push: shares multiple entities with the same team/settings.
   Future<List<PushSyncResult>> pushBatch({
     required TeamShareSelection selection,
-    required List<({String entityType, String entityId, Map<String, dynamic> entityData})> entities,
+    required List<
+      ({String entityType, String entityId, Map<String, dynamic> entityData})
+    >
+    entities,
   }) async {
     final results = <PushSyncResult>[];
     for (final entity in entities) {
@@ -86,9 +86,7 @@ class PushSyncController {
 
 /// Provides the [PushSyncController] backed by the [TeamSyncService].
 final pushSyncControllerProvider = Provider<PushSyncController>((ref) {
-  return PushSyncController(
-    service: ref.watch(teamSyncServiceProvider),
-  );
+  return PushSyncController(service: ref.watch(teamSyncServiceProvider));
 });
 
 // ── UI helper ─────────────────────────────────────────────────────────────────
@@ -131,7 +129,9 @@ Future<bool?> performPushSync({
   if (result.success) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppLocalizations.of(context).sharedSuccessfully(entityType)),
+        content: Text(
+          AppLocalizations.of(context).sharedSuccessfully(entityType),
+        ),
         duration: const Duration(seconds: 3),
         action: SnackBarAction(
           label: 'Undo',

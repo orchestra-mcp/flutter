@@ -49,7 +49,9 @@ class LocalMcpClient implements ApiClient {
   static String get _realHome {
     final env = Platform.environment['HOME'] ?? '/tmp';
     // Sandboxed macOS: /Users/<user>/Library/Containers/<id>/Data
-    final containerMatch = RegExp(r'^(/Users/[^/]+)/Library/Containers/.+/Data$');
+    final containerMatch = RegExp(
+      r'^(/Users/[^/]+)/Library/Containers/.+/Data$',
+    );
     final match = containerMatch.firstMatch(env);
     if (match != null) return match.group(1)!;
     return env;
@@ -61,14 +63,19 @@ class LocalMcpClient implements ApiClient {
     if (_db != null) return _db!;
     if (_dbFailed) throw StateError('DB previously failed to open');
 
-    final absPath =
-        Directory(workspacePath).absolute.path.replaceAll(RegExp(r'/$'), '');
-    final hash =
-        sha256.convert(utf8.encode(absPath)).toString().substring(0, 16);
+    final absPath = Directory(
+      workspacePath,
+    ).absolute.path.replaceAll(RegExp(r'/$'), '');
+    final hash = sha256
+        .convert(utf8.encode(absPath))
+        .toString()
+        .substring(0, 16);
     final home = _realHome;
     final dbPath = '$home/.orchestra/db/$hash.db';
 
-    debugPrint('[LocalMcpClient] DB path: $dbPath (home=$home, workspace=$absPath)');
+    debugPrint(
+      '[LocalMcpClient] DB path: $dbPath (home=$home, workspace=$absPath)',
+    );
 
     if (!File(dbPath).existsSync()) {
       _dbFailed = true;
@@ -89,7 +96,8 @@ class LocalMcpClient implements ApiClient {
 
   Database get _globalDatabase {
     if (_globalDb != null) return _globalDb!;
-    if (_globalDbFailed) throw StateError('Global DB previously failed to open');
+    if (_globalDbFailed)
+      throw StateError('Global DB previously failed to open');
 
     final home = _realHome;
     final dbPath = '$home/.orchestra/db/global.db';
@@ -98,7 +106,9 @@ class LocalMcpClient implements ApiClient {
 
     if (!File(dbPath).existsSync()) {
       _globalDbFailed = true;
-      throw StateError('Orchestra global DB not found at $dbPath — run `orchestra init` first');
+      throw StateError(
+        'Orchestra global DB not found at $dbPath — run `orchestra init` first',
+      );
     }
 
     try {
@@ -120,7 +130,10 @@ class LocalMcpClient implements ApiClient {
 
   // ── Helpers ─────────────────────────────────────────────────────────────
 
-  List<Map<String, dynamic>> _query(String sql, [List<Object?> params = const []]) {
+  List<Map<String, dynamic>> _query(
+    String sql, [
+    List<Object?> params = const [],
+  ]) {
     final stmt = _database.prepare(sql);
     try {
       final rows = stmt.select(params);
@@ -136,7 +149,10 @@ class LocalMcpClient implements ApiClient {
     }
   }
 
-  List<Map<String, dynamic>> _queryGlobal(String sql, [List<Object?> params = const []]) {
+  List<Map<String, dynamic>> _queryGlobal(
+    String sql, [
+    List<Object?> params = const [],
+  ]) {
     final stmt = _globalDatabase.prepare(sql);
     try {
       final rows = stmt.select(params);
@@ -152,12 +168,18 @@ class LocalMcpClient implements ApiClient {
     }
   }
 
-  Map<String, dynamic>? _queryOne(String sql, [List<Object?> params = const []]) {
+  Map<String, dynamic>? _queryOne(
+    String sql, [
+    List<Object?> params = const [],
+  ]) {
     final rows = _query(sql, params);
     return rows.isEmpty ? null : rows.first;
   }
 
-  Map<String, dynamic>? _queryGlobalOne(String sql, [List<Object?> params = const []]) {
+  Map<String, dynamic>? _queryGlobalOne(
+    String sql, [
+    List<Object?> params = const [],
+  ]) {
     final rows = _queryGlobal(sql, params);
     return rows.isEmpty ? null : rows.first;
   }
@@ -204,8 +226,8 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> updateSettingsProfile(
-          Map<String, dynamic> body) =>
-      _rest.updateSettingsProfile(body);
+    Map<String, dynamic> body,
+  ) => _rest.updateSettingsProfile(body);
 
   @override
   Future<Map<String, dynamic>> uploadAvatar(String filePath) =>
@@ -248,8 +270,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createProject(body);
 
   @override
-  Future<Map<String, dynamic>> updateProject(String id, Map<String, dynamic> body) =>
-      _rest.updateProject(id, body);
+  Future<Map<String, dynamic>> updateProject(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateProject(id, body);
 
   @override
   Future<void> deleteProject(String id) => _rest.deleteProject(id);
@@ -305,8 +329,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createFeature(body);
 
   @override
-  Future<Map<String, dynamic>> updateFeature(String id, Map<String, dynamic> body) =>
-      _rest.updateFeature(id, body);
+  Future<Map<String, dynamic>> updateFeature(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateFeature(id, body);
 
   @override
   Future<void> deleteFeature(String id) => _rest.deleteFeature(id);
@@ -314,7 +340,9 @@ class LocalMcpClient implements ApiClient {
   // ── Plans ───────────────────────────────────────────────────────────
 
   @override
-  Future<List<Map<String, dynamic>>> listPlans({required String projectSlug}) async {
+  Future<List<Map<String, dynamic>>> listPlans({
+    required String projectSlug,
+  }) async {
     if (_dbFailed) return [];
     try {
       return _query(
@@ -330,7 +358,10 @@ class LocalMcpClient implements ApiClient {
   }
 
   @override
-  Future<Map<String, dynamic>> getPlan(String projectSlug, String planId) async {
+  Future<Map<String, dynamic>> getPlan(
+    String projectSlug,
+    String planId,
+  ) async {
     if (_dbFailed) return {};
     try {
       final row = _queryOne(
@@ -351,8 +382,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createPlan(body);
 
   @override
-  Future<Map<String, dynamic>> updatePlan(String id, Map<String, dynamic> body) =>
-      _rest.updatePlan(id, body);
+  Future<Map<String, dynamic>> updatePlan(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updatePlan(id, body);
 
   @override
   Future<void> deletePlan(String id) => _rest.deletePlan(id);
@@ -399,8 +432,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createRequest(body);
 
   @override
-  Future<Map<String, dynamic>> updateRequest(String id, Map<String, dynamic> body) =>
-      _rest.updateRequest(id, body);
+  Future<Map<String, dynamic>> updateRequest(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateRequest(id, body);
 
   @override
   Future<void> deleteRequest(String id) => _rest.deleteRequest(id);
@@ -452,8 +487,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createPerson(body);
 
   @override
-  Future<Map<String, dynamic>> updatePerson(String id, Map<String, dynamic> body) =>
-      _rest.updatePerson(id, body);
+  Future<Map<String, dynamic>> updatePerson(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updatePerson(id, body);
 
   @override
   Future<void> deletePerson(String id) => _rest.deletePerson(id);
@@ -507,8 +544,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createNote(body);
 
   @override
-  Future<Map<String, dynamic>> updateNote(String id, Map<String, dynamic> body) =>
-      _rest.updateNote(id, body);
+  Future<Map<String, dynamic>> updateNote(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateNote(id, body);
 
   @override
   Future<void> deleteNote(String id) => _rest.deleteNote(id);
@@ -548,8 +587,10 @@ class LocalMcpClient implements ApiClient {
         continue;
       }
       // Strip optional quotes
-      if (val.startsWith('"') && val.endsWith('"')) val = val.substring(1, val.length - 1);
-      if (val.startsWith("'") && val.endsWith("'")) val = val.substring(1, val.length - 1);
+      if (val.startsWith('"') && val.endsWith('"'))
+        val = val.substring(1, val.length - 1);
+      if (val.startsWith("'") && val.endsWith("'"))
+        val = val.substring(1, val.length - 1);
       fm[key] = val;
     }
     if (currentKey != null) fm[currentKey] = buf.toString().trim();
@@ -558,7 +599,9 @@ class LocalMcpClient implements ApiClient {
 
   static String _titleFromSlug(String slug) {
     final words = slug.split('-');
-    return words.map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}').join(' ');
+    return words
+        .map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
+        .join(' ');
   }
 
   /// Returns the body content after the YAML frontmatter block.
@@ -572,7 +615,10 @@ class LocalMcpClient implements ApiClient {
   @override
   Future<Map<String, dynamic>> getAgent(String id) async {
     final agents = await listAgents();
-    return agents.firstWhere((a) => a['id'] == id || a['slug'] == id, orElse: () => {});
+    return agents.firstWhere(
+      (a) => a['id'] == id || a['slug'] == id,
+      orElse: () => {},
+    );
   }
 
   @override
@@ -580,8 +626,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createAgent(body);
 
   @override
-  Future<Map<String, dynamic>> updateAgent(String id, Map<String, dynamic> body) =>
-      _rest.updateAgent(id, body);
+  Future<Map<String, dynamic>> updateAgent(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAgent(id, body);
 
   @override
   Future<void> deleteAgent(String id) =>
@@ -590,7 +638,10 @@ class LocalMcpClient implements ApiClient {
   @override
   Future<Map<String, dynamic>> getSkill(String id) async {
     final skills = await listSkills();
-    return skills.firstWhere((s) => s['id'] == id || s['slug'] == id, orElse: () => {});
+    return skills.firstWhere(
+      (s) => s['id'] == id || s['slug'] == id,
+      orElse: () => {},
+    );
   }
 
   @override
@@ -598,8 +649,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createSkill(body);
 
   @override
-  Future<Map<String, dynamic>> updateSkill(String id, Map<String, dynamic> body) =>
-      _rest.updateSkill(id, body);
+  Future<Map<String, dynamic>> updateSkill(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateSkill(id, body);
 
   @override
   Future<void> deleteSkill(String id) =>
@@ -637,20 +690,30 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> createWorkflow(Map<String, dynamic> body) =>
-      throw UnimplementedError('Workflow creation requires MCP tool call — use McpTcpClient');
+      throw UnimplementedError(
+        'Workflow creation requires MCP tool call — use McpTcpClient',
+      );
 
   @override
-  Future<Map<String, dynamic>> updateWorkflow(String id, Map<String, dynamic> body) =>
-      throw UnimplementedError('Workflow update requires MCP tool call — use McpTcpClient');
+  Future<Map<String, dynamic>> updateWorkflow(
+    String id,
+    Map<String, dynamic> body,
+  ) => throw UnimplementedError(
+    'Workflow update requires MCP tool call — use McpTcpClient',
+  );
 
   @override
-  Future<void> deleteWorkflow(String id) =>
-      throw UnimplementedError('Workflow deletion requires MCP tool call — use McpTcpClient');
+  Future<void> deleteWorkflow(String id) => throw UnimplementedError(
+    'Workflow deletion requires MCP tool call — use McpTcpClient',
+  );
 
   @override
   Future<Map<String, dynamic>> getDoc(String id) async {
     final docs = await listDocs();
-    return docs.firstWhere((d) => d['id'] == id || d['slug'] == id, orElse: () => {});
+    return docs.firstWhere(
+      (d) => d['id'] == id || d['slug'] == id,
+      orElse: () => {},
+    );
   }
 
   @override
@@ -658,8 +721,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createDoc(body);
 
   @override
-  Future<Map<String, dynamic>> updateDoc(String id, Map<String, dynamic> body) =>
-      _rest.updateDoc(id, body);
+  Future<Map<String, dynamic>> updateDoc(
+    String id,
+    Map<String, dynamic> body,
+  ) => _rest.updateDoc(id, body);
 
   @override
   Future<void> deleteDoc(String id) =>
@@ -689,7 +754,9 @@ class LocalMcpClient implements ApiClient {
           'db_source': 'workspace',
         });
       }
-      items.sort((a, b) => (a['name'] as String).compareTo(b['name'] as String));
+      items.sort(
+        (a, b) => (a['name'] as String).compareTo(b['name'] as String),
+      );
       return items;
     } catch (e) {
       debugPrint('[LocalMcpClient] listAgents error: $e');
@@ -728,7 +795,9 @@ class LocalMcpClient implements ApiClient {
           'db_source': 'workspace',
         });
       }
-      items.sort((a, b) => (a['name'] as String).compareTo(b['name'] as String));
+      items.sort(
+        (a, b) => (a['name'] as String).compareTo(b['name'] as String),
+      );
       return items;
     } catch (e) {
       debugPrint('[LocalMcpClient] listSkills error: $e');
@@ -783,11 +852,17 @@ class LocalMcpClient implements ApiClient {
         String title = fm['title'] ?? '';
         if (title.isEmpty) {
           // Look for first markdown heading
-          final headingMatch = RegExp(r'^#\s+(.+)$', multiLine: true).firstMatch(content);
+          final headingMatch = RegExp(
+            r'^#\s+(.+)$',
+            multiLine: true,
+          ).firstMatch(content);
           if (headingMatch != null) {
             title = headingMatch.group(1)!.trim();
           } else {
-            final stripped = slug.replaceAll(RegExp(r'^\d{4}-\d{2}-\d{2}-'), '');
+            final stripped = slug.replaceAll(
+              RegExp(r'^\d{4}-\d{2}-\d{2}-'),
+              '',
+            );
             title = _titleFromSlug(stripped);
           }
         }
@@ -795,7 +870,10 @@ class LocalMcpClient implements ApiClient {
         String description = '';
         for (final line in content.split('\n')) {
           final trimmed = line.trim();
-          if (trimmed.isEmpty || trimmed.startsWith('#') || trimmed.startsWith('---')) continue;
+          if (trimmed.isEmpty ||
+              trimmed.startsWith('#') ||
+              trimmed.startsWith('---'))
+            continue;
           if (trimmed.startsWith('**') || trimmed.startsWith('*')) {
             description = trimmed.replaceAll(RegExp(r'\*+'), '').trim();
             break;
@@ -812,7 +890,9 @@ class LocalMcpClient implements ApiClient {
           'path': f.path,
         });
       }
-      items.sort((a, b) => (a['title'] as String).compareTo(b['title'] as String));
+      items.sort(
+        (a, b) => (a['title'] as String).compareTo(b['title'] as String),
+      );
       return items;
     } catch (e) {
       debugPrint('[LocalMcpClient] listDocs error: $e');
@@ -877,23 +957,26 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> inviteTeamMember(
-          String teamId, String email, {String role = 'member'}) =>
-      _rest.inviteTeamMember(teamId, email, role: role);
+    String teamId,
+    String email, {
+    String role = 'member',
+  }) => _rest.inviteTeamMember(teamId, email, role: role);
 
   @override
   Future<void> removeTeamMember(String memberId) =>
       _rest.removeTeamMember(memberId);
 
   @override
-  Future<Map<String, dynamic>> updateMemberRole(
-          String memberId, String role) =>
+  Future<Map<String, dynamic>> updateMemberRole(String memberId, String role) =>
       _rest.updateMemberRole(memberId, role);
 
   // ── Settings (delegated to REST API) ────────────────────────────────
 
   ApiClient get _rest {
     if (restClient == null) {
-      throw StateError('REST client not configured — settings require web-gate API');
+      throw StateError(
+        'REST client not configured — settings require web-gate API',
+      );
     }
     return restClient!;
   }
@@ -927,8 +1010,7 @@ class LocalMcpClient implements ApiClient {
       _rest.listConnectedAccounts();
 
   @override
-  Future<void> unlinkAccount(String provider) =>
-      _rest.unlinkAccount(provider);
+  Future<void> unlinkAccount(String provider) => _rest.unlinkAccount(provider);
 
   @override
   Future<void> changePassword(Map<String, dynamic> body) =>
@@ -941,26 +1023,42 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> listAdminUsers({
-    String? search, String? role, String? status, int? limit, int? offset,
-  }) => _rest.listAdminUsers(search: search, role: role, status: status, limit: limit, offset: offset);
+    String? search,
+    String? role,
+    String? status,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminUsers(
+    search: search,
+    role: role,
+    status: status,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
   Future<Map<String, dynamic>> getAdminUser(int id) => _rest.getAdminUser(id);
 
   @override
-  Future<Map<String, dynamic>> updateAdminUser(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminUser(id, body);
+  Future<Map<String, dynamic>> updateAdminUser(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminUser(id, body);
 
   @override
   Future<void> deleteAdminUser(int id) => _rest.deleteAdminUser(id);
 
   @override
-  Future<Map<String, dynamic>> updateAdminUserRole(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminUserRole(id, body);
+  Future<Map<String, dynamic>> updateAdminUserRole(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminUserRole(id, body);
 
   @override
-  Future<Map<String, dynamic>> updateAdminUserStatus(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminUserStatus(id, body);
+  Future<Map<String, dynamic>> updateAdminUserStatus(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminUserStatus(id, body);
 
   @override
   Future<Map<String, dynamic>> listAdminUserProjects(int id) =>
@@ -992,13 +1090,15 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> changeAdminUserPassword(
-          int id, Map<String, dynamic> body) =>
-      _rest.changeAdminUserPassword(id, body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.changeAdminUserPassword(id, body);
 
   @override
   Future<Map<String, dynamic>> sendAdminUserNotification(
-          int id, Map<String, dynamic> body) =>
-      _rest.sendAdminUserNotification(id, body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.sendAdminUserNotification(id, body);
 
   @override
   Future<Map<String, dynamic>> impersonateAdminUser(int id) =>
@@ -1022,7 +1122,9 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> listAdminTeams({
-    String? search, int? limit, int? offset,
+    String? search,
+    int? limit,
+    int? offset,
   }) => _rest.listAdminTeams(search: search, limit: limit, offset: offset);
 
   @override
@@ -1033,8 +1135,10 @@ class LocalMcpClient implements ApiClient {
       _rest.createAdminTeam(body);
 
   @override
-  Future<Map<String, dynamic>> updateAdminTeam(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminTeam(id, body);
+  Future<Map<String, dynamic>> updateAdminTeam(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminTeam(id, body);
 
   @override
   Future<void> deleteAdminTeam(int id) => _rest.deleteAdminTeam(id);
@@ -1044,8 +1148,10 @@ class LocalMcpClient implements ApiClient {
       _rest.listAdminTeamMembers(teamId);
 
   @override
-  Future<Map<String, dynamic>> addAdminTeamMember(int teamId, Map<String, dynamic> body) =>
-      _rest.addAdminTeamMember(teamId, body);
+  Future<Map<String, dynamic>> addAdminTeamMember(
+    int teamId,
+    Map<String, dynamic> body,
+  ) => _rest.addAdminTeamMember(teamId, body);
 
   @override
   Future<void> removeAdminTeamMember(int teamId, int userId) =>
@@ -1053,8 +1159,16 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> listAdminSettings({
-    String? search, String? category, int? limit, int? offset,
-  }) => _rest.listAdminSettings(search: search, category: category, limit: limit, offset: offset);
+    String? search,
+    String? category,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminSettings(
+    search: search,
+    category: category,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
   Future<Map<String, dynamic>> upsertAdminSetting(Map<String, dynamic> body) =>
@@ -1065,24 +1179,35 @@ class LocalMcpClient implements ApiClient {
       _rest.getAdminSetting(key);
 
   @override
-  Future<Map<String, dynamic>> patchAdminSetting(String key, Map<String, dynamic> body) =>
-      _rest.patchAdminSetting(key, body);
+  Future<Map<String, dynamic>> patchAdminSetting(
+    String key,
+    Map<String, dynamic> body,
+  ) => _rest.patchAdminSetting(key, body);
 
   @override
-  Future<Map<String, dynamic>> updateAdminSetting(String key, Map<String, dynamic> value) =>
-      _rest.updateAdminSetting(key, value);
+  Future<Map<String, dynamic>> updateAdminSetting(
+    String key,
+    Map<String, dynamic> value,
+  ) => _rest.updateAdminSetting(key, value);
 
   @override
-  Future<void> deleteAdminSetting(String key) =>
-      _rest.deleteAdminSetting(key);
+  Future<void> deleteAdminSetting(String key) => _rest.deleteAdminSetting(key);
 
   @override
   Future<Map<String, dynamic>> testEmail() => _rest.testEmail();
 
   @override
   Future<Map<String, dynamic>> listAdminPages({
-    String? search, String? status, int? limit, int? offset,
-  }) => _rest.listAdminPages(search: search, status: status, limit: limit, offset: offset);
+    String? search,
+    String? status,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminPages(
+    search: search,
+    status: status,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
   Future<Map<String, dynamic>> getAdminPage(int id) => _rest.getAdminPage(id);
@@ -1092,15 +1217,19 @@ class LocalMcpClient implements ApiClient {
       _rest.createAdminPage(body);
 
   @override
-  Future<Map<String, dynamic>> updateAdminPage(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminPage(id, body);
+  Future<Map<String, dynamic>> updateAdminPage(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminPage(id, body);
 
   @override
   Future<void> deleteAdminPage(int id) => _rest.deleteAdminPage(id);
 
   @override
   Future<Map<String, dynamic>> listAdminCategories({
-    String? search, int? limit, int? offset,
+    String? search,
+    int? limit,
+    int? offset,
   }) => _rest.listAdminCategories(search: search, limit: limit, offset: offset);
 
   @override
@@ -1108,21 +1237,32 @@ class LocalMcpClient implements ApiClient {
       _rest.createAdminCategory(body);
 
   @override
-  Future<Map<String, dynamic>> updateAdminCategory(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminCategory(id, body);
+  Future<Map<String, dynamic>> updateAdminCategory(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminCategory(id, body);
 
   @override
-  Future<void> deleteAdminCategory(int id) =>
-      _rest.deleteAdminCategory(id);
+  Future<void> deleteAdminCategory(int id) => _rest.deleteAdminCategory(id);
 
   @override
   Future<Map<String, dynamic>> listAdminContact({
-    String? search, String? status, int? limit, int? offset,
-  }) => _rest.listAdminContact(search: search, status: status, limit: limit, offset: offset);
+    String? search,
+    String? status,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminContact(
+    search: search,
+    status: status,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
-  Future<Map<String, dynamic>> updateAdminContactStatus(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminContactStatus(id, body);
+  Future<Map<String, dynamic>> updateAdminContactStatus(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminContactStatus(id, body);
 
   @override
   Future<void> deleteAdminContactMessage(int id) =>
@@ -1130,45 +1270,82 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> listAdminIssues({
-    String? search, String? status, String? priority, int? limit, int? offset,
-  }) => _rest.listAdminIssues(search: search, status: status, priority: priority, limit: limit, offset: offset);
+    String? search,
+    String? status,
+    String? priority,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminIssues(
+    search: search,
+    status: status,
+    priority: priority,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
-  Future<Map<String, dynamic>> updateAdminIssueStatus(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminIssueStatus(id, body);
+  Future<Map<String, dynamic>> updateAdminIssueStatus(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminIssueStatus(id, body);
 
   @override
-  Future<Map<String, dynamic>> listAdminNotifications({int? limit, int? offset}) =>
-      _rest.listAdminNotifications(limit: limit, offset: offset);
+  Future<Map<String, dynamic>> listAdminNotifications({
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminNotifications(limit: limit, offset: offset);
 
   @override
-  Future<Map<String, dynamic>> createAdminNotification(Map<String, dynamic> body) =>
-      _rest.createAdminNotification(body);
+  Future<Map<String, dynamic>> createAdminNotification(
+    Map<String, dynamic> body,
+  ) => _rest.createAdminNotification(body);
 
   @override
   Future<Map<String, dynamic>> listAdminSponsors({
-    String? search, String? tier, String? status, int? limit, int? offset,
-  }) => _rest.listAdminSponsors(search: search, tier: tier, status: status, limit: limit, offset: offset);
+    String? search,
+    String? tier,
+    String? status,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminSponsors(
+    search: search,
+    tier: tier,
+    status: status,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
   Future<Map<String, dynamic>> createAdminSponsor(Map<String, dynamic> body) =>
       _rest.createAdminSponsor(body);
 
   @override
-  Future<Map<String, dynamic>> updateAdminSponsor(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminSponsor(id, body);
+  Future<Map<String, dynamic>> updateAdminSponsor(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminSponsor(id, body);
 
   @override
   Future<void> deleteAdminSponsor(int id) => _rest.deleteAdminSponsor(id);
 
   @override
   Future<Map<String, dynamic>> listAdminCommunityPosts({
-    String? search, String? status, int? limit, int? offset,
-  }) => _rest.listAdminCommunityPosts(search: search, status: status, limit: limit, offset: offset);
+    String? search,
+    String? status,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminCommunityPosts(
+    search: search,
+    status: status,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
-  Future<Map<String, dynamic>> updateAdminCommunityPost(int id, Map<String, dynamic> body) =>
-      _rest.updateAdminCommunityPost(id, body);
+  Future<Map<String, dynamic>> updateAdminCommunityPost(
+    int id,
+    Map<String, dynamic> body,
+  ) => _rest.updateAdminCommunityPost(id, body);
 
   @override
   Future<void> deleteAdminCommunityPost(int id) =>
@@ -1176,8 +1353,18 @@ class LocalMcpClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> listAdminGitHubIssues({
-    String? repo, String? state, String? type, int? limit, int? offset,
-  }) => _rest.listAdminGitHubIssues(repo: repo, state: state, type: type, limit: limit, offset: offset);
+    String? repo,
+    String? state,
+    String? type,
+    int? limit,
+    int? offset,
+  }) => _rest.listAdminGitHubIssues(
+    repo: repo,
+    state: state,
+    type: type,
+    limit: limit,
+    offset: offset,
+  );
 
   @override
   Future<Map<String, dynamic>> syncAdminGitHub({String? repo}) =>
@@ -1194,12 +1381,10 @@ class LocalMcpClient implements ApiClient {
   // ── Health (delegated to REST API) ──────────────────────────────────────
 
   @override
-  Future<Map<String, dynamic>> getHealthProfile() =>
-      _rest.getHealthProfile();
+  Future<Map<String, dynamic>> getHealthProfile() => _rest.getHealthProfile();
 
   @override
-  Future<Map<String, dynamic>> updateHealthProfile(
-          Map<String, dynamic> body) =>
+  Future<Map<String, dynamic>> updateHealthProfile(Map<String, dynamic> body) =>
       _rest.updateHealthProfile(body);
 
   @override
@@ -1231,23 +1416,20 @@ class LocalMcpClient implements ApiClient {
       _rest.listCaffeineLogs(date: date);
 
   @override
-  Future<Map<String, dynamic>> getCaffeineScore() =>
-      _rest.getCaffeineScore();
+  Future<Map<String, dynamic>> getCaffeineScore() => _rest.getCaffeineScore();
 
   @override
   Future<Map<String, dynamic>> startPomodoro() => _rest.startPomodoro();
 
   @override
-  Future<Map<String, dynamic>> endPomodoro(String id) =>
-      _rest.endPomodoro(id);
+  Future<Map<String, dynamic>> endPomodoro(String id) => _rest.endPomodoro(id);
 
   @override
   Future<List<Map<String, dynamic>>> listPomodoroSessions({String? date}) =>
       _rest.listPomodoroSessions(date: date);
 
   @override
-  Future<Map<String, dynamic>> getShutdownStatus() =>
-      _rest.getShutdownStatus();
+  Future<Map<String, dynamic>> getShutdownStatus() => _rest.getShutdownStatus();
 
   @override
   Future<Map<String, dynamic>> startShutdown() => _rest.startShutdown();
@@ -1257,13 +1439,13 @@ class LocalMcpClient implements ApiClient {
       _rest.upsertSnapshot(body);
 
   @override
-  Future<List<Map<String, dynamic>>> listSnapshots(
-          {String? from, String? to}) =>
-      _rest.listSnapshots(from: from, to: to);
+  Future<List<Map<String, dynamic>>> listSnapshots({
+    String? from,
+    String? to,
+  }) => _rest.listSnapshots(from: from, to: to);
 
   @override
-  Future<Map<String, dynamic>> getHealthSummary() =>
-      _rest.getHealthSummary();
+  Future<Map<String, dynamic>> getHealthSummary() => _rest.getHealthSummary();
 
   // ── Search ──────────────────────────────────────────────────────────────
 
@@ -1282,68 +1464,84 @@ class LocalMcpClient implements ApiClient {
     final results = <Map<String, dynamic>>[];
 
     if (scope == null || scope == 'projects') {
-      results.addAll(_query(
-        'SELECT slug AS id, name AS title, description AS subtitle, '
-        '\'project\' AS type FROM projects '
-        'WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? LIMIT 10',
-        [like, like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT slug AS id, name AS title, description AS subtitle, '
+          '\'project\' AS type FROM projects '
+          'WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? LIMIT 10',
+          [like, like],
+        ),
+      );
     }
     if (scope == null || scope == 'features') {
-      results.addAll(_query(
-        'SELECT id, title, description AS subtitle, '
-        '\'feature\' AS type FROM features '
-        'WHERE LOWER(title) LIKE ? OR LOWER(body) LIKE ? LIMIT 10',
-        [like, like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, title, description AS subtitle, '
+          '\'feature\' AS type FROM features '
+          'WHERE LOWER(title) LIKE ? OR LOWER(body) LIKE ? LIMIT 10',
+          [like, like],
+        ),
+      );
     }
     if (scope == null || scope == 'notes') {
-      results.addAll(_query(
-        'SELECT id, title, \'\' AS subtitle, '
-        '\'note\' AS type FROM notes '
-        'WHERE (LOWER(title) LIKE ? OR LOWER(body) LIKE ?) AND deleted = 0 LIMIT 10',
-        [like, like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, title, \'\' AS subtitle, '
+          '\'note\' AS type FROM notes '
+          'WHERE (LOWER(title) LIKE ? OR LOWER(body) LIKE ?) AND deleted = 0 LIMIT 10',
+          [like, like],
+        ),
+      );
     }
     if (scope == null || scope == 'agents') {
-      results.addAll(_query(
-        'SELECT id, name AS title, description AS subtitle, '
-        '\'agent\' AS type FROM agents '
-        'WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? LIMIT 10',
-        [like, like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, name AS title, description AS subtitle, '
+          '\'agent\' AS type FROM agents '
+          'WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? LIMIT 10',
+          [like, like],
+        ),
+      );
     }
     if (scope == null || scope == 'skills') {
-      results.addAll(_query(
-        'SELECT id, name AS title, description AS subtitle, '
-        '\'skill\' AS type FROM skills '
-        'WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? LIMIT 10',
-        [like, like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, name AS title, description AS subtitle, '
+          '\'skill\' AS type FROM skills '
+          'WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? LIMIT 10',
+          [like, like],
+        ),
+      );
     }
     if (scope == null || scope == 'docs') {
-      results.addAll(_query(
-        'SELECT id, title, \'\' AS subtitle, '
-        '\'doc\' AS type FROM docs '
-        'WHERE LOWER(title) LIKE ? OR LOWER(body) LIKE ? LIMIT 10',
-        [like, like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, title, \'\' AS subtitle, '
+          '\'doc\' AS type FROM docs '
+          'WHERE LOWER(title) LIKE ? OR LOWER(body) LIKE ? LIMIT 10',
+          [like, like],
+        ),
+      );
     }
     if (scope == null || scope == 'sessions') {
-      results.addAll(_query(
-        'SELECT id, name AS title, model AS subtitle, '
-        '\'session\' AS type FROM sessions '
-        'WHERE LOWER(name) LIKE ? LIMIT 10',
-        [like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, name AS title, model AS subtitle, '
+          '\'session\' AS type FROM sessions '
+          'WHERE LOWER(name) LIKE ? LIMIT 10',
+          [like],
+        ),
+      );
     }
     if (scope == null || scope == 'delegations') {
-      results.addAll(_query(
-        'SELECT id, question AS title, from_person AS subtitle, '
-        '\'delegation\' AS type FROM delegations '
-        'WHERE LOWER(question) LIKE ? LIMIT 10',
-        [like],
-      ));
+      results.addAll(
+        _query(
+          'SELECT id, question AS title, from_person AS subtitle, '
+          '\'delegation\' AS type FROM delegations '
+          'WHERE LOWER(question) LIKE ? LIMIT 10',
+          [like],
+        ),
+      );
     }
 
     return {'results': results};
@@ -1364,8 +1562,7 @@ class LocalMcpClient implements ApiClient {
     String name,
     Map<String, dynamic> arguments, {
     Duration timeout = const Duration(seconds: 30),
-  }) =>
-      throw UnsupportedError(
-        'callTool not available on LocalMcpClient — use mcpClientProvider',
-      );
+  }) => throw UnsupportedError(
+    'callTool not available on LocalMcpClient — use mcpClientProvider',
+  );
 }

@@ -19,20 +19,20 @@ final hydrationStatusProvider = FutureProvider<Map<String, dynamic>>((ref) {
 /// Water log entries for a given date (defaults to today on the backend).
 final waterLogsProvider =
     FutureProvider.family<List<Map<String, dynamic>>, String?>(
-  (ref, date) => ref.watch(apiClientProvider).listWaterLogs(date: date),
-);
+      (ref, date) => ref.watch(apiClientProvider).listWaterLogs(date: date),
+    );
 
 /// Meal log entries for a given date.
 final mealLogsProvider =
     FutureProvider.family<List<Map<String, dynamic>>, String?>(
-  (ref, date) => ref.watch(apiClientProvider).listMealLogs(date: date),
-);
+      (ref, date) => ref.watch(apiClientProvider).listMealLogs(date: date),
+    );
 
 /// Caffeine log entries for a given date.
 final caffeineLogsProvider =
     FutureProvider.family<List<Map<String, dynamic>>, String?>(
-  (ref, date) => ref.watch(apiClientProvider).listCaffeineLogs(date: date),
-);
+      (ref, date) => ref.watch(apiClientProvider).listCaffeineLogs(date: date),
+    );
 
 /// Caffeine cleanliness score.
 final caffeineScoreProvider = FutureProvider<Map<String, dynamic>>((ref) {
@@ -42,9 +42,9 @@ final caffeineScoreProvider = FutureProvider<Map<String, dynamic>>((ref) {
 /// Pomodoro sessions for a given date.
 final pomodoroSessionsProvider =
     FutureProvider.family<List<Map<String, dynamic>>, String?>(
-  (ref, date) =>
-      ref.watch(apiClientProvider).listPomodoroSessions(date: date),
-);
+      (ref, date) =>
+          ref.watch(apiClientProvider).listPomodoroSessions(date: date),
+    );
 
 /// Shutdown ritual status.
 final shutdownStatusProvider = FutureProvider<Map<String, dynamic>>((ref) {
@@ -52,8 +52,12 @@ final shutdownStatusProvider = FutureProvider<Map<String, dynamic>>((ref) {
 });
 
 /// Health snapshots between two dates.
-final snapshotsProvider = FutureProvider.family<List<Map<String, dynamic>>,
-    ({String? from, String? to})>(
-  (ref, range) =>
-      ref.watch(apiClientProvider).listSnapshots(from: range.from, to: range.to),
-);
+final snapshotsProvider =
+    FutureProvider.family<
+      List<Map<String, dynamic>>,
+      ({String? from, String? to})
+    >(
+      (ref, range) => ref
+          .watch(apiClientProvider)
+          .listSnapshots(from: range.from, to: range.to),
+    );

@@ -82,15 +82,13 @@ class TunnelActionsNotifier extends Notifier<TunnelActionsState> {
       (response) {
         state = state.copyWith(
           latestResponse: response,
-          isDispatching: response.status == TunnelResponseStatus.running ||
+          isDispatching:
+              response.status == TunnelResponseStatus.running ||
               response.status == TunnelResponseStatus.pending,
         );
       },
       onError: (Object error) {
-        state = state.copyWith(
-          isDispatching: false,
-          error: error.toString(),
-        );
+        state = state.copyWith(isDispatching: false, error: error.toString());
       },
       onDone: () {
         state = state.copyWith(isDispatching: false);
@@ -132,16 +130,15 @@ class TunnelActionsState {
     bool? isDispatching,
     TunnelResponse? latestResponse,
     String? error,
-  }) =>
-      TunnelActionsState(
-        isDispatching: isDispatching ?? this.isDispatching,
-        latestResponse: latestResponse ?? this.latestResponse,
-        error: error ?? this.error,
-      );
+  }) => TunnelActionsState(
+    isDispatching: isDispatching ?? this.isDispatching,
+    latestResponse: latestResponse ?? this.latestResponse,
+    error: error ?? this.error,
+  );
 }
 
 /// Provides [TunnelActionsNotifier] for dispatching smart actions.
 final tunnelActionsProvider =
     NotifierProvider<TunnelActionsNotifier, TunnelActionsState>(
-  TunnelActionsNotifier.new,
-);
+      TunnelActionsNotifier.new,
+    );

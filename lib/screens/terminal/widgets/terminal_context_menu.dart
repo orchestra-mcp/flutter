@@ -19,7 +19,8 @@ Future<void> showTerminalContextMenu({
     context: context,
     position: RelativeRect.fromRect(
       Rect.fromLTWH(position.dx, position.dy, 0, 0),
-      Offset.zero & (Overlay.of(context).context.findRenderObject()! as RenderBox).size,
+      Offset.zero &
+          (Overlay.of(context).context.findRenderObject()! as RenderBox).size,
     ),
     color: tokens.bgAlt,
     shape: RoundedRectangleBorder(
@@ -34,12 +35,7 @@ Future<void> showTerminalContextMenu({
         tokens,
         enabled: hasSelection,
       ),
-      _buildItem(
-        _ContextAction.paste,
-        Icons.paste_rounded,
-        'Paste',
-        tokens,
-      ),
+      _buildItem(_ContextAction.paste, Icons.paste_rounded, 'Paste', tokens),
       const PopupMenuDivider(height: 1),
       _buildItem(
         _ContextAction.selectAll,
@@ -48,12 +44,7 @@ Future<void> showTerminalContextMenu({
         tokens,
       ),
       const PopupMenuDivider(height: 1),
-      _buildItem(
-        _ContextAction.search,
-        Icons.search_rounded,
-        'Search',
-        tokens,
-      ),
+      _buildItem(_ContextAction.search, Icons.search_rounded, 'Search', tokens),
       _buildItem(
         _ContextAction.clear,
         Icons.clear_all_rounded,
@@ -88,10 +79,7 @@ Future<void> showTerminalContextMenu({
       if (buffer.height > 0) {
         controller.setSelection(
           buffer.createAnchor(0, 0),
-          buffer.createAnchor(
-            buffer.viewWidth - 1,
-            buffer.height - 1,
-          ),
+          buffer.createAnchor(buffer.viewWidth - 1, buffer.height - 1),
         );
       }
     case _ContextAction.search:
@@ -116,11 +104,7 @@ PopupMenuEntry<_ContextAction> _buildItem(
     height: 36,
     child: Row(
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: enabled ? tokens.fgMuted : tokens.fgDim,
-        ),
+        Icon(icon, size: 16, color: enabled ? tokens.fgMuted : tokens.fgDim),
         const SizedBox(width: 8),
         Text(
           label,

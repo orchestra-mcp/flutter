@@ -8,13 +8,7 @@ import 'package:orchestra/features/delegation/delegation_badge_provider.dart';
 
 // ── Delegation event model ──────────────────────────────────────────────────
 
-enum DelegationEventType {
-  created,
-  accepted,
-  rejected,
-  completed,
-  expired,
-}
+enum DelegationEventType { created, accepted, rejected, completed, expired }
 
 class DelegationEvent {
   const DelegationEvent({
@@ -49,7 +43,8 @@ class DelegationEvent {
       fromUser: json['from_user'] as String? ?? '',
       toUser: json['to_user'] as String? ?? '',
       message: json['message'] as String? ?? '',
-      timestamp: DateTime.tryParse(json['timestamp'] as String? ?? '') ??
+      timestamp:
+          DateTime.tryParse(json['timestamp'] as String? ?? '') ??
           DateTime.now(),
     );
   }
@@ -223,7 +218,7 @@ class DelegationNotificationService {
 
 final delegationNotificationServiceProvider =
     Provider<DelegationNotificationService>((ref) {
-  final service = DelegationNotificationService(ref: ref);
-  ref.onDispose(service.dispose);
-  return service;
-});
+      final service = DelegationNotificationService(ref: ref);
+      ref.onDispose(service.dispose);
+      return service;
+    });

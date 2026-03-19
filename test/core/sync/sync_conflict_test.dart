@@ -8,12 +8,15 @@ void main() {
 
   group('ConflictResolution', () {
     test('fromString parses all values', () {
-      expect(ConflictResolution.fromString('keep_local'),
-          ConflictResolution.keepLocal);
-      expect(ConflictResolution.fromString('keep_remote'),
-          ConflictResolution.keepRemote);
       expect(
-          ConflictResolution.fromString('merge'), ConflictResolution.merge);
+        ConflictResolution.fromString('keep_local'),
+        ConflictResolution.keepLocal,
+      );
+      expect(
+        ConflictResolution.fromString('keep_remote'),
+        ConflictResolution.keepRemote,
+      );
+      expect(ConflictResolution.fromString('merge'), ConflictResolution.merge);
     });
 
     test('toJson round-trips', () {
@@ -319,11 +322,7 @@ void main() {
       localData: {'title': 'Local', 'content': 'Local body'},
       remoteData: {'title': 'Remote', 'content': 'Remote body'},
       diffs: const [
-        FieldDiff(
-          field: 'title',
-          localValue: 'Local',
-          remoteValue: 'Remote',
-        ),
+        FieldDiff(field: 'title', localValue: 'Local', remoteValue: 'Remote'),
         FieldDiff(
           field: 'content',
           localValue: 'Local body',
@@ -513,23 +512,25 @@ void main() {
       addTearDown(container.dispose);
       final notifier = container.read(syncConflictsProvider.notifier);
       for (var i = 0; i < 3; i++) {
-        notifier.addConflict(SyncConflict(
-          entityType: 'note',
-          entityId: 'n$i',
-          entityTitle: 'Note $i',
-          localVersion: 1,
-          remoteVersion: 2,
-          localData: {'title': 'Local $i'},
-          remoteData: {'title': 'Remote $i'},
-          diffs: [
-            FieldDiff(
-              field: 'title',
-              localValue: 'Local $i',
-              remoteValue: 'Remote $i',
-            ),
-          ],
-          detectedAt: DateTime.utc(2026, 3, 17),
-        ));
+        notifier.addConflict(
+          SyncConflict(
+            entityType: 'note',
+            entityId: 'n$i',
+            entityTitle: 'Note $i',
+            localVersion: 1,
+            remoteVersion: 2,
+            localData: {'title': 'Local $i'},
+            remoteData: {'title': 'Remote $i'},
+            diffs: [
+              FieldDiff(
+                field: 'title',
+                localValue: 'Local $i',
+                remoteValue: 'Remote $i',
+              ),
+            ],
+            detectedAt: DateTime.utc(2026, 3, 17),
+          ),
+        );
       }
       expect(container.read(syncConflictsProvider), hasLength(3));
       notifier.clear();

@@ -39,7 +39,11 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSaveSetting}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToSaveSetting}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -66,14 +70,19 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
       _saving = true;
     });
     try {
-      await ref
-          .read(apiClientProvider)
-          .updateHealthProfile({hourKey: hour, minuteKey: minute});
+      await ref.read(apiClientProvider).updateHealthProfile({
+        hourKey: hour,
+        minuteKey: minute,
+      });
       ref.invalidate(healthProfileProvider);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSaveSetting}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToSaveSetting}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -111,7 +120,13 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
       initialTime: TimeOfDay(hour: currentHour, minute: currentMinute),
     );
     if (picked != null && mounted) {
-      await _saveTimePair(hourKey, picked.hour, minuteKey, picked.minute, profile);
+      await _saveTimePair(
+        hourKey,
+        picked.hour,
+        minuteKey,
+        picked.minute,
+        profile,
+      );
     }
   }
 
@@ -131,8 +146,7 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 40, color: tokens.fgDim),
+              Icon(Icons.error_outline_rounded, size: 40, color: tokens.fgDim),
               const SizedBox(height: 12),
               Text(
                 l10n.healthSettingsFailedToLoadProfile,
@@ -195,119 +209,302 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
     final List<Widget> rows = [];
 
     // 1. Weight Check-in
-    rows.add(_ToggleRow(
-      icon: Icons.monitor_weight_outlined,
-      label: l10n.healthSettingsWeightCheckin,
-      subtitle: l10n.healthSettingsWeightCheckinSub,
-      value: weightEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('weightAlertEnabled', v, profile),
-    ));
-    if (weightEnabled) {
-      rows.add(_TimePickerRow(
-        icon: Icons.schedule_rounded,
-        label: l10n.healthSettingsAlertTime,
-        subtitle: l10n.healthSettingsAlertTimeSub,
-        time: _formatTime(
-          _intVal(profile, 'weightAlertHour', 8),
-          _intVal(profile, 'weightAlertMinute'),
-        ),
-        tokens: tokens,
-        onTap: _saving
-            ? null
-            : () => _pickTime(profile, 'weightAlertHour', 'weightAlertMinute'),
-      ));
-      rows.add(_StepperRow(
-        icon: Icons.calendar_today_rounded,
-        label: l10n.healthSettingsDelayDays,
-        subtitle: l10n.healthSettingsDelayDaysSub,
-        value: _intVal(profile, 'weightAlertDelayDays', 1),
-        min: 1,
-        max: 14,
-        step: 1,
-        unit: l10n.healthSettingsDaysUnit,
+    rows.add(
+      _ToggleRow(
+        icon: Icons.monitor_weight_outlined,
+        label: l10n.healthSettingsWeightCheckin,
+        subtitle: l10n.healthSettingsWeightCheckinSub,
+        value: weightEnabled,
         tokens: tokens,
         onChanged: _saving
             ? null
-            : (v) => _save('weightAlertDelayDays', v, profile),
-      ));
+            : (v) => _save('weightAlertEnabled', v, profile),
+      ),
+    );
+    if (weightEnabled) {
+      rows.add(
+        _TimePickerRow(
+          icon: Icons.schedule_rounded,
+          label: l10n.healthSettingsAlertTime,
+          subtitle: l10n.healthSettingsAlertTimeSub,
+          time: _formatTime(
+            _intVal(profile, 'weightAlertHour', 8),
+            _intVal(profile, 'weightAlertMinute'),
+          ),
+          tokens: tokens,
+          onTap: _saving
+              ? null
+              : () =>
+                    _pickTime(profile, 'weightAlertHour', 'weightAlertMinute'),
+        ),
+      );
+      rows.add(
+        _StepperRow(
+          icon: Icons.calendar_today_rounded,
+          label: l10n.healthSettingsDelayDays,
+          subtitle: l10n.healthSettingsDelayDaysSub,
+          value: _intVal(profile, 'weightAlertDelayDays', 1),
+          min: 1,
+          max: 14,
+          step: 1,
+          unit: l10n.healthSettingsDaysUnit,
+          tokens: tokens,
+          onChanged: _saving
+              ? null
+              : (v) => _save('weightAlertDelayDays', v, profile),
+        ),
+      );
     }
 
     // 2. Hygiene Reminder
-    rows.add(_ToggleRow(
-      icon: Icons.clean_hands_outlined,
-      label: l10n.healthSettingsHygieneReminder,
-      subtitle: l10n.healthSettingsHygieneReminderSub,
-      value: hygieneEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('hygieneAlertEnabled', v, profile),
-    ));
-    if (hygieneEnabled) {
-      rows.add(_StepperRow(
-        icon: Icons.calendar_today_rounded,
-        label: l10n.healthSettingsDelayDays,
-        subtitle: l10n.healthSettingsDelayDaysSub,
-        value: _intVal(profile, 'hygieneAlertDelayDays', 1),
-        min: 1,
-        max: 7,
-        step: 1,
-        unit: l10n.healthSettingsDaysUnit,
+    rows.add(
+      _ToggleRow(
+        icon: Icons.clean_hands_outlined,
+        label: l10n.healthSettingsHygieneReminder,
+        subtitle: l10n.healthSettingsHygieneReminderSub,
+        value: hygieneEnabled,
         tokens: tokens,
         onChanged: _saving
             ? null
-            : (v) => _save('hygieneAlertDelayDays', v, profile),
-      ));
+            : (v) => _save('hygieneAlertEnabled', v, profile),
+      ),
+    );
+    if (hygieneEnabled) {
+      rows.add(
+        _StepperRow(
+          icon: Icons.calendar_today_rounded,
+          label: l10n.healthSettingsDelayDays,
+          subtitle: l10n.healthSettingsDelayDaysSub,
+          value: _intVal(profile, 'hygieneAlertDelayDays', 1),
+          min: 1,
+          max: 7,
+          step: 1,
+          unit: l10n.healthSettingsDaysUnit,
+          tokens: tokens,
+          onChanged: _saving
+              ? null
+              : (v) => _save('hygieneAlertDelayDays', v, profile),
+        ),
+      );
     }
 
     // 3. Pomodoro Start Alert
-    rows.add(_ToggleRow(
-      icon: Icons.play_circle_outline_rounded,
-      label: l10n.healthSettingsPomodoroStartAlert,
-      subtitle: l10n.healthSettingsPomodoroStartAlertSub,
-      value: pomStartEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('pomodoroStartAlertEnabled', v, profile),
-    ));
-    if (pomStartEnabled) {
-      rows.add(_StepperRow(
-        icon: Icons.timer_outlined,
-        label: l10n.healthSettingsLeadTime,
-        subtitle: l10n.healthSettingsLeadTimeStartSub,
-        value: _intVal(profile, 'pomodoroStartLeadMinutes', 5),
-        min: 5,
-        max: 60,
-        step: 5,
-        unit: l10n.healthSettingsMinUnit,
+    rows.add(
+      _ToggleRow(
+        icon: Icons.play_circle_outline_rounded,
+        label: l10n.healthSettingsPomodoroStartAlert,
+        subtitle: l10n.healthSettingsPomodoroStartAlertSub,
+        value: pomStartEnabled,
         tokens: tokens,
         onChanged: _saving
             ? null
-            : (v) => _save('pomodoroStartLeadMinutes', v, profile),
-      ));
+            : (v) => _save('pomodoroStartAlertEnabled', v, profile),
+      ),
+    );
+    if (pomStartEnabled) {
+      rows.add(
+        _StepperRow(
+          icon: Icons.timer_outlined,
+          label: l10n.healthSettingsLeadTime,
+          subtitle: l10n.healthSettingsLeadTimeStartSub,
+          value: _intVal(profile, 'pomodoroStartLeadMinutes', 5),
+          min: 5,
+          max: 60,
+          step: 5,
+          unit: l10n.healthSettingsMinUnit,
+          tokens: tokens,
+          onChanged: _saving
+              ? null
+              : (v) => _save('pomodoroStartLeadMinutes', v, profile),
+        ),
+      );
     }
 
     // 4. Pomodoro End Alert
-    rows.add(_ToggleRow(
-      icon: Icons.stop_circle_outlined,
-      label: l10n.healthSettingsPomodoroEndAlert,
-      subtitle: l10n.healthSettingsPomodoroEndAlertSub,
-      value: pomEndEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('pomodoroEndAlertEnabled', v, profile),
-    ));
+    rows.add(
+      _ToggleRow(
+        icon: Icons.stop_circle_outlined,
+        label: l10n.healthSettingsPomodoroEndAlert,
+        subtitle: l10n.healthSettingsPomodoroEndAlertSub,
+        value: pomEndEnabled,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('pomodoroEndAlertEnabled', v, profile),
+      ),
+    );
     if (pomEndEnabled) {
-      rows.add(_StepperRow(
-        icon: Icons.timer_outlined,
-        label: l10n.healthSettingsLeadTime,
-        subtitle: l10n.healthSettingsLeadTimeEndSub,
-        value: _intVal(profile, 'pomodoroEndLeadMinutes', 5),
+      rows.add(
+        _StepperRow(
+          icon: Icons.timer_outlined,
+          label: l10n.healthSettingsLeadTime,
+          subtitle: l10n.healthSettingsLeadTimeEndSub,
+          value: _intVal(profile, 'pomodoroEndLeadMinutes', 5),
+          min: 5,
+          max: 60,
+          step: 5,
+          unit: l10n.healthSettingsMinUnit,
+          tokens: tokens,
+          onChanged: _saving
+              ? null
+              : (v) => _save('pomodoroEndLeadMinutes', v, profile),
+        ),
+      );
+    }
+
+    // 5. Heart Rate High
+    rows.add(
+      _StepperRow(
+        icon: Icons.heart_broken_rounded,
+        label: l10n.healthSettingsHeartRateHigh,
+        subtitle: l10n.healthSettingsHeartRateHighSub,
+        value: _intVal(profile, 'heartRateHighThreshold', 120),
+        min: 80,
+        max: 200,
+        step: 5,
+        unit: l10n.healthSettingsBpmUnit,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('heartRateHighThreshold', v, profile),
+      ),
+    );
+
+    // 6. Heart Rate Low
+    rows.add(
+      _StepperRow(
+        icon: Icons.favorite_border_rounded,
+        label: l10n.healthSettingsHeartRateLow,
+        subtitle: l10n.healthSettingsHeartRateLowSub,
+        value: _intVal(profile, 'heartRateLowThreshold', 50),
+        min: 30,
+        max: 70,
+        step: 5,
+        unit: l10n.healthSettingsBpmUnit,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('heartRateLowThreshold', v, profile),
+      ),
+    );
+
+    // 7. Meal Reminder
+    rows.add(
+      _ToggleRow(
+        icon: Icons.restaurant_outlined,
+        label: l10n.healthSettingsMealReminder,
+        subtitle: l10n.healthSettingsMealReminderSub,
+        value: mealEnabled,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('mealReminderEnabled', v, profile),
+      ),
+    );
+
+    // 8. Coffee Time
+    rows.add(
+      _ToggleRow(
+        icon: Icons.coffee_outlined,
+        label: l10n.healthSettingsCoffeeTime,
+        subtitle: l10n.healthSettingsCoffeeTimeSub,
+        value: coffeeEnabled,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('coffeeAlertEnabled', v, profile),
+      ),
+    );
+    if (coffeeEnabled) {
+      rows.add(
+        _TimePickerRow(
+          icon: Icons.schedule_rounded,
+          label: l10n.healthSettingsCutoffTime,
+          subtitle: l10n.healthSettingsCutoffTimeSub,
+          time: _formatTime(
+            _intVal(profile, 'coffeeAlertHour', 14),
+            _intVal(profile, 'coffeeAlertMinute'),
+          ),
+          tokens: tokens,
+          onTap: _saving
+              ? null
+              : () =>
+                    _pickTime(profile, 'coffeeAlertHour', 'coffeeAlertMinute'),
+        ),
+      );
+    }
+
+    // 9. Hydration Alert
+    rows.add(
+      _ToggleRow(
+        icon: Icons.water_drop_outlined,
+        label: l10n.healthSettingsHydrationAlert,
+        subtitle: l10n.healthSettingsHydrationAlertSub,
+        value: hydrationEnabled,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('hydrationAlertEnabled', v, profile),
+      ),
+    );
+    if (hydrationEnabled) {
+      rows.add(
+        _StepperRow(
+          icon: Icons.timer_outlined,
+          label: l10n.healthSettingsAlertGap,
+          subtitle: l10n.healthSettingsAlertGapSub,
+          value: _intVal(profile, 'hydrationAlertGapMinutes', 60),
+          min: 30,
+          max: 180,
+          step: 15,
+          unit: l10n.healthSettingsMinUnit,
+          tokens: tokens,
+          onChanged: _saving
+              ? null
+              : (v) => _save('hydrationAlertGapMinutes', v, profile),
+        ),
+      );
+    }
+
+    // 10. Movement Alert
+    rows.add(
+      _ToggleRow(
+        icon: Icons.directions_walk_rounded,
+        label: l10n.healthSettingsMovementAlert,
+        subtitle: l10n.healthSettingsMovementAlertSub,
+        value: movementEnabled,
+        tokens: tokens,
+        onChanged: _saving
+            ? null
+            : (v) => _save('movementAlertEnabled', v, profile),
+      ),
+    );
+    if (movementEnabled) {
+      rows.add(
+        _StepperRow(
+          icon: Icons.timer_outlined,
+          label: l10n.healthSettingsInterval,
+          subtitle: l10n.healthSettingsIntervalSub,
+          value: _intVal(profile, 'movementAlertIntervalMinutes', 60),
+          min: 30,
+          max: 120,
+          step: 15,
+          unit: l10n.healthSettingsMinUnit,
+          tokens: tokens,
+          onChanged: _saving
+              ? null
+              : (v) => _save('movementAlertIntervalMinutes', v, profile),
+        ),
+      );
+    }
+
+    // 11. GERD Warning
+    rows.add(
+      _StepperRow(
+        icon: Icons.warning_amber_rounded,
+        label: l10n.healthSettingsGerdWarning,
+        subtitle: l10n.healthSettingsGerdWarningSub,
+        value: _intVal(profile, 'gerdShutdownLeadMinutes', 30),
         min: 5,
         max: 60,
         step: 5,
@@ -315,153 +512,9 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
         tokens: tokens,
         onChanged: _saving
             ? null
-            : (v) => _save('pomodoroEndLeadMinutes', v, profile),
-      ));
-    }
-
-    // 5. Heart Rate High
-    rows.add(_StepperRow(
-      icon: Icons.heart_broken_rounded,
-      label: l10n.healthSettingsHeartRateHigh,
-      subtitle: l10n.healthSettingsHeartRateHighSub,
-      value: _intVal(profile, 'heartRateHighThreshold', 120),
-      min: 80,
-      max: 200,
-      step: 5,
-      unit: l10n.healthSettingsBpmUnit,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('heartRateHighThreshold', v, profile),
-    ));
-
-    // 6. Heart Rate Low
-    rows.add(_StepperRow(
-      icon: Icons.favorite_border_rounded,
-      label: l10n.healthSettingsHeartRateLow,
-      subtitle: l10n.healthSettingsHeartRateLowSub,
-      value: _intVal(profile, 'heartRateLowThreshold', 50),
-      min: 30,
-      max: 70,
-      step: 5,
-      unit: l10n.healthSettingsBpmUnit,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('heartRateLowThreshold', v, profile),
-    ));
-
-    // 7. Meal Reminder
-    rows.add(_ToggleRow(
-      icon: Icons.restaurant_outlined,
-      label: l10n.healthSettingsMealReminder,
-      subtitle: l10n.healthSettingsMealReminderSub,
-      value: mealEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('mealReminderEnabled', v, profile),
-    ));
-
-    // 8. Coffee Time
-    rows.add(_ToggleRow(
-      icon: Icons.coffee_outlined,
-      label: l10n.healthSettingsCoffeeTime,
-      subtitle: l10n.healthSettingsCoffeeTimeSub,
-      value: coffeeEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('coffeeAlertEnabled', v, profile),
-    ));
-    if (coffeeEnabled) {
-      rows.add(_TimePickerRow(
-        icon: Icons.schedule_rounded,
-        label: l10n.healthSettingsCutoffTime,
-        subtitle: l10n.healthSettingsCutoffTimeSub,
-        time: _formatTime(
-          _intVal(profile, 'coffeeAlertHour', 14),
-          _intVal(profile, 'coffeeAlertMinute'),
-        ),
-        tokens: tokens,
-        onTap: _saving
-            ? null
-            : () =>
-                _pickTime(profile, 'coffeeAlertHour', 'coffeeAlertMinute'),
-      ));
-    }
-
-    // 9. Hydration Alert
-    rows.add(_ToggleRow(
-      icon: Icons.water_drop_outlined,
-      label: l10n.healthSettingsHydrationAlert,
-      subtitle: l10n.healthSettingsHydrationAlertSub,
-      value: hydrationEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('hydrationAlertEnabled', v, profile),
-    ));
-    if (hydrationEnabled) {
-      rows.add(_StepperRow(
-        icon: Icons.timer_outlined,
-        label: l10n.healthSettingsAlertGap,
-        subtitle: l10n.healthSettingsAlertGapSub,
-        value: _intVal(profile, 'hydrationAlertGapMinutes', 60),
-        min: 30,
-        max: 180,
-        step: 15,
-        unit: l10n.healthSettingsMinUnit,
-        tokens: tokens,
-        onChanged: _saving
-            ? null
-            : (v) => _save('hydrationAlertGapMinutes', v, profile),
-      ));
-    }
-
-    // 10. Movement Alert
-    rows.add(_ToggleRow(
-      icon: Icons.directions_walk_rounded,
-      label: l10n.healthSettingsMovementAlert,
-      subtitle: l10n.healthSettingsMovementAlertSub,
-      value: movementEnabled,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('movementAlertEnabled', v, profile),
-    ));
-    if (movementEnabled) {
-      rows.add(_StepperRow(
-        icon: Icons.timer_outlined,
-        label: l10n.healthSettingsInterval,
-        subtitle: l10n.healthSettingsIntervalSub,
-        value: _intVal(profile, 'movementAlertIntervalMinutes', 60),
-        min: 30,
-        max: 120,
-        step: 15,
-        unit: l10n.healthSettingsMinUnit,
-        tokens: tokens,
-        onChanged: _saving
-            ? null
-            : (v) => _save('movementAlertIntervalMinutes', v, profile),
-      ));
-    }
-
-    // 11. GERD Warning
-    rows.add(_StepperRow(
-      icon: Icons.warning_amber_rounded,
-      label: l10n.healthSettingsGerdWarning,
-      subtitle: l10n.healthSettingsGerdWarningSub,
-      value: _intVal(profile, 'gerdShutdownLeadMinutes', 30),
-      min: 5,
-      max: 60,
-      step: 5,
-      unit: l10n.healthSettingsMinUnit,
-      tokens: tokens,
-      onChanged: _saving
-          ? null
-          : (v) => _save('gerdShutdownLeadMinutes', v, profile),
-    ));
+            : (v) => _save('gerdShutdownLeadMinutes', v, profile),
+      ),
+    );
 
     return _buildGroupBox(tokens, rows);
   }
@@ -487,7 +540,7 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
         onTap: _saving
             ? null
             : () =>
-                _pickTime(profile, 'sleepBedtimeHour', 'sleepBedtimeMinute'),
+                  _pickTime(profile, 'sleepBedtimeHour', 'sleepBedtimeMinute'),
       ),
 
       // 13. Shutdown Window
@@ -513,13 +566,13 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
   // ── Shared UI builders ─────────────────────────────────────────────────
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   /// Wraps a list of row widgets in a decorated container with dividers.
   Widget _buildGroupBox(OrchestraColorTokens tokens, List<Widget> rows) {
@@ -680,8 +733,10 @@ class _StepperRow extends StatelessWidget {
                 ),
                 Container(
                   constraints: const BoxConstraints(minWidth: 52),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 6,
+                  ),
                   alignment: Alignment.center,
                   child: Text(
                     '$value $unit',
@@ -767,8 +822,11 @@ class _TimePickerRow extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.access_time_rounded,
-                      size: 14, color: tokens.accent),
+                  Icon(
+                    Icons.access_time_rounded,
+                    size: 14,
+                    color: tokens.accent,
+                  ),
                   const SizedBox(width: 6),
                   Text(
                     time,

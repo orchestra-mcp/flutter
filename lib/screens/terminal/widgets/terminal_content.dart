@@ -14,10 +14,7 @@ import 'package:xterm/xterm.dart';
 ///
 /// Includes search overlay, right-click context menu, and keyboard shortcuts.
 class TerminalContent extends ConsumerWidget {
-  const TerminalContent({
-    super.key,
-    required this.sessionId,
-  });
+  const TerminalContent({super.key, required this.sessionId});
 
   final String sessionId;
 
@@ -33,10 +30,7 @@ class TerminalContent extends ConsumerWidget {
 
     if (backend == null) {
       return Center(
-        child: Text(
-          'Session not found',
-          style: TextStyle(color: tokens.fgDim),
-        ),
+        child: Text('Session not found', style: TextStyle(color: tokens.fgDim)),
       );
     }
 
@@ -81,9 +75,7 @@ class TerminalContent extends ConsumerWidget {
                       terminal: backend.terminal,
                       controller: controller,
                       onSearch: () {
-                        ref
-                            .read(terminalSearchVisibleProvider.notifier)
-                            .show();
+                        ref.read(terminalSearchVisibleProvider.notifier).show();
                       },
                     );
                   },
@@ -106,32 +98,56 @@ class TerminalContent extends ConsumerWidget {
 
     return {
       // Cmd/Ctrl + V → paste (check image clipboard first, then text)
-      SingleActivator(LogicalKeyboardKey.keyV, meta: isMac, control: !isMac): () {
+      SingleActivator(
+        LogicalKeyboardKey.keyV,
+        meta: isMac,
+        control: !isMac,
+      ): () {
         _pasteWithImageSupport(terminal);
       },
 
       // Cmd/Ctrl + F → toggle search
-      SingleActivator(LogicalKeyboardKey.keyF, meta: isMac, control: !isMac): () {
+      SingleActivator(
+        LogicalKeyboardKey.keyF,
+        meta: isMac,
+        control: !isMac,
+      ): () {
         ref.read(terminalSearchVisibleProvider.notifier).toggle();
       },
 
       // Cmd/Ctrl + K → clear terminal
-      SingleActivator(LogicalKeyboardKey.keyK, meta: isMac, control: !isMac): () {
+      SingleActivator(
+        LogicalKeyboardKey.keyK,
+        meta: isMac,
+        control: !isMac,
+      ): () {
         terminal.write('\x1B[2J\x1B[H');
       },
 
       // Cmd/Ctrl + = → increase font size
-      SingleActivator(LogicalKeyboardKey.equal, meta: isMac, control: !isMac): () {
+      SingleActivator(
+        LogicalKeyboardKey.equal,
+        meta: isMac,
+        control: !isMac,
+      ): () {
         ref.read(terminalFontSizeProvider.notifier).increase();
       },
 
       // Cmd/Ctrl + - → decrease font size
-      SingleActivator(LogicalKeyboardKey.minus, meta: isMac, control: !isMac): () {
+      SingleActivator(
+        LogicalKeyboardKey.minus,
+        meta: isMac,
+        control: !isMac,
+      ): () {
         ref.read(terminalFontSizeProvider.notifier).decrease();
       },
 
       // Cmd/Ctrl + 0 → reset font size
-      SingleActivator(LogicalKeyboardKey.digit0, meta: isMac, control: !isMac): () {
+      SingleActivator(
+        LogicalKeyboardKey.digit0,
+        meta: isMac,
+        control: !isMac,
+      ): () {
         ref.read(terminalFontSizeProvider.notifier).reset();
       },
 

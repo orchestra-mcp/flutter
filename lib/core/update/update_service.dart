@@ -38,8 +38,7 @@ class UpdateInfo {
 /// `app-v*` tag namespace used by the Flutter release workflow.
 class UpdateService {
   static const _repo = 'orchestra-mcp/framework';
-  static const _releasesUrl =
-      'https://api.github.com/repos/$_repo/releases';
+  static const _releasesUrl = 'https://api.github.com/repos/$_repo/releases';
 
   static const _iosStoreUrl =
       'https://apps.apple.com/app/orchestra/id0000000000';

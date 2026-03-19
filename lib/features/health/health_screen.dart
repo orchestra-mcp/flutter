@@ -41,17 +41,17 @@ class _HealthScreenState extends ConsumerState<HealthScreen>
   }
 
   List<String> _tabLabels(AppLocalizations l10n) => [
-        l10n.healthScore,
-        l10n.vitals,
-        l10n.dailyFlow,
-        l10n.hydration,
-        l10n.caffeine,
-        l10n.nutrition,
-        l10n.pomodoro,
-        l10n.shutdown,
-        l10n.weight,
-        l10n.sleep,
-      ];
+    l10n.healthScore,
+    l10n.vitals,
+    l10n.dailyFlow,
+    l10n.hydration,
+    l10n.caffeine,
+    l10n.nutrition,
+    l10n.pomodoro,
+    l10n.shutdown,
+    l10n.weight,
+    l10n.sleep,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +76,10 @@ class _HealthScreenState extends ConsumerState<HealthScreen>
           _PlaceholderTab(label: labels[5], icon: Icons.restaurant_outlined),
           _PlaceholderTab(label: labels[6], icon: Icons.timer_outlined),
           _PlaceholderTab(label: labels[7], icon: Icons.nightlight_outlined),
-          _PlaceholderTab(label: labels[8], icon: Icons.monitor_weight_outlined),
+          _PlaceholderTab(
+            label: labels[8],
+            icon: Icons.monitor_weight_outlined,
+          ),
           _PlaceholderTab(label: labels[9], icon: Icons.bedtime_outlined),
         ],
       ),
@@ -96,9 +99,7 @@ class _HealthScreenState extends ConsumerState<HealthScreen>
         unselectedLabelColor: tokens.fgMuted,
         labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
         unselectedLabelStyle: const TextStyle(fontSize: 12),
-        tabs: labels
-            .map((l) => Tab(text: l, height: 36))
-            .toList(),
+        tabs: labels.map((l) => Tab(text: l, height: 36)).toList(),
       ),
     );
   }
@@ -120,10 +121,7 @@ class _PlaceholderTab extends StatelessWidget {
         children: [
           Icon(icon, size: 48, color: tokens.fgMuted),
           const SizedBox(height: 12),
-          Text(
-            label,
-            style: TextStyle(color: tokens.fgMuted, fontSize: 16),
-          ),
+          Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 16)),
         ],
       ),
     );

@@ -61,7 +61,9 @@ class _AdminSocialTabState extends ConsumerState<AdminSocialTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -76,7 +78,9 @@ class _AdminSocialTabState extends ConsumerState<AdminSocialTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -92,43 +96,53 @@ class _AdminSocialTabState extends ConsumerState<AdminSocialTab> {
             const SizedBox(height: 16),
 
             // Twitter
-            _socialField(tokens,
-                icon: Icons.alternate_email_rounded,
-                label: 'Twitter',
-                ctrl: _twitterUrlCtrl,
-                hint: 'https://twitter.com/orchestra'),
+            _socialField(
+              tokens,
+              icon: Icons.alternate_email_rounded,
+              label: 'Twitter',
+              ctrl: _twitterUrlCtrl,
+              hint: 'https://twitter.com/orchestra',
+            ),
             const SizedBox(height: 12),
 
             // GitHub
-            _socialField(tokens,
-                icon: Icons.code_rounded,
-                label: 'GitHub',
-                ctrl: _githubUrlCtrl,
-                hint: 'https://github.com/orchestra-mcp'),
+            _socialField(
+              tokens,
+              icon: Icons.code_rounded,
+              label: 'GitHub',
+              ctrl: _githubUrlCtrl,
+              hint: 'https://github.com/orchestra-mcp',
+            ),
             const SizedBox(height: 12),
 
             // Discord
-            _socialField(tokens,
-                icon: Icons.discord_rounded,
-                label: 'Discord',
-                ctrl: _discordUrlCtrl,
-                hint: 'https://discord.gg/orchestra'),
+            _socialField(
+              tokens,
+              icon: Icons.discord_rounded,
+              label: 'Discord',
+              ctrl: _discordUrlCtrl,
+              hint: 'https://discord.gg/orchestra',
+            ),
             const SizedBox(height: 12),
 
             // LinkedIn
-            _socialField(tokens,
-                icon: Icons.business_rounded,
-                label: 'LinkedIn',
-                ctrl: _linkedinUrlCtrl,
-                hint: 'https://linkedin.com/company/orchestra'),
+            _socialField(
+              tokens,
+              icon: Icons.business_rounded,
+              label: 'LinkedIn',
+              ctrl: _linkedinUrlCtrl,
+              hint: 'https://linkedin.com/company/orchestra',
+            ),
             const SizedBox(height: 12),
 
             // YouTube
-            _socialField(tokens,
-                icon: Icons.play_circle_outline_rounded,
-                label: 'YouTube',
-                ctrl: _youtubeUrlCtrl,
-                hint: 'https://youtube.com/@orchestra'),
+            _socialField(
+              tokens,
+              icon: Icons.play_circle_outline_rounded,
+              label: 'YouTube',
+              ctrl: _youtubeUrlCtrl,
+              hint: 'https://youtube.com/@orchestra',
+            ),
 
             const SizedBox(height: 28),
 
@@ -142,14 +156,17 @@ class _AdminSocialTabState extends ConsumerState<AdminSocialTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -211,7 +228,9 @@ class _AdminSocialTabState extends ConsumerState<AdminSocialTab> {
               filled: true,
               fillColor: tokens.bgAlt,
               contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 10),
+                horizontal: 12,
+                vertical: 10,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: tokens.border),
@@ -232,11 +251,11 @@ class _AdminSocialTabState extends ConsumerState<AdminSocialTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 }

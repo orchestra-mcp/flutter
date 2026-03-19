@@ -6,5 +6,5 @@ import 'package:orchestra/core/api/api_provider.dart';
 /// Usage: `ref.watch(adminSettingProvider('general'))`
 final adminSettingProvider =
     FutureProvider.family<Map<String, dynamic>, String>((ref, key) {
-  return ref.watch(apiClientProvider).getAdminSetting(key);
-});
+      return ref.watch(apiClientProvider).getAdminSetting(key);
+    });

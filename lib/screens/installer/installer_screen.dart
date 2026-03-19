@@ -88,11 +88,7 @@ class _InstallerScreenState extends ConsumerState<InstallerScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 // Header
-                Icon(
-                  Icons.terminal_rounded,
-                  size: 56,
-                  color: tokens.accent,
-                ),
+                Icon(Icons.terminal_rounded, size: 56, color: tokens.accent),
                 const SizedBox(height: 16),
                 Text(
                   l10n.installOrchestra,
@@ -105,10 +101,7 @@ class _InstallerScreenState extends ConsumerState<InstallerScreen> {
                 const SizedBox(height: 8),
                 Text(
                   l10n.orchestraBinaryNotFound,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: tokens.fgMuted,
-                  ),
+                  style: TextStyle(fontSize: 14, color: tokens.fgMuted),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -116,9 +109,7 @@ class _InstallerScreenState extends ConsumerState<InstallerScreen> {
                 _StepIndicatorRow(currentStep: _currentStep),
                 const SizedBox(height: 32),
                 // Step content card
-                GlassCard(
-                  child: _buildStepContent(tokens),
-                ),
+                GlassCard(child: _buildStepContent(tokens)),
               ],
             ),
           ),
@@ -217,8 +208,11 @@ class _InstallerScreenState extends ConsumerState<InstallerScreen> {
           children: [
             Row(
               children: [
-                Icon(Icons.check_circle_rounded,
-                    color: Colors.green.shade400, size: 28),
+                Icon(
+                  Icons.check_circle_rounded,
+                  color: Colors.green.shade400,
+                  size: 28,
+                ),
                 const SizedBox(width: 10),
                 Text(
                   l10n.setupComplete,
@@ -313,8 +307,8 @@ class _StepDot extends StatelessWidget {
             color: isActive
                 ? tokens.accent
                 : isDone
-                    ? tokens.accent.withValues(alpha: 0.3)
-                    : tokens.border.withValues(alpha: 0.2),
+                ? tokens.accent.withValues(alpha: 0.3)
+                : tokens.border.withValues(alpha: 0.2),
             border: Border.all(color: color, width: 1.5),
           ),
           child: Center(

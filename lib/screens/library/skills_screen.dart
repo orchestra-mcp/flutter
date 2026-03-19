@@ -52,8 +52,7 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
       appBar: inSelectionMode
           ? SelectionAppBar(
               selectedCount: selectedIds.length,
-              onClear: () =>
-                  ref.read(skillsSelectionProvider.notifier).clear(),
+              onClear: () => ref.read(skillsSelectionProvider.notifier).clear(),
               onDelete: () {
                 showComingSoon(context, 'Delete Skills');
                 ref.read(skillsSelectionProvider.notifier).clear();
@@ -79,11 +78,13 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: Icon(Icons.add_rounded,
-                          color: tokens.accent, size: 22),
+                      icon: Icon(
+                        Icons.add_rounded,
+                        color: tokens.accent,
+                        size: 22,
+                      ),
                       style: IconButton.styleFrom(
-                        backgroundColor:
-                            tokens.accent.withValues(alpha: 0.12),
+                        backgroundColor: tokens.accent.withValues(alpha: 0.12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -96,7 +97,10 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                             context.push('/library/skills/new'),
                         onSmartCreate: (title, content) async {
                           final api = ref.read(apiClientProvider);
-                          await api.createSkill({'name': title, 'content': content});
+                          await api.createSkill({
+                            'name': title,
+                            'content': content,
+                          });
                           ref.invalidate(skillsProvider);
                         },
                       ),
@@ -107,11 +111,14 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
             Expanded(
               child: asyncSkills.when(
                 loading: () => Center(
-                    child:
-                        CircularProgressIndicator(color: tokens.accent)),
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
                 error: (e, _) => Center(
-                    child: Text(l10n.failedToLoadSkills,
-                        style: TextStyle(color: tokens.fgMuted))),
+                  child: Text(
+                    l10n.failedToLoadSkills,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
+                ),
                 data: (skills) {
                   if (skills.isEmpty) {
                     return MobileEmptyState(
@@ -124,17 +131,19 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                   final filtered = q.isEmpty
                       ? skills
                       : skills
-                          .where((s) =>
-                              ((s['name'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((s['command'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((s['source'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q))
-                          .toList();
+                            .where(
+                              (s) =>
+                                  ((s['name'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((s['command'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((s['source'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q),
+                            )
+                            .toList();
                   if (filtered.isEmpty) {
                     return Center(
                       child: Text(
@@ -154,7 +163,9 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                     });
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: sorted.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 6),
                     itemBuilder: (context, index) {
@@ -174,8 +185,8 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                         isSelected: selectedIds.contains(id),
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(skillsSelectionProvider.notifier)
-                                .toggle(id)
+                                  .read(skillsSelectionProvider.notifier)
+                                  .toggle(id)
                             : () => context.push(Routes.skill(id)),
                         onSelect: () => ref
                             .read(skillsSelectionProvider.notifier)
@@ -187,9 +198,8 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                           onSelect: () => ref
                               .read(skillsSelectionProvider.notifier)
                               .toggle(id),
-                          onPin: () => ref
-                              .read(skillsPinProvider.notifier)
-                              .toggle(id),
+                          onPin: () =>
+                              ref.read(skillsPinProvider.notifier).toggle(id),
                           isPinned: isPinned,
                           onSync: () => openSyncDialog(
                             context,
@@ -201,25 +211,37 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                                 .read(publishServiceProvider)
                                 .publishSkill(id);
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(ok
-                                    ? AppLocalizations.of(context).skillPublished
-                                    : AppLocalizations.of(context).publishFailed),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    ok
+                                        ? AppLocalizations.of(
+                                            context,
+                                          ).skillPublished
+                                        : AppLocalizations.of(
+                                            context,
+                                          ).publishFailed,
+                                  ),
+                                ),
+                              );
                             }
                           },
                           onExportMarkdown: () => exportAsMarkdown(
                             title: name,
-                            content:
-                                'Command: $command\nSource: $source',
+                            content: 'Command: $command\nSource: $source',
                           ),
                           onChangeIcon: () => pickAndSaveIcon(
-                              context, ref, id,
-                              currentCodePoint: cust?.iconCodePoint),
+                            context,
+                            ref,
+                            id,
+                            currentCodePoint: cust?.iconCodePoint,
+                          ),
                           onChangeColor: () => pickAndSaveColor(
-                              context, ref, id,
-                              currentColor: cust?.color),
+                            context,
+                            ref,
+                            id,
+                            currentColor: cust?.color,
+                          ),
                         ),
                       );
                     },

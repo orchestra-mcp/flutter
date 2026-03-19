@@ -10,7 +10,8 @@ class FeaturesTable extends Table {
   TextColumn get priority => text().withDefault(const Constant('P2'))();
   TextColumn get estimate => text().nullable()();
   TextColumn get assigneeId => text().nullable()();
-  TextColumn get labels => text().withDefault(const Constant('[]'))(); // JSON array
+  TextColumn get labels =>
+      text().withDefault(const Constant('[]'))(); // JSON array
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
   BoolColumn get synced => boolean().withDefault(const Constant(false))();

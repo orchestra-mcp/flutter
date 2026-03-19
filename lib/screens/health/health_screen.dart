@@ -64,8 +64,11 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
                       ),
                     ),
                     const Spacer(),
-                    Icon(Icons.favorite_rounded,
-                        color: tokens.accent, size: 20),
+                    Icon(
+                      Icons.favorite_rounded,
+                      color: tokens.accent,
+                      size: 20,
+                    ),
                   ],
                 ),
               ),
@@ -81,52 +84,60 @@ class _HealthScreenState extends ConsumerState<HealthScreen> {
               crossAxisSpacing: 12,
               childAspectRatio: 1.15,
               children: [
-                Builder(builder: (context) {
-                  final l10n = AppLocalizations.of(context);
-                  return _HealthHubCard(
-                    icon: Icons.favorite_rounded,
-                    iconColor: const Color(0xFFEF4444),
-                    title: l10n.healthScore,
-                    route: Routes.healthScore,
-                    subtitle: l10n.overall,
-                  );
-                }),
+                Builder(
+                  builder: (context) {
+                    final l10n = AppLocalizations.of(context);
+                    return _HealthHubCard(
+                      icon: Icons.favorite_rounded,
+                      iconColor: const Color(0xFFEF4444),
+                      title: l10n.healthScore,
+                      route: Routes.healthScore,
+                      subtitle: l10n.overall,
+                    );
+                  },
+                ),
                 _VitalsCard(),
-                Builder(builder: (context) {
-                  final l10n = AppLocalizations.of(context);
-                  return _HealthHubCard(
-                    icon: Icons.auto_graph_rounded,
-                    iconColor: const Color(0xFF818CF8),
-                    title: l10n.dailyFlow,
-                    route: Routes.healthFlow,
-                    subtitle: l10n.routines,
-                  );
-                }),
+                Builder(
+                  builder: (context) {
+                    final l10n = AppLocalizations.of(context);
+                    return _HealthHubCard(
+                      icon: Icons.auto_graph_rounded,
+                      iconColor: const Color(0xFF818CF8),
+                      title: l10n.dailyFlow,
+                      route: Routes.healthFlow,
+                      subtitle: l10n.routines,
+                    );
+                  },
+                ),
                 _HydrationCard(),
                 _CaffeineCard(),
                 _NutritionCard(),
                 _PomodoroCard(),
                 _ShutdownCard(),
-                Builder(builder: (context) {
-                  final l10n = AppLocalizations.of(context);
-                  return _HealthHubCard(
-                    icon: Icons.monitor_weight_rounded,
-                    iconColor: const Color(0xFF14B8A6),
-                    title: l10n.weight,
-                    route: Routes.healthWeight,
-                    subtitle: l10n.trackLabel,
-                  );
-                }),
-                Builder(builder: (context) {
-                  final l10n = AppLocalizations.of(context);
-                  return _HealthHubCard(
-                    icon: Icons.bedtime_rounded,
-                    iconColor: const Color(0xFF8B5CF6),
-                    title: l10n.sleep,
-                    route: Routes.healthSleep,
-                    subtitle: l10n.restLabel,
-                  );
-                }),
+                Builder(
+                  builder: (context) {
+                    final l10n = AppLocalizations.of(context);
+                    return _HealthHubCard(
+                      icon: Icons.monitor_weight_rounded,
+                      iconColor: const Color(0xFF14B8A6),
+                      title: l10n.weight,
+                      route: Routes.healthWeight,
+                      subtitle: l10n.trackLabel,
+                    );
+                  },
+                ),
+                Builder(
+                  builder: (context) {
+                    final l10n = AppLocalizations.of(context);
+                    return _HealthHubCard(
+                      icon: Icons.bedtime_rounded,
+                      iconColor: const Color(0xFF8B5CF6),
+                      title: l10n.sleep,
+                      route: Routes.healthSleep,
+                      subtitle: l10n.restLabel,
+                    );
+                  },
+                ),
               ],
             ),
           ),
@@ -194,13 +205,7 @@ class _HealthHubCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2),
-          Text(
-            subtitle,
-            style: TextStyle(
-              color: tokens.fgMuted,
-              fontSize: 12,
-            ),
-          ),
+          Text(subtitle, style: TextStyle(color: tokens.fgMuted, fontSize: 12)),
         ],
       ),
     );
@@ -229,8 +234,11 @@ class _VitalsCard extends ConsumerWidget {
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.monitor_heart_rounded,
-                color: color, size: 22),
+            child: const Icon(
+              Icons.monitor_heart_rounded,
+              color: color,
+              size: 22,
+            ),
           ),
           const Spacer(),
           Text(
@@ -275,8 +283,7 @@ class _HydrationCard extends ConsumerWidget {
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.water_drop_rounded,
-                color: color, size: 22),
+            child: const Icon(Icons.water_drop_rounded, color: color, size: 22),
           ),
           const Spacer(),
           Text(
@@ -376,8 +383,7 @@ class _NutritionCard extends ConsumerWidget {
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.restaurant_rounded,
-                color: color, size: 22),
+            child: const Icon(Icons.restaurant_rounded, color: color, size: 22),
           ),
           const Spacer(),
           Text(
@@ -390,7 +396,9 @@ class _NutritionCard extends ConsumerWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            AppLocalizations.of(context).mealsCount(meals, state.safetyScore.toStringAsFixed(0)),
+            AppLocalizations.of(
+              context,
+            ).mealsCount(meals, state.safetyScore.toStringAsFixed(0)),
             style: TextStyle(color: tokens.fgMuted, fontSize: 12),
           ),
         ],
@@ -474,8 +482,7 @@ class _ShutdownCard extends ConsumerWidget {
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.nightlight_rounded,
-                color: color, size: 22),
+            child: const Icon(Icons.nightlight_rounded, color: color, size: 22),
           ),
           const Spacer(),
           Text(

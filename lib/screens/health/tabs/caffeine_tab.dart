@@ -44,8 +44,7 @@ class CaffeineTab extends ConsumerWidget {
             ),
 
           // Cortisol window banner with animated pulse.
-          if (inCortisol)
-            _CortisolBanner(tokens: tokens),
+          if (inCortisol) _CortisolBanner(tokens: tokens),
 
           // Total today + daily limit progress.
           _DailySummaryCard(state: state, tokens: tokens),
@@ -77,8 +76,10 @@ class CaffeineTab extends ConsumerWidget {
           Center(
             child: TextButton(
               onPressed: notifier.reset,
-              child: Text(l10n.resetToday,
-                  style: TextStyle(color: tokens.fgMuted, fontSize: 12)),
+              child: Text(
+                l10n.resetToday,
+                style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+              ),
             ),
           ),
         ],
@@ -231,8 +232,7 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded,
-              color: bannerColor, size: 18),
+          const Icon(Icons.error_outline_rounded, color: bannerColor, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -312,15 +312,16 @@ class _CortisolBannerState extends State<_CortisolBanner>
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: _warningColor.withValues(alpha: _pulseAnim.value),
-            border: Border.all(
-              color: _warningColor.withValues(alpha: 0.5),
-            ),
+            border: Border.all(color: _warningColor.withValues(alpha: 0.5)),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
             children: [
-              const Icon(Icons.warning_amber_rounded,
-                  color: _warningColor, size: 18),
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: _warningColor,
+                size: 18,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -353,8 +354,10 @@ class _DailySummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final progress =
-        (state.totalMg / CaffeineTab._dailyLimitMg).clamp(0.0, 1.0);
+    final progress = (state.totalMg / CaffeineTab._dailyLimitMg).clamp(
+      0.0,
+      1.0,
+    );
     final overLimit = state.totalMg > CaffeineTab._dailyLimitMg;
     final progressColor = overLimit ? const Color(0xFFF44336) : tokens.accent;
 
@@ -380,8 +383,7 @@ class _DailySummaryCard extends StatelessWidget {
                     ),
                     Text(
                       l10n.mgToday,
-                      style:
-                          TextStyle(color: tokens.fgMuted, fontSize: 12),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     ),
                   ],
                 ),
@@ -404,10 +406,10 @@ class _DailySummaryCard extends StatelessWidget {
                         height: 6,
                         child: LinearProgressIndicator(
                           value: progress,
-                          backgroundColor:
-                              tokens.fgDim.withValues(alpha: 0.12),
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(progressColor),
+                          backgroundColor: tokens.fgDim.withValues(alpha: 0.12),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            progressColor,
+                          ),
                         ),
                       ),
                     ),
@@ -431,8 +433,7 @@ class _DailySummaryCard extends StatelessWidget {
                         ),
                         Text(
                           l10n.mgLimit(CaffeineTab._dailyLimitMg),
-                          style: TextStyle(
-                              color: tokens.fgDim, fontSize: 11),
+                          style: TextStyle(color: tokens.fgDim, fontSize: 11),
                         ),
                       ],
                     ),
@@ -501,15 +502,17 @@ class _InsightCard extends StatelessWidget {
   }
 
   _Insight? _resolveInsight(AppLocalizations l10n) {
-    final hasRedBull =
-        state.entries.any((e) => e.type == CaffeineType.redBull);
-    final redBullCount =
-        state.entries.where((e) => e.type == CaffeineType.redBull).length;
+    final hasRedBull = state.entries.any((e) => e.type == CaffeineType.redBull);
+    final redBullCount = state.entries
+        .where((e) => e.type == CaffeineType.redBull)
+        .length;
     final coffeeCount = state.entries
-        .where((e) =>
-            e.type == CaffeineType.espresso ||
-            e.type == CaffeineType.blackCoffee ||
-            e.type == CaffeineType.coldBrew)
+        .where(
+          (e) =>
+              e.type == CaffeineType.espresso ||
+              e.type == CaffeineType.blackCoffee ||
+              e.type == CaffeineType.coldBrew,
+        )
         .length;
 
     // No Red Bull today — celebration.
@@ -648,7 +651,9 @@ class _EntryLog extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          ...state.entries.reversed.take(6).map(
+          ...state.entries.reversed
+              .take(6)
+              .map(
                 (e) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
@@ -661,8 +666,7 @@ class _EntryLog extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Icon(
-                          _DrinkChip._icons[e.type] ??
-                              Icons.coffee_rounded,
+                          _DrinkChip._icons[e.type] ?? Icons.coffee_rounded,
                           color: tokens.accent,
                           size: 13,
                         ),
@@ -670,20 +674,17 @@ class _EntryLog extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         CaffeineTab.typeName(e.type, l10n),
-                        style: TextStyle(
-                            color: tokens.fgBright, fontSize: 13),
+                        style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       ),
                       const Spacer(),
                       Text(
                         l10n.plusMg(e.mg),
-                        style: TextStyle(
-                            color: tokens.fgMuted, fontSize: 12),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         CaffeineTab.formatTime(e.timestamp),
-                        style: TextStyle(
-                            color: tokens.fgDim, fontSize: 11),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
                       ),
                     ],
                   ),
@@ -750,7 +751,10 @@ class _StatusBadge extends StatelessWidget {
         border: Border.all(color: _color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Text(_label(AppLocalizations.of(context)), style: TextStyle(color: _color, fontSize: 11)),
+      child: Text(
+        _label(AppLocalizations.of(context)),
+        style: TextStyle(color: _color, fontSize: 11),
+      ),
     );
   }
 }
@@ -833,20 +837,27 @@ class _DrinkChip extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(_icons[type] ?? Icons.coffee_rounded,
-                  color: color, size: 14),
+              Icon(
+                _icons[type] ?? Icons.coffee_rounded,
+                color: color,
+                size: 14,
+              ),
               const SizedBox(width: 6),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name,
-                      style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500)),
-                  Text(l10n.mgValue(_mg[type] ?? 50),
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 10)),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      color: tokens.fgBright,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    l10n.mgValue(_mg[type] ?? 50),
+                    style: TextStyle(color: tokens.fgDim, fontSize: 10),
+                  ),
                 ],
               ),
             ],
@@ -919,21 +930,30 @@ class _DrinkListCardState extends State<_DrinkListCard> {
             decoration: InputDecoration(
               hintText: l10n.search,
               hintStyle: TextStyle(color: widget.tokens.fgDim, fontSize: 13),
-              prefixIcon: Icon(Icons.search_rounded,
-                  color: widget.tokens.fgDim, size: 18),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: widget.tokens.fgDim,
+                size: 18,
+              ),
               filled: true,
               fillColor: widget.tokens.bg.withValues(alpha: 0.5),
               contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 8),
+                horizontal: 12,
+                vertical: 8,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: widget.tokens.borderFaint, width: 0.5),
+                  color: widget.tokens.borderFaint,
+                  width: 0.5,
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(
-                    color: widget.tokens.borderFaint, width: 0.5),
+                  color: widget.tokens.borderFaint,
+                  width: 0.5,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -967,8 +987,10 @@ class _DrinkListCardState extends State<_DrinkListCard> {
                 onTap: () => widget.onAdd(item),
                 borderRadius: BorderRadius.circular(10),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 4,
+                  ),
                   child: Row(
                     children: [
                       Container(
@@ -994,11 +1016,16 @@ class _DrinkListCardState extends State<_DrinkListCard> {
                       Text(
                         l10n.mgValue(item.mg),
                         style: TextStyle(
-                            color: widget.tokens.fgDim, fontSize: 12),
+                          color: widget.tokens.fgDim,
+                          fontSize: 12,
+                        ),
                       ),
                       const SizedBox(width: 8),
-                      Icon(Icons.chevron_left_rounded,
-                          color: widget.tokens.fgDim, size: 18),
+                      Icon(
+                        Icons.chevron_left_rounded,
+                        color: widget.tokens.fgDim,
+                        size: 18,
+                      ),
                     ],
                   ),
                 ),

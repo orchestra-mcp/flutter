@@ -41,10 +41,7 @@ class _PerformanceDioInterceptor extends Interceptor {
   final Map<String, HttpMetric> _metrics = {};
 
   @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final perf = _perf;
     if (perf != null) {
       final method = _httpMethod(options.method);
@@ -67,12 +64,10 @@ class _PerformanceDioInterceptor extends Interceptor {
     if (metric != null) {
       metric
         ..httpResponseCode = response.statusCode
-        ..responseContentType =
-            response.headers.value('content-type') ?? ''
-        ..responsePayloadSize =
-            int.tryParse(
-              response.headers.value('content-length') ?? '',
-            );
+        ..responseContentType = response.headers.value('content-type') ?? ''
+        ..responsePayloadSize = int.tryParse(
+          response.headers.value('content-length') ?? '',
+        );
       metric.stop();
     }
     handler.next(response);

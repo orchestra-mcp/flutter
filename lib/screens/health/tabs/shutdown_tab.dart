@@ -137,9 +137,7 @@ class _ShutdownTabState extends ConsumerState<ShutdownTab> {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  progress >= 1.0
-                      ? l10n.done
-                      : '$completedCount / $totalCount',
+                  progress >= 1.0 ? l10n.done : '$completedCount / $totalCount',
                   style: TextStyle(color: tokens.fgMuted, fontSize: 13),
                 ),
                 const SizedBox(height: 8),
@@ -151,10 +149,7 @@ class _ShutdownTabState extends ConsumerState<ShutdownTab> {
 
           // ------ Countdown / bedtime card ------
           if (shutdownState.targetSleepTime != null) ...[
-            _CountdownCard(
-              shutdownState: shutdownState,
-              tokens: tokens,
-            ),
+            _CountdownCard(shutdownState: shutdownState, tokens: tokens),
             const SizedBox(height: 16),
           ],
 
@@ -164,11 +159,13 @@ class _ShutdownTabState extends ConsumerState<ShutdownTab> {
               margin: const EdgeInsets.only(bottom: 16),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: _flareColor(shutdownState.flareRisk)
-                    .withValues(alpha: 0.15),
+                color: _flareColor(
+                  shutdownState.flareRisk,
+                ).withValues(alpha: 0.15),
                 border: Border.all(
-                  color: _flareColor(shutdownState.flareRisk)
-                      .withValues(alpha: 0.4),
+                  color: _flareColor(
+                    shutdownState.flareRisk,
+                  ).withValues(alpha: 0.4),
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -202,8 +199,11 @@ class _ShutdownTabState extends ConsumerState<ShutdownTab> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.checklist_rounded,
-                        color: tokens.accent, size: 18),
+                    Icon(
+                      Icons.checklist_rounded,
+                      color: tokens.accent,
+                      size: 18,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       l10n.shutdown,
@@ -248,28 +248,39 @@ class _ShutdownTabState extends ConsumerState<ShutdownTab> {
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: [l10n.drinkWater, l10n.drinkChamomileTea, l10n.drinkAniseTea]
-                      .map((item) => Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF4CAF50)
-                                  .withValues(alpha: 0.15),
-                              border: Border.all(
-                                color: const Color(0xFF4CAF50)
-                                    .withValues(alpha: 0.4),
+                  children:
+                      [
+                            l10n.drinkWater,
+                            l10n.drinkChamomileTea,
+                            l10n.drinkAniseTea,
+                          ]
+                          .map(
+                            (item) => Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
                               ),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              item,
-                              style: const TextStyle(
-                                color: Color(0xFF4CAF50),
-                                fontSize: 12,
+                              decoration: BoxDecoration(
+                                color: const Color(
+                                  0xFF4CAF50,
+                                ).withValues(alpha: 0.15),
+                                border: Border.all(
+                                  color: const Color(
+                                    0xFF4CAF50,
+                                  ).withValues(alpha: 0.4),
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  color: Color(0xFF4CAF50),
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
-                          ))
-                      .toList(),
+                          )
+                          .toList(),
                 ),
               ],
             ),
@@ -334,16 +345,19 @@ class _ShimmerSkeleton extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           // Checklist placeholders
-          ...List.generate(6, (i) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Container(
-              height: 48,
-              decoration: BoxDecoration(
-                color: baseColor,
-                borderRadius: BorderRadius.circular(12),
+          ...List.generate(
+            6,
+            (i) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Container(
+                height: 48,
+                decoration: BoxDecoration(
+                  color: baseColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -426,10 +440,7 @@ class _ErrorBanner extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _InactiveEmptyState extends StatelessWidget {
-  const _InactiveEmptyState({
-    required this.tokens,
-    required this.onStart,
-  });
+  const _InactiveEmptyState({required this.tokens, required this.onStart});
 
   final OrchestraColorTokens tokens;
   final VoidCallback onStart;
@@ -481,11 +492,7 @@ class _InactiveEmptyState extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.bedtime_rounded,
-                        color: tokens.bg,
-                        size: 18,
-                      ),
+                      Icon(Icons.bedtime_rounded, color: tokens.bg, size: 18),
                       const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context).shutdown,
@@ -576,10 +583,7 @@ class _ViolatedBanner extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _CountdownCard extends StatelessWidget {
-  const _CountdownCard({
-    required this.shutdownState,
-    required this.tokens,
-  });
+  const _CountdownCard({required this.shutdownState, required this.tokens});
 
   final ShutdownState shutdownState;
   final OrchestraColorTokens tokens;
@@ -602,10 +606,7 @@ class _CountdownCard extends StatelessWidget {
                   children: [
                     Text(
                       AppLocalizations.of(context).bedtime,
-                      style: TextStyle(
-                        color: tokens.fgMuted,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -625,10 +626,7 @@ class _CountdownCard extends StatelessWidget {
                   children: [
                     Text(
                       AppLocalizations.of(context).remaining,
-                      style: TextStyle(
-                        color: tokens.fgMuted,
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     ),
                     const SizedBox(height: 2),
                     Text(
@@ -647,15 +645,9 @@ class _CountdownCard extends StatelessWidget {
           // Prominent countdown when active
           if (isActive && timeLeft != null) ...[
             const SizedBox(height: 16),
-            Divider(
-              height: 1,
-              color: tokens.border.withValues(alpha: 0.2),
-            ),
+            Divider(height: 1, color: tokens.border.withValues(alpha: 0.2)),
             const SizedBox(height: 16),
-            _ProminentCountdown(
-              timeLeft: timeLeft,
-              tokens: tokens,
-            ),
+            _ProminentCountdown(timeLeft: timeLeft, tokens: tokens),
           ],
         ],
       ),
@@ -678,10 +670,7 @@ class _CountdownCard extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _ProminentCountdown extends StatelessWidget {
-  const _ProminentCountdown({
-    required this.timeLeft,
-    required this.tokens,
-  });
+  const _ProminentCountdown({required this.timeLeft, required this.tokens});
 
   final Duration timeLeft;
   final OrchestraColorTokens tokens;
@@ -813,11 +802,7 @@ class _CompletionRing extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Icon(
-                Icons.nights_stay_rounded,
-                color: tokens.accent,
-                size: 18,
-              ),
+              Icon(Icons.nights_stay_rounded, color: tokens.accent, size: 18),
             ],
           ),
         ],
@@ -867,7 +852,10 @@ class _PhaseBadge extends StatelessWidget {
         border: Border.all(color: _color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(_label(AppLocalizations.of(context)), style: TextStyle(color: _color, fontSize: 12)),
+      child: Text(
+        _label(AppLocalizations.of(context)),
+        style: TextStyle(color: _color, fontSize: 12),
+      ),
     );
   }
 }
@@ -915,8 +903,11 @@ class _ChecklistTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
               ),
               child: done
-                  ? const Icon(Icons.check_rounded,
-                      color: Color(0xFF4CAF50), size: 16)
+                  ? const Icon(
+                      Icons.check_rounded,
+                      color: Color(0xFF4CAF50),
+                      size: 16,
+                    )
                   : null,
             ),
             const SizedBox(width: 12),
@@ -936,16 +927,12 @@ class _ChecklistTile extends StatelessWidget {
                       color: done ? tokens.fgDim : tokens.fgBright,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      decoration:
-                          done ? TextDecoration.lineThrough : null,
+                      decoration: done ? TextDecoration.lineThrough : null,
                     ),
                   ),
                   Text(
                     item.subtitle,
-                    style: TextStyle(
-                      color: tokens.fgDim,
-                      fontSize: 11,
-                    ),
+                    style: TextStyle(color: tokens.fgDim, fontSize: 11),
                   ),
                 ],
               ),

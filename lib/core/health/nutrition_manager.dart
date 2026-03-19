@@ -69,7 +69,11 @@ class FoodItem {
       _ => FoodCategory.snack,
     };
 
-    return FoodItem(title: titleMap, category: category, triggerConditions: triggers);
+    return FoodItem(
+      title: titleMap,
+      category: category,
+      triggerConditions: triggers,
+    );
   }
 }
 
@@ -80,56 +84,134 @@ class FoodRegistry {
   // Preset seeder data with en/ar translations.
   static const allFoods = <FoodItem>[
     // IBS / GERD triggers
-    FoodItem(title: {'en': 'Whole Egg', 'ar': 'بيضة كاملة'}, category: FoodCategory.protein,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
-    FoodItem(title: {'en': 'Falafel', 'ar': 'فلافل'}, category: FoodCategory.snack,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
-    FoodItem(title: {'en': 'Deep Fried', 'ar': 'مقلي'}, category: FoodCategory.snack,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
-    FoodItem(title: {'en': 'Raw Onion', 'ar': 'بصل نيء'}, category: FoodCategory.snack,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
-    FoodItem(title: {'en': 'Raw Garlic', 'ar': 'ثوم نيء'}, category: FoodCategory.snack,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
-    FoodItem(title: {'en': 'Cheddar Cheese', 'ar': 'جبنة شيدر'}, category: FoodCategory.fat,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
-    FoodItem(title: {'en': 'Yellow Cheese', 'ar': 'جبنة صفراء'}, category: FoodCategory.fat,
-        triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd]),
+    FoodItem(
+      title: {'en': 'Whole Egg', 'ar': 'بيضة كاملة'},
+      category: FoodCategory.protein,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
+    FoodItem(
+      title: {'en': 'Falafel', 'ar': 'فلافل'},
+      category: FoodCategory.snack,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
+    FoodItem(
+      title: {'en': 'Deep Fried', 'ar': 'مقلي'},
+      category: FoodCategory.snack,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
+    FoodItem(
+      title: {'en': 'Raw Onion', 'ar': 'بصل نيء'},
+      category: FoodCategory.snack,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
+    FoodItem(
+      title: {'en': 'Raw Garlic', 'ar': 'ثوم نيء'},
+      category: FoodCategory.snack,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
+    FoodItem(
+      title: {'en': 'Cheddar Cheese', 'ar': 'جبنة شيدر'},
+      category: FoodCategory.fat,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
+    FoodItem(
+      title: {'en': 'Yellow Cheese', 'ar': 'جبنة صفراء'},
+      category: FoodCategory.fat,
+      triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+    ),
     // Gout triggers
-    FoodItem(title: {'en': 'Red Meat', 'ar': 'لحم أحمر'}, category: FoodCategory.protein,
-        triggerConditions: [TriggerCondition.gout]),
-    FoodItem(title: {'en': 'Liver', 'ar': 'كبدة'}, category: FoodCategory.protein,
-        triggerConditions: [TriggerCondition.gout]),
-    FoodItem(title: {'en': 'Duck', 'ar': 'بط'}, category: FoodCategory.protein,
-        triggerConditions: [TriggerCondition.gout]),
-    FoodItem(title: {'en': 'Beans', 'ar': 'فاصوليا'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.gout]),
-    FoodItem(title: {'en': 'Lentils', 'ar': 'عدس'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.gout]),
-    FoodItem(title: {'en': 'Legumes', 'ar': 'بقوليات'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.gout]),
+    FoodItem(
+      title: {'en': 'Red Meat', 'ar': 'لحم أحمر'},
+      category: FoodCategory.protein,
+      triggerConditions: [TriggerCondition.gout],
+    ),
+    FoodItem(
+      title: {'en': 'Liver', 'ar': 'كبدة'},
+      category: FoodCategory.protein,
+      triggerConditions: [TriggerCondition.gout],
+    ),
+    FoodItem(
+      title: {'en': 'Duck', 'ar': 'بط'},
+      category: FoodCategory.protein,
+      triggerConditions: [TriggerCondition.gout],
+    ),
+    FoodItem(
+      title: {'en': 'Beans', 'ar': 'فاصوليا'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.gout],
+    ),
+    FoodItem(
+      title: {'en': 'Lentils', 'ar': 'عدس'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.gout],
+    ),
+    FoodItem(
+      title: {'en': 'Legumes', 'ar': 'بقوليات'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.gout],
+    ),
     // Fatty liver triggers
-    FoodItem(title: {'en': 'Refined Sugar', 'ar': 'سكر مكرر'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.fattyLiver]),
-    FoodItem(title: {'en': 'Honey', 'ar': 'عسل'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.fattyLiver]),
-    FoodItem(title: {'en': 'Nutella', 'ar': 'نوتيلا'}, category: FoodCategory.fat,
-        triggerConditions: [TriggerCondition.fattyLiver]),
-    FoodItem(title: {'en': 'Jam', 'ar': 'مربى'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.fattyLiver]),
-    FoodItem(title: {'en': 'White Flour', 'ar': 'دقيق أبيض'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.fattyLiver]),
-    FoodItem(title: {'en': 'Mixed Carbs', 'ar': 'كربوهيدرات مختلطة'}, category: FoodCategory.carb,
-        triggerConditions: [TriggerCondition.fattyLiver]),
+    FoodItem(
+      title: {'en': 'Refined Sugar', 'ar': 'سكر مكرر'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.fattyLiver],
+    ),
+    FoodItem(
+      title: {'en': 'Honey', 'ar': 'عسل'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.fattyLiver],
+    ),
+    FoodItem(
+      title: {'en': 'Nutella', 'ar': 'نوتيلا'},
+      category: FoodCategory.fat,
+      triggerConditions: [TriggerCondition.fattyLiver],
+    ),
+    FoodItem(
+      title: {'en': 'Jam', 'ar': 'مربى'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.fattyLiver],
+    ),
+    FoodItem(
+      title: {'en': 'White Flour', 'ar': 'دقيق أبيض'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.fattyLiver],
+    ),
+    FoodItem(
+      title: {'en': 'Mixed Carbs', 'ar': 'كربوهيدرات مختلطة'},
+      category: FoodCategory.carb,
+      triggerConditions: [TriggerCondition.fattyLiver],
+    ),
     // Safe foods
-    FoodItem(title: {'en': 'Grilled Chicken', 'ar': 'دجاج مشوي'}, category: FoodCategory.protein),
-    FoodItem(title: {'en': 'White Fish', 'ar': 'سمك أبيض'}, category: FoodCategory.protein),
-    FoodItem(title: {'en': 'Cottage Cheese', 'ar': 'جبنة قريش'}, category: FoodCategory.protein),
-    FoodItem(title: {'en': 'Greek Yogurt', 'ar': 'زبادي يوناني'}, category: FoodCategory.protein),
+    FoodItem(
+      title: {'en': 'Grilled Chicken', 'ar': 'دجاج مشوي'},
+      category: FoodCategory.protein,
+    ),
+    FoodItem(
+      title: {'en': 'White Fish', 'ar': 'سمك أبيض'},
+      category: FoodCategory.protein,
+    ),
+    FoodItem(
+      title: {'en': 'Cottage Cheese', 'ar': 'جبنة قريش'},
+      category: FoodCategory.protein,
+    ),
+    FoodItem(
+      title: {'en': 'Greek Yogurt', 'ar': 'زبادي يوناني'},
+      category: FoodCategory.protein,
+    ),
     FoodItem(title: {'en': 'Oats', 'ar': 'شوفان'}, category: FoodCategory.carb),
-    FoodItem(title: {'en': 'Whole Wheat', 'ar': 'قمح كامل'}, category: FoodCategory.carb),
+    FoodItem(
+      title: {'en': 'Whole Wheat', 'ar': 'قمح كامل'},
+      category: FoodCategory.carb,
+    ),
     FoodItem(title: {'en': 'Rice', 'ar': 'أرز'}, category: FoodCategory.carb),
-    FoodItem(title: {'en': 'Olive Oil', 'ar': 'زيت زيتون'}, category: FoodCategory.fat),
-    FoodItem(title: {'en': 'Avocado', 'ar': 'أفوكادو'}, category: FoodCategory.fat),
+    FoodItem(
+      title: {'en': 'Olive Oil', 'ar': 'زيت زيتون'},
+      category: FoodCategory.fat,
+    ),
+    FoodItem(
+      title: {'en': 'Avocado', 'ar': 'أفوكادو'},
+      category: FoodCategory.fat,
+    ),
   ];
 
   static List<FoodItem> get safeFoods =>
@@ -138,7 +220,8 @@ class FoodRegistry {
   static FoodItem? findByName(String name) {
     try {
       return allFoods.firstWhere(
-          (f) => f.name.toLowerCase() == name.toLowerCase());
+        (f) => f.name.toLowerCase() == name.toLowerCase(),
+      );
     } catch (_) {
       return null;
     }
@@ -179,10 +262,14 @@ class NutritionState {
 
   List<NutritionEntry> get todayEntries {
     final today = DateTime.now();
-    return entries.where((e) =>
-        e.timestamp.year == today.year &&
-        e.timestamp.month == today.month &&
-        e.timestamp.day == today.day).toList();
+    return entries
+        .where(
+          (e) =>
+              e.timestamp.year == today.year &&
+              e.timestamp.month == today.month &&
+              e.timestamp.day == today.day,
+        )
+        .toList();
   }
 
   double get safetyScore {
@@ -200,8 +287,9 @@ class NutritionState {
   }
 
   bool get maxRiceRuleTriggered {
-    return todayEntries.any((e) =>
-        e.food.name == 'Rice' && e.portionSpoons > 5);
+    return todayEntries.any(
+      (e) => e.food.name == 'Rice' && e.portionSpoons > 5,
+    );
   }
 
   NutritionState copyWith({
@@ -243,21 +331,27 @@ class NutritionNotifier extends Notifier<NutritionState> {
       final now = DateTime.now();
       final entries = <NutritionEntry>[];
       for (final row in results) {
-        final loggedStr = (row['logged_at'] as String?) ??
-            (row['created_at'] as String?) ?? '';
+        final loggedStr =
+            (row['logged_at'] as String?) ??
+            (row['created_at'] as String?) ??
+            '';
         final ts = DateTime.tryParse(loggedStr)?.toLocal();
         if (ts == null) continue;
-        if (ts.year != now.year || ts.month != now.month || ts.day != now.day) continue;
+        if (ts.year != now.year || ts.month != now.month || ts.day != now.day)
+          continue;
 
         final foodName = row['name'] as String? ?? 'Unknown';
-        final food = FoodRegistry.findByName(foodName) ??
+        final food =
+            FoodRegistry.findByName(foodName) ??
             FoodItem(title: {'en': foodName}, category: FoodCategory.snack);
-        entries.add(NutritionEntry(
-          id: row['id'] as String? ?? '',
-          food: food,
-          portionSpoons: 1.0,
-          timestamp: ts,
-        ));
+        entries.add(
+          NutritionEntry(
+            id: row['id'] as String? ?? '',
+            food: food,
+            portionSpoons: 1.0,
+            timestamp: ts,
+          ),
+        );
       }
 
       state = NutritionState(entries: entries);
@@ -299,7 +393,9 @@ class NutritionNotifier extends Notifier<NutritionState> {
         now.toIso8601String(),
       ],
     );
-    debugPrint('[Nutrition] logged ${food.name} x$portionSpoons spoons → PowerSync auto-sync');
+    debugPrint(
+      '[Nutrition] logged ${food.name} x$portionSpoons spoons → PowerSync auto-sync',
+    );
   }
 
   void removeEntry(String id) {
@@ -317,7 +413,6 @@ class NutritionNotifier extends Notifier<NutritionState> {
 // Provider
 // ---------------------------------------------------------------------------
 
-final nutritionProvider =
-    NotifierProvider<NutritionNotifier, NutritionState>(
+final nutritionProvider = NotifierProvider<NutritionNotifier, NutritionState>(
   NutritionNotifier.new,
 );

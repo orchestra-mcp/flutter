@@ -65,7 +65,9 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -80,7 +82,9 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -99,8 +103,12 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
             // System Prompt
             _fieldLabel(tokens, l10n.adminSystemPrompt),
             const SizedBox(height: 6),
-            _field(tokens, _systemPromptCtrl,
-                hint: l10n.adminSystemPromptHint, maxLines: 5),
+            _field(
+              tokens,
+              _systemPromptCtrl,
+              hint: l10n.adminSystemPromptHint,
+              maxLines: 5,
+            ),
             const SizedBox(height: 16),
 
             // Max Tokens
@@ -130,8 +138,10 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: tokens.bgAlt,
                     borderRadius: BorderRadius.circular(6),
@@ -159,14 +169,17 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -191,8 +204,11 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
           isExpanded: true,
           dropdownColor: tokens.bgAlt,
           style: TextStyle(fontSize: 14, color: tokens.fgBright),
-          icon: Icon(Icons.expand_more_rounded,
-              color: tokens.fgMuted, size: 20),
+          icon: Icon(
+            Icons.expand_more_rounded,
+            color: tokens.fgMuted,
+            size: 20,
+          ),
           items: _models
               .map((m) => DropdownMenuItem(value: m, child: Text(m)))
               .toList(),
@@ -205,23 +221,23 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -238,8 +254,10 @@ class _AdminAgentsTabState extends ConsumerState<AdminAgentsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

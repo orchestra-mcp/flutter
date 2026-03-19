@@ -34,8 +34,10 @@ class FeatureRepository {
   }
 
   /// Returns features for a specific project.
-  Future<List<LocalFeature>> listByProject(String projectId,
-      {bool forceRefresh = false}) async {
+  Future<List<LocalFeature>> listByProject(
+    String projectId, {
+    bool forceRefresh = false,
+  }) async {
     if (!forceRefresh) {
       final local = await dao.listByProject(projectId);
       if (local.isNotEmpty) return local;
@@ -109,7 +111,8 @@ class FeatureRepository {
   }
 
   /// Updates an existing feature locally and pushes to the API.
-  Future<void> update(String id, {
+  Future<void> update(
+    String id, {
     String? title,
     String? description,
     String? status,
@@ -123,7 +126,9 @@ class FeatureRepository {
   }) async {
     final companion = LocalFeaturesCompanion(
       title: title != null ? Value(title) : const Value.absent(),
-      description: description != null ? Value(description) : const Value.absent(),
+      description: description != null
+          ? Value(description)
+          : const Value.absent(),
       status: status != null ? Value(status) : const Value.absent(),
       kind: kind != null ? Value(kind) : const Value.absent(),
       priority: priority != null ? Value(priority) : const Value.absent(),
@@ -189,7 +194,9 @@ class FeatureRepository {
         ? jsonEncode(labelsRaw)
         : (labelsRaw as String?) ?? '[]';
 
-    await db.into(db.localFeatures).insertOnConflictUpdate(
+    await db
+        .into(db.localFeatures)
+        .insertOnConflictUpdate(
           LocalFeaturesCompanion.insert(
             id: f['id'] as String,
             projectId: (f['project_id'] as String?) ?? '',

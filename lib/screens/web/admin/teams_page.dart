@@ -6,8 +6,9 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 // ── Data provider ────────────────────────────────────────────────────────────
 
-final _teamsProvider =
-    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+final _teamsProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final api = ref.watch(apiClientProvider);
   final result = await api.listAdminTeams();
   final raw = result['teams'];
@@ -24,8 +25,9 @@ class _TeamSearchNotifier extends Notifier<String> {
   void update(String query) => state = query;
 }
 
-final _teamSearchProvider =
-    NotifierProvider<_TeamSearchNotifier, String>(_TeamSearchNotifier.new);
+final _teamSearchProvider = NotifierProvider<_TeamSearchNotifier, String>(
+  _TeamSearchNotifier.new,
+);
 
 // ── Dialogs ─────────────────────────────────────────────────────────────────
 
@@ -101,7 +103,10 @@ void _showCreateTeamDialog(BuildContext context, WidgetRef ref) {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
@@ -130,8 +135,9 @@ void _showEditTeamDialog(
   Map<String, dynamic> team,
 ) {
   final nameCtrl = TextEditingController(text: team['name'] as String? ?? '');
-  final descCtrl =
-      TextEditingController(text: team['description'] as String? ?? '');
+  final descCtrl = TextEditingController(
+    text: team['description'] as String? ?? '',
+  );
   final tokens = ThemeTokens.of(context);
 
   showDialog<void>(
@@ -201,18 +207,18 @@ void _showEditTeamDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
             final api = ref.read(apiClientProvider);
-            await api.updateAdminTeam(
-              (team['id'] as num).toInt(),
-              {
-                'name': nameCtrl.text,
-                'description': descCtrl.text,
-              },
-            );
+            await api.updateAdminTeam((team['id'] as num).toInt(), {
+              'name': nameCtrl.text,
+              'description': descCtrl.text,
+            });
             ref.invalidate(_teamsProvider);
             if (ctx.mounted) Navigator.of(ctx).pop();
           },
@@ -252,7 +258,10 @@ void _showDeleteTeamDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
@@ -289,31 +298,28 @@ class TeamsPage extends ConsumerWidget {
     return ColoredBox(
       color: tokens.bg,
       child: teamsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-            const SizedBox(height: 12),
-            Text(
-              AppLocalizations.of(context).failedToLoadTeams,
-              style: TextStyle(color: tokens.fgBright, fontSize: 16),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '$e',
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => ref.invalidate(_teamsProvider),
-              child: Text(AppLocalizations.of(context).retry),
-            ),
-          ],
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context).failedToLoadTeams,
+                style: TextStyle(color: tokens.fgBright, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.invalidate(_teamsProvider),
+                child: Text(AppLocalizations.of(context).retry),
+              ),
+            ],
+          ),
         ),
-      ),
-      data: (teams) => _TeamsContent(teams: teams),
+        data: (teams) => _TeamsContent(teams: teams),
       ),
     );
   }
@@ -384,8 +390,10 @@ class _TeamsContent extends ConsumerWidget {
                 prefixIcon: Icon(Icons.search, size: 18, color: tokens.fgDim),
                 filled: true,
                 fillColor: tokens.bgAlt,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: tokens.border),
@@ -446,8 +454,7 @@ class _TeamTile extends ConsumerWidget {
           CircleAvatar(
             radius: 18,
             backgroundColor: tokens.accent.withValues(alpha: 0.15),
-            backgroundImage:
-                avatarUrl != null ? NetworkImage(avatarUrl) : null,
+            backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
             child: avatarUrl == null
                 ? Icon(Icons.groups_outlined, size: 18, color: tokens.accent)
                 : null,
@@ -491,15 +498,13 @@ class _TeamTile extends ConsumerWidget {
             ),
           const SizedBox(width: 12),
           IconButton(
-            icon:
-                Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
+            icon: Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
             onPressed: () => _showEditTeamDialog(context, ref, team),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).editTeam,
           ),
           IconButton(
-            icon:
-                Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
+            icon: Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
             onPressed: () => _showDeleteTeamDialog(context, ref, team),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).deleteTeam,

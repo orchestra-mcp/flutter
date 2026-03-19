@@ -40,13 +40,12 @@ class BridgeState {
     String? activeRequestId,
     TunnelResponse? latestResponse,
     String? error,
-  }) =>
-      BridgeState(
-        isProcessing: isProcessing ?? this.isProcessing,
-        activeRequestId: activeRequestId ?? this.activeRequestId,
-        latestResponse: latestResponse ?? this.latestResponse,
-        error: error ?? this.error,
-      );
+  }) => BridgeState(
+    isProcessing: isProcessing ?? this.isProcessing,
+    activeRequestId: activeRequestId ?? this.activeRequestId,
+    latestResponse: latestResponse ?? this.latestResponse,
+    error: error ?? this.error,
+  );
 }
 
 // ─── Bridge notifier ────────────────────────────────────────────────────────
@@ -107,10 +106,7 @@ class BridgeNotifier extends Notifier<BridgeState> {
         final responseMessage = TunnelMessage(
           id: '${messageId}_resp_${DateTime.now().microsecondsSinceEpoch}',
           type: TunnelMessageType.response,
-          payload: {
-            ...response.toJson(),
-            'request_id': messageId,
-          },
+          payload: {...response.toJson(), 'request_id': messageId},
           timestamp: DateTime.now(),
           sourceId: null,
           targetId: null,

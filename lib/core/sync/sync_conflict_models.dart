@@ -15,17 +15,17 @@ enum ConflictResolution {
   merge;
 
   factory ConflictResolution.fromString(String value) => switch (value) {
-        'keep_local' => ConflictResolution.keepLocal,
-        'keep_remote' => ConflictResolution.keepRemote,
-        'merge' => ConflictResolution.merge,
-        _ => throw ArgumentError('Unknown ConflictResolution: $value'),
-      };
+    'keep_local' => ConflictResolution.keepLocal,
+    'keep_remote' => ConflictResolution.keepRemote,
+    'merge' => ConflictResolution.merge,
+    _ => throw ArgumentError('Unknown ConflictResolution: $value'),
+  };
 
   String toJson() => switch (this) {
-        ConflictResolution.keepLocal => 'keep_local',
-        ConflictResolution.keepRemote => 'keep_remote',
-        ConflictResolution.merge => 'merge',
-      };
+    ConflictResolution.keepLocal => 'keep_local',
+    ConflictResolution.keepRemote => 'keep_remote',
+    ConflictResolution.merge => 'merge',
+  };
 }
 
 // ── Field diff ──────────────────────────────────────────────────────────────
@@ -52,22 +52,21 @@ class FieldDiff {
   final bool isTextContent;
 
   /// True when local and remote values differ.
-  bool get hasConflict =>
-      localValue?.toString() != remoteValue?.toString();
+  bool get hasConflict => localValue?.toString() != remoteValue?.toString();
 
   factory FieldDiff.fromJson(Map<String, dynamic> json) => FieldDiff(
-        field: json['field'] as String,
-        localValue: json['local_value'],
-        remoteValue: json['remote_value'],
-        isTextContent: json['is_text_content'] as bool? ?? false,
-      );
+    field: json['field'] as String,
+    localValue: json['local_value'],
+    remoteValue: json['remote_value'],
+    isTextContent: json['is_text_content'] as bool? ?? false,
+  );
 
   Map<String, dynamic> toJson() => {
-        'field': field,
-        'local_value': localValue,
-        'remote_value': remoteValue,
-        'is_text_content': isTextContent,
-      };
+    'field': field,
+    'local_value': localValue,
+    'remote_value': remoteValue,
+    'is_text_content': isTextContent,
+  };
 
   @override
   String toString() => 'FieldDiff($field: $localValue ↔ $remoteValue)';
@@ -141,66 +140,68 @@ class SyncConflict {
   // ── JSON ──────────────────────────────────────────────────────────────
 
   factory SyncConflict.fromJson(Map<String, dynamic> json) => SyncConflict(
-        entityType: json['entity_type'] as String,
-        entityId: json['entity_id'] as String,
-        entityTitle: json['entity_title'] as String? ?? '',
-        localVersion: json['local_version'] as int,
-        remoteVersion: json['remote_version'] as int,
-        localData: Map<String, dynamic>.from(
-            json['local_data'] as Map<String, dynamic>),
-        remoteData: Map<String, dynamic>.from(
-            json['remote_data'] as Map<String, dynamic>),
-        diffs: (json['diffs'] as List? ?? [])
-            .map((e) => FieldDiff.fromJson(e as Map<String, dynamic>))
-            .toList(),
-        detectedAt: DateTime.parse(json['detected_at'] as String),
-        resolvedAt: json['resolved_at'] != null
-            ? DateTime.parse(json['resolved_at'] as String)
-            : null,
-        resolution: json['resolution'] != null
-            ? ConflictResolution.fromString(json['resolution'] as String)
-            : null,
-        resolvedData: json['resolved_data'] != null
-            ? Map<String, dynamic>.from(
-                json['resolved_data'] as Map<String, dynamic>)
-            : null,
-      );
+    entityType: json['entity_type'] as String,
+    entityId: json['entity_id'] as String,
+    entityTitle: json['entity_title'] as String? ?? '',
+    localVersion: json['local_version'] as int,
+    remoteVersion: json['remote_version'] as int,
+    localData: Map<String, dynamic>.from(
+      json['local_data'] as Map<String, dynamic>,
+    ),
+    remoteData: Map<String, dynamic>.from(
+      json['remote_data'] as Map<String, dynamic>,
+    ),
+    diffs: (json['diffs'] as List? ?? [])
+        .map((e) => FieldDiff.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    detectedAt: DateTime.parse(json['detected_at'] as String),
+    resolvedAt: json['resolved_at'] != null
+        ? DateTime.parse(json['resolved_at'] as String)
+        : null,
+    resolution: json['resolution'] != null
+        ? ConflictResolution.fromString(json['resolution'] as String)
+        : null,
+    resolvedData: json['resolved_data'] != null
+        ? Map<String, dynamic>.from(
+            json['resolved_data'] as Map<String, dynamic>,
+          )
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'entity_title': entityTitle,
-        'local_version': localVersion,
-        'remote_version': remoteVersion,
-        'local_data': localData,
-        'remote_data': remoteData,
-        'diffs': diffs.map((d) => d.toJson()).toList(),
-        'detected_at': detectedAt.toUtc().toIso8601String(),
-        if (resolvedAt != null)
-          'resolved_at': resolvedAt!.toUtc().toIso8601String(),
-        if (resolution != null) 'resolution': resolution!.toJson(),
-        if (resolvedData != null) 'resolved_data': resolvedData,
-      };
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'entity_title': entityTitle,
+    'local_version': localVersion,
+    'remote_version': remoteVersion,
+    'local_data': localData,
+    'remote_data': remoteData,
+    'diffs': diffs.map((d) => d.toJson()).toList(),
+    'detected_at': detectedAt.toUtc().toIso8601String(),
+    if (resolvedAt != null)
+      'resolved_at': resolvedAt!.toUtc().toIso8601String(),
+    if (resolution != null) 'resolution': resolution!.toJson(),
+    if (resolvedData != null) 'resolved_data': resolvedData,
+  };
 
   SyncConflict copyWith({
     DateTime? resolvedAt,
     ConflictResolution? resolution,
     Map<String, dynamic>? resolvedData,
-  }) =>
-      SyncConflict(
-        entityType: entityType,
-        entityId: entityId,
-        entityTitle: entityTitle,
-        localVersion: localVersion,
-        remoteVersion: remoteVersion,
-        localData: localData,
-        remoteData: remoteData,
-        diffs: diffs,
-        detectedAt: detectedAt,
-        resolvedAt: resolvedAt ?? this.resolvedAt,
-        resolution: resolution ?? this.resolution,
-        resolvedData: resolvedData ?? this.resolvedData,
-      );
+  }) => SyncConflict(
+    entityType: entityType,
+    entityId: entityId,
+    entityTitle: entityTitle,
+    localVersion: localVersion,
+    remoteVersion: remoteVersion,
+    localData: localData,
+    remoteData: remoteData,
+    diffs: diffs,
+    detectedAt: detectedAt,
+    resolvedAt: resolvedAt ?? this.resolvedAt,
+    resolution: resolution ?? this.resolution,
+    resolvedData: resolvedData ?? this.resolvedData,
+  );
 
   @override
   String toString() =>

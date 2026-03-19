@@ -121,65 +121,93 @@ class FeaturesListScreen extends ConsumerWidget {
               scrollDirection: Axis.horizontal,
               child: DataTable(
                 headingRowColor: WidgetStateProperty.all(
-                    tokens.bg.withValues(alpha: 0.5)),
+                  tokens.bg.withValues(alpha: 0.5),
+                ),
                 headingTextStyle: TextStyle(
                   color: tokens.fgMuted,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
-                dataTextStyle:
-                    TextStyle(color: tokens.fgBright, fontSize: 13),
+                dataTextStyle: TextStyle(color: tokens.fgBright, fontSize: 13),
                 dividerThickness: 0.5,
                 columns: [
-                  DataColumn(label: Text(AppLocalizations.of(context).columnId)),
-                  DataColumn(label: Text(AppLocalizations.of(context).columnTitle)),
-                  DataColumn(label: Text(AppLocalizations.of(context).columnProject)),
-                  DataColumn(label: Text(AppLocalizations.of(context).columnStatus)),
-                  DataColumn(label: Text(AppLocalizations.of(context).columnPriority)),
-                  DataColumn(label: Text(AppLocalizations.of(context).columnKind)),
+                  DataColumn(
+                    label: Text(AppLocalizations.of(context).columnId),
+                  ),
+                  DataColumn(
+                    label: Text(AppLocalizations.of(context).columnTitle),
+                  ),
+                  DataColumn(
+                    label: Text(AppLocalizations.of(context).columnProject),
+                  ),
+                  DataColumn(
+                    label: Text(AppLocalizations.of(context).columnStatus),
+                  ),
+                  DataColumn(
+                    label: Text(AppLocalizations.of(context).columnPriority),
+                  ),
+                  DataColumn(
+                    label: Text(AppLocalizations.of(context).columnKind),
+                  ),
                 ],
                 rows: _placeholderRows.map((row) {
                   final statusColor = _statusColor(row.status);
-                  return DataRow(cells: [
-                    DataCell(Text(row.id,
-                        style: TextStyle(
+                  return DataRow(
+                    cells: [
+                      DataCell(
+                        Text(
+                          row.id,
+                          style: TextStyle(
                             color: tokens.accent,
                             fontFamily: 'monospace',
-                            fontSize: 12))),
-                    DataCell(
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 280),
-                        child: Text(
-                          row.title,
-                          overflow: TextOverflow.ellipsis,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
-                    ),
-                    DataCell(Text(row.project,
-                        style: TextStyle(
-                            color: tokens.fgMuted, fontSize: 12))),
-                    DataCell(
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: statusColor.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(20),
+                      DataCell(
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 280),
+                          child: Text(
+                            row.title,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                        child: Text(
-                          row.status,
-                          style: TextStyle(
+                      ),
+                      DataCell(
+                        Text(
+                          row.project,
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: statusColor.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            row.status,
+                            style: TextStyle(
                               color: statusColor,
                               fontSize: 11,
-                              fontWeight: FontWeight.w600),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    DataCell(Text(row.priority)),
-                    DataCell(Text(row.kind,
-                        style: TextStyle(
-                            color: tokens.fgMuted, fontSize: 12))),
-                  ]);
+                      DataCell(Text(row.priority)),
+                      DataCell(
+                        Text(
+                          row.kind,
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+                        ),
+                      ),
+                    ],
+                  );
                 }).toList(),
               ),
             ),

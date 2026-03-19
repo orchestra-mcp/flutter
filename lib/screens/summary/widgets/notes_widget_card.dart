@@ -37,8 +37,12 @@ class NotesWidgetCard extends ConsumerWidget {
     );
   }
 
-  Widget _body(OrchestraColorTokens tokens, AppLocalizations l10n,
-      {required int? total, required int? pinned}) {
+  Widget _body(
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n, {
+    required int? total,
+    required int? pinned,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -52,8 +56,11 @@ class NotesWidgetCard extends ConsumerWidget {
                 color: _color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(7),
               ),
-              child: const Icon(Icons.sticky_note_2_rounded,
-                  color: _color, size: 16),
+              child: const Icon(
+                Icons.sticky_note_2_rounded,
+                color: _color,
+                size: 16,
+              ),
             ),
             const SizedBox(width: 8),
             Text(

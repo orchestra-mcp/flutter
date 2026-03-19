@@ -102,16 +102,20 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  AppLocalizations.of(context).profileUpdatedSuccessfully)),
+            content: Text(
+              AppLocalizations.of(context).profileUpdatedSuccessfully,
+            ),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  '${AppLocalizations.of(context).failedToUpdateProfile}: $e')),
+            content: Text(
+              '${AppLocalizations.of(context).failedToUpdateProfile}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -143,11 +147,11 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
               CircleAvatar(
                 radius: 44,
                 backgroundColor: tokens.accent.withValues(alpha: 0.15),
-                backgroundImage:
-                    avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                backgroundImage: avatarUrl != null
+                    ? NetworkImage(avatarUrl)
+                    : null,
                 child: avatarUrl == null
-                    ? Icon(Icons.person_rounded,
-                        size: 44, color: tokens.accent)
+                    ? Icon(Icons.person_rounded, size: 44, color: tokens.accent)
                     : null,
               ),
               Container(
@@ -157,8 +161,11 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
                   border: Border.all(color: tokens.bg, width: 2),
                 ),
                 padding: const EdgeInsets.all(5),
-                child: const Icon(Icons.edit_rounded,
-                    size: 13, color: Colors.white),
+                child: const Icon(
+                  Icons.edit_rounded,
+                  size: 13,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -180,16 +187,23 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
         // ── Email (read-only) ────────────────────────────────────────
         _label(tokens, l10n.adminProfileEmail),
         const SizedBox(height: 6),
-        _field(tokens, _emailCtrl,
-            hint: l10n.adminProfileEmail, readOnly: true),
+        _field(
+          tokens,
+          _emailCtrl,
+          hint: l10n.adminProfileEmail,
+          readOnly: true,
+        ),
         const SizedBox(height: 16),
 
         // ── Phone ────────────────────────────────────────────────────
         _label(tokens, l10n.phone),
         const SizedBox(height: 6),
-        _field(tokens, _phoneCtrl,
-            hint: '+1 234 567 890',
-            keyboardType: TextInputType.phone),
+        _field(
+          tokens,
+          _phoneCtrl,
+          hint: '+1 234 567 890',
+          keyboardType: TextInputType.phone,
+        ),
         const SizedBox(height: 16),
 
         // ── Position ─────────────────────────────────────────────────
@@ -201,8 +215,7 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
         // ── Bio ──────────────────────────────────────────────────────
         _label(tokens, l10n.adminProfileBio),
         const SizedBox(height: 6),
-        _field(tokens, _bioCtrl,
-            hint: l10n.adminProfileBioHint, maxLines: 3),
+        _field(tokens, _bioCtrl, hint: l10n.adminProfileBioHint, maxLines: 3),
         const SizedBox(height: 16),
 
         // ── Timezone ─────────────────────────────────────────────────
@@ -253,14 +266,17 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: _saving
                 ? const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   )
                 : Text(l10n.save),
           ),
@@ -295,7 +311,8 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),
@@ -313,9 +330,13 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
           backgroundColor: tokens.bg,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text('Delete Account',
-              style: TextStyle(color: tokens.fgBright, fontSize: 18)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Delete Account',
+            style: TextStyle(color: tokens.fgBright, fontSize: 18),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +345,11 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
                 'Your account will be deactivated immediately. After 7 days, '
                 'all data will be permanently deleted. Log in again within '
                 '7 days to cancel.',
-                style: TextStyle(color: tokens.fgMuted, fontSize: 13, height: 1.5),
+                style: TextStyle(
+                  color: tokens.fgMuted,
+                  fontSize: 13,
+                  height: 1.5,
+                ),
               ),
               const SizedBox(height: 16),
               if (error != null) ...[
@@ -334,8 +359,13 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
                     color: Colors.red.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(error!,
-                      style: const TextStyle(color: Colors.redAccent, fontSize: 12)),
+                  child: Text(
+                    error!,
+                    style: const TextStyle(
+                      color: Colors.redAccent,
+                      fontSize: 12,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 12),
               ],
@@ -399,14 +429,14 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
   }
 
   Widget _label(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -427,8 +457,10 @@ class _ProfileSettingsTabState extends ConsumerState<ProfileSettingsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

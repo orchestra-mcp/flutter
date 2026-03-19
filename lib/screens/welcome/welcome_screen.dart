@@ -50,7 +50,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
   Future<void> _cloneFromGitHub() async {
     final repo = _repoController.text.trim();
     if (repo.isEmpty) {
-      setState(() => _cloneError = AppLocalizations.of(context).pleaseEnterRepoUrl);
+      setState(
+        () => _cloneError = AppLocalizations.of(context).pleaseEnterRepoUrl,
+      );
       return;
     }
 
@@ -111,8 +113,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -151,8 +152,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                             color: tokens.accent.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Icon(Icons.folder_rounded,
-                              color: tokens.accent, size: 20),
+                          child: Icon(
+                            Icons.folder_rounded,
+                            color: tokens.accent,
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 14),
                         Expanded(
@@ -171,13 +175,18 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                               Text(
                                 l10n.chooseProjectFolder,
                                 style: TextStyle(
-                                    fontSize: 12, color: tokens.fgDim),
+                                  fontSize: 12,
+                                  color: tokens.fgDim,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        Icon(Icons.chevron_right_rounded,
-                            color: tokens.fgDim, size: 20),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          color: tokens.fgDim,
+                          size: 20,
+                        ),
                       ],
                     ),
                   ),
@@ -197,8 +206,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                 color: tokens.accent.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Icon(Icons.cloud_download_rounded,
-                                  color: tokens.accent, size: 20),
+                              child: Icon(
+                                Icons.cloud_download_rounded,
+                                color: tokens.accent,
+                                size: 20,
+                              ),
                             ),
                             const SizedBox(width: 14),
                             Expanded(
@@ -217,7 +229,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                   Text(
                                     l10n.cloneSetWorkspace,
                                     style: TextStyle(
-                                        fontSize: 12, color: tokens.fgDim),
+                                      fontSize: 12,
+                                      color: tokens.fgDim,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -228,30 +242,32 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                         TextField(
                           controller: _repoController,
                           style: TextStyle(
-                              fontSize: 13, color: tokens.fgBright),
+                            fontSize: 13,
+                            color: tokens.fgBright,
+                          ),
                           decoration: InputDecoration(
-                            hintText:
-                                'https://github.com/user/repo.git',
+                            hintText: 'https://github.com/user/repo.git',
                             hintStyle: TextStyle(
-                                fontSize: 13, color: tokens.fgDim),
+                              fontSize: 13,
+                              color: tokens.fgDim,
+                            ),
                             filled: true,
                             fillColor: tokens.bg,
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 10),
+                              horizontal: 12,
+                              vertical: 10,
+                            ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: tokens.border),
+                              borderSide: BorderSide(color: tokens.border),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: tokens.border),
+                              borderSide: BorderSide(color: tokens.border),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
-                              borderSide:
-                                  BorderSide(color: tokens.accent),
+                              borderSide: BorderSide(color: tokens.accent),
                             ),
                           ),
                         ),
@@ -260,7 +276,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           Text(
                             _cloneError!,
                             style: const TextStyle(
-                                fontSize: 12, color: Colors.red),
+                              fontSize: 12,
+                              color: Colors.red,
+                            ),
                           ),
                         ],
                         const SizedBox(height: 12),
@@ -269,8 +287,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: tokens.accent,
                             foregroundColor: Colors.white,
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -301,8 +318,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                         children: [
                           const SizedBox(height: 28),
                           Padding(
-                            padding:
-                                const EdgeInsets.only(left: 4, bottom: 8),
+                            padding: const EdgeInsets.only(left: 4, bottom: 8),
                             child: Text(
                               l10n.recentWorkspaces,
                               style: TextStyle(
@@ -317,7 +333,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                             GlassCard(
                               margin: const EdgeInsets.only(bottom: 6),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 10),
+                                horizontal: 14,
+                                vertical: 10,
+                              ),
                               onTap: () async {
                                 await switchWorkspace(ref, ws.path);
                                 ref
@@ -330,18 +348,18 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                     width: 28,
                                     height: 28,
                                     decoration: BoxDecoration(
-                                      color: tokens.accent
-                                          .withValues(alpha: 0.12),
-                                      borderRadius:
-                                          BorderRadius.circular(6),
+                                      color: tokens.accent.withValues(
+                                        alpha: 0.12,
+                                      ),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Center(
                                       child: Text(
                                         ws.name.isEmpty
                                             ? '?'
                                             : ws.name
-                                                .substring(0, 1)
-                                                .toUpperCase(),
+                                                  .substring(0, 1)
+                                                  .toUpperCase(),
                                         style: TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w600,
@@ -361,8 +379,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Icon(Icons.chevron_right_rounded,
-                                      color: tokens.fgDim, size: 16),
+                                  Icon(
+                                    Icons.chevron_right_rounded,
+                                    color: tokens.fgDim,
+                                    size: 16,
+                                  ),
                                 ],
                               ),
                             ),

@@ -16,11 +16,7 @@ String? extractTokenFromUrl() {
       final clean = uri.replace(
         queryParameters: params.isEmpty ? null : params,
       );
-      web.window.history.replaceState(
-        null,
-        '',
-        clean.toString(),
-      );
+      web.window.history.replaceState(null, '', clean.toString());
       return token;
     }
   } catch (e) {

@@ -18,8 +18,7 @@ class PersonDetailScreen extends ConsumerStatefulWidget {
   final String personId;
 
   @override
-  ConsumerState<PersonDetailScreen> createState() =>
-      _PersonDetailScreenState();
+  ConsumerState<PersonDetailScreen> createState() => _PersonDetailScreenState();
 }
 
 class _PersonDetailScreenState extends ConsumerState<PersonDetailScreen> {
@@ -35,8 +34,9 @@ class _PersonDetailScreenState extends ConsumerState<PersonDetailScreen> {
 
   Future<void> _load() async {
     try {
-      final person =
-          await ref.read(apiClientProvider).getPerson(widget.personId);
+      final person = await ref
+          .read(apiClientProvider)
+          .getPerson(widget.personId);
       if (mounted) {
         setState(() {
           _person = person.isEmpty ? null : person;
@@ -64,12 +64,12 @@ class _PersonDetailScreenState extends ConsumerState<PersonDetailScreen> {
         child: _loading
             ? Center(child: CircularProgressIndicator(color: tokens.accent))
             : _error != null
-                ? _ErrorBody(tokens: tokens, message: _error!)
-                : _PersonContent(
-                    person: _person!,
-                    projectId: widget.projectId,
-                    tokens: tokens,
-                  ),
+            ? _ErrorBody(tokens: tokens, message: _error!)
+            : _PersonContent(
+                person: _person!,
+                projectId: widget.projectId,
+                tokens: tokens,
+              ),
       ),
     );
   }
@@ -113,8 +113,11 @@ class _PersonContent extends StatelessWidget {
                           context.go(Routes.project(projectId));
                         }
                       },
-                      child: Icon(Icons.arrow_back_rounded,
-                          color: tokens.fgBright, size: 22),
+                      child: Icon(
+                        Icons.arrow_back_rounded,
+                        color: tokens.fgBright,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Text(
@@ -175,39 +178,52 @@ class _PersonContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(AppLocalizations.of(context).details,
-                      style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600)),
+                  Text(
+                    AppLocalizations.of(context).details,
+                    style: TextStyle(
+                      color: tokens.fgBright,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   if (email.isNotEmpty)
-                    _Row(label: AppLocalizations.of(context).email, value: email, tokens: tokens),
+                    _Row(
+                      label: AppLocalizations.of(context).email,
+                      value: email,
+                      tokens: tokens,
+                    ),
                   if (githubEmail.isNotEmpty) ...[
                     const SizedBox(height: 8),
                     _Row(
-                        label: AppLocalizations.of(context).github,
-                        value: githubEmail,
-                        tokens: tokens),
+                      label: AppLocalizations.of(context).github,
+                      value: githubEmail,
+                      tokens: tokens,
+                    ),
                   ],
                   if (timezone.isNotEmpty) ...[
                     const SizedBox(height: 8),
                     _Row(
-                        label: AppLocalizations.of(context).timezone,
-                        value: timezone,
-                        tokens: tokens),
+                      label: AppLocalizations.of(context).timezone,
+                      value: timezone,
+                      tokens: tokens,
+                    ),
                   ],
                   if (bio.isNotEmpty) ...[
                     const SizedBox(height: 12),
-                    Text(AppLocalizations.of(context).bio,
-                        style:
-                            TextStyle(color: tokens.fgMuted, fontSize: 12)),
+                    Text(
+                      AppLocalizations.of(context).bio,
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+                    ),
                     const SizedBox(height: 4),
-                    Text(bio,
-                        style: TextStyle(
-                            color: tokens.fgBright,
-                            fontSize: 14,
-                            height: 1.5)),
+                    Text(
+                      bio,
+                      style: TextStyle(
+                        color: tokens.fgBright,
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
+                    ),
                   ],
                 ],
               ),
@@ -221,11 +237,7 @@ class _PersonContent extends StatelessWidget {
 }
 
 class _Row extends StatelessWidget {
-  const _Row({
-    required this.label,
-    required this.value,
-    required this.tokens,
-  });
+  const _Row({required this.label, required this.value, required this.tokens});
 
   final String label;
   final String value;
@@ -236,8 +248,10 @@ class _Row extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(label,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+          child: Text(
+            label,
+            style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+          ),
         ),
         Flexible(
           child: Text(
@@ -270,18 +284,26 @@ class _ErrorBody extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Color(0xFFEF4444), size: 48),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 48,
+            ),
             const SizedBox(height: 16),
-            Text(AppLocalizations.of(context).failedToLoad,
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              AppLocalizations.of(context).failedToLoad,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
-            Text(message,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 14),
-                textAlign: TextAlign.center),
+            Text(
+              message,
+              style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

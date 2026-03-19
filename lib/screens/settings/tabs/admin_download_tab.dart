@@ -61,7 +61,9 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -76,7 +78,9 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -87,27 +91,33 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
             const SizedBox(height: 12),
 
             // macOS
-            _platformField(tokens,
-                icon: Icons.laptop_mac_rounded,
-                label: l10n.adminPlatformMacos,
-                ctrl: _macUrlCtrl,
-                hint: 'https://...'),
+            _platformField(
+              tokens,
+              icon: Icons.laptop_mac_rounded,
+              label: l10n.adminPlatformMacos,
+              ctrl: _macUrlCtrl,
+              hint: 'https://...',
+            ),
             const SizedBox(height: 12),
 
             // Windows
-            _platformField(tokens,
-                icon: Icons.desktop_windows_rounded,
-                label: l10n.adminPlatformWindows,
-                ctrl: _windowsUrlCtrl,
-                hint: 'https://...'),
+            _platformField(
+              tokens,
+              icon: Icons.desktop_windows_rounded,
+              label: l10n.adminPlatformWindows,
+              ctrl: _windowsUrlCtrl,
+              hint: 'https://...',
+            ),
             const SizedBox(height: 12),
 
             // Linux
-            _platformField(tokens,
-                icon: Icons.computer_rounded,
-                label: l10n.adminPlatformLinux,
-                ctrl: _linuxUrlCtrl,
-                hint: 'https://...'),
+            _platformField(
+              tokens,
+              icon: Icons.computer_rounded,
+              label: l10n.adminPlatformLinux,
+              ctrl: _linuxUrlCtrl,
+              hint: 'https://...',
+            ),
 
             const SizedBox(height: 24),
             Divider(color: tokens.border.withValues(alpha: 0.4)),
@@ -125,8 +135,12 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
             // Release Notes
             _fieldLabel(tokens, l10n.adminReleaseNotes),
             const SizedBox(height: 6),
-            _field(tokens, _releaseNotesCtrl,
-                hint: l10n.adminReleaseNotesHint, maxLines: 5),
+            _field(
+              tokens,
+              _releaseNotesCtrl,
+              hint: l10n.adminReleaseNotesHint,
+              maxLines: 5,
+            ),
 
             const SizedBox(height: 28),
             SizedBox(
@@ -138,14 +152,17 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -197,7 +214,9 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
               filled: true,
               fillColor: tokens.bgAlt,
               contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 10),
+                horizontal: 12,
+                vertical: 10,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: tokens.border),
@@ -218,23 +237,23 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -251,8 +270,10 @@ class _AdminDownloadTabState extends ConsumerState<AdminDownloadTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

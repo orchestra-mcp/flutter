@@ -24,15 +24,17 @@ class DelegationDetailScreen extends ConsumerWidget {
         child: delegations.when(
           loading: () =>
               Center(child: CircularProgressIndicator(color: tokens.accent)),
-          error: (e, _) =>
-              _ErrorBody(tokens: tokens, message: e.toString()),
+          error: (e, _) => _ErrorBody(tokens: tokens, message: e.toString()),
           data: (list) {
             final l10n = AppLocalizations.of(context);
-            final d = list.where((d) =>
-                d['id']?.toString() == delegationId).firstOrNull;
+            final d = list
+                .where((d) => d['id']?.toString() == delegationId)
+                .firstOrNull;
             if (d == null) {
               return _ErrorBody(
-                  tokens: tokens, message: l10n.delegationNotFound);
+                tokens: tokens,
+                message: l10n.delegationNotFound,
+              );
             }
             return _DelegationContent(delegation: d, tokens: tokens);
           },
@@ -43,10 +45,7 @@ class DelegationDetailScreen extends ConsumerWidget {
 }
 
 class _DelegationContent extends StatelessWidget {
-  const _DelegationContent({
-    required this.delegation,
-    required this.tokens,
-  });
+  const _DelegationContent({required this.delegation, required this.tokens});
 
   final Map<String, dynamic> delegation;
   final OrchestraColorTokens tokens;
@@ -80,8 +79,11 @@ class _DelegationContent extends StatelessWidget {
                           context.go(Routes.delegations);
                         }
                       },
-                      child: Icon(Icons.arrow_back_rounded,
-                          color: tokens.fgBright, size: 22),
+                      child: Icon(
+                        Icons.arrow_back_rounded,
+                        color: tokens.fgBright,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Text(
@@ -101,8 +103,8 @@ class _DelegationContent extends StatelessWidget {
                   color: status == 'responded'
                       ? const Color(0xFF4ADE80)
                       : status == 'pending'
-                          ? const Color(0xFFFBBF24)
-                          : const Color(0xFF6B7280),
+                      ? const Color(0xFFFBBF24)
+                      : const Color(0xFF6B7280),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -127,18 +129,25 @@ class _DelegationContent extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(l10n.details,
-                      style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600)),
+                  Text(
+                    l10n.details,
+                    style: TextStyle(
+                      color: tokens.fgBright,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   _Row(label: l10n.fromLabel, value: from, tokens: tokens),
                   const SizedBox(height: 8),
                   _Row(label: l10n.toLabel, value: to, tokens: tokens),
                   if (featureId.isNotEmpty) ...[
                     const SizedBox(height: 8),
-                    _Row(label: l10n.featureLabel, value: featureId, tokens: tokens),
+                    _Row(
+                      label: l10n.featureLabel,
+                      value: featureId,
+                      tokens: tokens,
+                    ),
                   ],
                 ],
               ),
@@ -154,15 +163,16 @@ class _DelegationContent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l10n.contextLabel,
-                        style: TextStyle(
-                            color: tokens.fgBright,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 8),
-                    MarkdownRendererWidget(
-                      content: ctx,
+                    Text(
+                      l10n.contextLabel,
+                      style: TextStyle(
+                        color: tokens.fgBright,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
+                    const SizedBox(height: 8),
+                    MarkdownRendererWidget(content: ctx),
                   ],
                 ),
               ),
@@ -178,15 +188,16 @@ class _DelegationContent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l10n.response,
-                        style: TextStyle(
-                            color: tokens.fgBright,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 8),
-                    MarkdownRendererWidget(
-                      content: response,
+                    Text(
+                      l10n.response,
+                      style: TextStyle(
+                        color: tokens.fgBright,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
+                    const SizedBox(height: 8),
+                    MarkdownRendererWidget(content: response),
                   ],
                 ),
               ),
@@ -215,19 +226,18 @@ class _Badge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style:
-            TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          color: color,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
 }
 
 class _Row extends StatelessWidget {
-  const _Row({
-    required this.label,
-    required this.value,
-    required this.tokens,
-  });
+  const _Row({required this.label, required this.value, required this.tokens});
   final String label;
   final String value;
   final OrchestraColorTokens tokens;
@@ -237,8 +247,10 @@ class _Row extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(label,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+          child: Text(
+            label,
+            style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+          ),
         ),
         Flexible(
           child: Text(
@@ -272,18 +284,26 @@ class _ErrorBody extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Color(0xFFEF4444), size: 48),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 48,
+            ),
             const SizedBox(height: 16),
-            Text(l10n.failedToLoadDelegation,
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              l10n.failedToLoadDelegation,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
-            Text(message,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 14),
-                textAlign: TextAlign.center),
+            Text(
+              message,
+              style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

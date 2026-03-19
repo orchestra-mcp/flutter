@@ -83,8 +83,7 @@ void main() {
     });
 
     test('handles completely empty JSON', () {
-      final response =
-          SyncPullResponse.fromJson(<String, dynamic>{});
+      final response = SyncPullResponse.fromJson(<String, dynamic>{});
       expect(response.deltas, isEmpty);
       expect(response.hasMore, isFalse);
     });

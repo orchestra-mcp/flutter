@@ -63,7 +63,8 @@ class HealthAnalyticsEngine {
     required double sleepScore,
     required double shutdownScore,
   }) {
-    final weighted = hydrationScore * _wHydration +
+    final weighted =
+        hydrationScore * _wHydration +
         pomodoroScore * _wPomodoro +
         nutritionScore * _wNutrition +
         sleepScore * _wSleep +

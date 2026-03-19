@@ -17,19 +17,13 @@ import 'package:uuid/uuid.dart';
 // ---------------------------------------------------------------------------
 
 class WeightEntry {
-  const WeightEntry({
-    required this.kg,
-    required this.timestamp,
-  });
+  const WeightEntry({required this.kg, required this.timestamp});
   final double kg;
   final DateTime timestamp;
 }
 
 class WeightState {
-  const WeightState({
-    this.entries = const [],
-    this.heightCm = 175.0,
-  });
+  const WeightState({this.entries = const [], this.heightCm = 175.0});
 
   final List<WeightEntry> entries;
   final double heightCm;
@@ -64,7 +58,9 @@ class WeightState {
     if (entries.length < 3) return null;
     final now = DateTime.now();
     final cutoff = now.subtract(const Duration(days: 7));
-    final weekEntries = entries.where((e) => e.timestamp.isAfter(cutoff)).toList();
+    final weekEntries = entries
+        .where((e) => e.timestamp.isAfter(cutoff))
+        .toList();
     if (weekEntries.length < 3) {
       // Fallback: use the last 7 entries if we don't have 3+ in the past week
       final fallback = entries.length >= 3
@@ -91,10 +87,7 @@ class WeightState {
     );
   }
 
-  WeightState copyWith({
-    List<WeightEntry>? entries,
-    double? heightCm,
-  }) {
+  WeightState copyWith({List<WeightEntry>? entries, double? heightCm}) {
     return WeightState(
       entries: entries ?? this.entries,
       heightCm: heightCm ?? this.heightCm,
@@ -144,12 +137,16 @@ class WeightNotifier extends Notifier<WeightState> {
       for (final row in results) {
         final kg = (row['weight_kg'] as num?)?.toDouble();
         if (kg == null || kg <= 0) continue;
-        final dateStr = row['snapshot_date'] as String? ??
-            row['created_at'] as String? ?? '';
-        entries.add(WeightEntry(
-          kg: kg,
-          timestamp: DateTime.tryParse(dateStr) ?? DateTime.now(),
-        ));
+        final dateStr =
+            row['snapshot_date'] as String? ??
+            row['created_at'] as String? ??
+            '';
+        entries.add(
+          WeightEntry(
+            kg: kg,
+            timestamp: DateTime.tryParse(dateStr) ?? DateTime.now(),
+          ),
+        );
       }
 
       state = state.copyWith(entries: entries);
@@ -160,7 +157,8 @@ class WeightNotifier extends Notifier<WeightState> {
 
   Future<void> logWeight(double kg) async {
     final now = DateTime.now();
-    final dateStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    final dateStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
     final nowUtc = now.toUtc().toIso8601String();
 
     // Persist to PowerSync (syncs to all devices via batch CRUD).
@@ -194,12 +192,14 @@ class WeightNotifier extends Notifier<WeightState> {
     for (final row in rows) {
       final kg = (row['weight_kg'] as num?)?.toDouble();
       if (kg == null || kg <= 0) continue;
-      final dateStr = row['snapshot_date'] as String? ??
-          row['created_at'] as String? ?? '';
-      entries.add(WeightEntry(
-        kg: kg,
-        timestamp: DateTime.tryParse(dateStr) ?? DateTime.now(),
-      ));
+      final dateStr =
+          row['snapshot_date'] as String? ?? row['created_at'] as String? ?? '';
+      entries.add(
+        WeightEntry(
+          kg: kg,
+          timestamp: DateTime.tryParse(dateStr) ?? DateTime.now(),
+        ),
+      );
     }
     state = state.copyWith(entries: entries);
   }
@@ -251,10 +251,7 @@ class _WeightTabState extends ConsumerState<WeightTab> {
     }
     _healthConnected = true;
     final hs = ref.read(healthServiceProvider);
-    final results = await Future.wait([
-      hs.getLatestWeight(),
-      hs.getBodyFat(),
-    ]);
+    final results = await Future.wait([hs.getLatestWeight(), hs.getBodyFat()]);
     if (mounted) {
       setState(() {
         _healthKitWeight = results[0];
@@ -325,10 +322,7 @@ class _WeightTabState extends ConsumerState<WeightTab> {
                     children: [
                       Text(
                         l10n.bmiLabel,
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -408,11 +402,9 @@ class _WeightTabState extends ConsumerState<WeightTab> {
                       child: TextField(
                         controller: _weightController,
                         keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 15,
+                          decimal: true,
                         ),
+                        style: TextStyle(color: tokens.fgBright, fontSize: 15),
                         decoration: _inputDecoration(
                           tokens: tokens,
                           label: l10n.weightKg,
@@ -425,11 +417,9 @@ class _WeightTabState extends ConsumerState<WeightTab> {
                       child: TextField(
                         controller: _heightController,
                         keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 15,
+                          decimal: true,
                         ),
+                        style: TextStyle(color: tokens.fgBright, fontSize: 15),
                         decoration: _inputDecoration(
                           tokens: tokens,
                           label: l10n.heightCm,
@@ -468,8 +458,11 @@ class _WeightTabState extends ConsumerState<WeightTab> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.show_chart_rounded,
-                        color: tokens.accent, size: 18),
+                    Icon(
+                      Icons.show_chart_rounded,
+                      color: tokens.accent,
+                      size: 18,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       l10n.weight,
@@ -526,22 +519,23 @@ class _WeightTabState extends ConsumerState<WeightTab> {
                       const Spacer(),
                       Text(
                         '${state.entries.length} entries',
-                        style: TextStyle(
-                          color: tokens.fgDim,
-                          fontSize: 11,
-                        ),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  ...state.entries.reversed.take(10).toList().asMap().entries.map(
+                  ...state.entries.reversed
+                      .take(10)
+                      .toList()
+                      .asMap()
+                      .entries
+                      .map(
                         (mapEntry) => _HistoryRow(
                           entry: mapEntry.value,
-                          previousEntry: mapEntry.key <
-                                  state.entries.length - 1
-                              ? state.entries.reversed
-                                  .toList()
-                                  .elementAtOrNull(mapEntry.key + 1)
+                          previousEntry: mapEntry.key < state.entries.length - 1
+                              ? state.entries.reversed.toList().elementAtOrNull(
+                                  mapEntry.key + 1,
+                                )
                               : null,
                           tokens: tokens,
                         ),
@@ -589,12 +583,10 @@ class _WeightTabState extends ConsumerState<WeightTab> {
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: tokens.accent),
       ),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       isDense: true,
     );
   }
-
 }
 
 // ---------------------------------------------------------------------------
@@ -624,11 +616,16 @@ class _HealthKitWeightCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.health_and_safety_rounded,
-                  color: const Color(0xFF26A69A), size: 18),
+              Icon(
+                Icons.health_and_safety_rounded,
+                color: const Color(0xFF26A69A),
+                size: 18,
+              ),
               const SizedBox(width: 6),
               Text(
-                isConnected ? AppLocalizations.of(context).weight : AppLocalizations.of(context).connectHealth,
+                isConnected
+                    ? AppLocalizations.of(context).weight
+                    : AppLocalizations.of(context).connectHealth,
                 style: TextStyle(
                   color: tokens.fgBright,
                   fontWeight: FontWeight.w600,
@@ -652,11 +649,7 @@ class _HealthKitWeightCard extends StatelessWidget {
             Text(
               '${AppLocalizations.of(context).connectHealth}\n'
               '${AppLocalizations.of(context).logWeightManually}',
-              style: TextStyle(
-                color: tokens.fgDim,
-                fontSize: 12,
-                height: 1.5,
-              ),
+              style: TextStyle(color: tokens.fgDim, fontSize: 12, height: 1.5),
             )
           else if (isLoading)
             Text(
@@ -689,7 +682,9 @@ class _HealthKitWeightCard extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: tokens.accent.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
@@ -765,11 +760,7 @@ class _EmptyState extends StatelessWidget {
           Text(
             AppLocalizations.of(context).weightEmptyDescription,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: tokens.fgDim,
-              fontSize: 12,
-              height: 1.5,
-            ),
+            style: TextStyle(color: tokens.fgDim, fontSize: 12, height: 1.5),
           ),
           const SizedBox(height: 16),
           Row(
@@ -848,10 +839,7 @@ class _EmptyFeaturePill extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _WeightDeltaChip extends StatelessWidget {
-  const _WeightDeltaChip({
-    required this.delta,
-    required this.tokens,
-  });
+  const _WeightDeltaChip({required this.delta, required this.tokens});
 
   final double delta;
   final OrchestraColorTokens tokens;
@@ -911,10 +899,7 @@ class _WeightDeltaChip extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _WeeklySummaryCard extends StatelessWidget {
-  const _WeeklySummaryCard({
-    required this.summary,
-    required this.tokens,
-  });
+  const _WeeklySummaryCard({required this.summary, required this.tokens});
 
   final WeightWeeklySummary summary;
   final OrchestraColorTokens tokens;
@@ -960,13 +945,11 @@ class _WeeklySummaryCard extends StatelessWidget {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: trendColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: trendColor.withValues(alpha: 0.3)),
+                  border: Border.all(color: trendColor.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -1118,8 +1101,7 @@ class _HistoryRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(Icons.monitor_weight_rounded,
-              color: tokens.accent, size: 14),
+          Icon(Icons.monitor_weight_rounded, color: tokens.accent, size: 14),
           const SizedBox(width: 6),
           Text(
             '${entry.kg.toStringAsFixed(1)} kg',
@@ -1136,10 +1118,7 @@ class _HistoryRow extends StatelessWidget {
           const Spacer(),
           Text(
             _formatDate(entry.timestamp),
-            style: TextStyle(
-              color: tokens.fgDim,
-              fontSize: 11,
-            ),
+            style: TextStyle(color: tokens.fgDim, fontSize: 11),
           ),
         ],
       ),
@@ -1156,8 +1135,7 @@ class _MiniDelta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoss = delta < 0;
-    final color =
-        isLoss ? const Color(0xFF4CAF50) : const Color(0xFFFF9800);
+    final color = isLoss ? const Color(0xFF4CAF50) : const Color(0xFFFF9800);
     final prefix = isLoss ? '' : '+';
 
     return Text(
@@ -1201,11 +1179,7 @@ class _BmiCircle extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
-      child: Icon(
-        Icons.monitor_weight_rounded,
-        color: _color,
-        size: 26,
-      ),
+      child: Icon(Icons.monitor_weight_rounded, color: _color, size: 26),
     );
   }
 }
@@ -1215,10 +1189,7 @@ class _BmiCircle extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _BmiCategoryBadge extends StatelessWidget {
-  const _BmiCategoryBadge({
-    required this.category,
-    required this.tokens,
-  });
+  const _BmiCategoryBadge({required this.category, required this.tokens});
 
   final String category;
   final OrchestraColorTokens tokens;
@@ -1277,10 +1248,7 @@ class _BmiCategoryBadge extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _TrendPlaceholder extends StatelessWidget {
-  const _TrendPlaceholder({
-    required this.entries,
-    required this.tokens,
-  });
+  const _TrendPlaceholder({required this.entries, required this.tokens});
 
   final List<WeightEntry> entries;
   final OrchestraColorTokens tokens;
@@ -1422,9 +1390,8 @@ class _TrendPainter extends CustomPainter {
 
     for (var i = 0; i < values.length; i++) {
       final x = (i / (values.length - 1)) * size.width;
-      final y = topPad +
-          chartHeight -
-          ((values[i] - minVal) / range) * chartHeight;
+      final y =
+          topPad + chartHeight - ((values[i] - minVal) / range) * chartHeight;
       points.add(Offset(x, y));
       if (i == 0) {
         path.moveTo(x, y);
@@ -1504,6 +1471,5 @@ class _TrendPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_TrendPainter old) =>
-      old.entries.length != entries.length ||
-      old.lineColor != lineColor;
+      old.entries.length != entries.length || old.lineColor != lineColor;
 }

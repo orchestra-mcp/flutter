@@ -14,7 +14,7 @@ import 'package:xterm/xterm.dart';
 /// receive the same terminal output.
 class PtyTerminalBackend extends TerminalBackend {
   PtyTerminalBackend({String? shell, this.workingDirectory})
-      : _shell = shell ?? Platform.environment['SHELL'] ?? '/bin/bash';
+    : _shell = shell ?? Platform.environment['SHELL'] ?? '/bin/bash';
 
   final String _shell;
   final String? workingDirectory;
@@ -39,16 +39,19 @@ class PtyTerminalBackend extends TerminalBackend {
     _pty = pty;
 
     // PTY output → xterm terminal + broadcast to remote clients
-    pty.output.cast<List<int>>().transform(utf8.decoder).listen(
-      (String data) {
-        terminal.write(data);
-        _outputController.add(data);
-      },
-      onDone: () {
-        terminal.write('\r\n[Process exited]\r\n');
-        _outputController.add('\r\n[Process exited]\r\n');
-      },
-    );
+    pty.output
+        .cast<List<int>>()
+        .transform(utf8.decoder)
+        .listen(
+          (String data) {
+            terminal.write(data);
+            _outputController.add(data);
+          },
+          onDone: () {
+            terminal.write('\r\n[Process exited]\r\n');
+            _outputController.add('\r\n[Process exited]\r\n');
+          },
+        );
 
     // xterm keystrokes → PTY stdin
     terminal.onOutput = (String data) {

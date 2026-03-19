@@ -112,9 +112,7 @@ void main() {
       final mock = _MockHealthService(hasPerms: false);
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            healthServiceProvider.overrideWithValue(mock),
-          ],
+          overrides: [healthServiceProvider.overrideWithValue(mock)],
           child: _wrap(const VitalsTab()),
         ),
       );
@@ -124,8 +122,9 @@ void main() {
       expect(find.text('Connect Health'), findsOneWidget);
     });
 
-    testWidgets('shows all vitals data after permissions granted',
-        (tester) async {
+    testWidgets('shows all vitals data after permissions granted', (
+      tester,
+    ) async {
       final mock = _MockHealthService(
         hasPerms: true,
         steps: 8432,
@@ -139,9 +138,7 @@ void main() {
       );
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            healthServiceProvider.overrideWithValue(mock),
-          ],
+          overrides: [healthServiceProvider.overrideWithValue(mock)],
           child: _wrap(const VitalsTab()),
         ),
       );
@@ -193,9 +190,7 @@ void main() {
       );
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            healthServiceProvider.overrideWithValue(mock),
-          ],
+          overrides: [healthServiceProvider.overrideWithValue(mock)],
           child: _wrap(const VitalsTab()),
         ),
       );
@@ -207,8 +202,9 @@ void main() {
       expect(find.text('No range data'), findsOneWidget);
     });
 
-    testWidgets('persists permission state in SharedPreferences',
-        (tester) async {
+    testWidgets('persists permission state in SharedPreferences', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
 
       final mock = _MockHealthService(
@@ -220,9 +216,7 @@ void main() {
       );
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            healthServiceProvider.overrideWithValue(mock),
-          ],
+          overrides: [healthServiceProvider.overrideWithValue(mock)],
           child: _wrap(const VitalsTab()),
         ),
       );
@@ -255,9 +249,7 @@ void main() {
       );
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            healthServiceProvider.overrideWithValue(mock),
-          ],
+          overrides: [healthServiceProvider.overrideWithValue(mock)],
           child: _wrap(const VitalsTab()),
         ),
       );
@@ -276,15 +268,10 @@ void main() {
         'health_permissions_granted': true,
       });
 
-      final mock = _MockHealthService(
-        hasPerms: true,
-        weight: 83.7,
-      );
+      final mock = _MockHealthService(hasPerms: true, weight: 83.7);
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            healthServiceProvider.overrideWithValue(mock),
-          ],
+          overrides: [healthServiceProvider.overrideWithValue(mock)],
           child: _wrap(const VitalsTab()),
         ),
       );

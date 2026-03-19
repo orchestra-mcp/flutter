@@ -80,17 +80,20 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                       width: 36,
                       height: 36,
                       child: IconButton(
-                        icon: Icon(Icons.add_rounded,
-                            color: tokens.accent, size: 22),
+                        icon: Icon(
+                          Icons.add_rounded,
+                          color: tokens.accent,
+                          size: 22,
+                        ),
                         style: IconButton.styleFrom(
-                          backgroundColor:
-                              tokens.accent.withValues(alpha: 0.12),
+                          backgroundColor: tokens.accent.withValues(
+                            alpha: 0.12,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        onPressed: () =>
-                            context.push('/library/workflows/new'),
+                        onPressed: () => context.push('/library/workflows/new'),
                       ),
                     ),
                   ],
@@ -99,11 +102,14 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
             Expanded(
               child: asyncWorkflows.when(
                 loading: () => Center(
-                    child:
-                        CircularProgressIndicator(color: tokens.accent)),
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
                 error: (e, _) => Center(
-                    child: Text(l10n.failedToLoadWorkflows,
-                        style: TextStyle(color: tokens.fgMuted))),
+                  child: Text(
+                    l10n.failedToLoadWorkflows,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
+                ),
                 data: (workflows) {
                   if (workflows.isEmpty) {
                     return MobileEmptyState(
@@ -116,14 +122,16 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                   final filtered = q.isEmpty
                       ? workflows
                       : workflows
-                          .where((w) =>
-                              ((w['name'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((w['description'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q))
-                          .toList();
+                            .where(
+                              (w) =>
+                                  ((w['name'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((w['description'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q),
+                            )
+                            .toList();
                   if (filtered.isEmpty) {
                     return Center(
                       child: Text(
@@ -132,43 +140,40 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                       ),
                     );
                   }
-                  final sorted =
-                      List<Map<String, dynamic>>.from(filtered)
-                        ..sort((a, b) {
-                          final bool aPin =
-                              pinnedIds.contains(a['id'] ?? a['name'] ?? '');
-                          final bool bPin =
-                              pinnedIds.contains(b['id'] ?? b['name'] ?? '');
-                          if (aPin && !bPin) return -1;
-                          if (!aPin && bPin) return 1;
-                          return 0;
-                        });
+                  final sorted = List<Map<String, dynamic>>.from(filtered)
+                    ..sort((a, b) {
+                      final bool aPin = pinnedIds.contains(
+                        a['id'] ?? a['name'] ?? '',
+                      );
+                      final bool bPin = pinnedIds.contains(
+                        b['id'] ?? b['name'] ?? '',
+                      );
+                      if (aPin && !bPin) return -1;
+                      if (!aPin && bPin) return 1;
+                      return 0;
+                    });
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: sorted.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 6),
+                    separatorBuilder: (_, __) => const SizedBox(height: 6),
                     itemBuilder: (context, index) {
                       final wf = sorted[index];
                       final title =
                           (wf['description'] as String?)?.isNotEmpty == true
-                              ? wf['description'] as String
-                              : (wf['name'] as String?) ?? 'Unknown';
-                      final projectName =
-                          (wf['name'] as String?) ?? '';
+                          ? wf['description'] as String
+                          : (wf['name'] as String?) ?? 'Unknown';
+                      final projectName = (wf['name'] as String?) ?? '';
                       final states = wf['states'];
-                      final stateCount = states is Map
-                          ? states.length
-                          : 0;
+                      final stateCount = states is Map ? states.length : 0;
                       final transitions = wf['transitions'];
                       final transitionCount = transitions is List
                           ? transitions.length
                           : 0;
                       final gates = wf['gates'];
-                      final gateCount = gates is Map
-                          ? gates.length
-                          : 0;
+                      final gateCount = gates is Map ? gates.length : 0;
                       final initialState =
                           (wf['initial_state'] as String?) ?? 'todo';
                       final isDefault = wf['is_default'] == true;
@@ -187,10 +192,13 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                         trailing: isDefault
                             ? Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 2),
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF10B981)
-                                      .withValues(alpha: 0.15),
+                                  color: const Color(
+                                    0xFF10B981,
+                                  ).withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
@@ -205,15 +213,14 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                             : null,
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(workflowsSelectionProvider.notifier)
-                                .toggle(id)
+                                  .read(workflowsSelectionProvider.notifier)
+                                  .toggle(id)
                             : () => context.push(Routes.workflow(id)),
                         onSelect: () => ref
                             .read(workflowsSelectionProvider.notifier)
                             .toggle(id),
-                        onPin: () => ref
-                            .read(workflowsPinProvider.notifier)
-                            .toggle(id),
+                        onPin: () =>
+                            ref.read(workflowsPinProvider.notifier).toggle(id),
                         contextMenuActions: buildEntityContextActions(
                           l10n: AppLocalizations.of(context),
                           onSelect: () => ref
@@ -233,12 +240,19 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                                 .read(publishServiceProvider)
                                 .publishWorkflow(id);
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(ok
-                                    ? AppLocalizations.of(context).workflowPublished
-                                    : AppLocalizations.of(context).publishFailed),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    ok
+                                        ? AppLocalizations.of(
+                                            context,
+                                          ).workflowPublished
+                                        : AppLocalizations.of(
+                                            context,
+                                          ).publishFailed,
+                                  ),
+                                ),
+                              );
                             }
                           },
                           onExportMarkdown: () => exportAsMarkdown(
@@ -247,11 +261,17 @@ class _WorkflowsScreenState extends ConsumerState<WorkflowsScreen> {
                                 'States: $stateCount\nTransitions: $transitionCount\nGates: $gateCount\nInitial: $initialState\nDefault: $isDefault',
                           ),
                           onChangeIcon: () => pickAndSaveIcon(
-                              context, ref, id,
-                              currentCodePoint: cust?.iconCodePoint),
+                            context,
+                            ref,
+                            id,
+                            currentCodePoint: cust?.iconCodePoint,
+                          ),
                           onChangeColor: () => pickAndSaveColor(
-                              context, ref, id,
-                              currentColor: cust?.color),
+                            context,
+                            ref,
+                            id,
+                            currentColor: cust?.color,
+                          ),
                         ),
                       );
                     },

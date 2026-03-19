@@ -75,15 +75,12 @@ Future<void> exportWidgetAsImage({
 
   final picture = recorder.endRecording();
   final composited = await picture.toImage(canvasW.toInt(), canvasH.toInt());
-  final byteData =
-      await composited.toByteData(format: ui.ImageByteFormat.png);
+  final byteData = await composited.toByteData(format: ui.ImageByteFormat.png);
   if (byteData == null) return;
 
   final dir = await getTemporaryDirectory();
   final file = File('${dir.path}/${uniqueFileName(fileName)}');
   await file.writeAsBytes(byteData.buffer.asUint8List());
 
-  await SharePlus.instance.share(
-    ShareParams(files: [XFile(file.path)]),
-  );
+  await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
 }

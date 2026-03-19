@@ -41,8 +41,9 @@ class AgentNotificationService {
   Future<void> _ensureInitialized() async {
     if (_initialized) return;
 
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
@@ -64,8 +65,10 @@ class AgentNotificationService {
   }
 
   Future<void> _createAndroidChannel() async {
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android == null) return;
     await android.createNotificationChannel(
       const AndroidNotificationChannel(
@@ -193,8 +196,9 @@ class AgentNotificationService {
 
 // ── Provider ────────────────────────────────────────────────────────────────
 
-final agentNotificationServiceProvider =
-    Provider<AgentNotificationService>((ref) {
+final agentNotificationServiceProvider = Provider<AgentNotificationService>((
+  ref,
+) {
   final service = AgentNotificationService(
     ref: ref,
     wsManager: ref.watch(wsManagerProvider),

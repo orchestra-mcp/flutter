@@ -22,8 +22,9 @@ class ScopeResolver {
   /// Real user home (handles macOS sandbox).
   static String get _realHome {
     final env = Platform.environment['HOME'] ?? '/tmp';
-    final containerMatch =
-        RegExp(r'^(/Users/[^/]+)/Library/Containers/.+/Data$');
+    final containerMatch = RegExp(
+      r'^(/Users/[^/]+)/Library/Containers/.+/Data$',
+    );
     final match = containerMatch.firstMatch(env);
     if (match != null) return match.group(1)!;
     return env;

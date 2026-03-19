@@ -104,10 +104,7 @@ class GlassNavBarState extends State<GlassNavBar>
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
 
     return DefaultTextStyle(
-      style: TextStyle(
-        decoration: TextDecoration.none,
-        color: tokens.fgBright,
-      ),
+      style: TextStyle(decoration: TextDecoration.none, color: tokens.fgBright),
       child: Padding(
         padding: EdgeInsets.fromLTRB(16, 0, 16, 12 + bottomPadding),
         child: AnimatedBuilder(
@@ -157,9 +154,7 @@ class GlassNavBarState extends State<GlassNavBar>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(32),
             color: tokens.fgBright.withValues(alpha: 0.08),
-            border: Border.all(
-              color: tokens.fgBright.withValues(alpha: 0.12),
-            ),
+            border: Border.all(color: tokens.fgBright.withValues(alpha: 0.12)),
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -253,9 +248,7 @@ class _GlassTabBar extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(32),
             color: tokens.fgBright.withValues(alpha: 0.06),
-            border: Border.all(
-              color: tokens.fgBright.withValues(alpha: 0.10),
-            ),
+            border: Border.all(color: tokens.fgBright.withValues(alpha: 0.10)),
           ),
           child: Stack(
             children: [

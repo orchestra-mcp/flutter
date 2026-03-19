@@ -39,8 +39,7 @@ class EntitySearchBar extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: t.fgDim, fontSize: fontSize),
-          prefixIcon:
-              Icon(Icons.search_rounded, size: 16, color: t.fgDim),
+          prefixIcon: Icon(Icons.search_rounded, size: 16, color: t.fgDim),
           prefixIconConstraints: const BoxConstraints(minWidth: 32),
           suffixIcon: controller != null
               ? ValueListenableBuilder<TextEditingValue>(
@@ -48,8 +47,7 @@ class EntitySearchBar extends StatelessWidget {
                   builder: (_, value, __) {
                     if (value.text.isEmpty) return const SizedBox.shrink();
                     return IconButton(
-                      icon: Icon(Icons.close_rounded,
-                          size: 14, color: t.fgDim),
+                      icon: Icon(Icons.close_rounded, size: 14, color: t.fgDim),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                       onPressed: () {

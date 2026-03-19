@@ -61,7 +61,10 @@ class BillingPage extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: tokens.bgAlt,
                   borderRadius: BorderRadius.circular(8),

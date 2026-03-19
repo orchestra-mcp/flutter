@@ -76,14 +76,17 @@ void main() {
       expect(inWindow.isCortisolWindow(), isTrue);
     });
 
-    test('logCaffeine throws CortisolWindowException during cortisol window', () {
-      final inWindow = CaffeineManager(
-        wakeTime: DateTime.now().subtract(const Duration(minutes: 95)),
-      );
-      expect(
-        () => inWindow.logCaffeine(CaffeineType.espresso),
-        throwsA(isA<CortisolWindowException>()),
-      );
-    });
+    test(
+      'logCaffeine throws CortisolWindowException during cortisol window',
+      () {
+        final inWindow = CaffeineManager(
+          wakeTime: DateTime.now().subtract(const Duration(minutes: 95)),
+        );
+        expect(
+          () => inWindow.logCaffeine(CaffeineType.espresso),
+          throwsA(isA<CortisolWindowException>()),
+        );
+      },
+    );
   });
 }

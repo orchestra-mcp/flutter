@@ -287,9 +287,7 @@ class _FilledButton extends StatelessWidget {
         backgroundColor: tokens.accent,
         foregroundColor: tokens.bg,
         minimumSize: const Size(120, 48),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         textStyle: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 15,
@@ -320,9 +318,7 @@ class _OutlineButton extends StatelessWidget {
         foregroundColor: tokens.fgMuted,
         side: BorderSide(color: tokens.border),
         minimumSize: const Size(100, 48),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         textStyle: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 15,

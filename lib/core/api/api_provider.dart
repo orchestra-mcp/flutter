@@ -28,8 +28,9 @@ class _WorkspacePath extends Notifier<String> {
   void update(String path) => state = path;
 }
 
-final workspacePathProvider =
-    NotifierProvider<_WorkspacePath, String>(_WorkspacePath.new);
+final workspacePathProvider = NotifierProvider<_WorkspacePath, String>(
+  _WorkspacePath.new,
+);
 
 /// Cached workspace path — set once at startup before providers are read.
 String? _cachedWorkspacePath;
@@ -109,7 +110,9 @@ const _recentWorkspacesKey = 'recent_workspaces';
 const _maxRecentWorkspaces = 10;
 
 /// Provider for the list of recent workspaces.
-final recentWorkspacesProvider = FutureProvider<List<RecentWorkspace>>((ref) async {
+final recentWorkspacesProvider = FutureProvider<List<RecentWorkspace>>((
+  ref,
+) async {
   // Watch workspace path so this refreshes after a switch
   ref.watch(workspacePathProvider);
   final prefs = await SharedPreferences.getInstance();
@@ -118,7 +121,11 @@ final recentWorkspacesProvider = FutureProvider<List<RecentWorkspace>>((ref) asy
 
 /// A recently-used workspace entry.
 class RecentWorkspace {
-  const RecentWorkspace({required this.path, required this.name, required this.lastUsed});
+  const RecentWorkspace({
+    required this.path,
+    required this.name,
+    required this.lastUsed,
+  });
   final String path;
   final String name;
   final String lastUsed; // ISO 8601
@@ -159,11 +166,11 @@ Future<void> _addRecentWorkspace(SharedPreferences prefs, String path) async {
   if (existing.length > _maxRecentWorkspaces) {
     existing.removeRange(_maxRecentWorkspaces, existing.length);
   }
-  final encoded = jsonEncode(existing.map((w) => {
-    'path': w.path,
-    'name': w.name,
-    'lastUsed': w.lastUsed,
-  }).toList());
+  final encoded = jsonEncode(
+    existing
+        .map((w) => {'path': w.path, 'name': w.name, 'lastUsed': w.lastUsed})
+        .toList(),
+  );
   await prefs.setString(_recentWorkspacesKey, encoded);
 }
 
@@ -221,6 +228,7 @@ final mcpClientProvider = Provider<McpTcpClient?>((ref) {
   void onStateChange() {
     TrayService.instance.updateIcon(mcp.processState.value);
   }
+
   mcp.processState.addListener(onStateChange);
 
   // Listen for server-pushed events and invalidate relevant providers.
@@ -258,4 +266,3 @@ final mcpActionLoggerProvider = Provider<McpActionLogger>((ref) {
   ref.onDispose(logger.dispose);
   return logger;
 });
-

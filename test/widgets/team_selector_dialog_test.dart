@@ -23,56 +23,52 @@ const _testTokens = OrchestraColorTokens(
 
 final _twoTeams = TeamSelectorData(
   teams: [
-    Team(
-      id: 'team-1',
-      name: 'Engineering',
-      createdAt: DateTime.utc(2026),
-    ),
-    Team(
-      id: 'team-2',
-      name: 'Design',
-      createdAt: DateTime.utc(2026),
-    ),
+    Team(id: 'team-1', name: 'Engineering', createdAt: DateTime.utc(2026)),
+    Team(id: 'team-2', name: 'Design', createdAt: DateTime.utc(2026)),
   ],
   membersByTeamId: {
     'team-1': const [
-      TeamMember(id: 'u1', name: 'Alice', email: 'alice@test.com', role: 'admin', isOnline: true),
-      TeamMember(id: 'u2', name: 'Bob', email: 'bob@test.com', role: 'member', isOnline: false),
+      TeamMember(
+        id: 'u1',
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'admin',
+        isOnline: true,
+      ),
+      TeamMember(
+        id: 'u2',
+        name: 'Bob',
+        email: 'bob@test.com',
+        role: 'member',
+        isOnline: false,
+      ),
     ],
-    'team-2': const [
-      TeamMember(id: 'u3', name: 'Carol', role: 'member'),
-    ],
+    'team-2': const [TeamMember(id: 'u3', name: 'Carol', role: 'member')],
   },
 );
 
-const _noTeams = TeamSelectorData(
-  teams: [],
-  membersByTeamId: {},
-);
+const _noTeams = TeamSelectorData(teams: [], membersByTeamId: {});
 
-Widget _buildApp({
-  required TeamSelectorData selectorData,
-  Widget? child,
-}) {
+Widget _buildApp({required TeamSelectorData selectorData, Widget? child}) {
   return ProviderScope(
     overrides: [
       teamSelectorDataProvider.overrideWith((ref) async => selectorData),
     ],
     child: MaterialApp(
-      builder: (context, navigator) => ThemeTokens(
-        tokens: _testTokens,
-        child: navigator!,
-      ),
+      builder: (context, navigator) =>
+          ThemeTokens(tokens: _testTokens, child: navigator!),
       home: Scaffold(
         body: Builder(
-          builder: (context) => child ?? ElevatedButton(
-            onPressed: () => showTeamSelectorDialog(
-              context: context,
-              entityType: 'note',
-              entityId: 'n1',
-            ),
-            child: const Text('Open'),
-          ),
+          builder: (context) =>
+              child ??
+              ElevatedButton(
+                onPressed: () => showTeamSelectorDialog(
+                  context: context,
+                  entityType: 'note',
+                  entityId: 'n1',
+                ),
+                child: const Text('Open'),
+              ),
         ),
       ),
     ),
@@ -113,8 +109,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Share note'), findsOneWidget);
-      expect(find.text('Select a team and choose who to share with'),
-          findsOneWidget);
+      expect(
+        find.text('Select a team and choose who to share with'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('shows empty state when no teams', (tester) async {
@@ -123,8 +121,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('No teams found'), findsOneWidget);
-      expect(find.text('Join or create a team to start sharing'),
-          findsOneWidget);
+      expect(
+        find.text('Join or create a team to start sharing'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('shows team chips', (tester) async {
@@ -154,8 +154,9 @@ void main() {
       expect(find.text('Cancel'), findsOneWidget);
     });
 
-    testWidgets('shows permission selector after team selection',
-        (tester) async {
+    testWidgets('shows permission selector after team selection', (
+      tester,
+    ) async {
       await tester.pumpWidget(_buildApp(selectorData: _twoTeams));
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
@@ -183,8 +184,9 @@ void main() {
       expect(find.text('Share note'), findsNothing);
     });
 
-    testWidgets('share button is enabled when team selected with share-all',
-        (tester) async {
+    testWidgets('share button is enabled when team selected with share-all', (
+      tester,
+    ) async {
       await tester.pumpWidget(_buildApp(selectorData: _twoTeams));
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
@@ -245,9 +247,7 @@ void main() {
       final container = ProviderContainer();
       addTearDown(container.dispose);
       container.read(selectedMembersProvider.notifier).toggle('u1');
-      container
-          .read(selectedMembersProvider.notifier)
-          .selectAll({'u3', 'u4'});
+      container.read(selectedMembersProvider.notifier).selectAll({'u3', 'u4'});
       expect(container.read(selectedMembersProvider), {'u3', 'u4'});
     });
 

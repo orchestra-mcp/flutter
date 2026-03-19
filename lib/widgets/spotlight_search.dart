@@ -39,27 +39,122 @@ class _Category {
 }
 
 List<_Category> _buildCategories(AppLocalizations l10n) => [
-  _Category(label: l10n.projects, icon: Icons.folder_rounded, color: const Color(0xFF38BDF8), route: Routes.projects),
-  _Category(label: l10n.features, icon: Icons.auto_awesome_rounded, color: const Color(0xFFA78BFA), route: Routes.projects),
-  _Category(label: l10n.notes, icon: Icons.sticky_note_2_rounded, color: const Color(0xFFFBBF24), route: Routes.notes),
-  _Category(label: l10n.docs, icon: Icons.menu_book_rounded, color: const Color(0xFF06B6D4), route: Routes.docs),
-  _Category(label: l10n.skills, icon: Icons.bolt_rounded, color: const Color(0xFFF97316), route: Routes.skills),
-  _Category(label: l10n.agents, icon: Icons.smart_toy_rounded, color: const Color(0xFF4ADE80), route: Routes.agents),
-  _Category(label: l10n.workflows, icon: Icons.account_tree_rounded, color: const Color(0xFF818CF8), route: Routes.workflows),
-  _Category(label: l10n.delegations, icon: Icons.sync_alt_rounded, color: const Color(0xFFA78BFA), route: Routes.delegations),
+  _Category(
+    label: l10n.projects,
+    icon: Icons.folder_rounded,
+    color: const Color(0xFF38BDF8),
+    route: Routes.projects,
+  ),
+  _Category(
+    label: l10n.features,
+    icon: Icons.auto_awesome_rounded,
+    color: const Color(0xFFA78BFA),
+    route: Routes.projects,
+  ),
+  _Category(
+    label: l10n.notes,
+    icon: Icons.sticky_note_2_rounded,
+    color: const Color(0xFFFBBF24),
+    route: Routes.notes,
+  ),
+  _Category(
+    label: l10n.docs,
+    icon: Icons.menu_book_rounded,
+    color: const Color(0xFF06B6D4),
+    route: Routes.docs,
+  ),
+  _Category(
+    label: l10n.skills,
+    icon: Icons.bolt_rounded,
+    color: const Color(0xFFF97316),
+    route: Routes.skills,
+  ),
+  _Category(
+    label: l10n.agents,
+    icon: Icons.smart_toy_rounded,
+    color: const Color(0xFF4ADE80),
+    route: Routes.agents,
+  ),
+  _Category(
+    label: l10n.workflows,
+    icon: Icons.account_tree_rounded,
+    color: const Color(0xFF818CF8),
+    route: Routes.workflows,
+  ),
+  _Category(
+    label: l10n.delegations,
+    icon: Icons.sync_alt_rounded,
+    color: const Color(0xFFA78BFA),
+    route: Routes.delegations,
+  ),
   // Terminal
-  _Category(label: l10n.terminal, icon: Icons.terminal_rounded, color: const Color(0xFF10B981), route: Routes.terminal),
+  _Category(
+    label: l10n.terminal,
+    icon: Icons.terminal_rounded,
+    color: const Color(0xFF10B981),
+    route: Routes.terminal,
+  ),
   // Health
-  _Category(label: l10n.healthScore, icon: Icons.favorite_rounded, color: const Color(0xFFEF4444), route: Routes.healthScore),
-  _Category(label: l10n.vitals, icon: Icons.monitor_heart_rounded, color: const Color(0xFFF43F5E), route: Routes.healthVitals),
-  _Category(label: l10n.dailyFlow, icon: Icons.auto_graph_rounded, color: const Color(0xFF818CF8), route: Routes.healthFlow),
-  _Category(label: l10n.hydration, icon: Icons.water_drop_rounded, color: const Color(0xFF38BDF8), route: Routes.healthHydration),
-  _Category(label: l10n.caffeine, icon: Icons.coffee_rounded, color: const Color(0xFFF97316), route: Routes.healthCaffeine),
-  _Category(label: l10n.nutrition, icon: Icons.restaurant_rounded, color: const Color(0xFF4ADE80), route: Routes.healthNutrition),
-  _Category(label: l10n.pomodoro, icon: Icons.timer_rounded, color: const Color(0xFFF97316), route: Routes.healthPomodoro),
-  _Category(label: l10n.shutdown, icon: Icons.nightlight_rounded, color: const Color(0xFF6366F1), route: Routes.healthShutdown),
-  _Category(label: l10n.weight, icon: Icons.monitor_weight_rounded, color: const Color(0xFF14B8A6), route: Routes.healthWeight),
-  _Category(label: l10n.sleep, icon: Icons.bedtime_rounded, color: const Color(0xFF8B5CF6), route: Routes.healthSleep),
+  _Category(
+    label: l10n.healthScore,
+    icon: Icons.favorite_rounded,
+    color: const Color(0xFFEF4444),
+    route: Routes.healthScore,
+  ),
+  _Category(
+    label: l10n.vitals,
+    icon: Icons.monitor_heart_rounded,
+    color: const Color(0xFFF43F5E),
+    route: Routes.healthVitals,
+  ),
+  _Category(
+    label: l10n.dailyFlow,
+    icon: Icons.auto_graph_rounded,
+    color: const Color(0xFF818CF8),
+    route: Routes.healthFlow,
+  ),
+  _Category(
+    label: l10n.hydration,
+    icon: Icons.water_drop_rounded,
+    color: const Color(0xFF38BDF8),
+    route: Routes.healthHydration,
+  ),
+  _Category(
+    label: l10n.caffeine,
+    icon: Icons.coffee_rounded,
+    color: const Color(0xFFF97316),
+    route: Routes.healthCaffeine,
+  ),
+  _Category(
+    label: l10n.nutrition,
+    icon: Icons.restaurant_rounded,
+    color: const Color(0xFF4ADE80),
+    route: Routes.healthNutrition,
+  ),
+  _Category(
+    label: l10n.pomodoro,
+    icon: Icons.timer_rounded,
+    color: const Color(0xFFF97316),
+    route: Routes.healthPomodoro,
+  ),
+  _Category(
+    label: l10n.shutdown,
+    icon: Icons.nightlight_rounded,
+    color: const Color(0xFF6366F1),
+    route: Routes.healthShutdown,
+  ),
+  _Category(
+    label: l10n.weight,
+    icon: Icons.monitor_weight_rounded,
+    color: const Color(0xFF14B8A6),
+    route: Routes.healthWeight,
+  ),
+  _Category(
+    label: l10n.sleep,
+    icon: Icons.bedtime_rounded,
+    color: const Color(0xFF8B5CF6),
+    route: Routes.healthSleep,
+  ),
 ];
 
 // ── Search result model ──────────────────────────────────────────────────────
@@ -78,60 +173,60 @@ class _SearchResult {
   final String? id;
 
   IconData get icon => switch (type) {
-        'project' => Icons.folder_rounded,
-        'feature' => Icons.auto_awesome_rounded,
-        'note' => Icons.sticky_note_2_rounded,
-        'agent' => Icons.smart_toy_rounded,
-        'skill' => Icons.bolt_rounded,
-        'workflow' => Icons.account_tree_rounded,
-        'doc' => Icons.menu_book_rounded,
-        'session' => Icons.chat_rounded,
-        'terminal' => Icons.terminal_rounded,
-        'delegation' => Icons.sync_alt_rounded,
-        _ => Icons.search_rounded,
-      };
+    'project' => Icons.folder_rounded,
+    'feature' => Icons.auto_awesome_rounded,
+    'note' => Icons.sticky_note_2_rounded,
+    'agent' => Icons.smart_toy_rounded,
+    'skill' => Icons.bolt_rounded,
+    'workflow' => Icons.account_tree_rounded,
+    'doc' => Icons.menu_book_rounded,
+    'session' => Icons.chat_rounded,
+    'terminal' => Icons.terminal_rounded,
+    'delegation' => Icons.sync_alt_rounded,
+    _ => Icons.search_rounded,
+  };
 
   Color get iconColor => switch (type) {
-        'project' => const Color(0xFF38BDF8),
-        'feature' => const Color(0xFFA78BFA),
-        'note' => const Color(0xFFFBBF24),
-        'agent' => const Color(0xFF4ADE80),
-        'skill' => const Color(0xFFF97316),
-        'workflow' => const Color(0xFF818CF8),
-        'doc' => const Color(0xFF06B6D4),
-        'session' => const Color(0xFF22D3EE),
-        'terminal' => const Color(0xFF10B981),
-        'delegation' => const Color(0xFFA78BFA),
-        _ => const Color(0xFF94A3B8),
-      };
+    'project' => const Color(0xFF38BDF8),
+    'feature' => const Color(0xFFA78BFA),
+    'note' => const Color(0xFFFBBF24),
+    'agent' => const Color(0xFF4ADE80),
+    'skill' => const Color(0xFFF97316),
+    'workflow' => const Color(0xFF818CF8),
+    'doc' => const Color(0xFF06B6D4),
+    'session' => const Color(0xFF22D3EE),
+    'terminal' => const Color(0xFF10B981),
+    'delegation' => const Color(0xFFA78BFA),
+    _ => const Color(0xFF94A3B8),
+  };
 
   String resolveTypeLabel(AppLocalizations l10n) => switch (type) {
-        'project' => l10n.project,
-        'feature' => l10n.feature,
-        'note' => l10n.note,
-        'agent' => l10n.agent,
-        'skill' => l10n.skill,
-        'workflow' => l10n.workflow,
-        'doc' => l10n.doc,
-        'session' => l10n.session,
-        'terminal' => l10n.terminal,
-        'delegation' => l10n.delegation,
-        _ => type,
-      };
+    'project' => l10n.project,
+    'feature' => l10n.feature,
+    'note' => l10n.note,
+    'agent' => l10n.agent,
+    'skill' => l10n.skill,
+    'workflow' => l10n.workflow,
+    'doc' => l10n.doc,
+    'session' => l10n.session,
+    'terminal' => l10n.terminal,
+    'delegation' => l10n.delegation,
+    _ => type,
+  };
 
   String? get route => switch (type) {
-        'project' => '/projects/$id',
-        'feature' => null,
-        'note' => '/library/notes/$id',
-        'agent' => '/library/agents/$id',
-        'skill' => '/library/skills/$id',
-        'workflow' => '/library/workflows/$id',
-        'doc' => '/library/docs/$id',
-        'session' => null,
-        'terminal' => Routes.terminal,
-        'delegation' => Routes.delegations,
-        _ => null,
-      };
+    'project' => '/projects/$id',
+    'feature' => null,
+    'note' => '/library/notes/$id',
+    'agent' => '/library/agents/$id',
+    'skill' => '/library/skills/$id',
+    'workflow' => '/library/workflows/$id',
+    'doc' => '/library/docs/$id',
+    'session' => null,
+    'terminal' => Routes.terminal,
+    'delegation' => Routes.delegations,
+    _ => null,
+  };
 }
 
 // ── Dialog widget ────────────────────────────────────────────────────────────
@@ -196,9 +291,7 @@ class _SpotlightSearchDialogState extends State<_SpotlightSearchDialog> {
     final l10n = AppLocalizations.of(context);
     setState(() => _loading = true);
     try {
-      final response = await widget.ref
-          .read(apiClientProvider)
-          .search(query);
+      final response = await widget.ref.read(apiClientProvider).search(query);
       final rawResults = response['results'];
       final items = <_SearchResult>[];
 
@@ -207,28 +300,34 @@ class _SpotlightSearchDialogState extends State<_SpotlightSearchDialog> {
       final lowerQuery = query.toLowerCase();
       for (final session in sessions) {
         if (session.label.toLowerCase().contains(lowerQuery)) {
-          items.add(_SearchResult(
-            type: 'terminal',
-            title: session.label,
-            subtitle: l10n.terminalSessionSubtitle,
-            id: session.id,
-          ));
+          items.add(
+            _SearchResult(
+              type: 'terminal',
+              title: session.label,
+              subtitle: l10n.terminalSessionSubtitle,
+              id: session.id,
+            ),
+          );
         }
       }
 
       if (rawResults is List) {
         for (final entry in rawResults) {
           if (entry is Map<String, dynamic>) {
-            items.add(_SearchResult(
-              type: (entry['type'] as String?) ?? '',
-              title: (entry['title'] as String?) ??
-                  (entry['name'] as String?) ??
-                  '',
-              subtitle: (entry['subtitle'] as String?) ??
-                  (entry['description'] as String?) ??
-                  '',
-              id: entry['id']?.toString(),
-            ));
+            items.add(
+              _SearchResult(
+                type: (entry['type'] as String?) ?? '',
+                title:
+                    (entry['title'] as String?) ??
+                    (entry['name'] as String?) ??
+                    '',
+                subtitle:
+                    (entry['subtitle'] as String?) ??
+                    (entry['description'] as String?) ??
+                    '',
+                id: entry['id']?.toString(),
+              ),
+            );
           }
         }
       }
@@ -292,8 +391,7 @@ class _SpotlightSearchDialogState extends State<_SpotlightSearchDialog> {
     if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
       setState(() {
         if (_itemCount > 0) {
-          _highlightIndex =
-              (_highlightIndex - 1 + _itemCount) % _itemCount;
+          _highlightIndex = (_highlightIndex - 1 + _itemCount) % _itemCount;
         }
       });
       return KeyEventResult.handled;
@@ -352,42 +450,45 @@ class _SpotlightSearchDialogState extends State<_SpotlightSearchDialog> {
                       padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
                       child: Row(
                         children: [
-                          Icon(Icons.search_rounded,
-                              size: 20, color: fgMuted),
+                          Icon(Icons.search_rounded, size: 20, color: fgMuted),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
                               controller: _controller,
                               focusNode: _focusNode,
                               onChanged: _onQueryChanged,
-                              style: TextStyle(
-                                  color: fgBright, fontSize: 16),
+                              style: TextStyle(color: fgBright, fontSize: 16),
                               cursorColor: accent,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context).searchEverything,
+                                hintText: AppLocalizations.of(
+                                  context,
+                                ).searchEverything,
                                 hintStyle: TextStyle(
-                                    color: fgDim, fontSize: 16),
+                                  color: fgDim,
+                                  fontSize: 16,
+                                ),
                                 border: InputBorder.none,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                                 isDense: true,
-                                contentPadding:
-                                    const EdgeInsets.symmetric(
-                                        vertical: 12),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                ),
                               ),
                             ),
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
                             decoration: BoxDecoration(
                               color: bgMain.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
                               'esc',
-                              style: TextStyle(
-                                  color: fgDim, fontSize: 11),
+                              style: TextStyle(color: fgDim, fontSize: 11),
                             ),
                           ),
                         ],
@@ -437,17 +538,21 @@ class _SpotlightSearchDialogState extends State<_SpotlightSearchDialog> {
                     else if (_results.isEmpty)
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 32, horizontal: 24),
+                          vertical: 32,
+                          horizontal: 24,
+                        ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.search_off_rounded,
-                                size: 36, color: fgDim),
+                            Icon(
+                              Icons.search_off_rounded,
+                              size: 36,
+                              color: fgDim,
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               AppLocalizations.of(context).noResultsFound,
-                              style: TextStyle(
-                                  color: fgDim, fontSize: 13),
+                              style: TextStyle(color: fgDim, fontSize: 13),
                             ),
                           ],
                         ),
@@ -456,8 +561,7 @@ class _SpotlightSearchDialogState extends State<_SpotlightSearchDialog> {
                       Flexible(
                         child: ListView.builder(
                           shrinkWrap: true,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           itemCount: _results.length,
                           itemBuilder: (_, i) {
                             final r = _results[i];
@@ -509,7 +613,9 @@ class _CategoryTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        color: highlighted ? accent.withValues(alpha: 0.10) : Colors.transparent,
+        color: highlighted
+            ? accent.withValues(alpha: 0.10)
+            : Colors.transparent,
         child: Row(
           children: [
             Container(
@@ -533,7 +639,8 @@ class _CategoryTile extends StatelessWidget {
               ),
             ),
             Icon(
-              RtlUtils.dirIcon(context,
+              RtlUtils.dirIcon(
+                context,
                 ltr: Icons.chevron_right_rounded,
                 rtl: Icons.chevron_left_rounded,
               ),
@@ -576,7 +683,9 @@ class _ResultTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        color: highlighted ? accent.withValues(alpha: 0.10) : Colors.transparent,
+        color: highlighted
+            ? accent.withValues(alpha: 0.10)
+            : Colors.transparent,
         child: Row(
           children: [
             Container(
@@ -619,8 +728,7 @@ class _ResultTile extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
                 color: bgMain.withValues(alpha: 0.4),
                 borderRadius: BorderRadius.circular(4),

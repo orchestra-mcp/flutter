@@ -24,27 +24,76 @@ class SettingsScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
           _SectionHeader(l10n.account, tokens: tokens),
-          _SettingsTile(label: l10n.profile, icon: Icons.person_outline, onTap: () => context.push('/settings/profile'), tokens: tokens),
-          _SettingsTile(label: l10n.teamAndWorkspace, icon: Icons.group_outlined, onTap: () => context.push('/settings/team'), tokens: tokens),
-          _SettingsTile(label: l10n.notifications, icon: Icons.notifications_outlined, onTap: () => context.push('/settings/notifications'), tokens: tokens),
+          _SettingsTile(
+            label: l10n.profile,
+            icon: Icons.person_outline,
+            onTap: () => context.push('/settings/profile'),
+            tokens: tokens,
+          ),
+          _SettingsTile(
+            label: l10n.teamAndWorkspace,
+            icon: Icons.group_outlined,
+            onTap: () => context.push('/settings/team'),
+            tokens: tokens,
+          ),
+          _SettingsTile(
+            label: l10n.notifications,
+            icon: Icons.notifications_outlined,
+            onTap: () => context.push('/settings/notifications'),
+            tokens: tokens,
+          ),
           const SizedBox(height: 8),
           _SectionHeader(l10n.appearance, tokens: tokens),
-          _SettingsTile(label: l10n.themes, icon: Icons.palette_outlined, onTap: () => context.push('/settings/appearance'), tokens: tokens),
+          _SettingsTile(
+            label: l10n.themes,
+            icon: Icons.palette_outlined,
+            onTap: () => context.push('/settings/appearance'),
+            tokens: tokens,
+          ),
           const SizedBox(height: 8),
           _SectionHeader(l10n.security, tokens: tokens),
-          _SettingsTile(label: l10n.password, icon: Icons.lock_outline, onTap: () => context.push('/settings/security'), tokens: tokens),
-          _SettingsTile(label: l10n.twoFactorAuth, icon: Icons.security, onTap: () {}, tokens: tokens),
-          _SettingsTile(label: l10n.passkeys, icon: Icons.fingerprint, onTap: () {}, tokens: tokens),
+          _SettingsTile(
+            label: l10n.password,
+            icon: Icons.lock_outline,
+            onTap: () => context.push('/settings/security'),
+            tokens: tokens,
+          ),
+          _SettingsTile(
+            label: l10n.twoFactorAuth,
+            icon: Icons.security,
+            onTap: () {},
+            tokens: tokens,
+          ),
+          _SettingsTile(
+            label: l10n.passkeys,
+            icon: Icons.fingerprint,
+            onTap: () {},
+            tokens: tokens,
+          ),
           const SizedBox(height: 8),
           _SectionHeader(l10n.about, tokens: tokens),
-          _SettingsTile(label: l10n.version, icon: Icons.info_outline, onTap: () {}, tokens: tokens),
-          _SettingsTile(label: l10n.help, icon: Icons.help_outline, onTap: () {}, tokens: tokens),
-          _SettingsTile(label: l10n.privacy, icon: Icons.privacy_tip_outlined, onTap: () {}, tokens: tokens),
+          _SettingsTile(
+            label: l10n.version,
+            icon: Icons.info_outline,
+            onTap: () {},
+            tokens: tokens,
+          ),
+          _SettingsTile(
+            label: l10n.help,
+            icon: Icons.help_outline,
+            onTap: () {},
+            tokens: tokens,
+          ),
+          _SettingsTile(
+            label: l10n.privacy,
+            icon: Icons.privacy_tip_outlined,
+            onTap: () {},
+            tokens: tokens,
+          ),
         ],
       ),
     );
   }
-
 }
 
 class _SectionHeader extends StatelessWidget {
@@ -54,17 +103,17 @@ class _SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-        child: Text(
-          title.toUpperCase(),
-          style: TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 1.2,
-            color: tokens.fgDim,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+    child: Text(
+      title.toUpperCase(),
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1.2,
+        color: tokens.fgDim,
+      ),
+    ),
+  );
 }
 
 class _SettingsTile extends StatelessWidget {
@@ -81,9 +130,9 @@ class _SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListTile(
-        leading: Icon(icon, color: tokens.accent, size: 22),
-        title: Text(label, style: TextStyle(color: tokens.fgBright, fontSize: 15)),
-        trailing: Icon(Icons.chevron_right, color: tokens.fgDim, size: 18),
-        onTap: onTap,
-      );
+    leading: Icon(icon, color: tokens.accent, size: 22),
+    title: Text(label, style: TextStyle(color: tokens.fgBright, fontSize: 15)),
+    trailing: Icon(Icons.chevron_right, color: tokens.fgDim, size: 18),
+    onTap: onTap,
+  );
 }

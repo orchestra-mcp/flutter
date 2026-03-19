@@ -53,7 +53,7 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
       final activeSession = sessions.isEmpty
           ? null
           : sessions.where((s) => s.id == activeId).firstOrNull ??
-              sessions.first;
+                sessions.first;
 
       if (activeSession != null) {
         // Ensure activeId matches the displayed session.
@@ -102,8 +102,11 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
                   ),
                   const SizedBox(width: 8),
                   IconButton(
-                    icon: Icon(Icons.add_rounded,
-                        color: tokens.accent, size: 22),
+                    icon: Icon(
+                      Icons.add_rounded,
+                      color: tokens.accent,
+                      size: 22,
+                    ),
                     style: IconButton.styleFrom(
                       backgroundColor: tokens.accent.withValues(alpha: 0.12),
                       shape: RoundedRectangleBorder(
@@ -121,21 +124,22 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
               child: sessions.isEmpty
                   ? _buildEmptyState(context, tokens)
                   : filtered.isEmpty
-                      ? Center(
-                          child: Text(
-                            l10n.terminalNoMatchingSessions,
-                            style: TextStyle(color: tokens.fgMuted),
-                          ),
-                        )
-                      : ListView.separated(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 4),
-                          itemCount: filtered.length,
-                          separatorBuilder: (_, _) =>
-                              const SizedBox(height: 8),
-                          itemBuilder: (_, i) =>
-                              _buildSessionTile(context, tokens, filtered[i]),
-                        ),
+                  ? Center(
+                      child: Text(
+                        l10n.terminalNoMatchingSessions,
+                        style: TextStyle(color: tokens.fgMuted),
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
+                      itemCount: filtered.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 8),
+                      itemBuilder: (_, i) =>
+                          _buildSessionTile(context, tokens, filtered[i]),
+                    ),
             ),
           ],
         ),
@@ -324,8 +328,10 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
               style: FilledButton.styleFrom(
                 backgroundColor: tokens.accent,
                 foregroundColor: tokens.isLight ? Colors.white : tokens.bg,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
               ),
             ),
           ],
@@ -346,12 +352,9 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
       useRootNavigator: true,
       builder: (ctx) {
         return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(ctx).bottom,
-          ),
+          padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(ctx).bottom),
           child: ClipRRect(
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(16)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: Material(
               color: tokens.bgAlt,
               child: SafeArea(
@@ -371,7 +374,9 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 4),
+                        horizontal: 16,
+                        vertical: 4,
+                      ),
                       child: Text(
                         l10n.newSession,
                         style: TextStyle(
@@ -386,32 +391,39 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
                     // Local Terminal (desktop only)
                     if (isDesktop)
                       ListTile(
-                        leading:
-                            Icon(Icons.terminal_rounded, color: tokens.accent),
-                        title: Text(l10n.terminalLocalTitle,
-                            style: TextStyle(color: tokens.fgBright)),
-                        subtitle: Text(l10n.terminalLocalSubtitle,
-                            style: TextStyle(color: tokens.fgMuted)),
+                        leading: Icon(
+                          Icons.terminal_rounded,
+                          color: tokens.accent,
+                        ),
+                        title: Text(
+                          l10n.terminalLocalTitle,
+                          style: TextStyle(color: tokens.fgBright),
+                        ),
+                        subtitle: Text(
+                          l10n.terminalLocalSubtitle,
+                          style: TextStyle(color: tokens.fgMuted),
+                        ),
                         onTap: () async {
                           Navigator.pop(ctx);
                           final s = await ref
                               .read(terminalSessionsProvider.notifier)
                               .createTerminalSession();
-                          ref
-                              .read(activeTerminalIdProvider.notifier)
-                              .set(s.id);
+                          ref.read(activeTerminalIdProvider.notifier).set(s.id);
                           setState(() => _showingTerminal = true);
                         },
                       ),
 
                     // SSH
                     ListTile(
-                      leading:
-                          Icon(Icons.public_rounded, color: tokens.accent),
-                      title: Text(l10n.terminalTypeSsh,
-                          style: TextStyle(color: tokens.fgBright)),
-                      subtitle: Text(l10n.terminalSshSubtitle,
-                          style: TextStyle(color: tokens.fgMuted)),
+                      leading: Icon(Icons.public_rounded, color: tokens.accent),
+                      title: Text(
+                        l10n.terminalTypeSsh,
+                        style: TextStyle(color: tokens.fgBright),
+                      ),
+                      subtitle: Text(
+                        l10n.terminalSshSubtitle,
+                        style: TextStyle(color: tokens.fgMuted),
+                      ),
                       onTap: () {
                         Navigator.pop(ctx);
                         _showSshDialog(context, tokens);
@@ -421,32 +433,39 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
                     // Claude Code (desktop only)
                     if (isDesktop)
                       ListTile(
-                        leading: Icon(Icons.smart_toy_rounded,
-                            color: tokens.accent),
-                        title: Text(l10n.terminalClaudeTitle,
-                            style: TextStyle(color: tokens.fgBright)),
-                        subtitle: Text(l10n.terminalClaudeSubtitle,
-                            style: TextStyle(color: tokens.fgMuted)),
+                        leading: Icon(
+                          Icons.smart_toy_rounded,
+                          color: tokens.accent,
+                        ),
+                        title: Text(
+                          l10n.terminalClaudeTitle,
+                          style: TextStyle(color: tokens.fgBright),
+                        ),
+                        subtitle: Text(
+                          l10n.terminalClaudeSubtitle,
+                          style: TextStyle(color: tokens.fgMuted),
+                        ),
                         onTap: () async {
                           Navigator.pop(ctx);
                           final s = await ref
                               .read(terminalSessionsProvider.notifier)
                               .createClaudeSession();
-                          ref
-                              .read(activeTerminalIdProvider.notifier)
-                              .set(s.id);
+                          ref.read(activeTerminalIdProvider.notifier).set(s.id);
                           setState(() => _showingTerminal = true);
                         },
                       ),
 
                     // Remote Terminal
                     ListTile(
-                      leading:
-                          Icon(Icons.cloud_rounded, color: tokens.accent),
-                      title: Text(l10n.terminalRemoteTitle,
-                          style: TextStyle(color: tokens.fgBright)),
-                      subtitle: Text(l10n.terminalRemoteSubtitle,
-                          style: TextStyle(color: tokens.fgMuted)),
+                      leading: Icon(Icons.cloud_rounded, color: tokens.accent),
+                      title: Text(
+                        l10n.terminalRemoteTitle,
+                        style: TextStyle(color: tokens.fgBright),
+                      ),
+                      subtitle: Text(
+                        l10n.terminalRemoteSubtitle,
+                        style: TextStyle(color: tokens.fgMuted),
+                      ),
                       onTap: () async {
                         Navigator.pop(ctx);
                         await _connectRemoteTerminal(context, tokens);
@@ -468,7 +487,9 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
   // ── Remote terminal: local WiFi first, cloud tunnel fallback ────────────────
 
   Future<void> _connectRemoteTerminal(
-      BuildContext context, OrchestraColorTokens tokens) async {
+    BuildContext context,
+    OrchestraColorTokens tokens,
+  ) async {
     // Step 1: Try direct local WiFi connection.
     final localUrl = 'ws://${Env.mcpHost}:9201/ws';
     if (await _canReachLocal(Env.mcpHost, 9201)) {
@@ -495,9 +516,7 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
         if (mounted) {
           final l10n = AppLocalizations.of(context);
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content:
-                    Text(l10n.terminalNoMachinesOnline)),
+            SnackBar(content: Text(l10n.terminalNoMachinesOnline)),
           );
         }
         return;
@@ -506,10 +525,11 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
       final tunnel = tunnels.first;
       final tunnelId = tunnel['id'] as String;
       final authToken = await const TokenStorage().getAccessToken() ?? '';
-      final wsScheme =
-          Env.apiBaseUrl.startsWith('https') ? 'wss' : 'ws';
-      final httpBase =
-          Env.apiBaseUrl.replaceFirst(RegExp(r'^https?'), wsScheme);
+      final wsScheme = Env.apiBaseUrl.startsWith('https') ? 'wss' : 'ws';
+      final httpBase = Env.apiBaseUrl.replaceFirst(
+        RegExp(r'^https?'),
+        wsScheme,
+      );
       final tunnelUrl = '$httpBase/api/tunnels/$tunnelId/ws?token=$authToken';
 
       debugPrint('[Terminal] Connecting via cloud tunnel: $tunnelId');
@@ -527,8 +547,11 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
   /// Quick TCP connect check to see if the desktop web-gate is reachable.
   Future<bool> _canReachLocal(String host, int port) async {
     try {
-      final socket = await Socket.connect(host, port,
-          timeout: const Duration(seconds: 2));
+      final socket = await Socket.connect(
+        host,
+        port,
+        timeout: const Duration(seconds: 2),
+      );
       socket.destroy();
       return true;
     } catch (_) {
@@ -539,11 +562,7 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
   Future<void> _createRemote(String wsUrl) async {
     final s = await ref
         .read(terminalSessionsProvider.notifier)
-        .createRemoteSession(
-          tunnelId: 'auto',
-          baseUrl: wsUrl,
-          authToken: '',
-        );
+        .createRemoteSession(tunnelId: 'auto', baseUrl: wsUrl, authToken: '');
     ref.read(activeTerminalIdProvider.notifier).set(s.id);
     setState(() => _showingTerminal = true);
   }
@@ -563,8 +582,10 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
 
         return AlertDialog(
           backgroundColor: tokens.bgAlt,
-          title: Text(l10n.sshConnection,
-              style: TextStyle(color: tokens.fgBright)),
+          title: Text(
+            l10n.sshConnection,
+            style: TextStyle(color: tokens.fgBright),
+          ),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -604,18 +625,14 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: Text(l10n.cancel,
-                  style: TextStyle(color: tokens.fgMuted)),
+              child: Text(l10n.cancel, style: TextStyle(color: tokens.fgMuted)),
             ),
             TextButton(
               onPressed: () async {
                 final host = hostCtrl.text.trim();
                 final user = userCtrl.text.trim();
-                final port =
-                    int.tryParse(portCtrl.text.trim()) ?? 22;
-                final pass = passCtrl.text.isNotEmpty
-                    ? passCtrl.text
-                    : null;
+                final port = int.tryParse(portCtrl.text.trim()) ?? 22;
+                final pass = passCtrl.text.isNotEmpty ? passCtrl.text : null;
 
                 if (host.isEmpty || user.isEmpty) return;
 
@@ -632,8 +649,7 @@ class _TerminalScreenState extends ConsumerState<TerminalScreen> {
                 ref.read(activeTerminalIdProvider.notifier).set(s.id);
                 setState(() => _showingTerminal = true);
               },
-              child: Text(l10n.connect,
-                  style: TextStyle(color: tokens.accent)),
+              child: Text(l10n.connect, style: TextStyle(color: tokens.accent)),
             ),
           ],
         );
@@ -659,10 +675,7 @@ class _StatusDot extends StatelessWidget {
     return Container(
       width: 8,
       height: 8,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
 }

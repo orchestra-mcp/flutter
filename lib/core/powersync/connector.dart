@@ -120,7 +120,9 @@ class OrchestraBackendConnector extends PowerSyncBackendConnector {
         await transaction.complete();
         debugPrint('[PowerSync] Batch uploaded ${ops.length} ops');
       } else {
-        debugPrint('[PowerSync] Batch upload returned ${res.statusCode}: ${res.body}');
+        debugPrint(
+          '[PowerSync] Batch upload returned ${res.statusCode}: ${res.body}',
+        );
         // Complete even on server error — the server processed what it could.
         // Retrying the same ops won't help and causes "previously encountered CRUD item" loops.
         await transaction.complete();
@@ -129,7 +131,9 @@ class OrchestraBackendConnector extends PowerSyncBackendConnector {
       debugPrint('[PowerSync] Batch upload failed: $e');
       // Complete on network error too — prevents infinite retry loops.
       // Data will re-sync from the server on next connection.
-      try { await transaction.complete(); } catch (_) {}
+      try {
+        await transaction.complete();
+      } catch (_) {}
     }
   }
 }

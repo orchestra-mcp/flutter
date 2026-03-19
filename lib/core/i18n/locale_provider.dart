@@ -32,7 +32,9 @@ class LocaleNotifier extends Notifier<Locale> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kLocaleKey, locale.languageCode);
     try {
-      await ref.read(userSettingsProvider.notifier).set('locale_lang', locale.languageCode);
+      await ref
+          .read(userSettingsProvider.notifier)
+          .set('locale_lang', locale.languageCode);
     } catch (_) {}
   }
 }

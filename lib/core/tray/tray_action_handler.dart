@@ -13,7 +13,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// handle the `_stopped` flag. The optional [onWorkspaceChanged] callback
 /// lets the Riverpod layer update providers after the MCP client switches.
 class DefaultTrayActionHandler implements TrayActionHandler {
-  DefaultTrayActionHandler(this._mcp, {this.onWorkspaceChanged, this.onWorkspaceClosed});
+  DefaultTrayActionHandler(
+    this._mcp, {
+    this.onWorkspaceChanged,
+    this.onWorkspaceClosed,
+  });
 
   final McpTcpClient _mcp;
 

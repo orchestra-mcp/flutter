@@ -92,9 +92,7 @@ void main() {
     });
 
     test('does not schedule hydration when disabled', () async {
-      await scheduler.syncFromProfile({
-        'hydrationAlertEnabled': false,
-      });
+      await scheduler.syncFromProfile({'hydrationAlertEnabled': false});
 
       expect(
         fakeService.calls.where((c) => c.startsWith('hydration')),
@@ -171,10 +169,7 @@ void main() {
       });
 
       // Shutdown at 21:00, GERD at 30 min before = scheduleGerdWarning called
-      expect(
-        fakeService.calls.where((c) => c.startsWith('gerd:')),
-        isNotEmpty,
-      );
+      expect(fakeService.calls.where((c) => c.startsWith('gerd:')), isNotEmpty);
     });
 
     test('uses defaults when profile is empty', () async {
@@ -187,10 +182,7 @@ void main() {
         fakeService.calls.where((c) => c.startsWith('hydration')),
         isEmpty,
       );
-      expect(
-        fakeService.calls.where((c) => c.startsWith('weight')),
-        isEmpty,
-      );
+      expect(fakeService.calls.where((c) => c.startsWith('weight')), isEmpty);
     });
 
     test('schedules all enabled categories in one sync', () async {
@@ -219,7 +211,10 @@ void main() {
       expect(fakeService.calls, contains('coffee:15:0'));
       expect(fakeService.calls, contains('hydration:60'));
       expect(fakeService.calls, contains('movement:60'));
-      expect(fakeService.calls.where((c) => c.startsWith('shutdown')), isNotEmpty);
+      expect(
+        fakeService.calls.where((c) => c.startsWith('shutdown')),
+        isNotEmpty,
+      );
       expect(fakeService.calls.where((c) => c.startsWith('gerd')), isNotEmpty);
     });
   });

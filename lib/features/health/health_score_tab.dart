@@ -143,8 +143,7 @@ class _HealthScoreTabState extends ConsumerState<HealthScoreTab> {
                       ),
                       Text(
                         l10n.healthScore,
-                        style:
-                            TextStyle(color: tokens.fgMuted, fontSize: 11),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                       ),
                     ],
                   ),
@@ -164,11 +163,19 @@ class _HealthScoreTabState extends ConsumerState<HealthScoreTab> {
           // AI insights section
           if (_loading) _buildShimmer(tokens),
           if (!_loading && _insights != null) ...[
-            _buildChipRow(l10n.wins, _insights!.top3Wins,
-                const Color(0xFF4CAF50), tokens),
+            _buildChipRow(
+              l10n.wins,
+              _insights!.top3Wins,
+              const Color(0xFF4CAF50),
+              tokens,
+            ),
             const SizedBox(height: 12),
-            _buildChipRow(l10n.concerns, _insights!.top3Concerns,
-                const Color(0xFFFF9800), tokens),
+            _buildChipRow(
+              l10n.concerns,
+              _insights!.top3Concerns,
+              const Color(0xFFFF9800),
+              tokens,
+            ),
             const SizedBox(height: 12),
             _buildRecommendations(_insights!.recommendations, tokens, l10n),
             const SizedBox(height: 12),
@@ -194,30 +201,40 @@ class _HealthScoreTabState extends ConsumerState<HealthScoreTab> {
   }
 
   Widget _buildChipRow(
-      String label, List<String> items, Color color, OrchestraColorTokens tokens) {
+    String label,
+    List<String> items,
+    Color color,
+    OrchestraColorTokens tokens,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: TextStyle(
-                color: tokens.fgBright,
-                fontSize: 13,
-                fontWeight: FontWeight.w600)),
+        Text(
+          label,
+          style: TextStyle(
+            color: tokens.fgBright,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         const SizedBox(height: 6),
         Wrap(
           spacing: 8,
           runSpacing: 6,
           children: items
-              .map((t) => Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(t,
-                        style: TextStyle(color: color, fontSize: 12)),
-                  ))
+              .map(
+                (t) => Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(t, style: TextStyle(color: color, fontSize: 12)),
+                ),
+              )
               .toList(),
         ),
       ],
@@ -225,29 +242,39 @@ class _HealthScoreTabState extends ConsumerState<HealthScoreTab> {
   }
 
   Widget _buildRecommendations(
-      List<String> recs, OrchestraColorTokens tokens, AppLocalizations l10n) {
+    List<String> recs,
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.recommendations,
-            style: TextStyle(
-                color: tokens.fgBright,
-                fontSize: 13,
-                fontWeight: FontWeight.w600)),
+        Text(
+          l10n.recommendations,
+          style: TextStyle(
+            color: tokens.fgBright,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         const SizedBox(height: 6),
-        ...recs.map((r) => Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Row(
-                children: [
-                  Icon(Icons.arrow_right, color: tokens.accent, size: 16),
-                  const SizedBox(width: 4),
-                  Expanded(
-                      child: Text(r,
-                          style: TextStyle(
-                              color: tokens.fgBright, fontSize: 13))),
-                ],
-              ),
-            )),
+        ...recs.map(
+          (r) => Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: Row(
+              children: [
+                Icon(Icons.arrow_right, color: tokens.accent, size: 16),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    r,
+                    style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -262,12 +289,14 @@ class _HealthScoreTabState extends ConsumerState<HealthScoreTab> {
       ),
       child: Row(
         children: [
-          Icon(Icons.warning_amber_outlined,
-              color: tokens.fgMuted, size: 16),
+          Icon(Icons.warning_amber_outlined, color: tokens.fgMuted, size: 16),
           const SizedBox(width: 8),
           Expanded(
-              child: Text(analysis,
-                  style: TextStyle(color: tokens.fgBright, fontSize: 12))),
+            child: Text(
+              analysis,
+              style: TextStyle(color: tokens.fgBright, fontSize: 12),
+            ),
+          ),
         ],
       ),
     );

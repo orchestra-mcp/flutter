@@ -39,16 +39,12 @@ class ShutdownState {
   final bool isLoading;
   final String? error;
 
-  DateTime? get shutdownTime => targetSleepTime
-      ?.subtract(Duration(hours: shutdownWindowHours));
+  DateTime? get shutdownTime =>
+      targetSleepTime?.subtract(Duration(hours: shutdownWindowHours));
 
   bool get isInShutdownMode => phase == ShutdownPhase.active;
 
-  static const allowedDuringShutdown = [
-    'Water',
-    'Chamomile Tea',
-    'Anise Tea',
-  ];
+  static const allowedDuringShutdown = ['Water', 'Chamomile Tea', 'Anise Tea'];
 
   ShutdownState copyWith({
     ShutdownPhase? phase,
@@ -122,10 +118,7 @@ class ShutdownNotifier extends Notifier<ShutdownState> {
 
       _currentShutdownId = row['id'] as String?;
 
-      state = ShutdownState(
-        phase: phase,
-        targetSleepTime: targetSleep,
-      );
+      state = ShutdownState(phase: phase, targetSleepTime: targetSleep);
 
       if (targetSleep != null) {
         _startTick();
@@ -170,7 +163,10 @@ class ShutdownNotifier extends Notifier<ShutdownState> {
         id,
         targetSleep,
         now.toIso8601String(),
-        state.targetSleepTime?.subtract(const Duration(hours: 8)).toIso8601String() ?? '',
+        state.targetSleepTime
+                ?.subtract(const Duration(hours: 8))
+                .toIso8601String() ??
+            '',
         targetSleep,
         now.toIso8601String(),
         now.toIso8601String(),
@@ -185,16 +181,12 @@ class ShutdownNotifier extends Notifier<ShutdownState> {
   }
 
   void addTask(String task) {
-    state = state.copyWith(
-      plannedTasks: [...state.plannedTasks, task],
-    );
+    state = state.copyWith(plannedTasks: [...state.plannedTasks, task]);
     _updateShutdownRecord();
   }
 
   void completeTask(String task) {
-    state = state.copyWith(
-      completedTasks: [...state.completedTasks, task],
-    );
+    state = state.copyWith(completedTasks: [...state.completedTasks, task]);
     _updateShutdownRecord();
   }
 
@@ -210,10 +202,10 @@ class ShutdownNotifier extends Notifier<ShutdownState> {
     final planned = state.plannedTasks.join(',');
     final completed = state.completedTasks.join(',');
 
-    await _db.execute(
-      'UPDATE sleep_configs SET updated_at = ? WHERE id = ?',
-      [now.toIso8601String(), id],
-    );
+    await _db.execute('UPDATE sleep_configs SET updated_at = ? WHERE id = ?', [
+      now.toIso8601String(),
+      id,
+    ]);
   }
 
   // Internal ------------------------------------------------------------------
@@ -247,7 +239,6 @@ class ShutdownNotifier extends Notifier<ShutdownState> {
 // Provider
 // ---------------------------------------------------------------------------
 
-final shutdownProvider =
-    NotifierProvider<ShutdownNotifier, ShutdownState>(
+final shutdownProvider = NotifierProvider<ShutdownNotifier, ShutdownState>(
   ShutdownNotifier.new,
 );

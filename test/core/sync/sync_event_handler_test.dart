@@ -25,8 +25,9 @@ void main() {
     });
 
     test('fromJson defaults missing fields', () {
-      final event =
-          SyncEntityUpdatedEvent.fromJson(<String, dynamic>{'type': 'sync.entity_updated'});
+      final event = SyncEntityUpdatedEvent.fromJson(<String, dynamic>{
+        'type': 'sync.entity_updated',
+      });
       expect(event.entityType, '');
       expect(event.entityId, '');
       expect(event.entityTitle, '');
@@ -78,8 +79,9 @@ void main() {
     });
 
     test('fromJson defaults missing fields', () {
-      final event =
-          SyncEntitySharedEvent.fromJson(<String, dynamic>{'type': 'sync.entity_shared'});
+      final event = SyncEntitySharedEvent.fromJson(<String, dynamic>{
+        'type': 'sync.entity_shared',
+      });
       expect(event.entityType, '');
       expect(event.entityId, '');
       expect(event.permission, 'read');
@@ -122,8 +124,9 @@ void main() {
     });
 
     test('fromJson defaults missing fields', () {
-      final event =
-          SyncEntityDeletedEvent.fromJson(<String, dynamic>{'type': 'sync.entity_deleted'});
+      final event = SyncEntityDeletedEvent.fromJson(<String, dynamic>{
+        'type': 'sync.entity_deleted',
+      });
       expect(event.entityType, '');
       expect(event.entityId, '');
       expect(event.authorId, '');

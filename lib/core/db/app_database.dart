@@ -15,20 +15,22 @@ import 'package:orchestra/core/db/tables/workflows_table.dart';
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [
-  UsersTable,
-  FeaturesTable,
-  ProjectsTable,
-  NotesTable,
-  HealthLogsTable,
-  NotificationsTable,
-  SessionsTable,
-  SyncQueueTable,
-  AgentsTable,
-  WorkflowsTable,
-  SettingsTable,
-  DelegationsTable,
-])
+@DriftDatabase(
+  tables: [
+    UsersTable,
+    FeaturesTable,
+    ProjectsTable,
+    NotesTable,
+    HealthLogsTable,
+    NotificationsTable,
+    SessionsTable,
+    SyncQueueTable,
+    AgentsTable,
+    WorkflowsTable,
+    SettingsTable,
+    DelegationsTable,
+  ],
+)
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
   AppDatabase.forTesting(QueryExecutor executor) : super(executor);

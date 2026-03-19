@@ -18,28 +18,29 @@ final _marketplaceProvider = FutureProvider<Map<String, dynamic>>((ref) async {
 });
 
 /// User-shared items from PowerSync (skills/agents/workflows marked as shared).
-final _sharedSkillsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+final _sharedSkillsProvider = FutureProvider<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final db = ref.read(powersyncDatabaseProvider);
   return db.getAll(
     "SELECT * FROM skills WHERE scope = 'public' ORDER BY updated_at DESC",
   );
 });
 
-final _sharedAgentsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+final _sharedAgentsProvider = FutureProvider<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final db = ref.read(powersyncDatabaseProvider);
   return db.getAll(
     "SELECT * FROM agents WHERE scope = 'public' ORDER BY updated_at DESC",
   );
 });
 
-final _sharedWorkflowsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+final _sharedWorkflowsProvider = FutureProvider<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final db = ref.read(powersyncDatabaseProvider);
-  return db.getAll(
-    "SELECT * FROM workflows ORDER BY updated_at DESC",
-  );
+  return db.getAll("SELECT * FROM workflows ORDER BY updated_at DESC");
 });
 
 // ── Marketplace page ────────────────────────────────────────────────────────
@@ -129,17 +130,20 @@ class _MarketplacePageState extends ConsumerState<MarketplacePage>
                 _PluginsTab(search: _search),
                 _PacksTab(search: _search),
                 _SharedItemsTab(
-                    provider: _sharedSkillsProvider,
-                    type: 'skill',
-                    search: _search),
+                  provider: _sharedSkillsProvider,
+                  type: 'skill',
+                  search: _search,
+                ),
                 _SharedItemsTab(
-                    provider: _sharedAgentsProvider,
-                    type: 'agent',
-                    search: _search),
+                  provider: _sharedAgentsProvider,
+                  type: 'agent',
+                  search: _search,
+                ),
                 _SharedItemsTab(
-                    provider: _sharedWorkflowsProvider,
-                    type: 'workflow',
-                    search: _search),
+                  provider: _sharedWorkflowsProvider,
+                  type: 'workflow',
+                  search: _search,
+                ),
               ],
             ),
           ),
@@ -161,12 +165,21 @@ class _PluginsTab extends ConsumerWidget {
     final asyncData = ref.watch(_marketplaceProvider);
 
     return asyncData.when(
-      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent)),
-      error: (e, _) => Center(child: Text('$e', style: TextStyle(color: tokens.fgMuted))),
+      loading: () =>
+          Center(child: CircularProgressIndicator(color: tokens.accent)),
+      error: (e, _) => Center(
+        child: Text('$e', style: TextStyle(color: tokens.fgMuted)),
+      ),
       data: (data) {
         final pluginsData = data['plugins'] as Map<String, dynamic>? ?? {};
-        final core = (pluginsData['core_plugins'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-        final optional = (pluginsData['optional_plugins'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+        final core =
+            (pluginsData['core_plugins'] as List?)
+                ?.cast<Map<String, dynamic>>() ??
+            [];
+        final optional =
+            (pluginsData['optional_plugins'] as List?)
+                ?.cast<Map<String, dynamic>>() ??
+            [];
         final all = [...core, ...optional];
         final filtered = search.isEmpty
             ? all
@@ -215,7 +228,9 @@ class _PluginCard extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: (isCore ? tokens.accent : tokens.fgMuted).withValues(alpha: 0.12),
+              color: (isCore ? tokens.accent : tokens.fgMuted).withValues(
+                alpha: 0.12,
+              ),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(
@@ -231,51 +246,68 @@ class _PluginCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(name,
-                        style: TextStyle(
-                            color: tokens.fgBright,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600)),
+                    Text(
+                      name,
+                      style: TextStyle(
+                        color: tokens.fgBright,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const SizedBox(width: 6),
                     if (isCore)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 1,
+                        ),
                         decoration: BoxDecoration(
                           color: tokens.accent.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Text('core',
-                            style: TextStyle(color: tokens.accent, fontSize: 9)),
+                        child: Text(
+                          'core',
+                          style: TextStyle(color: tokens.accent, fontSize: 9),
+                        ),
                       ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 1,
+                      ),
                       decoration: BoxDecoration(
                         color: tokens.fgDim.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text(lang,
-                          style: TextStyle(color: tokens.fgDim, fontSize: 9)),
+                      child: Text(
+                        lang,
+                        style: TextStyle(color: tokens.fgDim, fontSize: 9),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 3),
-                Text(desc,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
+                Text(
+                  desc,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 11),
+                ),
               ],
             ),
           ),
           const SizedBox(width: 8),
           Column(
             children: [
-              Text('$tools',
-                  style: TextStyle(
-                      color: tokens.accent,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700)),
-              Text('tools',
-                  style: TextStyle(color: tokens.fgDim, fontSize: 9)),
+              Text(
+                '$tools',
+                style: TextStyle(
+                  color: tokens.accent,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text('tools', style: TextStyle(color: tokens.fgDim, fontSize: 9)),
             ],
           ),
         ],
@@ -296,18 +328,27 @@ class _PacksTab extends ConsumerWidget {
     final asyncData = ref.watch(_marketplaceProvider);
 
     return asyncData.when(
-      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent)),
-      error: (e, _) => Center(child: Text('$e', style: TextStyle(color: tokens.fgMuted))),
+      loading: () =>
+          Center(child: CircularProgressIndicator(color: tokens.accent)),
+      error: (e, _) => Center(
+        child: Text('$e', style: TextStyle(color: tokens.fgMuted)),
+      ),
       data: (data) {
         final mkt = data['marketplace'] as Map<String, dynamic>? ?? {};
-        final packs = (mkt['packs'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+        final packs =
+            (mkt['packs'] as List?)?.cast<Map<String, dynamic>>() ?? [];
         final filtered = search.isEmpty
             ? packs
             : packs.where((p) {
-                final name = (p['display_name'] ?? p['name'] ?? '').toString().toLowerCase();
+                final name = (p['display_name'] ?? p['name'] ?? '')
+                    .toString()
+                    .toLowerCase();
                 final desc = (p['desc'] ?? '').toString().toLowerCase();
-                final tags = (p['tags'] as List?)?.join(' ').toLowerCase() ?? '';
-                return name.contains(search) || desc.contains(search) || tags.contains(search);
+                final tags =
+                    (p['tags'] as List?)?.join(' ').toLowerCase() ?? '';
+                return name.contains(search) ||
+                    desc.contains(search) ||
+                    tags.contains(search);
               }).toList();
 
         return GridView.builder(
@@ -333,7 +374,8 @@ class _PackCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = ThemeTokens.of(context);
-    final displayName = pack['display_name']?.toString() ?? pack['name']?.toString() ?? '';
+    final displayName =
+        pack['display_name']?.toString() ?? pack['name']?.toString() ?? '';
     final desc = pack['desc']?.toString() ?? '';
     final color = _parseColor(pack['color']?.toString() ?? '#888888');
     final skills = pack['skills'] as int? ?? 0;
@@ -345,7 +387,14 @@ class _PackCard extends StatelessWidget {
     return GlassCard(
       padding: const EdgeInsets.all(14),
       onTap: repo.isNotEmpty
-          ? () => _showDetailSheet(context, tokens, displayName, desc, repo, 'pack')
+          ? () => _showDetailSheet(
+              context,
+              tokens,
+              displayName,
+              desc,
+              repo,
+              'pack',
+            )
           : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,19 +412,24 @@ class _PackCard extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: Text(displayName,
-                    style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600)),
+                child: Text(
+                  displayName,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 6),
-          Text(desc,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
+          Text(
+            desc,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: tokens.fgMuted, fontSize: 11),
+          ),
           const Spacer(),
           Row(
             children: [
@@ -386,8 +440,10 @@ class _PackCard extends StatelessWidget {
               _StatChip('$hooks hooks', color, tokens),
               const Spacer(),
               if (tags.isNotEmpty)
-                Text(tags.take(2).join(', '),
-                    style: TextStyle(color: tokens.fgDim, fontSize: 9)),
+                Text(
+                  tags.take(2).join(', '),
+                  style: TextStyle(color: tokens.fgDim, fontSize: 9),
+                ),
             ],
           ),
         ],
@@ -429,11 +485,11 @@ class _SharedItemsTab extends ConsumerWidget {
   final String search;
 
   IconData get _icon => switch (type) {
-        'skill' => Icons.bolt_rounded,
-        'agent' => Icons.smart_toy_rounded,
-        'workflow' => Icons.account_tree_rounded,
-        _ => Icons.extension_rounded,
-      };
+    'skill' => Icons.bolt_rounded,
+    'agent' => Icons.smart_toy_rounded,
+    'workflow' => Icons.account_tree_rounded,
+    _ => Icons.extension_rounded,
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -441,14 +497,19 @@ class _SharedItemsTab extends ConsumerWidget {
     final asyncData = ref.watch(provider);
 
     return asyncData.when(
-      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent)),
-      error: (e, _) => Center(child: Text('$e', style: TextStyle(color: tokens.fgMuted))),
+      loading: () =>
+          Center(child: CircularProgressIndicator(color: tokens.accent)),
+      error: (e, _) => Center(
+        child: Text('$e', style: TextStyle(color: tokens.fgMuted)),
+      ),
       data: (items) {
         final filtered = search.isEmpty
             ? items
             : items.where((item) {
                 final name = (item['name'] ?? '').toString().toLowerCase();
-                final desc = (item['description'] ?? '').toString().toLowerCase();
+                final desc = (item['description'] ?? '')
+                    .toString()
+                    .toLowerCase();
                 return name.contains(search) || desc.contains(search);
               }).toList();
 
@@ -459,11 +520,15 @@ class _SharedItemsTab extends ConsumerWidget {
               children: [
                 Icon(_icon, size: 48, color: tokens.fgDim),
                 const SizedBox(height: 12),
-                Text('No shared ${type}s yet',
-                    style: TextStyle(color: tokens.fgMuted, fontSize: 14)),
+                Text(
+                  'No shared ${type}s yet',
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+                ),
                 const SizedBox(height: 6),
-                Text('Mark your ${type}s as "public" to share them here',
-                    style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+                Text(
+                  'Mark your ${type}s as "public" to share them here',
+                  style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                ),
               ],
             ),
           );
@@ -499,27 +564,38 @@ class _SharedItemsTab extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name,
-                            style: TextStyle(
-                                color: tokens.fgBright,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600)),
+                        Text(
+                          name,
+                          style: TextStyle(
+                            color: tokens.fgBright,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         if (desc.isNotEmpty)
-                          Text(desc,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: tokens.fgMuted, fontSize: 11)),
+                          Text(
+                            desc,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: tokens.fgMuted,
+                              fontSize: 11,
+                            ),
+                          ),
                       ],
                     ),
                   ),
                   if (slug.isNotEmpty)
-                    Text(slug,
-                        style: TextStyle(color: tokens.fgDim, fontSize: 10)),
+                    Text(
+                      slug,
+                      style: TextStyle(color: tokens.fgDim, fontSize: 10),
+                    ),
                   if (version.isNotEmpty) ...[
                     const SizedBox(width: 6),
-                    Text('v$version',
-                        style: TextStyle(color: tokens.fgDim, fontSize: 10)),
+                    Text(
+                      'v$version',
+                      style: TextStyle(color: tokens.fgDim, fontSize: 10),
+                    ),
                   ],
                 ],
               ),
@@ -541,7 +617,8 @@ void _showDetailSheet(
   String repo,
   String type,
 ) {
-  final installCmd = 'orchestra ${type == 'plugin' ? 'install' : 'pack install'} $repo';
+  final installCmd =
+      'orchestra ${type == 'plugin' ? 'install' : 'pack install'} $repo';
   final deepLink = 'orchestra://install/$type/$repo';
 
   showModalBottomSheet(
@@ -573,14 +650,16 @@ void _showDetailSheet(
             ),
           ),
           // Title
-          Text(name,
-              style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700)),
+          Text(
+            name,
+            style: TextStyle(
+              color: tokens.fgBright,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(desc,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+          Text(desc, style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
           const SizedBox(height: 16),
           // Repo link
           Container(
@@ -594,17 +673,26 @@ void _showDetailSheet(
                 Icon(Icons.code_rounded, color: tokens.fgMuted, size: 16),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text('github.com/$repo',
-                      style: TextStyle(color: tokens.fgBright, fontSize: 12,
-                          fontFamily: 'monospace')),
+                  child: Text(
+                    'github.com/$repo',
+                    style: TextStyle(
+                      color: tokens.fgBright,
+                      fontSize: 12,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.copy_rounded, color: tokens.accent, size: 16),
+                  icon: Icon(
+                    Icons.copy_rounded,
+                    color: tokens.accent,
+                    size: 16,
+                  ),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: 'github.com/$repo'));
-                    ScaffoldMessenger.of(ctx).showSnackBar(
-                      const SnackBar(content: Text('Copied')),
-                    );
+                    ScaffoldMessenger.of(
+                      ctx,
+                    ).showSnackBar(const SnackBar(content: Text('Copied')));
                   },
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -625,12 +713,21 @@ void _showDetailSheet(
                 Icon(Icons.terminal_rounded, color: tokens.fgMuted, size: 16),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(installCmd,
-                      style: TextStyle(color: tokens.accent, fontSize: 12,
-                          fontFamily: 'monospace')),
+                  child: Text(
+                    installCmd,
+                    style: TextStyle(
+                      color: tokens.accent,
+                      fontSize: 12,
+                      fontFamily: 'monospace',
+                    ),
+                  ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.copy_rounded, color: tokens.accent, size: 16),
+                  icon: Icon(
+                    Icons.copy_rounded,
+                    color: tokens.accent,
+                    size: 16,
+                  ),
                   onPressed: () {
                     Clipboard.setData(ClipboardData(text: installCmd));
                     ScaffoldMessenger.of(ctx).showSnackBar(
@@ -670,11 +767,14 @@ void _showDetailSheet(
           ),
           const SizedBox(height: 20),
           // README placeholder
-          Text('README.md',
-              style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600)),
+          Text(
+            'README.md',
+            style: TextStyle(
+              color: tokens.fgBright,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(16),
@@ -732,30 +832,40 @@ void _showSharedItemSheet(
               ),
             ),
           ),
-          Text(name,
-              style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700)),
+          Text(
+            name,
+            style: TextStyle(
+              color: tokens.fgBright,
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
           if (slug.isNotEmpty) ...[
             const SizedBox(height: 2),
-            Text(slug,
-                style: TextStyle(color: tokens.fgDim, fontSize: 12,
-                    fontFamily: 'monospace')),
+            Text(
+              slug,
+              style: TextStyle(
+                color: tokens.fgDim,
+                fontSize: 12,
+                fontFamily: 'monospace',
+              ),
+            ),
           ],
           if (desc.isNotEmpty) ...[
             const SizedBox(height: 8),
-            Text(desc,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+            Text(desc, style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
           ],
           const SizedBox(height: 16),
           // Content preview
           if (content.isNotEmpty) ...[
-            Text('Content',
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              'Content',
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
             Container(
               padding: const EdgeInsets.all(12),
@@ -763,11 +873,14 @@ void _showSharedItemSheet(
                 color: tokens.bgAlt,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(content,
-                  style: TextStyle(
-                      color: tokens.fgMuted,
-                      fontSize: 12,
-                      fontFamily: 'monospace')),
+              child: Text(
+                content,
+                style: TextStyle(
+                  color: tokens.fgMuted,
+                  fontSize: 12,
+                  fontFamily: 'monospace',
+                ),
+              ),
             ),
           ],
           const SizedBox(height: 16),

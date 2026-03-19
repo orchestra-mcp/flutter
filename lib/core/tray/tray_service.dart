@@ -50,10 +50,7 @@ class TrayService with TrayListener {
     }
     debugPrint('[TrayService] init()');
 
-    await trayManager.setIcon(
-      'assets/tray/tray_icon.png',
-      isTemplate: true,
-    );
+    await trayManager.setIcon('assets/tray/tray_icon.png', isTemplate: true);
     await trayManager.setToolTip('Orchestra MCP — Stopped');
     trayManager.addListener(this);
     await _buildAndSetMenu();
@@ -104,36 +101,21 @@ class TrayService with TrayListener {
     // Read workspace path and recent workspaces for display
     final prefs = await SharedPreferences.getInstance();
     final currentPath = prefs.getString('workspace_path') ?? '';
-    final workspaceLabel =
-        currentPath.isNotEmpty ? currentPath.split('/').last : 'No workspace';
+    final workspaceLabel = currentPath.isNotEmpty
+        ? currentPath.split('/').last
+        : 'No workspace';
     final recentItems = _buildRecentWorkspaceItems(prefs, currentPath);
 
     final menu = Menu(
       items: [
         // Status header (disabled — just a label)
-        MenuItem(
-          key: 'status',
-          label: statusLabel,
-          disabled: true,
-        ),
+        MenuItem(key: 'status', label: statusLabel, disabled: true),
         MenuItem.separator(),
 
         // Process controls
-        MenuItem(
-          key: 'start',
-          label: 'Start',
-          disabled: isRunning,
-        ),
-        MenuItem(
-          key: 'restart',
-          label: 'Restart',
-          disabled: !isRunning,
-        ),
-        MenuItem(
-          key: 'stop',
-          label: 'Stop',
-          disabled: !isRunning,
-        ),
+        MenuItem(key: 'start', label: 'Start', disabled: isRunning),
+        MenuItem(key: 'restart', label: 'Restart', disabled: !isRunning),
+        MenuItem(key: 'stop', label: 'Stop', disabled: !isRunning),
         MenuItem.separator(),
 
         // Workspaces submenu
@@ -151,10 +133,7 @@ class TrayService with TrayListener {
               if (workspaceLabel != 'No workspace') MenuItem.separator(),
               ...recentItems,
               if (recentItems.isNotEmpty) MenuItem.separator(),
-              MenuItem(
-                key: 'open_workspace',
-                label: 'Open Workspace...',
-              ),
+              MenuItem(key: 'open_workspace', label: 'Open Workspace...'),
               MenuItem(
                 key: 'close_workspace',
                 label: 'Close Workspace',
@@ -166,17 +145,11 @@ class TrayService with TrayListener {
         MenuItem.separator(),
 
         // Cloud
-        MenuItem(
-          key: 'connect_cloud',
-          label: 'Connect to Cloud...',
-        ),
+        MenuItem(key: 'connect_cloud', label: 'Connect to Cloud...'),
         MenuItem.separator(),
 
         // Quit
-        MenuItem(
-          key: 'quit',
-          label: 'Quit Orchestra MCP',
-        ),
+        MenuItem(key: 'quit', label: 'Quit Orchestra MCP'),
       ],
     );
 
@@ -186,7 +159,9 @@ class TrayService with TrayListener {
   // ── Recent workspaces helper ─────────────────────────────────────────────
 
   List<MenuItem> _buildRecentWorkspaceItems(
-      SharedPreferences prefs, String currentPath) {
+    SharedPreferences prefs,
+    String currentPath,
+  ) {
     final raw = prefs.getString('recent_workspaces');
     if (raw == null || raw.isEmpty) return [];
     try {
@@ -197,10 +172,7 @@ class TrayService with TrayListener {
         final path = m['path'] as String;
         if (path == currentPath) continue; // skip the active workspace
         final name = m['name'] as String;
-        items.add(MenuItem(
-          key: 'recent_workspace:$path',
-          label: name,
-        ));
+        items.add(MenuItem(key: 'recent_workspace:$path', label: name));
       }
       return items;
     } catch (_) {

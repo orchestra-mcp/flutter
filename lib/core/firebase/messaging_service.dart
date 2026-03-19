@@ -49,7 +49,8 @@ abstract final class MessagingService {
 
   static void _handleForeground(RemoteMessage message) {
     // TODO(FEAT-WLD): Show GlassSheet banner when design system is ready.
-    if (kDebugMode) debugPrint('[FCM] foreground: ${message.notification?.title}');
+    if (kDebugMode)
+      debugPrint('[FCM] foreground: ${message.notification?.title}');
   }
 
   static void _handleDeepLink(String path) {
@@ -59,7 +60,8 @@ abstract final class MessagingService {
 
   static void _registerToken(String token) {
     // TODO(FEAT-XQI): POST /api/devices/register via Dio client.
-    if (kDebugMode) debugPrint('[FCM] register token: ${token.substring(0, 12)}...');
+    if (kDebugMode)
+      debugPrint('[FCM] register token: ${token.substring(0, 12)}...');
   }
 
   // ─── Topic subscriptions ──────────────────────────────────────────────────

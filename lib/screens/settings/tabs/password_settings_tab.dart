@@ -33,13 +33,17 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
   Future<void> _updatePassword() async {
     if (_newPwCtrl.text != _confirmPwCtrl.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).newPasswordsDoNotMatch)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).newPasswordsDoNotMatch),
+        ),
       );
       return;
     }
     if (_currentPwCtrl.text.isEmpty || _newPwCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context).pleaseAllPasswordFields)),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).pleaseAllPasswordFields),
+        ),
       );
       return;
     }
@@ -56,13 +60,21 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
         _newPwCtrl.clear();
         _confirmPwCtrl.clear();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).passwordUpdatedSuccessfully)),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).passwordUpdatedSuccessfully,
+            ),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToUpdatePassword}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToUpdatePassword}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -86,8 +98,7 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
           _currentPwCtrl,
           'Enter your current password',
           obscure: _obscureCurrent,
-          onToggle: () =>
-              setState(() => _obscureCurrent = !_obscureCurrent),
+          onToggle: () => setState(() => _obscureCurrent = !_obscureCurrent),
         ),
         const SizedBox(height: 16),
         _label(tokens, 'New Password'),
@@ -107,8 +118,7 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
           _confirmPwCtrl,
           'Re-enter the new password',
           obscure: _obscureConfirm,
-          onToggle: () =>
-              setState(() => _obscureConfirm = !_obscureConfirm),
+          onToggle: () => setState(() => _obscureConfirm = !_obscureConfirm),
         ),
 
         const SizedBox(height: 14),
@@ -119,8 +129,7 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
           decoration: BoxDecoration(
             color: tokens.accent.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(10),
-            border:
-                Border.all(color: tokens.accent.withValues(alpha: 0.2)),
+            border: Border.all(color: tokens.accent.withValues(alpha: 0.2)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,13 +145,11 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
               const SizedBox(height: 6),
               _requirementRow(tokens, 'At least 8 characters'),
               const SizedBox(height: 4),
-              _requirementRow(
-                  tokens, 'One uppercase and one lowercase letter'),
+              _requirementRow(tokens, 'One uppercase and one lowercase letter'),
               const SizedBox(height: 4),
               _requirementRow(tokens, 'One number'),
               const SizedBox(height: 4),
-              _requirementRow(
-                  tokens, 'One special character (!@#\$%^&*)'),
+              _requirementRow(tokens, 'One special character (!@#\$%^&*)'),
             ],
           ),
         ),
@@ -159,14 +166,17 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: _saving
                 ? const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   )
                 : Text(AppLocalizations.of(context).updatePassword),
           ),
@@ -176,35 +186,31 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _label(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _requirementRow(OrchestraColorTokens tokens, String text) => Row(
-        children: [
-          Icon(Icons.check_circle_outline_rounded,
-              size: 14, color: tokens.fgDim),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: TextStyle(fontSize: 11, color: tokens.fgMuted),
-          ),
-        ],
-      );
+    children: [
+      Icon(Icons.check_circle_outline_rounded, size: 14, color: tokens.fgDim),
+      const SizedBox(width: 8),
+      Text(text, style: TextStyle(fontSize: 11, color: tokens.fgMuted)),
+    ],
+  );
 
   Widget _passwordField(
     OrchestraColorTokens tokens,
@@ -222,13 +228,13 @@ class _PasswordSettingsTabState extends ConsumerState<PasswordSettingsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         suffixIcon: IconButton(
           icon: Icon(
-            obscure
-                ? Icons.visibility_off_rounded
-                : Icons.visibility_rounded,
+            obscure ? Icons.visibility_off_rounded : Icons.visibility_rounded,
             size: 18,
             color: tokens.fgDim,
           ),

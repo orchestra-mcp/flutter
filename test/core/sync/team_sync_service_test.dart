@@ -65,27 +65,30 @@ void main() {
       final hash = computeContentHash(data);
       expect(hash.length, 64);
       // Verify it matches the canonical JSON representation.
-      final expected =
-          sha256.convert(utf8.encode(jsonEncode(data))).toString();
+      final expected = sha256.convert(utf8.encode(jsonEncode(data))).toString();
       expect(hash, expected);
     });
 
-    test('key order matters — different insertion order gives different hash', () {
-      // jsonEncode preserves insertion order of LinkedHashMap literals.
-      final dataA = {'a': 1, 'b': 2};
-      final dataB = {'b': 2, 'a': 1};
-      final hashA = computeContentHash(dataA);
-      final hashB = computeContentHash(dataB);
-      // In Dart, map literals are LinkedHashMap, so insertion order differs
-      // the JSON output and thus the hash.
-      expect(hashA, isNot(hashB));
-    });
+    test(
+      'key order matters — different insertion order gives different hash',
+      () {
+        // jsonEncode preserves insertion order of LinkedHashMap literals.
+        final dataA = {'a': 1, 'b': 2};
+        final dataB = {'b': 2, 'a': 1};
+        final hashA = computeContentHash(dataA);
+        final hashB = computeContentHash(dataB);
+        // In Dart, map literals are LinkedHashMap, so insertion order differs
+        // the JSON output and thus the hash.
+        expect(hashA, isNot(hashB));
+      },
+    );
 
     test('handles data with null values', () {
       final hash = computeContentHash({'key': null});
       expect(hash.length, 64);
-      final expected =
-          sha256.convert(utf8.encode(jsonEncode({'key': null}))).toString();
+      final expected = sha256
+          .convert(utf8.encode(jsonEncode({'key': null})))
+          .toString();
       expect(hash, expected);
     });
 
@@ -95,8 +98,7 @@ void main() {
         'names': ['Alice', 'Bob'],
       };
       final hash = computeContentHash(data);
-      final expected =
-          sha256.convert(utf8.encode(jsonEncode(data))).toString();
+      final expected = sha256.convert(utf8.encode(jsonEncode(data))).toString();
       expect(hash, expected);
     });
 
@@ -329,17 +331,11 @@ void main() {
       final withThirdTeam = withSecondTeam.copyWith(
         sharedWithTeamIds: [...withSecondTeam.sharedWithTeamIds, 'team-c'],
       );
-      expect(
-        withThirdTeam.sharedWithTeamIds,
-        ['team-a', 'team-b', 'team-c'],
-      );
+      expect(withThirdTeam.sharedWithTeamIds, ['team-a', 'team-b', 'team-c']);
     });
 
     test('version increments correctly through multiple changes', () {
-      const meta = EntitySyncMetadata(
-        entityType: 'note',
-        entityId: 'note-001',
-      );
+      const meta = EntitySyncMetadata(entityType: 'note', entityId: 'note-001');
       // Simulate 3 sequential local changes.
       var current = meta;
       for (var i = 1; i <= 3; i++) {
@@ -442,8 +438,9 @@ void main() {
       final hash = computeContentHash(entityData);
       // Verify the hash we would put in the request matches the expected
       // SHA-256 of the JSON.
-      final expected =
-          sha256.convert(utf8.encode(jsonEncode(entityData))).toString();
+      final expected = sha256
+          .convert(utf8.encode(jsonEncode(entityData)))
+          .toString();
       expect(hash, expected);
     });
 
@@ -457,7 +454,9 @@ void main() {
         'metadata': {
           'version': 2,
           'tags': ['ai', 'agent'],
-          'nested': {'deep': {'value': 42}},
+          'nested': {
+            'deep': {'value': 42},
+          },
         },
       };
       final hash = computeContentHash(entityData);
@@ -476,10 +475,9 @@ void main() {
       final ed = json['entity_data'] as Map<String, dynamic>;
       expect(ed['tools'], isList);
       expect((ed['tools'] as List).length, 2);
-      expect(
-        (ed['metadata'] as Map)['nested'],
-        {'deep': {'value': 42}},
-      );
+      expect((ed['metadata'] as Map)['nested'], {
+        'deep': {'value': 42},
+      });
     });
 
     test('default values for shareWithAll and permission', () {
@@ -601,43 +599,46 @@ void main() {
   // share operation.
   // =========================================================================
   group('TeamShare construction', () {
-    test('service creates TeamShare with correct fields after successful share', () {
-      final entityData = {'title': 'Shared Note'};
-      final hash = computeContentHash(entityData);
-      final serverTimestamp = DateTime.utc(2026, 3, 15, 12, 0, 0);
-      const nodeId = 'node-abc';
-      const entityType = 'note';
-      const entityId = 'note-001';
-      const teamId = 'team-xyz';
+    test(
+      'service creates TeamShare with correct fields after successful share',
+      () {
+        final entityData = {'title': 'Shared Note'};
+        final hash = computeContentHash(entityData);
+        final serverTimestamp = DateTime.utc(2026, 3, 15, 12, 0, 0);
+        const nodeId = 'node-abc';
+        const entityType = 'note';
+        const entityId = 'note-001';
+        const teamId = 'team-xyz';
 
-      final share = TeamShare(
-        id: '${entityType}_${entityId}_$teamId',
-        entityType: entityType,
-        entityId: entityId,
-        teamId: teamId,
-        shareWithAll: true,
-        memberIds: const [],
-        permission: SharePermission.write,
-        sharedBy: nodeId,
-        sharedAt: serverTimestamp,
-        lastSyncedAt: serverTimestamp,
-        version: 1,
-        contentHash: hash,
-      );
+        final share = TeamShare(
+          id: '${entityType}_${entityId}_$teamId',
+          entityType: entityType,
+          entityId: entityId,
+          teamId: teamId,
+          shareWithAll: true,
+          memberIds: const [],
+          permission: SharePermission.write,
+          sharedBy: nodeId,
+          sharedAt: serverTimestamp,
+          lastSyncedAt: serverTimestamp,
+          version: 1,
+          contentHash: hash,
+        );
 
-      expect(share.id, 'note_note-001_team-xyz');
-      expect(share.entityType, entityType);
-      expect(share.entityId, entityId);
-      expect(share.teamId, teamId);
-      expect(share.shareWithAll, true);
-      expect(share.memberIds, isEmpty);
-      expect(share.permission, SharePermission.write);
-      expect(share.sharedBy, nodeId);
-      expect(share.sharedAt, serverTimestamp);
-      expect(share.lastSyncedAt, serverTimestamp);
-      expect(share.version, 1);
-      expect(share.contentHash, hash);
-    });
+        expect(share.id, 'note_note-001_team-xyz');
+        expect(share.entityType, entityType);
+        expect(share.entityId, entityId);
+        expect(share.teamId, teamId);
+        expect(share.shareWithAll, true);
+        expect(share.memberIds, isEmpty);
+        expect(share.permission, SharePermission.write);
+        expect(share.sharedBy, nodeId);
+        expect(share.sharedAt, serverTimestamp);
+        expect(share.lastSyncedAt, serverTimestamp);
+        expect(share.version, 1);
+        expect(share.contentHash, hash);
+      },
+    );
 
     test('TeamShare for selective member share has correct memberIds', () {
       final serverTimestamp = DateTime.utc(2026, 3, 15);
@@ -1000,10 +1001,7 @@ void main() {
       expect(meta.status, EntitySyncStatus.pending);
 
       // After successful push — status -> synced, remote matches local.
-      meta = meta.copyWith(
-        status: EntitySyncStatus.synced,
-        remoteVersion: 2,
-      );
+      meta = meta.copyWith(status: EntitySyncStatus.synced, remoteVersion: 2);
       expect(meta.status, EntitySyncStatus.synced);
       expect(meta.localVersion, 2);
       expect(meta.remoteVersion, 2);

@@ -8,8 +8,7 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 /// Fetches feature-flag settings from the admin settings API
 /// (category = "feature_flags").
-final _featureFlagsProvider =
-    FutureProvider<Map<String, dynamic>>((ref) async {
+final _featureFlagsProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   final client = ref.watch(apiClientProvider);
   return client.listAdminSettings(category: 'feature_flags');
 });
@@ -40,112 +39,114 @@ class FeatureFlagsPage extends ConsumerWidget {
               children: [
                 Text(
                   AppLocalizations.of(context).featureFlags,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              const Spacer(),
-              OutlinedButton.icon(
-                onPressed: () => _showCreateDialog(context, ref, tokens),
-                icon: Icon(Icons.add, size: 16, color: tokens.accent),
-                label: Text(AppLocalizations.of(context).newFlag,
-                    style: TextStyle(color: tokens.accent)),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: tokens.accent),
+                const Spacer(),
+                OutlinedButton.icon(
+                  onPressed: () => _showCreateDialog(context, ref, tokens),
+                  icon: Icon(Icons.add, size: 16, color: tokens.accent),
+                  label: Text(
+                    AppLocalizations.of(context).newFlag,
+                    style: TextStyle(color: tokens.accent),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: tokens.accent),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          // ── Content ─────────────────────────────────────────────────────
-          Expanded(
-            child: flagsAsync.when(
-              loading: () => Center(
-                child: CircularProgressIndicator(color: tokens.accent),
-              ),
-              error: (e, _) => Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-                    const SizedBox(height: 12),
-                    Text(
-                      AppLocalizations.of(context).failedToLoadFeatureFlags,
-                      style:
-                          TextStyle(color: tokens.fgBright, fontSize: 16),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$e',
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 12),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              data: (data) {
-                final flags = _parseFlags(data);
-                if (flags.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.flag_outlined,
-                            size: 48, color: tokens.fgDim),
-                        const SizedBox(height: 12),
-                        Text(
-                          AppLocalizations.of(context).noFeatureFlagsConfigured,
-                          style: TextStyle(
-                              color: tokens.fgDim, fontSize: 14),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          AppLocalizations.of(context).createFlagToGetStarted,
-                          style: TextStyle(
-                              color: tokens.fgDim, fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                final enabledCount =
-                    flags.where((f) => f.enabled).length;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context).nOfNFlagsEnabled(enabledCount, flags.length),
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: ListView.separated(
-                        itemCount: flags.length,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: 8),
-                        itemBuilder: (context, index) {
-                          final flag = flags[index];
-                          return _FlagTile(
-                            tokens: tokens,
-                            flag: flag,
-                            onToggle: () => _toggleFlag(ref, flag),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                );
-              },
+              ],
             ),
-          ),
-        ],
-      ),
+            const SizedBox(height: 20),
+
+            // ── Content ─────────────────────────────────────────────────────
+            Expanded(
+              child: flagsAsync.when(
+                loading: () => Center(
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
+                error: (e, _) => Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+                      const SizedBox(height: 12),
+                      Text(
+                        AppLocalizations.of(context).failedToLoadFeatureFlags,
+                        style: TextStyle(color: tokens.fgBright, fontSize: 16),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$e',
+                        style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                data: (data) {
+                  final flags = _parseFlags(data);
+                  if (flags.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.flag_outlined,
+                            size: 48,
+                            color: tokens.fgDim,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            AppLocalizations.of(
+                              context,
+                            ).noFeatureFlagsConfigured,
+                            style: TextStyle(color: tokens.fgDim, fontSize: 14),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            AppLocalizations.of(context).createFlagToGetStarted,
+                            style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  final enabledCount = flags.where((f) => f.enabled).length;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(
+                          context,
+                        ).nOfNFlagsEnabled(enabledCount, flags.length),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
+                      const SizedBox(height: 12),
+                      Expanded(
+                        child: ListView.separated(
+                          itemCount: flags.length,
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
+                          itemBuilder: (context, index) {
+                            final flag = flags[index];
+                            return _FlagTile(
+                              tokens: tokens,
+                              flag: flag,
+                              onToggle: () => _toggleFlag(ref, flag),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -158,8 +159,7 @@ class FeatureFlagsPage extends ConsumerWidget {
       final key = s['key'] as String? ?? '';
       final value = s['value'];
       final description = s['description'] as String? ?? '';
-      final enabled =
-          value == true || value == 'true' || value == '1';
+      final enabled = value == true || value == 'true' || value == '1';
       return _FlagEntry(
         key: key,
         name: _humanize(key),
@@ -184,7 +184,10 @@ class FeatureFlagsPage extends ConsumerWidget {
 
   /// Show a dialog to create a new feature flag.
   void _showCreateDialog(
-      BuildContext context, WidgetRef ref, OrchestraColorTokens tokens) {
+    BuildContext context,
+    WidgetRef ref,
+    OrchestraColorTokens tokens,
+  ) {
     final keyController = TextEditingController();
     final descController = TextEditingController();
 
@@ -192,8 +195,10 @@ class FeatureFlagsPage extends ConsumerWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text(AppLocalizations.of(ctx).newFeatureFlag,
-            style: TextStyle(color: tokens.fgBright, fontSize: 16)),
+        title: Text(
+          AppLocalizations.of(ctx).newFeatureFlag,
+          style: TextStyle(color: tokens.fgBright, fontSize: 16),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -225,8 +230,10 @@ class FeatureFlagsPage extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(ctx).cancel,
-                style: TextStyle(color: tokens.fgDim)),
+            child: Text(
+              AppLocalizations.of(ctx).cancel,
+              style: TextStyle(color: tokens.fgDim),
+            ),
           ),
           FilledButton(
             onPressed: () async {
@@ -243,9 +250,7 @@ class FeatureFlagsPage extends ConsumerWidget {
               } catch (_) {}
               if (ctx.mounted) Navigator.pop(ctx);
             },
-            style: FilledButton.styleFrom(
-              backgroundColor: tokens.accent,
-            ),
+            style: FilledButton.styleFrom(backgroundColor: tokens.accent),
             child: Text(AppLocalizations.of(ctx).create),
           ),
         ],
@@ -257,8 +262,7 @@ class FeatureFlagsPage extends ConsumerWidget {
     return key
         .replaceAll('_', ' ')
         .split(' ')
-        .map((w) =>
-            w.isEmpty ? '' : '${w[0].toUpperCase()}${w.substring(1)}')
+        .map((w) => w.isEmpty ? '' : '${w[0].toUpperCase()}${w.substring(1)}')
         .join(' ');
   }
 }
@@ -333,7 +337,9 @@ class _FlagTile extends StatelessWidget {
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 1),
+                        horizontal: 6,
+                        vertical: 1,
+                      ),
                       decoration: BoxDecoration(
                         color: tokens.fgDim.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(4),
@@ -353,8 +359,7 @@ class _FlagTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     flag.description,
-                    style:
-                        TextStyle(color: tokens.fgMuted, fontSize: 12),
+                    style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                   ),
                 ],
               ],

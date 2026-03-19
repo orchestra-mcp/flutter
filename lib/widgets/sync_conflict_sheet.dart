@@ -72,8 +72,9 @@ class _ConflictSheetState extends ConsumerState<_ConflictSheet> {
   Widget build(BuildContext context) {
     final tokens = ThemeTokens.of(context);
     final conflict = widget.conflict;
-    final conflictingDiffs =
-        conflict.diffs.where((d) => d.hasConflict).toList();
+    final conflictingDiffs = conflict.diffs
+        .where((d) => d.hasConflict)
+        .toList();
 
     return Container(
       constraints: BoxConstraints(
@@ -104,8 +105,11 @@ class _ConflictSheetState extends ConsumerState<_ConflictSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                const Icon(Icons.warning_amber_rounded,
-                    color: Colors.amber, size: 24),
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: Colors.amber,
+                  size: 24,
+                ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Column(
@@ -121,22 +125,23 @@ class _ConflictSheetState extends ConsumerState<_ConflictSheet> {
                       ),
                       Text(
                         '${conflict.entityTitle} (${conflict.entityType})',
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                       ),
                     ],
                   ),
                 ),
                 _VersionBadge(
-                  label: AppLocalizations.of(context).syncConflictLocalVersion(conflict.localVersion),
+                  label: AppLocalizations.of(
+                    context,
+                  ).syncConflictLocalVersion(conflict.localVersion),
                   color: const Color(0xFF38BDF8),
                   tokens: tokens,
                 ),
                 const SizedBox(width: 6),
                 _VersionBadge(
-                  label: AppLocalizations.of(context).syncConflictRemoteVersion(conflict.remoteVersion),
+                  label: AppLocalizations.of(
+                    context,
+                  ).syncConflictRemoteVersion(conflict.remoteVersion),
                   color: const Color(0xFFF97316),
                   tokens: tokens,
                 ),
@@ -293,8 +298,10 @@ class _FieldDiffCard extends StatelessWidget {
               if (diff.isTextContent) ...[
                 const SizedBox(width: 6),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 1,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.amber.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),
@@ -314,8 +321,10 @@ class _FieldDiffCard extends StatelessWidget {
               GestureDetector(
                 onTap: () => onToggle(!keepLocal),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: keepLocal
                         ? const Color(0xFF38BDF8).withValues(alpha: 0.15)
@@ -323,7 +332,9 @@ class _FieldDiffCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
-                    keepLocal ? AppLocalizations.of(context).local : AppLocalizations.of(context).remote,
+                    keepLocal
+                        ? AppLocalizations.of(context).local
+                        : AppLocalizations.of(context).remote,
                     style: TextStyle(
                       color: keepLocal
                           ? const Color(0xFF38BDF8)

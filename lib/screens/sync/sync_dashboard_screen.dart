@@ -11,28 +11,28 @@ import 'package:orchestra/l10n/app_localizations.dart';
 // ── Status colors ───────────────────────────────────────────────────────────
 
 Color _statusColor(EntitySyncStatus status) => switch (status) {
-      EntitySyncStatus.synced => const Color(0xFF4ADE80),
-      EntitySyncStatus.pending => const Color(0xFFFBBF24),
-      EntitySyncStatus.outdated => const Color(0xFF38BDF8),
-      EntitySyncStatus.conflict => const Color(0xFFEF4444),
-      EntitySyncStatus.neverSynced => const Color(0xFF6B7280),
-    };
+  EntitySyncStatus.synced => const Color(0xFF4ADE80),
+  EntitySyncStatus.pending => const Color(0xFFFBBF24),
+  EntitySyncStatus.outdated => const Color(0xFF38BDF8),
+  EntitySyncStatus.conflict => const Color(0xFFEF4444),
+  EntitySyncStatus.neverSynced => const Color(0xFF6B7280),
+};
 
 IconData _statusIcon(EntitySyncStatus status) => switch (status) {
-      EntitySyncStatus.synced => Icons.check_circle_rounded,
-      EntitySyncStatus.pending => Icons.upload_rounded,
-      EntitySyncStatus.outdated => Icons.download_rounded,
-      EntitySyncStatus.conflict => Icons.warning_rounded,
-      EntitySyncStatus.neverSynced => Icons.circle_outlined,
-    };
+  EntitySyncStatus.synced => Icons.check_circle_rounded,
+  EntitySyncStatus.pending => Icons.upload_rounded,
+  EntitySyncStatus.outdated => Icons.download_rounded,
+  EntitySyncStatus.conflict => Icons.warning_rounded,
+  EntitySyncStatus.neverSynced => Icons.circle_outlined,
+};
 
 String _statusLabelFallback(EntitySyncStatus status) => switch (status) {
-      EntitySyncStatus.synced => 'Synced',
-      EntitySyncStatus.pending => 'Pending',
-      EntitySyncStatus.outdated => 'Outdated',
-      EntitySyncStatus.conflict => 'Conflict',
-      EntitySyncStatus.neverSynced => 'Not synced',
-    };
+  EntitySyncStatus.synced => 'Synced',
+  EntitySyncStatus.pending => 'Pending',
+  EntitySyncStatus.outdated => 'Outdated',
+  EntitySyncStatus.conflict => 'Conflict',
+  EntitySyncStatus.neverSynced => 'Not synced',
+};
 
 String _statusLabel(EntitySyncStatus status, [AppLocalizations? l10n]) {
   if (l10n == null) return _statusLabelFallback(status);
@@ -46,14 +46,14 @@ String _statusLabel(EntitySyncStatus status, [AppLocalizations? l10n]) {
 }
 
 IconData _entityIcon(String type) => switch (type) {
-      'project' => Icons.folder_rounded,
-      'note' => Icons.sticky_note_2_rounded,
-      'skill' => Icons.bolt_rounded,
-      'workflow' => Icons.account_tree_rounded,
-      'doc' => Icons.description_rounded,
-      'agent' => Icons.smart_toy_rounded,
-      _ => Icons.data_object_rounded,
-    };
+  'project' => Icons.folder_rounded,
+  'note' => Icons.sticky_note_2_rounded,
+  'skill' => Icons.bolt_rounded,
+  'workflow' => Icons.account_tree_rounded,
+  'doc' => Icons.description_rounded,
+  'agent' => Icons.smart_toy_rounded,
+  _ => Icons.data_object_rounded,
+};
 
 // ── Filter state ────────────────────────────────────────────────────────────
 
@@ -64,8 +64,9 @@ class _FilterNotifier extends Notifier<EntitySyncStatus?> {
   void set(EntitySyncStatus? value) => state = value;
 }
 
-final _filterProvider =
-    NotifierProvider<_FilterNotifier, EntitySyncStatus?>(_FilterNotifier.new);
+final _filterProvider = NotifierProvider<_FilterNotifier, EntitySyncStatus?>(
+  _FilterNotifier.new,
+);
 
 // ── Screen ──────────────────────────────────────────────────────────────────
 
@@ -117,8 +118,10 @@ class SyncDashboardScreen extends ConsumerWidget {
                 ),
                 error: (e, _) => Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Text(l10n.errorWithDetails('$e'),
-                      style: TextStyle(color: tokens.fgDim)),
+                  child: Text(
+                    l10n.errorWithDetails('$e'),
+                    style: TextStyle(color: tokens.fgDim),
+                  ),
                 ),
                 data: (entities) {
                   final synced = entities
@@ -184,8 +187,7 @@ class SyncDashboardScreen extends ConsumerWidget {
                       label: l10n.all,
                       selected: filter == null,
                       tokens: tokens,
-                      onTap: () =>
-                          ref.read(_filterProvider.notifier).set(null),
+                      onTap: () => ref.read(_filterProvider.notifier).set(null),
                     ),
                     for (final status in EntitySyncStatus.values) ...[
                       const SizedBox(width: 6),
@@ -220,7 +222,9 @@ class SyncDashboardScreen extends ConsumerWidget {
                         child: Text(
                           filter == null
                               ? l10n.noSyncedEntities
-                              : l10n.noFilteredEntities(_statusLabel(filter, l10n).toLowerCase()),
+                              : l10n.noFilteredEntities(
+                                  _statusLabel(filter, l10n).toLowerCase(),
+                                ),
                           style: TextStyle(color: tokens.fgDim, fontSize: 14),
                         ),
                       ),
@@ -230,10 +234,7 @@ class SyncDashboardScreen extends ConsumerWidget {
 
                 return SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (_, i) => _EntityRow(
-                      metadata: filtered[i],
-                      tokens: tokens,
-                    ),
+                    (_, i) => _EntityRow(metadata: filtered[i], tokens: tokens),
                     childCount: filtered.length,
                   ),
                 );
@@ -444,31 +445,25 @@ class _EntityRow extends StatelessWidget {
                     children: [
                       Text(
                         'v${metadata.localVersion}',
-                        style: TextStyle(
-                          color: tokens.fgDim,
-                          fontSize: 11,
-                        ),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
                       ),
                       if (metadata.remoteVersion != null) ...[
                         Text(
                           ' → v${metadata.remoteVersion}',
-                          style: TextStyle(
-                            color: tokens.fgDim,
-                            fontSize: 11,
-                          ),
+                          style: TextStyle(color: tokens.fgDim, fontSize: 11),
                         ),
                       ],
                       if (metadata.lastSyncedAt != null) ...[
                         const SizedBox(width: 8),
-                        Icon(Icons.schedule_rounded,
-                            size: 10, color: tokens.fgDim),
+                        Icon(
+                          Icons.schedule_rounded,
+                          size: 10,
+                          color: tokens.fgDim,
+                        ),
                         const SizedBox(width: 2),
                         Text(
                           _formatTime(metadata.lastSyncedAt!),
-                          style: TextStyle(
-                            color: tokens.fgDim,
-                            fontSize: 10,
-                          ),
+                          style: TextStyle(color: tokens.fgDim, fontSize: 10),
                         ),
                       ],
                     ],

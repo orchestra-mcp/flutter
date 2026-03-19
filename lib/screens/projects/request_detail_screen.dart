@@ -36,8 +36,9 @@ class _RequestDetailScreenState extends ConsumerState<RequestDetailScreen> {
 
   Future<void> _load() async {
     try {
-      final req =
-          await ref.read(apiClientProvider).getRequest(widget.requestId);
+      final req = await ref
+          .read(apiClientProvider)
+          .getRequest(widget.requestId);
       if (mounted) {
         setState(() {
           _request = req.isEmpty ? null : req;
@@ -65,12 +66,12 @@ class _RequestDetailScreenState extends ConsumerState<RequestDetailScreen> {
         child: _loading
             ? Center(child: CircularProgressIndicator(color: tokens.accent))
             : _error != null
-                ? _ErrorBody(tokens: tokens, message: _error!)
-                : _RequestContent(
-                    request: _request!,
-                    projectId: widget.projectId,
-                    tokens: tokens,
-                  ),
+            ? _ErrorBody(tokens: tokens, message: _error!)
+            : _RequestContent(
+                request: _request!,
+                projectId: widget.projectId,
+                tokens: tokens,
+              ),
       ),
     );
   }
@@ -113,8 +114,11 @@ class _RequestContent extends StatelessWidget {
                           context.go(Routes.project(projectId));
                         }
                       },
-                      child: Icon(Icons.arrow_back_rounded,
-                          color: tokens.fgBright, size: 22),
+                      child: Icon(
+                        Icons.arrow_back_rounded,
+                        color: tokens.fgBright,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Text(
@@ -159,20 +163,25 @@ class _RequestContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: GlassCard(
               child: body.isNotEmpty
-                  ? MarkdownRendererWidget(
-                      content: body,
-                    )
+                  ? MarkdownRendererWidget(content: body)
                   : Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Column(
                           children: [
-                            Icon(Icons.inbox_rounded,
-                                color: tokens.fgDim, size: 36),
+                            Icon(
+                              Icons.inbox_rounded,
+                              color: tokens.fgDim,
+                              size: 36,
+                            ),
                             const SizedBox(height: 8),
-                            Text(AppLocalizations.of(context).noDescription,
-                                style: TextStyle(
-                                    color: tokens.fgMuted, fontSize: 14)),
+                            Text(
+                              AppLocalizations.of(context).noDescription,
+                              style: TextStyle(
+                                color: tokens.fgMuted,
+                                fontSize: 14,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -186,25 +195,25 @@ class _RequestContent extends StatelessWidget {
   }
 
   Color _kindColor(String kind) => switch (kind) {
-        'bug' => const Color(0xFFEF4444),
-        'hotfix' => const Color(0xFFF97316),
-        'feature' => const Color(0xFF00E5FF),
-        _ => const Color(0xFF6B7280),
-      };
+    'bug' => const Color(0xFFEF4444),
+    'hotfix' => const Color(0xFFF97316),
+    'feature' => const Color(0xFF00E5FF),
+    _ => const Color(0xFF6B7280),
+  };
 
   Color _priorityColor(String p) => switch (p) {
-        'P0' => const Color(0xFFEF4444),
-        'P1' => const Color(0xFFF97316),
-        'P2' => const Color(0xFFFBBF24),
-        _ => const Color(0xFF6B7280),
-      };
+    'P0' => const Color(0xFFEF4444),
+    'P1' => const Color(0xFFF97316),
+    'P2' => const Color(0xFFFBBF24),
+    _ => const Color(0xFF6B7280),
+  };
 
   Color _statusColor(String s) => switch (s) {
-        'pending' => const Color(0xFFFBBF24),
-        'converted' => const Color(0xFF4ADE80),
-        'dismissed' => const Color(0xFF6B7280),
-        _ => const Color(0xFF6B7280),
-      };
+    'pending' => const Color(0xFFFBBF24),
+    'converted' => const Color(0xFF4ADE80),
+    'dismissed' => const Color(0xFF6B7280),
+    _ => const Color(0xFF6B7280),
+  };
 }
 
 class _Badge extends StatelessWidget {
@@ -223,8 +232,11 @@ class _Badge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style:
-            TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
+        style: TextStyle(
+          color: color,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -243,18 +255,26 @@ class _ErrorBody extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Color(0xFFEF4444), size: 48),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 48,
+            ),
             const SizedBox(height: 16),
-            Text(AppLocalizations.of(context).failedToLoad,
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              AppLocalizations.of(context).failedToLoad,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
-            Text(message,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 14),
-                textAlign: TextAlign.center),
+            Text(
+              message,
+              style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

@@ -28,13 +28,12 @@ class PomodoroState {
     int? remainingSeconds,
     int? completedSessions,
     bool? isRunning,
-  }) =>
-      PomodoroState(
-        phase: phase ?? this.phase,
-        remainingSeconds: remainingSeconds ?? this.remainingSeconds,
-        completedSessions: completedSessions ?? this.completedSessions,
-        isRunning: isRunning ?? this.isRunning,
-      );
+  }) => PomodoroState(
+    phase: phase ?? this.phase,
+    remainingSeconds: remainingSeconds ?? this.remainingSeconds,
+    completedSessions: completedSessions ?? this.completedSessions,
+    isRunning: isRunning ?? this.isRunning,
+  );
 }
 
 /// Pomodoro timer manager.
@@ -90,8 +89,8 @@ class PomodoroManager extends Notifier<PomodoroState> {
 
   void _onPhaseComplete() {
     _timer?.cancel();
-    final sessions = state.completedSessions +
-        (state.phase == PomodoroPhase.work ? 1 : 0);
+    final sessions =
+        state.completedSessions + (state.phase == PomodoroPhase.work ? 1 : 0);
     final isLongBreak = sessions % 4 == 0;
     final nextPhase = state.phase == PomodoroPhase.work
         ? (isLongBreak ? PomodoroPhase.longBreak : PomodoroPhase.shortBreak)
@@ -99,8 +98,8 @@ class PomodoroManager extends Notifier<PomodoroState> {
     final nextSeconds = nextPhase == PomodoroPhase.shortBreak
         ? _shortBreakSeconds
         : nextPhase == PomodoroPhase.longBreak
-            ? _longBreakSeconds
-            : _workSeconds;
+        ? _longBreakSeconds
+        : _workSeconds;
     state = PomodoroState(
       phase: nextPhase,
       remainingSeconds: nextSeconds,

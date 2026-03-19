@@ -55,17 +55,12 @@ class OrchestraColorTokens {
 /// InheritedWidget that exposes [OrchestraColorTokens] to the subtree.
 /// Placed at the root of the app by [OrchestraApp].
 class ThemeTokens extends InheritedWidget {
-  const ThemeTokens({
-    super.key,
-    required this.tokens,
-    required super.child,
-  });
+  const ThemeTokens({super.key, required this.tokens, required super.child});
 
   final OrchestraColorTokens tokens;
 
   static OrchestraColorTokens of(BuildContext context) {
-    final result =
-        context.dependOnInheritedWidgetOfExactType<ThemeTokens>();
+    final result = context.dependOnInheritedWidgetOfExactType<ThemeTokens>();
     assert(result != null, 'No ThemeTokens found in context');
     return result!.tokens;
   }
@@ -74,6 +69,5 @@ class ThemeTokens extends InheritedWidget {
       context.dependOnInheritedWidgetOfExactType<ThemeTokens>()?.tokens;
 
   @override
-  bool updateShouldNotify(ThemeTokens oldWidget) =>
-      tokens != oldWidget.tokens;
+  bool updateShouldNotify(ThemeTokens oldWidget) => tokens != oldWidget.tokens;
 }

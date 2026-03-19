@@ -30,8 +30,10 @@ void main() {
     }) {
       return ProviderScope(
         overrides: [
-          entitySyncStatusProvider((entityType, entityId))
-              .overrideWith((ref) async => metadata),
+          entitySyncStatusProvider((
+            entityType,
+            entityId,
+          )).overrideWith((ref) async => metadata),
         ],
         child: MaterialApp(
           home: ThemeTokens(
@@ -48,82 +50,91 @@ void main() {
       );
     }
 
-    testWidgets('shows cloud_upload icon when metadata is null (never synced)',
-        (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'note',
-        entityId: 'n1',
-        metadata: null,
-      ));
-      await tester.pumpAndSettle();
+    testWidgets(
+      'shows cloud_upload icon when metadata is null (never synced)',
+      (tester) async {
+        await tester.pumpWidget(
+          buildApp(entityType: 'note', entityId: 'n1', metadata: null),
+        );
+        await tester.pumpAndSettle();
 
-      expect(find.byIcon(Icons.cloud_upload_outlined), findsOneWidget);
-    });
+        expect(find.byIcon(Icons.cloud_upload_outlined), findsOneWidget);
+      },
+    );
 
     testWidgets('shows cloud_done icon when status is synced', (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'note',
-        entityId: 'n2',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildApp(
           entityType: 'note',
           entityId: 'n2',
-          status: EntitySyncStatus.synced,
-          localVersion: 1,
-          remoteVersion: 1,
+          metadata: const EntitySyncMetadata(
+            entityType: 'note',
+            entityId: 'n2',
+            status: EntitySyncStatus.synced,
+            localVersion: 1,
+            remoteVersion: 1,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.cloud_done_rounded), findsOneWidget);
     });
 
     testWidgets('shows schedule icon when status is pending', (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'project',
-        entityId: 'p1',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildApp(
           entityType: 'project',
           entityId: 'p1',
-          status: EntitySyncStatus.pending,
-          localVersion: 2,
-          remoteVersion: 1,
+          metadata: const EntitySyncMetadata(
+            entityType: 'project',
+            entityId: 'p1',
+            status: EntitySyncStatus.pending,
+            localVersion: 2,
+            remoteVersion: 1,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.schedule_rounded), findsOneWidget);
     });
 
-    testWidgets('shows cloud_download icon when status is outdated',
-        (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'skill',
-        entityId: 's1',
-        metadata: const EntitySyncMetadata(
+    testWidgets('shows cloud_download icon when status is outdated', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildApp(
           entityType: 'skill',
           entityId: 's1',
-          status: EntitySyncStatus.outdated,
-          localVersion: 1,
-          remoteVersion: 3,
+          metadata: const EntitySyncMetadata(
+            entityType: 'skill',
+            entityId: 's1',
+            status: EntitySyncStatus.outdated,
+            localVersion: 1,
+            remoteVersion: 3,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.cloud_download_rounded), findsOneWidget);
     });
 
     testWidgets('shows warning icon when status is conflict', (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'agent',
-        entityId: 'a1',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildApp(
           entityType: 'agent',
           entityId: 'a1',
-          status: EntitySyncStatus.conflict,
-          localVersion: 2,
-          remoteVersion: 2,
+          metadata: const EntitySyncMetadata(
+            entityType: 'agent',
+            entityId: 'a1',
+            status: EntitySyncStatus.conflict,
+            localVersion: 2,
+            remoteVersion: 2,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
@@ -131,12 +142,14 @@ void main() {
 
     testWidgets('calls onSync when tapped', (tester) async {
       var tapped = false;
-      await tester.pumpWidget(buildApp(
-        entityType: 'note',
-        entityId: 'n3',
-        metadata: null,
-        onSync: () => tapped = true,
-      ));
+      await tester.pumpWidget(
+        buildApp(
+          entityType: 'note',
+          entityId: 'n3',
+          metadata: null,
+          onSync: () => tapped = true,
+        ),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(SyncStatusButton));
@@ -144,22 +157,18 @@ void main() {
     });
 
     testWidgets('renders tooltip with "Sync with team"', (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'note',
-        entityId: 'n4',
-        metadata: null,
-      ));
+      await tester.pumpWidget(
+        buildApp(entityType: 'note', entityId: 'n4', metadata: null),
+      );
       await tester.pumpAndSettle();
 
       expect(find.byType(Tooltip), findsOneWidget);
     });
 
     testWidgets('renders within a 28x28 container', (tester) async {
-      await tester.pumpWidget(buildApp(
-        entityType: 'note',
-        entityId: 'n5',
-        metadata: null,
-      ));
+      await tester.pumpWidget(
+        buildApp(entityType: 'note', entityId: 'n5', metadata: null),
+      );
       await tester.pumpAndSettle();
 
       final containers = tester.widgetList<Container>(find.byType(Container));
@@ -179,17 +188,16 @@ void main() {
     }) {
       return ProviderScope(
         overrides: [
-          entitySyncStatusProvider((entityType, entityId))
-              .overrideWith((ref) async => metadata),
+          entitySyncStatusProvider((
+            entityType,
+            entityId,
+          )).overrideWith((ref) async => metadata),
         ],
         child: MaterialApp(
           home: ThemeTokens(
             tokens: _testTokens,
             child: Scaffold(
-              body: SyncStatusDot(
-                entityType: entityType,
-                entityId: entityId,
-              ),
+              body: SyncStatusDot(entityType: entityType, entityId: entityId),
             ),
           ),
         ),
@@ -197,11 +205,9 @@ void main() {
     }
 
     testWidgets('renders an 8x8 dot', (tester) async {
-      await tester.pumpWidget(buildDotApp(
-        entityType: 'project',
-        entityId: 'p1',
-        metadata: null,
-      ));
+      await tester.pumpWidget(
+        buildDotApp(entityType: 'project', entityId: 'p1', metadata: null),
+      );
       await tester.pumpAndSettle();
 
       final containers = tester.widgetList<Container>(find.byType(Container));
@@ -213,17 +219,19 @@ void main() {
     });
 
     testWidgets('shows green when synced', (tester) async {
-      await tester.pumpWidget(buildDotApp(
-        entityType: 'project',
-        entityId: 'p2',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildDotApp(
           entityType: 'project',
           entityId: 'p2',
-          status: EntitySyncStatus.synced,
-          localVersion: 1,
-          remoteVersion: 1,
+          metadata: const EntitySyncMetadata(
+            entityType: 'project',
+            entityId: 'p2',
+            status: EntitySyncStatus.synced,
+            localVersion: 1,
+            remoteVersion: 1,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       final containers = tester.widgetList<Container>(find.byType(Container));
@@ -238,17 +246,19 @@ void main() {
     });
 
     testWidgets('shows amber when pending', (tester) async {
-      await tester.pumpWidget(buildDotApp(
-        entityType: 'project',
-        entityId: 'p3',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildDotApp(
           entityType: 'project',
           entityId: 'p3',
-          status: EntitySyncStatus.pending,
-          localVersion: 2,
-          remoteVersion: 1,
+          metadata: const EntitySyncMetadata(
+            entityType: 'project',
+            entityId: 'p3',
+            status: EntitySyncStatus.pending,
+            localVersion: 2,
+            remoteVersion: 1,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       final containers = tester.widgetList<Container>(find.byType(Container));
@@ -263,17 +273,19 @@ void main() {
     });
 
     testWidgets('shows blue when outdated', (tester) async {
-      await tester.pumpWidget(buildDotApp(
-        entityType: 'project',
-        entityId: 'p4',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildDotApp(
           entityType: 'project',
           entityId: 'p4',
-          status: EntitySyncStatus.outdated,
-          localVersion: 1,
-          remoteVersion: 3,
+          metadata: const EntitySyncMetadata(
+            entityType: 'project',
+            entityId: 'p4',
+            status: EntitySyncStatus.outdated,
+            localVersion: 1,
+            remoteVersion: 3,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       final containers = tester.widgetList<Container>(find.byType(Container));
@@ -288,17 +300,19 @@ void main() {
     });
 
     testWidgets('shows red when conflict', (tester) async {
-      await tester.pumpWidget(buildDotApp(
-        entityType: 'project',
-        entityId: 'p5',
-        metadata: const EntitySyncMetadata(
+      await tester.pumpWidget(
+        buildDotApp(
           entityType: 'project',
           entityId: 'p5',
-          status: EntitySyncStatus.conflict,
-          localVersion: 2,
-          remoteVersion: 2,
+          metadata: const EntitySyncMetadata(
+            entityType: 'project',
+            entityId: 'p5',
+            status: EntitySyncStatus.conflict,
+            localVersion: 2,
+            remoteVersion: 2,
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       final containers = tester.widgetList<Container>(find.byType(Container));

@@ -30,9 +30,7 @@ class TerminalToolbar extends ConsumerWidget {
       height: 36,
       decoration: BoxDecoration(
         color: tokens.bgAlt,
-        border: Border(
-          bottom: BorderSide(color: tokens.border, width: 0.5),
-        ),
+        border: Border(bottom: BorderSide(color: tokens.border, width: 0.5)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
@@ -158,10 +156,7 @@ class TerminalToolbar extends ConsumerWidget {
   static Widget _divider(OrchestraColorTokens tokens) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-      child: Container(
-        width: 1,
-        color: tokens.border,
-      ),
+      child: Container(width: 1, color: tokens.border),
     );
   }
 
@@ -203,11 +198,10 @@ class _ToolbarButton extends StatelessWidget {
         splashRadius: 14,
         tooltip: tooltip,
         style: IconButton.styleFrom(
-          backgroundColor:
-              isActive ? tokens.accent.withValues(alpha: 0.15) : null,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          backgroundColor: isActive
+              ? tokens.accent.withValues(alpha: 0.15)
+              : null,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
       ),
     );

@@ -28,10 +28,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _submit() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    await ref.read(authProvider.notifier).login(
-          _emailController.text.trim(),
-          _passwordController.text,
-        );
+    await ref
+        .read(authProvider.notifier)
+        .login(_emailController.text.trim(), _passwordController.text);
   }
 
   String? _validateEmail(String? value, AppLocalizations l10n) {
@@ -74,8 +73,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
             margin: const EdgeInsets.all(16),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }
@@ -119,10 +119,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           // Error banner
                           if (errorMessage != null) ...[
-                            _ErrorBanner(
-                              message: errorMessage,
-                              tokens: tokens,
-                            ),
+                            _ErrorBanner(message: errorMessage, tokens: tokens),
                             const SizedBox(height: 16),
                           ],
 
@@ -136,8 +133,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             decoration: InputDecoration(
                               labelText: l10n.email,
                               hintText: l10n.emailHint,
-                              prefixIcon: Icon(Icons.mail_outline_rounded,
-                                  color: tokens.fgDim, size: 20),
+                              prefixIcon: Icon(
+                                Icons.mail_outline_rounded,
+                                color: tokens.fgDim,
+                                size: 20,
+                              ),
                             ),
                             validator: (v) => _validateEmail(v, l10n),
                           ),
@@ -148,13 +148,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             controller: _passwordController,
                             obscureText: _obscurePassword,
                             textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) => isLoading ? null : _submit(),
+                            onFieldSubmitted: (_) =>
+                                isLoading ? null : _submit(),
                             style: TextStyle(color: tokens.fgBright),
                             decoration: InputDecoration(
                               labelText: l10n.password,
                               hintText: l10n.yourPassword,
-                              prefixIcon: Icon(Icons.lock_outline_rounded,
-                                  color: tokens.fgDim, size: 20),
+                              prefixIcon: Icon(
+                                Icons.lock_outline_rounded,
+                                color: tokens.fgDim,
+                                size: 20,
+                              ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword
@@ -164,7 +168,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   size: 20,
                                 ),
                                 onPressed: () => setState(
-                                    () => _obscurePassword = !_obscurePassword),
+                                  () => _obscurePassword = !_obscurePassword,
+                                ),
                               ),
                             ),
                             validator: (v) => _validatePassword(v, l10n),
@@ -177,8 +182,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onPressed: () => context.go('/forgot-password'),
                               style: TextButton.styleFrom(
                                 foregroundColor: tokens.accent,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                ),
                                 tapTargetSize: MaterialTapTargetSize.padded,
                               ),
                               child: Text(
@@ -196,10 +202,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               onPressed: isLoading ? null : _submit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: tokens.accent,
-                                foregroundColor:
-                                    tokens.isLight ? Colors.white : Colors.black,
-                                disabledBackgroundColor:
-                                    tokens.accent.withValues(alpha: 0.4),
+                                foregroundColor: tokens.isLight
+                                    ? Colors.white
+                                    : Colors.black,
+                                disabledBackgroundColor: tokens.accent
+                                    .withValues(alpha: 0.4),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -219,8 +226,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   : Text(
                                       l10n.signIn,
                                       style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                             ),
                           ),
@@ -267,7 +275,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: Text(
                           l10n.createAccount,
                           style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
@@ -356,10 +366,13 @@ class _OAuthButton extends StatelessWidget {
   }
 
   Future<void> _launchOAuth(String providerId) async {
-    const baseUrl = String.fromEnvironment('API_BASE_URL',
-        defaultValue: 'http://localhost:8080');
+    const baseUrl = String.fromEnvironment(
+      'API_BASE_URL',
+      defaultValue: 'http://localhost:8080',
+    );
     final url = Uri.parse(
-        '$baseUrl/api/auth/oauth/$providerId?redirect=${Uri.encodeComponent('orchestra://auth/callback')}');
+      '$baseUrl/api/auth/oauth/$providerId?redirect=${Uri.encodeComponent('orchestra://auth/callback')}',
+    );
     await launchUrl(url, mode: LaunchMode.externalApplication);
   }
 }
@@ -412,7 +425,11 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 18),
+          const Icon(
+            Icons.error_outline_rounded,
+            color: Colors.redAccent,
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

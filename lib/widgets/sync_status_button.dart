@@ -33,8 +33,9 @@ class SyncStatusButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tokens = ThemeTokens.of(context);
-    final asyncMeta =
-        ref.watch(entitySyncStatusProvider((entityType, entityId)));
+    final asyncMeta = ref.watch(
+      entitySyncStatusProvider((entityType, entityId)),
+    );
 
     return asyncMeta.when(
       loading: () => _buildIcon(
@@ -48,14 +49,9 @@ class SyncStatusButton extends ConsumerWidget {
         color: tokens.fgDim,
       ),
       data: (meta) {
-        final status =
-            meta?.status ?? EntitySyncStatus.neverSynced;
+        final status = meta?.status ?? EntitySyncStatus.neverSynced;
         final (IconData icon, Color color) = _iconForStatus(status, tokens);
-        return _buildIcon(
-          tokens: tokens,
-          icon: icon,
-          color: color,
-        );
+        return _buildIcon(tokens: tokens, icon: icon, color: color);
       },
     );
   }
@@ -89,25 +85,25 @@ class SyncStatusButton extends ConsumerWidget {
   ) {
     return switch (status) {
       EntitySyncStatus.neverSynced => (
-          Icons.cloud_upload_outlined,
-          tokens.fgDim,
-        ),
+        Icons.cloud_upload_outlined,
+        tokens.fgDim,
+      ),
       EntitySyncStatus.synced => (
-          Icons.cloud_done_rounded,
-          const Color(0xFF22C55E),
-        ),
+        Icons.cloud_done_rounded,
+        const Color(0xFF22C55E),
+      ),
       EntitySyncStatus.pending => (
-          Icons.schedule_rounded,
-          const Color(0xFFF59E0B),
-        ),
+        Icons.schedule_rounded,
+        const Color(0xFFF59E0B),
+      ),
       EntitySyncStatus.outdated => (
-          Icons.cloud_download_rounded,
-          const Color(0xFF3B82F6),
-        ),
+        Icons.cloud_download_rounded,
+        const Color(0xFF3B82F6),
+      ),
       EntitySyncStatus.conflict => (
-          Icons.warning_amber_rounded,
-          const Color(0xFFEF4444),
-        ),
+        Icons.warning_amber_rounded,
+        const Color(0xFFEF4444),
+      ),
     };
   }
 }
@@ -127,12 +123,12 @@ class SyncStatusDot extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tokens = ThemeTokens.of(context);
-    final asyncMeta =
-        ref.watch(entitySyncStatusProvider((entityType, entityId)));
+    final asyncMeta = ref.watch(
+      entitySyncStatusProvider((entityType, entityId)),
+    );
 
-    final status = asyncMeta.whenOrNull(
-          data: (meta) => meta?.status,
-        ) ??
+    final status =
+        asyncMeta.whenOrNull(data: (meta) => meta?.status) ??
         EntitySyncStatus.neverSynced;
 
     final color = switch (status) {
@@ -146,10 +142,7 @@ class SyncStatusDot extends ConsumerWidget {
     return Container(
       width: 8,
       height: 8,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
     );
   }
 }

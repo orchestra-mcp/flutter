@@ -9,57 +9,59 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 final _userDetailProvider = FutureProvider.autoDispose
     .family<Map<String, dynamic>, int>((ref, userId) async {
-  final api = ref.watch(apiClientProvider);
-  final response = await api.getAdminUser(userId);
-  // API returns { user: {id, name, ...}, project_count, note_count, ... }
-  // Merge nested user fields with top-level counts into a flat map.
-  final user = response['user'] as Map<String, dynamic>? ?? response;
-  return {
-    ...user,
-    'project_count': response['project_count'] ?? user['project_count'] ?? 0,
-    'note_count': response['note_count'] ?? user['note_count'] ?? 0,
-    'session_count': response['session_count'] ?? user['session_count'] ?? 0,
-    'team_count': response['team_count'] ?? user['team_count'] ?? 0,
-    'issue_count': response['issue_count'] ?? user['issue_count'] ?? 0,
-  };
-});
+      final api = ref.watch(apiClientProvider);
+      final response = await api.getAdminUser(userId);
+      // API returns { user: {id, name, ...}, project_count, note_count, ... }
+      // Merge nested user fields with top-level counts into a flat map.
+      final user = response['user'] as Map<String, dynamic>? ?? response;
+      return {
+        ...user,
+        'project_count':
+            response['project_count'] ?? user['project_count'] ?? 0,
+        'note_count': response['note_count'] ?? user['note_count'] ?? 0,
+        'session_count':
+            response['session_count'] ?? user['session_count'] ?? 0,
+        'team_count': response['team_count'] ?? user['team_count'] ?? 0,
+        'issue_count': response['issue_count'] ?? user['issue_count'] ?? 0,
+      };
+    });
 
 // ── Per-tab data providers ───────────────────────────────────────────────────
 
 final _userProjectsProvider = FutureProvider.autoDispose
     .family<List<Map<String, dynamic>>, int>((ref, userId) async {
-  final api = ref.watch(apiClientProvider);
-  final resp = await api.listAdminUserProjects(userId);
-  return (resp['projects'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-});
+      final api = ref.watch(apiClientProvider);
+      final resp = await api.listAdminUserProjects(userId);
+      return (resp['projects'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    });
 
 final _userNotesProvider = FutureProvider.autoDispose
     .family<List<Map<String, dynamic>>, int>((ref, userId) async {
-  final api = ref.watch(apiClientProvider);
-  final resp = await api.listAdminUserNotes(userId);
-  return (resp['notes'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-});
+      final api = ref.watch(apiClientProvider);
+      final resp = await api.listAdminUserNotes(userId);
+      return (resp['notes'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    });
 
 final _userSessionsProvider = FutureProvider.autoDispose
     .family<List<Map<String, dynamic>>, int>((ref, userId) async {
-  final api = ref.watch(apiClientProvider);
-  final resp = await api.listAdminUserSessions(userId);
-  return (resp['sessions'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-});
+      final api = ref.watch(apiClientProvider);
+      final resp = await api.listAdminUserSessions(userId);
+      return (resp['sessions'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    });
 
 final _userTeamsProvider = FutureProvider.autoDispose
     .family<List<Map<String, dynamic>>, int>((ref, userId) async {
-  final api = ref.watch(apiClientProvider);
-  final resp = await api.listAdminUserTeams(userId);
-  return (resp['teams'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-});
+      final api = ref.watch(apiClientProvider);
+      final resp = await api.listAdminUserTeams(userId);
+      return (resp['teams'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    });
 
 final _userIssuesProvider = FutureProvider.autoDispose
     .family<List<Map<String, dynamic>>, int>((ref, userId) async {
-  final api = ref.watch(apiClientProvider);
-  final resp = await api.listAdminUserIssues(userId);
-  return (resp['issues'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-});
+      final api = ref.watch(apiClientProvider);
+      final resp = await api.listAdminUserIssues(userId);
+      return (resp['issues'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    });
 
 // ── Tab state ───────────────────────────────────────────────────────────────
 
@@ -70,8 +72,9 @@ class _UserDetailTabNotifier extends Notifier<int> {
   void select(int index) => state = index;
 }
 
-final _userDetailTabProvider =
-    NotifierProvider<_UserDetailTabNotifier, int>(_UserDetailTabNotifier.new);
+final _userDetailTabProvider = NotifierProvider<_UserDetailTabNotifier, int>(
+  _UserDetailTabNotifier.new,
+);
 
 // ── Tab definitions ─────────────────────────────────────────────────────────
 
@@ -88,7 +91,10 @@ List<String> _getTabLabels(AppLocalizations l10n) => [
 
 // ── Role badge colors ───────────────────────────────────────────────────────
 
-({Color bg, Color text}) _roleBadgeColors(String role, OrchestraColorTokens tokens) {
+({Color bg, Color text}) _roleBadgeColors(
+  String role,
+  OrchestraColorTokens tokens,
+) {
   return switch (role.toLowerCase()) {
     'admin' => (
       bg: const Color(0xFFA900FF).withValues(alpha: 0.12),
@@ -102,10 +108,7 @@ List<String> _getTabLabels(AppLocalizations l10n) => [
       bg: const Color(0xFF22C55E).withValues(alpha: 0.12),
       text: const Color(0xFF22C55E),
     ),
-    _ => (
-      bg: tokens.fgDim.withValues(alpha: 0.12),
-      text: tokens.fgDim,
-    ),
+    _ => (bg: tokens.fgDim.withValues(alpha: 0.12), text: tokens.fgDim),
   };
 }
 
@@ -116,8 +119,18 @@ String _formatDate(String iso) {
   final dt = DateTime.tryParse(iso);
   if (dt == null) return iso;
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
 }
@@ -153,29 +166,28 @@ class UserDetailPage extends ConsumerWidget {
     return ColoredBox(
       color: tokens.bg,
       child: userAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-            const SizedBox(height: 12),
-            Text(
-              AppLocalizations.of(context).failedToLoadUser,
-              style: TextStyle(color: tokens.fgBright, fontSize: 16),
-            ),
-            const SizedBox(height: 4),
-            Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () =>
-                  ref.invalidate(_userDetailProvider(parsedId)),
-              child: Text(AppLocalizations.of(context).retry),
-            ),
-          ],
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context).failedToLoadUser,
+                style: TextStyle(color: tokens.fgBright, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.invalidate(_userDetailProvider(parsedId)),
+                child: Text(AppLocalizations.of(context).retry),
+              ),
+            ],
+          ),
         ),
-      ),
-      data: (user) => _UserDetailContent(userId: userId, user: user),
+        data: (user) => _UserDetailContent(userId: userId, user: user),
       ),
     );
   }
@@ -194,11 +206,13 @@ class _UserDetailContent extends ConsumerWidget {
     final tokens = ThemeTokens.of(context);
     final selectedTab = ref.watch(_userDetailTabProvider);
 
-    final name = user['name'] as String? ?? AppLocalizations.of(context).unknown;
+    final name =
+        user['name'] as String? ?? AppLocalizations.of(context).unknown;
     final email = user['email'] as String? ?? '';
     final role = user['role'] as String? ?? '';
     final status = user['status'] as String? ?? '';
-    final joinedAt = user['created_at'] as String? ?? user['joined_at'] as String? ?? '';
+    final joinedAt =
+        user['created_at'] as String? ?? user['joined_at'] as String? ?? '';
     final parsedId = int.tryParse(userId) ?? 0;
 
     final statusColor = switch (status.toLowerCase()) {
@@ -208,8 +222,9 @@ class _UserDetailContent extends ConsumerWidget {
       _ => tokens.fgDim,
     };
 
-    final statusLabel =
-        status.isNotEmpty ? status[0].toUpperCase() + status.substring(1) : AppLocalizations.of(context).unknown;
+    final statusLabel = status.isNotEmpty
+        ? status[0].toUpperCase() + status.substring(1)
+        : AppLocalizations.of(context).unknown;
 
     final roleBadge = _roleBadgeColors(role, tokens);
 
@@ -263,8 +278,9 @@ class _UserDetailContent extends ConsumerWidget {
                     // Avatar
                     CircleAvatar(
                       radius: 28,
-                      backgroundColor:
-                          const Color(0xFF00E5FF).withValues(alpha: 0.12),
+                      backgroundColor: const Color(
+                        0xFF00E5FF,
+                      ).withValues(alpha: 0.12),
                       child: Text(
                         _initials(name),
                         style: const TextStyle(
@@ -342,13 +358,14 @@ class _UserDetailContent extends ConsumerWidget {
                           Text(
                             email,
                             style: TextStyle(
-                                color: tokens.fgMuted, fontSize: 13),
+                              color: tokens.fgMuted,
+                              fontSize: 13,
+                            ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             'Joined ${_formatDate(joinedAt)}',
-                            style: TextStyle(
-                                color: tokens.fgDim, fontSize: 11),
+                            style: TextStyle(color: tokens.fgDim, fontSize: 11),
                           ),
                         ],
                       ),
@@ -420,7 +437,11 @@ class _UserDetailContent extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                for (var i = 0; i < _getTabLabels(AppLocalizations.of(context)).length; i++)
+                for (
+                  var i = 0;
+                  i < _getTabLabels(AppLocalizations.of(context)).length;
+                  i++
+                )
                   Expanded(
                     child: _PillTabButton(
                       tokens: tokens,
@@ -519,8 +540,7 @@ class _ActionsDropdown extends StatelessWidget {
     final isActive = status == 'active';
 
     return PopupMenuButton<String>(
-      onSelected: (action) =>
-          _handleAction(context, action),
+      onSelected: (action) => _handleAction(context, action),
       offset: const Offset(0, 40),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -529,11 +549,31 @@ class _ActionsDropdown extends StatelessWidget {
       color: tokens.bg,
       elevation: 8,
       itemBuilder: (ctx) => [
-        _menuItem('change_role', Icons.shield_outlined, AppLocalizations.of(context).changeRole),
-        _menuItem('change_password', Icons.lock_outline, AppLocalizations.of(context).changePassword),
-        _menuItem('send_notification', Icons.notifications_outlined, AppLocalizations.of(context).sendNotification),
-        _menuItem('manage_teams', Icons.groups_outlined, AppLocalizations.of(context).manageTeams),
-        _menuItem('impersonate', Icons.person_search_outlined, AppLocalizations.of(context).impersonate),
+        _menuItem(
+          'change_role',
+          Icons.shield_outlined,
+          AppLocalizations.of(context).changeRole,
+        ),
+        _menuItem(
+          'change_password',
+          Icons.lock_outline,
+          AppLocalizations.of(context).changePassword,
+        ),
+        _menuItem(
+          'send_notification',
+          Icons.notifications_outlined,
+          AppLocalizations.of(context).sendNotification,
+        ),
+        _menuItem(
+          'manage_teams',
+          Icons.groups_outlined,
+          AppLocalizations.of(context).manageTeams,
+        ),
+        _menuItem(
+          'impersonate',
+          Icons.person_search_outlined,
+          AppLocalizations.of(context).impersonate,
+        ),
         PopupMenuItem<String>(
           value: 'toggle_verify',
           child: Row(
@@ -549,7 +589,9 @@ class _ActionsDropdown extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                user['is_verified'] == true ? AppLocalizations.of(context).removeVerification : AppLocalizations.of(context).verifyUser,
+                user['is_verified'] == true
+                    ? AppLocalizations.of(context).removeVerification
+                    : AppLocalizations.of(context).verifyUser,
                 style: TextStyle(
                   color: user['is_verified'] == true
                       ? tokens.fgMuted
@@ -574,7 +616,9 @@ class _ActionsDropdown extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                isActive ? AppLocalizations.of(context).blockUser : AppLocalizations.of(context).unblockUser,
+                isActive
+                    ? AppLocalizations.of(context).blockUser
+                    : AppLocalizations.of(context).unblockUser,
                 style: TextStyle(
                   color: isActive
                       ? const Color(0xFFEF4444)
@@ -590,7 +634,11 @@ class _ActionsDropdown extends StatelessWidget {
           value: 'delete',
           child: Row(
             children: [
-              const Icon(Icons.delete_outline, size: 15, color: Color(0xFFEF4444)),
+              const Icon(
+                Icons.delete_outline,
+                size: 15,
+                color: Color(0xFFEF4444),
+              ),
               const SizedBox(width: 8),
               Text(
                 AppLocalizations.of(context).deleteUser,
@@ -664,7 +712,8 @@ class _ActionsDropdown extends StatelessWidget {
   // ── Change Role Dialog ──────────────────────────────────────────────────
 
   void _showChangeRoleDialog(BuildContext context) {
-    final name = user['name'] as String? ?? AppLocalizations.of(context).unknown;
+    final name =
+        user['name'] as String? ?? AppLocalizations.of(context).unknown;
     final currentRole = user['role'] as String? ?? 'user';
     String selectedRole = currentRole;
 
@@ -696,7 +745,12 @@ class _ActionsDropdown extends StatelessWidget {
                     style: TextStyle(color: tokens.fgMuted, fontSize: 13),
                   ),
                   const SizedBox(height: 16),
-                  for (final r in const ['admin', 'team_owner', 'team_manager', 'user'])
+                  for (final r in const [
+                    'admin',
+                    'team_owner',
+                    'team_manager',
+                    'user',
+                  ])
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8),
                       child: InkWell(
@@ -779,8 +833,9 @@ class _ActionsDropdown extends StatelessWidget {
                   onPressed: () async {
                     Navigator.of(dialogContext).pop();
                     final api = ref.read(apiClientProvider);
-                    await api.updateAdminUserRole(
-                        userId, {'role': selectedRole});
+                    await api.updateAdminUserRole(userId, {
+                      'role': selectedRole,
+                    });
                     ref.invalidate(_userDetailProvider(userId));
                   },
                   style: FilledButton.styleFrom(
@@ -831,7 +886,9 @@ class _ActionsDropdown extends StatelessWidget {
                       width: double.infinity,
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFEF4444).withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(8),
@@ -857,7 +914,9 @@ class _ActionsDropdown extends StatelessWidget {
                     onChanged: (v) => password = v,
                     style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).userDetailMinCharacters,
+                      hintText: AppLocalizations.of(
+                        context,
+                      ).userDetailMinCharacters,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       filled: true,
                       fillColor: tokens.bg,
@@ -874,7 +933,9 @@ class _ActionsDropdown extends StatelessWidget {
                         borderSide: BorderSide(color: tokens.accent),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 10),
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                     ),
                   ),
                 ],
@@ -897,8 +958,7 @@ class _ActionsDropdown extends StatelessWidget {
                     }
                     Navigator.of(dialogContext).pop();
                     final api = ref.read(apiClientProvider);
-                    await api.updateAdminUser(
-                        userId, {'password': password});
+                    await api.updateAdminUser(userId, {'password': password});
                   },
                   style: FilledButton.styleFrom(
                     backgroundColor: tokens.accent,
@@ -949,7 +1009,9 @@ class _ActionsDropdown extends StatelessWidget {
                       width: double.infinity,
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFFEF4444).withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(8),
@@ -974,7 +1036,9 @@ class _ActionsDropdown extends StatelessWidget {
                     onChanged: (v) => title = v,
                     style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).notificationTitleHint,
+                      hintText: AppLocalizations.of(
+                        context,
+                      ).notificationTitleHint,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       filled: true,
                       fillColor: tokens.bg,
@@ -991,7 +1055,9 @@ class _ActionsDropdown extends StatelessWidget {
                         borderSide: BorderSide(color: tokens.accent),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 10),
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -1005,7 +1071,9 @@ class _ActionsDropdown extends StatelessWidget {
                     maxLines: 3,
                     style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context).notificationMessage,
+                      hintText: AppLocalizations.of(
+                        context,
+                      ).notificationMessage,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                       filled: true,
                       fillColor: tokens.bg,
@@ -1022,7 +1090,9 @@ class _ActionsDropdown extends StatelessWidget {
                         borderSide: BorderSide(color: tokens.accent),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 10),
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
                     ),
                   ),
                 ],
@@ -1039,7 +1109,9 @@ class _ActionsDropdown extends StatelessWidget {
                   onPressed: () async {
                     if (title.trim().isEmpty || message.trim().isEmpty) {
                       setState(() {
-                        errorText = AppLocalizations.of(context).notificationTitleRequired;
+                        errorText = AppLocalizations.of(
+                          context,
+                        ).notificationTitleRequired;
                       });
                       return;
                     }
@@ -1084,7 +1156,8 @@ class _ActionsDropdown extends StatelessWidget {
   // ── Impersonate Dialog ──────────────────────────────────────────────────
 
   void _showImpersonateDialog(BuildContext context) {
-    final name = user['name'] as String? ?? AppLocalizations.of(context).unknown;
+    final name =
+        user['name'] as String? ?? AppLocalizations.of(context).unknown;
 
     showDialog<void>(
       context: context,
@@ -1135,7 +1208,8 @@ class _ActionsDropdown extends StatelessWidget {
   // ── Toggle Status (Block/Unblock) Dialog ────────────────────────────────
 
   void _showToggleStatusDialog(BuildContext context) {
-    final name = user['name'] as String? ?? AppLocalizations.of(context).unknown;
+    final name =
+        user['name'] as String? ?? AppLocalizations.of(context).unknown;
     final status = (user['status'] as String? ?? '').toLowerCase();
     final isActive = status == 'active';
     final newStatus = isActive ? 'suspended' : 'active';
@@ -1174,8 +1248,7 @@ class _ActionsDropdown extends StatelessWidget {
               onPressed: () async {
                 Navigator.of(dialogContext).pop();
                 final api = ref.read(apiClientProvider);
-                await api.updateAdminUserStatus(
-                    userId, {'status': newStatus});
+                await api.updateAdminUserStatus(userId, {'status': newStatus});
                 ref.invalidate(_userDetailProvider(userId));
               },
               style: FilledButton.styleFrom(
@@ -1208,7 +1281,8 @@ class _ActionsDropdown extends StatelessWidget {
   // ── Delete Dialog ───────────────────────────────────────────────────────
 
   void _showDeleteDialog(BuildContext context) {
-    final name = user['name'] as String? ?? AppLocalizations.of(context).unknown;
+    final name =
+        user['name'] as String? ?? AppLocalizations.of(context).unknown;
 
     showDialog<void>(
       context: context,
@@ -1357,10 +1431,10 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
   Widget build(BuildContext context) {
     final tokens = widget.tokens;
     // Filter out teams the user is already a member of.
-    final memberTeamIds =
-        memberships.map((m) => m['team_id']).toSet();
-    final availableTeams =
-        allTeams.where((t) => !memberTeamIds.contains(t['id'])).toList();
+    final memberTeamIds = memberships.map((m) => m['team_id']).toSet();
+    final availableTeams = allTeams
+        .where((t) => !memberTeamIds.contains(t['id']))
+        .toList();
 
     return AlertDialog(
       backgroundColor: tokens.bgAlt,
@@ -1405,14 +1479,18 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                         width: double.infinity,
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
                         decoration: BoxDecoration(
-                          color:
-                              const Color(0xFFEF4444).withValues(alpha: 0.08),
+                          color: const Color(
+                            0xFFEF4444,
+                          ).withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color:
-                                const Color(0xFFEF4444).withValues(alpha: 0.2),
+                            color: const Color(
+                              0xFFEF4444,
+                            ).withValues(alpha: 0.2),
                           ),
                         ),
                         child: Text(
@@ -1441,7 +1519,9 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                           padding: const EdgeInsets.only(bottom: 6),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: tokens.bg,
                               borderRadius: BorderRadius.circular(8),
@@ -1470,15 +1550,15 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                                               .isNotEmpty) ...[
                                             _badge(
                                               m['team_plan'] as String,
-                                              switch ((m['team_plan']
-                                                          as String)
-                                                      .toLowerCase()) {
-                                                'enterprise' =>
-                                                  const Color(0xFFA900FF),
-                                                'pro' =>
-                                                  const Color(0xFF00E5FF),
-                                                _ =>
-                                                  const Color(0xFF6B7280),
+                                              switch ((m['team_plan'] as String)
+                                                  .toLowerCase()) {
+                                                'enterprise' => const Color(
+                                                  0xFFA900FF,
+                                                ),
+                                                'pro' => const Color(
+                                                  0xFF00E5FF,
+                                                ),
+                                                _ => const Color(0xFF6B7280),
                                               },
                                             ),
                                             const SizedBox(width: 6),
@@ -1501,7 +1581,8 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                                   onPressed: actionLoading
                                       ? null
                                       : () => _removeMembership(
-                                          m['team_id'] as int),
+                                          m['team_id'] as int,
+                                        ),
                                   icon: const Icon(Icons.close, size: 16),
                                   color: const Color(0xFFEF4444),
                                   padding: EdgeInsets.zero,
@@ -1509,7 +1590,9 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                                     minWidth: 28,
                                     minHeight: 28,
                                   ),
-                                  tooltip: AppLocalizations.of(context).removeFromTeam,
+                                  tooltip: AppLocalizations.of(
+                                    context,
+                                  ).removeFromTeam,
                                 ),
                               ],
                             ),
@@ -1536,8 +1619,7 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                           memberships.isEmpty
                               ? 'No teams available'
                               : 'User is a member of all teams',
-                          style:
-                              TextStyle(color: tokens.fgDim, fontSize: 12),
+                          style: TextStyle(color: tokens.fgDim, fontSize: 12),
                         ),
                       )
                     else ...[
@@ -1546,36 +1628,39 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                           Expanded(
                             flex: 2,
                             child: DropdownButtonFormField<String>(
-                              initialValue:
-                                  addTeamId.isEmpty ? null : addTeamId,
+                              initialValue: addTeamId.isEmpty
+                                  ? null
+                                  : addTeamId,
                               hint: Text(
                                 AppLocalizations.of(context).selectATeam,
                                 style: TextStyle(
-                                    color: tokens.fgDim, fontSize: 13),
+                                  color: tokens.fgDim,
+                                  fontSize: 13,
+                                ),
                               ),
                               dropdownColor: tokens.bg,
                               style: TextStyle(
-                                  color: tokens.fgBright, fontSize: 13),
+                                color: tokens.fgBright,
+                                fontSize: 13,
+                              ),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: tokens.bg,
-                                contentPadding:
-                                    const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 10,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: tokens.border),
+                                  borderSide: BorderSide(color: tokens.border),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: tokens.border),
+                                  borderSide: BorderSide(color: tokens.border),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: tokens.accent),
+                                  borderSide: BorderSide(color: tokens.accent),
                                 ),
                               ),
                               items: [
@@ -1603,46 +1688,57 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                               initialValue: addTeamRole,
                               dropdownColor: tokens.bg,
                               style: TextStyle(
-                                  color: tokens.fgBright, fontSize: 13),
+                                color: tokens.fgBright,
+                                fontSize: 13,
+                              ),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: tokens.bg,
-                                contentPadding:
-                                    const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 10,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: tokens.border),
+                                  borderSide: BorderSide(color: tokens.border),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: tokens.border),
+                                  borderSide: BorderSide(color: tokens.border),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8),
-                                  borderSide:
-                                      BorderSide(color: tokens.accent),
+                                  borderSide: BorderSide(color: tokens.accent),
                                 ),
                               ),
                               items: [
                                 DropdownMenuItem(
-                                    value: 'member',
-                                    child: Text(AppLocalizations.of(context).memberRole)),
+                                  value: 'member',
+                                  child: Text(
+                                    AppLocalizations.of(context).memberRole,
+                                  ),
+                                ),
                                 DropdownMenuItem(
-                                    value: 'admin',
-                                    child: Text(AppLocalizations.of(context).adminRole)),
+                                  value: 'admin',
+                                  child: Text(
+                                    AppLocalizations.of(context).adminRole,
+                                  ),
+                                ),
                                 DropdownMenuItem(
-                                    value: 'owner',
-                                    child: Text(AppLocalizations.of(context).ownerRole)),
+                                  value: 'owner',
+                                  child: Text(
+                                    AppLocalizations.of(context).ownerRole,
+                                  ),
+                                ),
                                 DropdownMenuItem(
-                                    value: 'viewer',
-                                    child: Text(AppLocalizations.of(context).viewerRole)),
+                                  value: 'viewer',
+                                  child: Text(
+                                    AppLocalizations.of(context).viewerRole,
+                                  ),
+                                ),
                               ],
                               onChanged: (v) {
-                                setState(
-                                    () => addTeamRole = v ?? 'member');
+                                setState(() => addTeamRole = v ?? 'member');
                               },
                             ),
                           ),
@@ -1652,51 +1748,50 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: FilledButton(
-                          onPressed:
-                              addTeamId.isEmpty || actionLoading
-                                  ? null
-                                  : () async {
-                                      setState(() {
-                                        actionLoading = true;
-                                        errorText = null;
-                                      });
-                                      try {
-                                        final teamId =
-                                            int.tryParse(addTeamId) ?? 0;
-                                        final api = widget.ref
-                                            .read(apiClientProvider);
-                                        await api.addAdminTeamMember(
-                                            teamId, {
-                                          'user_id': widget.userId,
-                                          'role': addTeamRole,
-                                        });
-                                        // Reload memberships
-                                        await _loadData();
-                                        setState(() {
-                                          addTeamId = '';
-                                          actionLoading = false;
-                                        });
-                                        widget.ref.invalidate(
-                                            _userDetailProvider(
-                                                widget.userId));
-                                        widget.ref.invalidate(
-                                            _userTeamsProvider(
-                                                widget.userId));
-                                      } catch (e) {
-                                        setState(() {
-                                          errorText =
-                                              'Failed to add to team';
-                                          actionLoading = false;
-                                        });
-                                      }
-                                    },
+                          onPressed: addTeamId.isEmpty || actionLoading
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    actionLoading = true;
+                                    errorText = null;
+                                  });
+                                  try {
+                                    final teamId = int.tryParse(addTeamId) ?? 0;
+                                    final api = widget.ref.read(
+                                      apiClientProvider,
+                                    );
+                                    await api.addAdminTeamMember(teamId, {
+                                      'user_id': widget.userId,
+                                      'role': addTeamRole,
+                                    });
+                                    // Reload memberships
+                                    await _loadData();
+                                    setState(() {
+                                      addTeamId = '';
+                                      actionLoading = false;
+                                    });
+                                    widget.ref.invalidate(
+                                      _userDetailProvider(widget.userId),
+                                    );
+                                    widget.ref.invalidate(
+                                      _userTeamsProvider(widget.userId),
+                                    );
+                                  } catch (e) {
+                                    setState(() {
+                                      errorText = 'Failed to add to team';
+                                      actionLoading = false;
+                                    });
+                                  }
+                                },
                           style: FilledButton.styleFrom(
                             backgroundColor: tokens.accent,
                             foregroundColor: tokens.bg,
                           ),
-                          child: Text(actionLoading
-                              ? AppLocalizations.of(context).addingEllipsis
-                              : 'Add to Team'),
+                          child: Text(
+                            actionLoading
+                                ? AppLocalizations.of(context).addingEllipsis
+                                : 'Add to Team',
+                          ),
                         ),
                       ),
                     ],
@@ -1707,10 +1802,7 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(
-            'Close',
-            style: TextStyle(color: tokens.fgMuted),
-          ),
+          child: Text('Close', style: TextStyle(color: tokens.fgMuted)),
         ),
       ],
     );
@@ -1839,11 +1931,31 @@ class _OverviewTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stats = [
-      (icon: Icons.folder_outlined, label: AppLocalizations.of(context).projects, value: projectCount),
-      (icon: Icons.note_outlined, label: AppLocalizations.of(context).notes, value: noteCount),
-      (icon: Icons.chat_outlined, label: AppLocalizations.of(context).sessions, value: sessionCount),
-      (icon: Icons.groups_outlined, label: AppLocalizations.of(context).teams, value: teamCount),
-      (icon: Icons.bug_report_outlined, label: AppLocalizations.of(context).issues, value: issueCount),
+      (
+        icon: Icons.folder_outlined,
+        label: AppLocalizations.of(context).projects,
+        value: projectCount,
+      ),
+      (
+        icon: Icons.note_outlined,
+        label: AppLocalizations.of(context).notes,
+        value: noteCount,
+      ),
+      (
+        icon: Icons.chat_outlined,
+        label: AppLocalizations.of(context).sessions,
+        value: sessionCount,
+      ),
+      (
+        icon: Icons.groups_outlined,
+        label: AppLocalizations.of(context).teams,
+        value: teamCount,
+      ),
+      (
+        icon: Icons.bug_report_outlined,
+        label: AppLocalizations.of(context).issues,
+        value: issueCount,
+      ),
     ];
 
     return SingleChildScrollView(
@@ -1869,11 +1981,7 @@ class _OverviewTab extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          s.icon,
-                          size: 20,
-                          color: const Color(0xFF00E5FF),
-                        ),
+                        Icon(s.icon, size: 20, color: const Color(0xFF00E5FF)),
                         const SizedBox(height: 8),
                         Text(
                           '${s.value}',
@@ -1886,10 +1994,7 @@ class _OverviewTab extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           s.label,
-                          style: TextStyle(
-                            color: tokens.fgMuted,
-                            fontSize: 12,
-                          ),
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                         ),
                       ],
                     ),
@@ -1968,11 +2073,7 @@ Widget _badge(String text, Color color) {
     ),
     child: Text(
       text,
-      style: TextStyle(
-        color: color,
-        fontSize: 10,
-        fontWeight: FontWeight.w600,
-      ),
+      style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.w600),
     ),
   );
 }
@@ -1991,8 +2092,10 @@ class _ProjectsTab extends ConsumerWidget {
     return dataAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoadProjects,
-            style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoadProjects,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (projects) {
         if (projects.isEmpty) {
@@ -2026,26 +2129,33 @@ class _ProjectsTab extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.folder_outlined,
-                      size: 18, color: const Color(0xFF00E5FF)),
+                  Icon(
+                    Icons.folder_outlined,
+                    size: 18,
+                    color: const Color(0xFF00E5FF),
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name,
-                            style: TextStyle(
-                              color: tokens.fgBright,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            )),
+                        Text(
+                          name,
+                          style: TextStyle(
+                            color: tokens.fgBright,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         if (created.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 2),
                             child: Text(
                               'Created ${_formatDate(created)}',
                               style: TextStyle(
-                                  color: tokens.fgDim, fontSize: 11),
+                                color: tokens.fgDim,
+                                fontSize: 11,
+                              ),
                             ),
                           ),
                       ],
@@ -2076,8 +2186,10 @@ class _NotesTab extends ConsumerWidget {
     return dataAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoadNotes,
-            style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoadNotes,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (notes) {
         if (notes.isEmpty) {
@@ -2110,19 +2222,23 @@ class _NotesTab extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(title,
-                            style: TextStyle(
-                              color: tokens.fgBright,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            )),
+                        Text(
+                          title,
+                          style: TextStyle(
+                            color: tokens.fgBright,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         if (created.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 2),
                             child: Text(
                               _formatDate(created),
                               style: TextStyle(
-                                  color: tokens.fgDim, fontSize: 11),
+                                color: tokens.fgDim,
+                                fontSize: 11,
+                              ),
                             ),
                           ),
                       ],
@@ -2152,8 +2268,10 @@ class _ChatsTab extends ConsumerWidget {
     return dataAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoadSessions,
-            style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoadSessions,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (sessions) {
         if (sessions.isEmpty) {
@@ -2188,12 +2306,14 @@ class _ChatsTab extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name,
-                            style: TextStyle(
-                              color: tokens.fgBright,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            )),
+                        Text(
+                          name,
+                          style: TextStyle(
+                            color: tokens.fgBright,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Row(
@@ -2205,15 +2325,25 @@ class _ChatsTab extends ConsumerWidget {
                               Text(
                                 '$msgCount messages',
                                 style: TextStyle(
-                                    color: tokens.fgDim, fontSize: 11),
+                                  color: tokens.fgDim,
+                                  fontSize: 11,
+                                ),
                               ),
                               if (created.isNotEmpty) ...[
-                                Text(' -- ',
-                                    style: TextStyle(
-                                        color: tokens.fgDim, fontSize: 11)),
-                                Text(_formatDate(created),
-                                    style: TextStyle(
-                                        color: tokens.fgDim, fontSize: 11)),
+                                Text(
+                                  ' -- ',
+                                  style: TextStyle(
+                                    color: tokens.fgDim,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                Text(
+                                  _formatDate(created),
+                                  style: TextStyle(
+                                    color: tokens.fgDim,
+                                    fontSize: 11,
+                                  ),
+                                ),
                               ],
                             ],
                           ),
@@ -2245,8 +2375,10 @@ class _TeamsTab extends ConsumerWidget {
     return dataAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoadTeams,
-            style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoadTeams,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (teams) {
         if (teams.isEmpty) {
@@ -2286,12 +2418,14 @@ class _TeamsTab extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name,
-                            style: TextStyle(
-                              color: tokens.fgBright,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            )),
+                        Text(
+                          name,
+                          style: TextStyle(
+                            color: tokens.fgBright,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 4),
                           child: Row(
@@ -2303,15 +2437,25 @@ class _TeamsTab extends ConsumerWidget {
                               Text(
                                 '$memberCount members',
                                 style: TextStyle(
-                                    color: tokens.fgDim, fontSize: 11),
+                                  color: tokens.fgDim,
+                                  fontSize: 11,
+                                ),
                               ),
                               if (role.isNotEmpty) ...[
-                                Text(' -- ',
-                                    style: TextStyle(
-                                        color: tokens.fgDim, fontSize: 11)),
-                                Text(role,
-                                    style: TextStyle(
-                                        color: tokens.fgMuted, fontSize: 11)),
+                                Text(
+                                  ' -- ',
+                                  style: TextStyle(
+                                    color: tokens.fgDim,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                Text(
+                                  role,
+                                  style: TextStyle(
+                                    color: tokens.fgMuted,
+                                    fontSize: 11,
+                                  ),
+                                ),
                               ],
                             ],
                           ),
@@ -2343,8 +2487,10 @@ class _IssuesTab extends ConsumerWidget {
     return dataAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (e, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoadIssues,
-            style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoadIssues,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (issues) {
         if (issues.isEmpty) {
@@ -2362,8 +2508,7 @@ class _IssuesTab extends ConsumerWidget {
             final issue = issues[i];
             final id = issue['id'];
             final title = issue['title'] as String? ?? 'Untitled';
-            final priority =
-                (issue['priority'] as String? ?? '').toLowerCase();
+            final priority = (issue['priority'] as String? ?? '').toLowerCase();
             final status = (issue['status'] as String? ?? '').toLowerCase();
             final created = issue['created_at'] as String? ?? '';
             final priorityColor = switch (priority) {
@@ -2387,8 +2532,11 @@ class _IssuesTab extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.bug_report_outlined,
-                      size: 18, color: tokens.fgMuted),
+                  Icon(
+                    Icons.bug_report_outlined,
+                    size: 18,
+                    color: tokens.fgMuted,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -2406,13 +2554,15 @@ class _IssuesTab extends ConsumerWidget {
                                 ),
                               ),
                             Expanded(
-                              child: Text(title,
-                                  style: TextStyle(
-                                    color: tokens.fgBright,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  overflow: TextOverflow.ellipsis),
+                              child: Text(
+                                title,
+                                style: TextStyle(
+                                  color: tokens.fgBright,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -2429,9 +2579,13 @@ class _IssuesTab extends ConsumerWidget {
                                 const SizedBox(width: 8),
                               ],
                               if (created.isNotEmpty)
-                                Text(_formatDate(created),
-                                    style: TextStyle(
-                                        color: tokens.fgDim, fontSize: 11)),
+                                Text(
+                                  _formatDate(created),
+                                  style: TextStyle(
+                                    color: tokens.fgDim,
+                                    fontSize: 11,
+                                  ),
+                                ),
                             ],
                           ),
                         ),

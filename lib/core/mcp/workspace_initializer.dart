@@ -20,11 +20,9 @@ class WorkspaceInitializer {
 
     debugPrint('[WorkspaceInit] Running orchestra init in $workspacePath');
     try {
-      final result = await Process.run(
-        'orchestra',
-        ['init'],
-        workingDirectory: workspacePath,
-      );
+      final result = await Process.run('orchestra', [
+        'init',
+      ], workingDirectory: workspacePath);
       if (result.exitCode == 0) {
         debugPrint('[WorkspaceInit] Init completed successfully');
         return true;

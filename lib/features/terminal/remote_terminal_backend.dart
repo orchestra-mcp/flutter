@@ -13,10 +13,7 @@ import 'package:xterm/xterm.dart';
 /// - **Direct** (local dev): connects to `ws://<desktop-ip>:9201` web-gate
 /// - **Tunnel** (cloud): connects to `/api/tunnels/:id/ws` on the web server
 class RemoteTerminalBackend extends TerminalBackend {
-  RemoteTerminalBackend({
-    required this.wsUrl,
-    this.shell,
-  });
+  RemoteTerminalBackend({required this.wsUrl, this.shell});
 
   /// Full WebSocket URL to connect to.
   /// Direct: `ws://192.168.1.x:9201` (web-gate)
@@ -169,8 +166,8 @@ class RemoteTerminalBackend extends TerminalBackend {
       // Handle relay envelope (tunnel proxy wraps responses).
       final inner = data.containsKey('message')
           ? (data['message'] is String
-              ? jsonDecode(data['message'] as String) as Map<String, dynamic>
-              : data['message'] as Map<String, dynamic>)
+                ? jsonDecode(data['message'] as String) as Map<String, dynamic>
+                : data['message'] as Map<String, dynamic>)
           : data;
 
       final id = inner['id'];
@@ -204,7 +201,9 @@ class RemoteTerminalBackend extends TerminalBackend {
   }
 
   Future<Map<String, dynamic>> _sendRpc(
-      String method, Map<String, dynamic> params) async {
+    String method,
+    Map<String, dynamic> params,
+  ) async {
     final id = _nextRpcId();
     final completer = Completer<Map<String, dynamic>>();
     _pendingRequests[id] = completer;
@@ -227,18 +226,22 @@ class RemoteTerminalBackend extends TerminalBackend {
   }
 
   Future<Map<String, dynamic>> _callTool(
-      String name, Map<String, dynamic> arguments) {
+    String name,
+    Map<String, dynamic> arguments,
+  ) {
     return _sendRpc('tools/call', {'name': name, 'arguments': arguments});
   }
 
   void _callToolFire(String name, Map<String, dynamic> arguments) {
     final id = _nextRpcId();
-    _channel?.sink.add(jsonEncode({
-      'jsonrpc': '2.0',
-      'id': id,
-      'method': 'tools/call',
-      'params': {'name': name, 'arguments': arguments},
-    }));
+    _channel?.sink.add(
+      jsonEncode({
+        'jsonrpc': '2.0',
+        'id': id,
+        'method': 'tools/call',
+        'params': {'name': name, 'arguments': arguments},
+      }),
+    );
   }
 
   @override
@@ -246,8 +249,7 @@ class RemoteTerminalBackend extends TerminalBackend {
     _outputPollTimer?.cancel();
     if (_remoteTerminalId != null && _channel != null) {
       try {
-        await _callTool(
-            'close_terminal', {'terminal_id': _remoteTerminalId!});
+        await _callTool('close_terminal', {'terminal_id': _remoteTerminalId!});
       } catch (_) {}
     }
     await _socketSub?.cancel();

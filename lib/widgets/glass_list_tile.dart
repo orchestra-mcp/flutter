@@ -97,8 +97,8 @@ class GlassListTile extends StatelessWidget {
         direction: onDelete != null && onPin != null
             ? DismissDirection.horizontal
             : onPin != null
-                ? DismissDirection.startToEnd
-                : DismissDirection.endToStart,
+            ? DismissDirection.startToEnd
+            : DismissDirection.endToStart,
         background: _SwipeBackground(
           alignment: AlignmentDirectional.centerStart,
           color: const Color(0xFFD97706),
@@ -131,25 +131,35 @@ class GlassListTile extends StatelessWidget {
   }
 
   Future<bool> _confirmDelete(
-      BuildContext context, OrchestraColorTokens tokens) async {
+    BuildContext context,
+    OrchestraColorTokens tokens,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text(AppLocalizations.of(context).deleteItemTitle(label),
-            style: TextStyle(color: tokens.fgBright)),
-        content: Text(AppLocalizations.of(context).deleteConfirm,
-            style: TextStyle(color: tokens.fgMuted)),
+        title: Text(
+          AppLocalizations.of(context).deleteItemTitle(label),
+          style: TextStyle(color: tokens.fgBright),
+        ),
+        content: Text(
+          AppLocalizations.of(context).deleteConfirm,
+          style: TextStyle(color: tokens.fgMuted),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child:
-                Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: TextStyle(color: tokens.fgMuted),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(AppLocalizations.of(context).delete,
-                style: const TextStyle(color: Color(0xFFDC2626))),
+            child: Text(
+              AppLocalizations.of(context).delete,
+              style: const TextStyle(color: Color(0xFFDC2626)),
+            ),
           ),
         ],
       ),
@@ -209,7 +219,8 @@ class _TileContent extends StatelessWidget {
 
   void _showContextMenuAt(BuildContext context, Offset position) {
     if (contextMenuActions.isEmpty) return;
-    final overlay = Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
     showMenu<void>(
       context: context,
       position: RelativeRect.fromRect(
@@ -217,8 +228,9 @@ class _TileContent extends StatelessWidget {
         Offset.zero & overlay.size,
       ),
       items: contextMenuActions.map((a) {
-        final color =
-            a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
+        final color = a.isDestructive
+            ? const Color(0xFFDC2626)
+            : tokens.fgBright;
         return PopupMenuItem<void>(
           onTap: a.onTap,
           child: Row(
@@ -243,62 +255,64 @@ class _TileContent extends StatelessWidget {
       isScrollControlled: true,
       builder: (ctx) {
         return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.viewInsetsOf(ctx).bottom,
-          ),
+          padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(ctx).bottom),
           child: ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: Material(
               color: tokens.bgAlt,
-            child: SafeArea(
-              top: false,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Drag handle
-                    Container(
-                      width: 40,
-                      height: 4,
-                      margin: const EdgeInsets.only(top: 12, bottom: 8),
-                      decoration: BoxDecoration(
-                        color: tokens.fgDim.withValues(alpha: 0.6),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    // Title
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                      child: Text(
-                        label,
-                        style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
+              child: SafeArea(
+                top: false,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Drag handle
+                      Container(
+                        width: 40,
+                        height: 4,
+                        margin: const EdgeInsets.only(top: 12, bottom: 8),
+                        decoration: BoxDecoration(
+                          color: tokens.fgDim.withValues(alpha: 0.6),
+                          borderRadius: BorderRadius.circular(2),
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    ...contextMenuActions.map((a) {
-                      final color =
-                          a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
-                      return ListTile(
-                        leading: Icon(a.icon, color: color, size: 20),
-                        title: Text(a.label, style: TextStyle(color: color)),
-                        onTap: () {
-                          Navigator.of(ctx).pop();
-                          a.onTap();
-                        },
-                      );
-                    }),
-                    const SizedBox(height: 8),
-                  ],
+                      // Title
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          label,
+                          style: TextStyle(
+                            color: tokens.fgBright,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      ...contextMenuActions.map((a) {
+                        final color = a.isDestructive
+                            ? const Color(0xFFDC2626)
+                            : tokens.fgBright;
+                        return ListTile(
+                          leading: Icon(a.icon, color: color, size: 20),
+                          title: Text(a.label, style: TextStyle(color: color)),
+                          onTap: () {
+                            Navigator.of(ctx).pop();
+                            a.onTap();
+                          },
+                        );
+                      }),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           ),
         );
       },
@@ -316,8 +330,7 @@ class _TileContent extends StatelessWidget {
         onLongPress: () => _handleLongPress(context),
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           decoration: BoxDecoration(
             color: isSelected
                 ? tokens.accent.withValues(alpha: 0.10)
@@ -350,8 +363,7 @@ class _TileContent extends StatelessWidget {
                         color: leadingColor.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child:
-                          Icon(leadingIcon, color: leadingColor, size: 18),
+                      child: Icon(leadingIcon, color: leadingColor, size: 18),
                     ),
                     if (isPinned)
                       const Positioned(
@@ -387,10 +399,7 @@ class _TileContent extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         description!,
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -400,17 +409,11 @@ class _TileContent extends StatelessWidget {
               ),
 
               // ── Trailing widget ────────────────────────────────────
-              if (trailing != null) ...[
-                const SizedBox(width: 8),
-                trailing!,
-              ],
+              if (trailing != null) ...[const SizedBox(width: 8), trailing!],
 
               // ── Context menu ───────────────────────────────────────
               if (contextMenuActions.isNotEmpty)
-                _ContextMenuButton(
-                  actions: contextMenuActions,
-                  tokens: tokens,
-                ),
+                _ContextMenuButton(actions: contextMenuActions, tokens: tokens),
             ],
           ),
         ),
@@ -434,10 +437,7 @@ class _TileContent extends StatelessWidget {
 // ─── Context menu button (three-dot) ──────────────────────────────────────────
 
 class _ContextMenuButton extends StatelessWidget {
-  const _ContextMenuButton({
-    required this.actions,
-    required this.tokens,
-  });
+  const _ContextMenuButton({required this.actions, required this.tokens});
 
   final List<GlassListTileAction> actions;
   final OrchestraColorTokens tokens;
@@ -446,8 +446,9 @@ class _ContextMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MenuAnchor(
       menuChildren: actions.map((a) {
-        final color =
-            a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
+        final color = a.isDestructive
+            ? const Color(0xFFDC2626)
+            : tokens.fgBright;
         return MenuItemButton(
           leadingIcon: Icon(a.icon, size: 16, color: color),
           onPressed: a.onTap,
@@ -458,8 +459,7 @@ class _ContextMenuButton extends StatelessWidget {
         label: AppLocalizations.of(context).moreOptionsSemantics,
         button: true,
         child: IconButton(
-          icon: Icon(Icons.more_vert_rounded,
-              color: tokens.fgMuted, size: 18),
+          icon: Icon(Icons.more_vert_rounded, color: tokens.fgMuted, size: 18),
           onPressed: () {
             if (controller.isOpen) {
               controller.close();
@@ -502,11 +502,14 @@ class _SwipeBackground extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.white, size: 20),
           const SizedBox(height: 2),
-          Text(label,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

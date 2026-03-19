@@ -16,7 +16,7 @@ class _Component {
   });
   final String label;
   final double weight; // 0–1
-  final double score;  // 0–100
+  final double score; // 0–100
   final Color color;
 }
 
@@ -100,8 +100,7 @@ class DailyFlowTab extends ConsumerWidget {
                       ),
                       Text(
                         l10n.dailyScore,
-                        style:
-                            TextStyle(color: tokens.fgMuted, fontSize: 11),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                       ),
                     ],
                   ),
@@ -149,20 +148,21 @@ class DailyFlowTab extends ConsumerWidget {
                 gridData: FlGridData(
                   show: true,
                   horizontalInterval: 25,
-                  getDrawingHorizontalLine: (_) => FlLine(
-                    color: tokens.border,
-                    strokeWidth: 0.5,
-                  ),
+                  getDrawingHorizontalLine: (_) =>
+                      FlLine(color: tokens.border, strokeWidth: 0.5),
                   drawVerticalLine: false,
                 ),
                 borderData: FlBorderData(show: false),
                 titlesData: FlTitlesData(
                   leftTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false)),
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -175,9 +175,7 @@ class DailyFlowTab extends ConsumerWidget {
                         return Text(
                           days[idx],
                           style: TextStyle(
-                            color: idx == 6
-                                ? tokens.accent
-                                : tokens.fgMuted,
+                            color: idx == 6 ? tokens.accent : tokens.fgMuted,
                             fontSize: 11,
                           ),
                         );
@@ -197,7 +195,8 @@ class DailyFlowTab extends ConsumerWidget {
                             : tokens.accent.withValues(alpha: 0.4),
                         width: 18,
                         borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(4)),
+                          top: Radius.circular(4),
+                        ),
                       ),
                     ],
                   );
@@ -228,8 +227,10 @@ class _ComponentRow extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(c.label,
-                    style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+                child: Text(
+                  c.label,
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+                ),
               ),
               Text(
                 '${(c.weight * 100).toStringAsFixed(0)}%',

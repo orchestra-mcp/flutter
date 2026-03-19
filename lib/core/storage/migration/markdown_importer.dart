@@ -25,11 +25,7 @@ class MarkdownImporter {
     final notes = await importNotes();
     // Rebuild FTS5 indexes after bulk import.
     await db.rebuildFtsIndexes();
-    return ImportSummary(
-      projects: projects,
-      features: features,
-      notes: notes,
-    );
+    return ImportSummary(projects: projects, features: features, notes: notes);
   }
 
   // ── Projects ─────────────────────────────────────────────────────────────
@@ -42,9 +38,13 @@ class MarkdownImporter {
       final id = p['id'] as String;
       final slug = (p['slug'] as String?) ?? id;
       final stacks = p['stacks'];
-      final stacksJson = stacks is List ? jsonEncode(stacks) : (stacks as String?) ?? '[]';
+      final stacksJson = stacks is List
+          ? jsonEncode(stacks)
+          : (stacks as String?) ?? '[]';
 
-      await db.into(db.localProjects).insertOnConflictUpdate(
+      await db
+          .into(db.localProjects)
+          .insertOnConflictUpdate(
             LocalProjectsCompanion.insert(
               id: id,
               slug: slug,
@@ -69,9 +69,13 @@ class MarkdownImporter {
     final items = await client.listFeatures();
     for (final f in items) {
       final labels = f['labels'];
-      final labelsJson = labels is List ? jsonEncode(labels) : (labels as String?) ?? '[]';
+      final labelsJson = labels is List
+          ? jsonEncode(labels)
+          : (labels as String?) ?? '[]';
 
-      await db.into(db.localFeatures).insertOnConflictUpdate(
+      await db
+          .into(db.localFeatures)
+          .insertOnConflictUpdate(
             LocalFeaturesCompanion.insert(
               id: f['id'] as String,
               projectId: (f['project_id'] as String?) ?? '',
@@ -102,9 +106,13 @@ class MarkdownImporter {
     final items = await client.listNotes();
     for (final n in items) {
       final tags = n['tags'];
-      final tagsJson = tags is List ? jsonEncode(tags) : (tags as String?) ?? '[]';
+      final tagsJson = tags is List
+          ? jsonEncode(tags)
+          : (tags as String?) ?? '[]';
 
-      await db.into(db.localNotes).insertOnConflictUpdate(
+      await db
+          .into(db.localNotes)
+          .insertOnConflictUpdate(
             LocalNotesCompanion.insert(
               id: n['id'] as String,
               projectId: Value(n['project_id'] as String?),

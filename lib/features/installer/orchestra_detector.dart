@@ -63,7 +63,8 @@ class OrchestraDetector {
     final path = await _findBinary();
     if (path == null) return DetectResult.notFound;
     final versions = await getVersions();
-    if (versions != null && versions.hasUpdate) return DetectResult.updateAvailable;
+    if (versions != null && versions.hasUpdate)
+      return DetectResult.updateAvailable;
     return DetectResult.found;
   }
 
@@ -77,19 +78,33 @@ class OrchestraDetector {
 
     // Fetch latest from GitHub (best-effort; network may not be available).
     try {
-      final result = await Process.run(
-          'curl', ['-sf', _releasesUrl, '-H', 'Accept: application/json']);
+      final result = await Process.run('curl', [
+        '-sf',
+        _releasesUrl,
+        '-H',
+        'Accept: application/json',
+      ]);
       if (result.exitCode == 0) {
         final body = result.stdout as String;
-        final tagMatch = RegExp(r'"tag_name"\s*:\s*"v?([^"]+)"').firstMatch(body);
+        final tagMatch = RegExp(
+          r'"tag_name"\s*:\s*"v?([^"]+)"',
+        ).firstMatch(body);
         if (tagMatch != null) {
           final latest = tagMatch.group(1)!;
           final hasUpdate = installed != latest;
-          return VersionInfo(installed: installed, latest: latest, hasUpdate: hasUpdate);
+          return VersionInfo(
+            installed: installed,
+            latest: latest,
+            hasUpdate: hasUpdate,
+          );
         }
       }
     } catch (_) {}
 
-    return VersionInfo(installed: installed, latest: installed, hasUpdate: false);
+    return VersionInfo(
+      installed: installed,
+      latest: installed,
+      hasUpdate: false,
+    );
   }
 }

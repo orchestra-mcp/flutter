@@ -20,5 +20,5 @@ class InstallerNotifier extends AsyncNotifier<InstallProgress> {
 
 final installerProvider =
     AsyncNotifierProvider<InstallerNotifier, InstallProgress>(
-  InstallerNotifier.new,
-);
+      InstallerNotifier.new,
+    );

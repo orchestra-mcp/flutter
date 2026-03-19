@@ -82,10 +82,7 @@ class GlassHeader extends StatelessWidget implements PreferredSizeWidget {
                 ),
 
                 // Trailing slot
-                if (trailing != null) ...[
-                  const SizedBox(width: 8),
-                  trailing!,
-                ],
+                if (trailing != null) ...[const SizedBox(width: 8), trailing!],
               ],
             ),
           ),

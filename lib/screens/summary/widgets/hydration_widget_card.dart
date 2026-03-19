@@ -64,7 +64,8 @@ class HydrationWidgetCard extends ConsumerWidget {
           SizedBox(
             height: 28,
             child: FilledButton(
-              onPressed: () => ref.read(hydrationProvider.notifier).addWater(250),
+              onPressed: () =>
+                  ref.read(hydrationProvider.notifier).addWater(250),
               style: FilledButton.styleFrom(
                 backgroundColor: statusColor.withValues(alpha: 0.15),
                 foregroundColor: statusColor,
@@ -74,7 +75,10 @@ class HydrationWidgetCard extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              child: Text(l10n.addWaterMl, style: const TextStyle(fontSize: 11)),
+              child: Text(
+                l10n.addWaterMl,
+                style: const TextStyle(fontSize: 11),
+              ),
             ),
           ),
         ],

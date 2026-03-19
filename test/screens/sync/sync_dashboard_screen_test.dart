@@ -72,26 +72,30 @@ void main() {
     ];
 
     test('count synced entities', () {
-      final synced =
-          entities.where((e) => e.status == EntitySyncStatus.synced).length;
+      final synced = entities
+          .where((e) => e.status == EntitySyncStatus.synced)
+          .length;
       expect(synced, 2);
     });
 
     test('count pending entities', () {
-      final pending =
-          entities.where((e) => e.status == EntitySyncStatus.pending).length;
+      final pending = entities
+          .where((e) => e.status == EntitySyncStatus.pending)
+          .length;
       expect(pending, 1);
     });
 
     test('count outdated entities', () {
-      final outdated =
-          entities.where((e) => e.status == EntitySyncStatus.outdated).length;
+      final outdated = entities
+          .where((e) => e.status == EntitySyncStatus.outdated)
+          .length;
       expect(outdated, 1);
     });
 
     test('count conflict entities', () {
-      final conflict =
-          entities.where((e) => e.status == EntitySyncStatus.conflict).length;
+      final conflict = entities
+          .where((e) => e.status == EntitySyncStatus.conflict)
+          .length;
       expect(conflict, 1);
     });
 
@@ -104,8 +108,9 @@ void main() {
 
     test('null filter returns all', () {
       const EntitySyncStatus? filter = null;
-      final filtered =
-          filter == null ? entities : entities.where((e) => e.status == filter).toList();
+      final filtered = filter == null
+          ? entities
+          : entities.where((e) => e.status == filter).toList();
       expect(filtered, hasLength(6));
     });
 
@@ -201,12 +206,36 @@ void main() {
   group('Stat card data', () {
     test('computes all counts from metadata list', () {
       final entities = [
-        const EntitySyncMetadata(entityType: 'note', entityId: 'n1', status: EntitySyncStatus.synced),
-        const EntitySyncMetadata(entityType: 'note', entityId: 'n2', status: EntitySyncStatus.synced),
-        const EntitySyncMetadata(entityType: 'note', entityId: 'n3', status: EntitySyncStatus.pending),
-        const EntitySyncMetadata(entityType: 'project', entityId: 'p1', status: EntitySyncStatus.outdated),
-        const EntitySyncMetadata(entityType: 'skill', entityId: 's1', status: EntitySyncStatus.conflict),
-        const EntitySyncMetadata(entityType: 'doc', entityId: 'd1', status: EntitySyncStatus.neverSynced),
+        const EntitySyncMetadata(
+          entityType: 'note',
+          entityId: 'n1',
+          status: EntitySyncStatus.synced,
+        ),
+        const EntitySyncMetadata(
+          entityType: 'note',
+          entityId: 'n2',
+          status: EntitySyncStatus.synced,
+        ),
+        const EntitySyncMetadata(
+          entityType: 'note',
+          entityId: 'n3',
+          status: EntitySyncStatus.pending,
+        ),
+        const EntitySyncMetadata(
+          entityType: 'project',
+          entityId: 'p1',
+          status: EntitySyncStatus.outdated,
+        ),
+        const EntitySyncMetadata(
+          entityType: 'skill',
+          entityId: 's1',
+          status: EntitySyncStatus.conflict,
+        ),
+        const EntitySyncMetadata(
+          entityType: 'doc',
+          entityId: 'd1',
+          status: EntitySyncStatus.neverSynced,
+        ),
       ];
 
       final counts = <EntitySyncStatus, int>{};
@@ -223,8 +252,9 @@ void main() {
 
     test('empty list produces zero counts', () {
       final entities = <EntitySyncMetadata>[];
-      final synced =
-          entities.where((e) => e.status == EntitySyncStatus.synced).length;
+      final synced = entities
+          .where((e) => e.status == EntitySyncStatus.synced)
+          .length;
       expect(synced, 0);
     });
   });
@@ -275,10 +305,7 @@ void main() {
     });
 
     test('default values for missing fields', () {
-      final json = <String, dynamic>{
-        'entity_type': 'skill',
-        'entity_id': 's1',
-      };
+      final json = <String, dynamic>{'entity_type': 'skill', 'entity_id': 's1'};
       final metadata = EntitySyncMetadata.fromJson(json);
       expect(metadata.status, EntitySyncStatus.neverSynced);
       expect(metadata.localVersion, 0);

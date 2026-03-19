@@ -6,11 +6,8 @@ import 'package:orchestra/core/sync/team_share_models.dart';
 // ── Service ──────────────────────────────────────────────────────────────────
 
 /// Provides the [TeamManagementService] backed by the shared [SyncApiClient].
-final teamManagementServiceProvider =
-    Provider<TeamManagementService>((ref) {
-  return TeamManagementService(
-    apiClient: ref.watch(syncApiClientProvider),
-  );
+final teamManagementServiceProvider = Provider<TeamManagementService>((ref) {
+  return TeamManagementService(apiClient: ref.watch(syncApiClientProvider));
 });
 
 // ── Teams list ───────────────────────────────────────────────────────────────
@@ -25,8 +22,10 @@ final teamsProvider = FutureProvider<List<Team>>((ref) async {
 // ── Team members ─────────────────────────────────────────────────────────────
 
 /// Fetches members for a specific team, keyed by team ID.
-final teamMembersProvider =
-    FutureProvider.family<List<TeamMember>, String>((ref, teamId) async {
+final teamMembersProvider = FutureProvider.family<List<TeamMember>, String>((
+  ref,
+  teamId,
+) async {
   final service = ref.watch(teamManagementServiceProvider);
   return service.getTeamMembers(teamId);
 });
@@ -34,8 +33,7 @@ final teamMembersProvider =
 // ── Team selector data ───────────────────────────────────────────────────────
 
 /// Pre-fetches all teams with their members for the selector dialog.
-final teamSelectorDataProvider =
-    FutureProvider<TeamSelectorData>((ref) async {
+final teamSelectorDataProvider = FutureProvider<TeamSelectorData>((ref) async {
   final service = ref.watch(teamManagementServiceProvider);
   return service.loadSelectorData();
 });
@@ -45,14 +43,16 @@ final teamSelectorDataProvider =
 /// Fetches the list of shares (who has access) for a specific entity.
 /// Key is `(entityType, entityId)`.
 final entitySharesListProvider =
-    FutureProvider.family<List<TeamShare>, (String, String)>(
-        (ref, params) async {
-  final service = ref.watch(teamManagementServiceProvider);
-  return service.getEntityShares(
-    entityType: params.$1,
-    entityId: params.$2,
-  );
-});
+    FutureProvider.family<List<TeamShare>, (String, String)>((
+      ref,
+      params,
+    ) async {
+      final service = ref.watch(teamManagementServiceProvider);
+      return service.getEntityShares(
+        entityType: params.$1,
+        entityId: params.$2,
+      );
+    });
 
 // ── Selected team state (for selector dialog) ────────────────────────────────
 
@@ -65,8 +65,9 @@ class SelectedTeamNotifier extends Notifier<String?> {
   void clear() => state = null;
 }
 
-final selectedTeamProvider =
-    NotifierProvider<SelectedTeamNotifier, String?>(SelectedTeamNotifier.new);
+final selectedTeamProvider = NotifierProvider<SelectedTeamNotifier, String?>(
+  SelectedTeamNotifier.new,
+);
 
 // ── Selected members state (for selector dialog) ─────────────────────────────
 
@@ -89,7 +90,8 @@ class SelectedMembersNotifier extends Notifier<Set<String>> {
 
 final selectedMembersProvider =
     NotifierProvider<SelectedMembersNotifier, Set<String>>(
-        SelectedMembersNotifier.new);
+      SelectedMembersNotifier.new,
+    );
 
 // ── Share mode state ─────────────────────────────────────────────────────────
 
@@ -102,8 +104,9 @@ class ShareModeNotifier extends Notifier<bool> {
   void toggle() => state = !state;
 }
 
-final shareWithAllProvider =
-    NotifierProvider<ShareModeNotifier, bool>(ShareModeNotifier.new);
+final shareWithAllProvider = NotifierProvider<ShareModeNotifier, bool>(
+  ShareModeNotifier.new,
+);
 
 // ── Permission selector state ────────────────────────────────────────────────
 
@@ -117,4 +120,5 @@ class PermissionNotifier extends Notifier<SharePermission> {
 
 final sharePermissionProvider =
     NotifierProvider<PermissionNotifier, SharePermission>(
-        PermissionNotifier.new);
+      PermissionNotifier.new,
+    );

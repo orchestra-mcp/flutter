@@ -15,13 +15,15 @@ class EntityCustomization {
   final Color? color;
   final int? iconCodePoint;
 
-  IconData? get icon =>
-      iconCodePoint != null ? IconData(iconCodePoint!, fontFamily: 'MaterialIcons') : null;
+  IconData? get icon => iconCodePoint != null
+      ? IconData(iconCodePoint!, fontFamily: 'MaterialIcons')
+      : null;
 
   Map<String, dynamic> toJson() => {
-        if (color != null) 'color': '#${color!.toARGB32().toRadixString(16).padLeft(8, '0')}',
-        if (iconCodePoint != null) 'icon': iconCodePoint,
-      };
+    if (color != null)
+      'color': '#${color!.toARGB32().toRadixString(16).padLeft(8, '0')}',
+    if (iconCodePoint != null) 'icon': iconCodePoint,
+  };
 
   factory EntityCustomization.fromJson(Map<String, dynamic> json) {
     Color? color;
@@ -46,7 +48,8 @@ class EntityCustomization {
 /// Riverpod notifier that manages per-entity customizations.
 ///
 /// State is a map of entity ID → [EntityCustomization].
-class EntityCustomizationNotifier extends Notifier<Map<String, EntityCustomization>> {
+class EntityCustomizationNotifier
+    extends Notifier<Map<String, EntityCustomization>> {
   static const _prefsKey = 'entity_customizations';
 
   @override
@@ -63,8 +66,9 @@ class EntityCustomizationNotifier extends Notifier<Map<String, EntityCustomizati
       final decoded = jsonDecode(raw) as Map<String, dynamic>;
       final map = <String, EntityCustomization>{};
       for (final entry in decoded.entries) {
-        map[entry.key] =
-            EntityCustomization.fromJson(entry.value as Map<String, dynamic>);
+        map[entry.key] = EntityCustomization.fromJson(
+          entry.value as Map<String, dynamic>,
+        );
       }
       state = map;
     } catch (_) {
@@ -94,13 +98,17 @@ class EntityCustomizationNotifier extends Notifier<Map<String, EntityCustomizati
   /// Set the icon for an entity.
   Future<void> setIcon(String entityId, int iconCodePoint) async {
     final existing = state[entityId] ?? const EntityCustomization();
-    state = {...state, entityId: existing.copyWith(iconCodePoint: iconCodePoint)};
+    state = {
+      ...state,
+      entityId: existing.copyWith(iconCodePoint: iconCodePoint),
+    };
     await _save();
   }
 }
 
 /// Global provider for entity customizations.
 final entityCustomizationProvider =
-    NotifierProvider<EntityCustomizationNotifier, Map<String, EntityCustomization>>(
-  EntityCustomizationNotifier.new,
-);
+    NotifierProvider<
+      EntityCustomizationNotifier,
+      Map<String, EntityCustomization>
+    >(EntityCustomizationNotifier.new);

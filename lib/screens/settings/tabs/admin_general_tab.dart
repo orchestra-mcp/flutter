@@ -65,7 +65,9 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -80,7 +82,9 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -99,8 +103,12 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
             // Description
             _fieldLabel(tokens, l10n.adminDescription),
             const SizedBox(height: 6),
-            _field(tokens, _descriptionCtrl,
-                hint: l10n.adminDescriptionHint, maxLines: 3),
+            _field(
+              tokens,
+              _descriptionCtrl,
+              hint: l10n.adminDescriptionHint,
+              maxLines: 3,
+            ),
             const SizedBox(height: 16),
 
             // Site URL
@@ -136,14 +144,20 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
             _fieldLabel(tokens, l10n.adminLogo),
             const SizedBox(height: 6),
             _uploadArea(
-                tokens, icon: Icons.image_rounded, label: l10n.adminUploadLogo),
+              tokens,
+              icon: Icons.image_rounded,
+              label: l10n.adminUploadLogo,
+            ),
             const SizedBox(height: 16),
 
             // Favicon Upload
             _fieldLabel(tokens, l10n.adminFavicon),
             const SizedBox(height: 6),
             _uploadArea(
-                tokens, icon: Icons.tab_rounded, label: l10n.adminUploadFavicon),
+              tokens,
+              icon: Icons.tab_rounded,
+              label: l10n.adminUploadFavicon,
+            ),
 
             const SizedBox(height: 28),
             SizedBox(
@@ -155,14 +169,17 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -192,10 +209,7 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
           children: [
             Icon(icon, size: 32, color: tokens.fgDim),
             const SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(fontSize: 13, color: tokens.fgDim),
-            ),
+            Text(label, style: TextStyle(fontSize: 13, color: tokens.fgDim)),
             const SizedBox(height: 4),
             Text(
               AppLocalizations.of(context).adminUploadHint,
@@ -208,23 +222,23 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -243,8 +257,10 @@ class _AdminGeneralTabState extends ConsumerState<AdminGeneralTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

@@ -12,22 +12,37 @@ class RestClient implements ApiClient {
 
   // ── Helpers ───────────────────────────────────────────────────────────
 
-  Future<Map<String, dynamic>> _post(String path, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> _post(
+    String path,
+    Map<String, dynamic> data,
+  ) async {
     final r = await dio.post<Map<String, dynamic>>(path, data: data);
     return r.data!;
   }
 
-  Future<Map<String, dynamic>> _get(String path, {Map<String, dynamic>? params}) async {
-    final r = await dio.get<Map<String, dynamic>>(path, queryParameters: params);
+  Future<Map<String, dynamic>> _get(
+    String path, {
+    Map<String, dynamic>? params,
+  }) async {
+    final r = await dio.get<Map<String, dynamic>>(
+      path,
+      queryParameters: params,
+    );
     return r.data!;
   }
 
-  Future<Map<String, dynamic>> _put(String path, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> _put(
+    String path,
+    Map<String, dynamic> data,
+  ) async {
     final r = await dio.put<Map<String, dynamic>>(path, data: data);
     return r.data!;
   }
 
-  Future<Map<String, dynamic>> _patch(String path, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> _patch(
+    String path,
+    Map<String, dynamic> data,
+  ) async {
     final r = await dio.patch<Map<String, dynamic>>(path, data: data);
     return r.data!;
   }
@@ -63,7 +78,6 @@ class RestClient implements ApiClient {
     return r.data ?? {};
   }
 
-
   // ── Auth ──────────────────────────────────────────────────────────────
 
   @override
@@ -89,8 +103,8 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> updateSettingsProfile(
-          Map<String, dynamic> body) =>
-      _patch(Endpoints.settingsProfile, body);
+    Map<String, dynamic> body,
+  ) => _patch(Endpoints.settingsProfile, body);
 
   @override
   Future<Map<String, dynamic>> uploadAvatar(String filePath) async {
@@ -121,8 +135,10 @@ class RestClient implements ApiClient {
       _post(Endpoints.projects, body);
 
   @override
-  Future<Map<String, dynamic>> updateProject(String id, Map<String, dynamic> body) =>
-      _put(Endpoints.project(id), body);
+  Future<Map<String, dynamic>> updateProject(
+    String id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.project(id), body);
 
   @override
   Future<void> deleteProject(String id) => _delete(Endpoints.project(id));
@@ -133,7 +149,8 @@ class RestClient implements ApiClient {
   Future<List<Map<String, dynamic>>> listFeatures({String? projectId}) async {
     if (projectId == null) return [];
     final r = await dio.get<List<dynamic>>(
-        Endpoints.projectFeatures(projectId));
+      Endpoints.projectFeatures(projectId),
+    );
     return _list(r.data);
   }
 
@@ -146,20 +163,24 @@ class RestClient implements ApiClient {
       _mcpTool('create_feature', body);
 
   @override
-  Future<Map<String, dynamic>> updateFeature(String id, Map<String, dynamic> body) =>
-      _patch(Endpoints.feature(id), body);
+  Future<Map<String, dynamic>> updateFeature(
+    String id,
+    Map<String, dynamic> body,
+  ) => _patch(Endpoints.feature(id), body);
 
   @override
-  Future<void> deleteFeature(String id) =>
-      _delete(Endpoints.feature(id));
+  Future<void> deleteFeature(String id) => _delete(Endpoints.feature(id));
 
   // ── Plans ────────────────────────────────────────────────────────────
 
   @override
-  Future<List<Map<String, dynamic>>> listPlans({required String projectSlug}) async {
+  Future<List<Map<String, dynamic>>> listPlans({
+    required String projectSlug,
+  }) async {
     try {
       final r = await dio.get<List<dynamic>>(
-          Endpoints.projectPlans(projectSlug));
+        Endpoints.projectPlans(projectSlug),
+      );
       return _list(r.data);
     } catch (e) {
       debugPrint('[RestClient] listPlans failed (offline-safe): $e');
@@ -176,12 +197,13 @@ class RestClient implements ApiClient {
       _mcpTool('create_plan', body);
 
   @override
-  Future<Map<String, dynamic>> updatePlan(String id, Map<String, dynamic> body) =>
-      _mcpTool('update_plan', {'id': id, ...body});
+  Future<Map<String, dynamic>> updatePlan(
+    String id,
+    Map<String, dynamic> body,
+  ) => _mcpTool('update_plan', {'id': id, ...body});
 
   @override
-  Future<void> deletePlan(String id) =>
-      _mcpTool('delete_plan', {'id': id});
+  Future<void> deletePlan(String id) => _mcpTool('delete_plan', {'id': id});
 
   // ── Requests ─────────────────────────────────────────────────────────
 
@@ -190,7 +212,8 @@ class RestClient implements ApiClient {
     if (projectSlug == null) return [];
     try {
       final r = await dio.get<List<dynamic>>(
-          Endpoints.projectRequests(projectSlug));
+        Endpoints.projectRequests(projectSlug),
+      );
       return _list(r.data);
     } catch (e) {
       debugPrint('[RestClient] listRequests failed (offline-safe): $e');
@@ -207,8 +230,10 @@ class RestClient implements ApiClient {
       _mcpTool('create_request', body);
 
   @override
-  Future<Map<String, dynamic>> updateRequest(String id, Map<String, dynamic> body) =>
-      _mcpTool('update_request', {'id': id, ...body});
+  Future<Map<String, dynamic>> updateRequest(
+    String id,
+    Map<String, dynamic> body,
+  ) => _mcpTool('update_request', {'id': id, ...body});
 
   @override
   Future<void> deleteRequest(String id) =>
@@ -239,12 +264,13 @@ class RestClient implements ApiClient {
       _mcpTool('create_person', body);
 
   @override
-  Future<Map<String, dynamic>> updatePerson(String id, Map<String, dynamic> body) =>
-      _mcpTool('update_person', {'id': id, ...body});
+  Future<Map<String, dynamic>> updatePerson(
+    String id,
+    Map<String, dynamic> body,
+  ) => _mcpTool('update_person', {'id': id, ...body});
 
   @override
-  Future<void> deletePerson(String id) =>
-      _mcpTool('delete_person', {'id': id});
+  Future<void> deletePerson(String id) => _mcpTool('delete_person', {'id': id});
 
   // ── Notes ─────────────────────────────────────────────────────────────
 
@@ -263,8 +289,10 @@ class RestClient implements ApiClient {
       _post(Endpoints.notes, body);
 
   @override
-  Future<Map<String, dynamic>> updateNote(String id, Map<String, dynamic> body) =>
-      _put(Endpoints.note(id), body);
+  Future<Map<String, dynamic>> updateNote(
+    String id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.note(id), body);
 
   @override
   Future<void> deleteNote(String id) => _delete(Endpoints.note(id));
@@ -276,16 +304,17 @@ class RestClient implements ApiClient {
       _list((await dio.get<List<dynamic>>(Endpoints.agents)).data);
 
   @override
-  Future<Map<String, dynamic>> getAgent(String id) =>
-      _get(Endpoints.agent(id));
+  Future<Map<String, dynamic>> getAgent(String id) => _get(Endpoints.agent(id));
 
   @override
   Future<Map<String, dynamic>> createAgent(Map<String, dynamic> body) =>
       _post(Endpoints.agents, body);
 
   @override
-  Future<Map<String, dynamic>> updateAgent(String id, Map<String, dynamic> body) =>
-      _put(Endpoints.agent(id), body);
+  Future<Map<String, dynamic>> updateAgent(
+    String id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.agent(id), body);
 
   @override
   Future<void> deleteAgent(String id) => _delete(Endpoints.agent(id));
@@ -295,16 +324,17 @@ class RestClient implements ApiClient {
       _list((await dio.get<List<dynamic>>(Endpoints.skills)).data);
 
   @override
-  Future<Map<String, dynamic>> getSkill(String id) =>
-      _get(Endpoints.skill(id));
+  Future<Map<String, dynamic>> getSkill(String id) => _get(Endpoints.skill(id));
 
   @override
   Future<Map<String, dynamic>> createSkill(Map<String, dynamic> body) =>
       _post(Endpoints.skills, body);
 
   @override
-  Future<Map<String, dynamic>> updateSkill(String id, Map<String, dynamic> body) =>
-      _put(Endpoints.skill(id), body);
+  Future<Map<String, dynamic>> updateSkill(
+    String id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.skill(id), body);
 
   @override
   Future<void> deleteSkill(String id) => _delete(Endpoints.skill(id));
@@ -327,8 +357,10 @@ class RestClient implements ApiClient {
       _post(Endpoints.workflows, body);
 
   @override
-  Future<Map<String, dynamic>> updateWorkflow(String id, Map<String, dynamic> body) =>
-      _put(Endpoints.workflow(id), body);
+  Future<Map<String, dynamic>> updateWorkflow(
+    String id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.workflow(id), body);
 
   @override
   Future<void> deleteWorkflow(String id) => _delete(Endpoints.workflow(id));
@@ -338,16 +370,17 @@ class RestClient implements ApiClient {
       _list((await dio.get<List<dynamic>>(Endpoints.docs)).data);
 
   @override
-  Future<Map<String, dynamic>> getDoc(String id) =>
-      _get(Endpoints.doc(id));
+  Future<Map<String, dynamic>> getDoc(String id) => _get(Endpoints.doc(id));
 
   @override
   Future<Map<String, dynamic>> createDoc(Map<String, dynamic> body) =>
       _post(Endpoints.docs, body);
 
   @override
-  Future<Map<String, dynamic>> updateDoc(String id, Map<String, dynamic> body) =>
-      _put(Endpoints.doc(id), body);
+  Future<Map<String, dynamic>> updateDoc(
+    String id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.doc(id), body);
 
   @override
   Future<void> deleteDoc(String id) => _delete(Endpoints.doc(id));
@@ -383,13 +416,13 @@ class RestClient implements ApiClient {
   }
 
   @override
-  Future<Map<String, dynamic>> getMyTeam() =>
-      _get(Endpoints.myTeam);
+  Future<Map<String, dynamic>> getMyTeam() => _get(Endpoints.myTeam);
 
   @override
   Future<List<Map<String, dynamic>>> listTeamMembers(String teamId) async {
     final r = await dio.get<dynamic>(
-        '${Endpoints.myTeamMembers}?team_id=$teamId');
+      '${Endpoints.myTeamMembers}?team_id=$teamId',
+    );
     final data = r.data;
     if (data is List) return _list(data);
     if (data is Map) {
@@ -408,28 +441,30 @@ class RestClient implements ApiClient {
       _patch(Endpoints.myTeam, body);
 
   @override
-  Future<void> deleteTeam(String teamId) =>
-      _delete(Endpoints.teamShow(teamId));
+  Future<void> deleteTeam(String teamId) => _delete(Endpoints.teamShow(teamId));
 
   @override
   Future<Map<String, dynamic>> inviteTeamMember(
-      String teamId, String email, {String role = 'member'}) =>
-      _post(Endpoints.teamInvite(teamId), {'email': email, 'role': role});
+    String teamId,
+    String email, {
+    String role = 'member',
+  }) => _post(Endpoints.teamInvite(teamId), {'email': email, 'role': role});
 
   @override
   Future<void> removeTeamMember(String memberId) =>
       _delete(Endpoints.teamMemberRemove(memberId));
 
   @override
-  Future<Map<String, dynamic>> updateMemberRole(
-      String memberId, String role) =>
+  Future<Map<String, dynamic>> updateMemberRole(String memberId, String role) =>
       _patch(Endpoints.teamMemberRole(memberId), {'role': role});
 
   // ── Settings ─────────────────────────────────────────────────────────
 
   @override
   Future<Map<String, dynamic>> getPreferences() async {
-    final r = await dio.get<Map<String, dynamic>>(Endpoints.settingsPreferences);
+    final r = await dio.get<Map<String, dynamic>>(
+      Endpoints.settingsPreferences,
+    );
     return r.data?['preferences'] as Map<String, dynamic>? ?? r.data ?? {};
   }
 
@@ -462,13 +497,13 @@ class RestClient implements ApiClient {
       _post(Endpoints.settingsApiKeys, body);
 
   @override
-  Future<void> revokeApiKey(String id) =>
-      _delete(Endpoints.settingsApiKey(id));
+  Future<void> revokeApiKey(String id) => _delete(Endpoints.settingsApiKey(id));
 
   @override
   Future<List<Map<String, dynamic>>> listConnectedAccounts() async {
-    final r =
-        await dio.get<Map<String, dynamic>>(Endpoints.settingsConnectedAccounts);
+    final r = await dio.get<Map<String, dynamic>>(
+      Endpoints.settingsConnectedAccounts,
+    );
     final items = r.data?['accounts'];
     if (items is List) return _list(items);
     return [];
@@ -497,25 +532,23 @@ class RestClient implements ApiClient {
     String? type,
     int? limit,
     int? offset,
-  }) =>
-      {
-        if (search != null) 'search': search,
-        if (status != null) 'status': status,
-        if (role != null) 'role': role,
-        if (priority != null) 'priority': priority,
-        if (tier != null) 'tier': tier,
-        if (category != null) 'category': category,
-        if (repo != null) 'repo': repo,
-        if (state != null) 'state': state,
-        if (type != null) 'type': type,
-        if (limit != null) 'limit': limit,
-        if (offset != null) 'offset': offset,
-      };
+  }) => {
+    if (search != null) 'search': search,
+    if (status != null) 'status': status,
+    if (role != null) 'role': role,
+    if (priority != null) 'priority': priority,
+    if (tier != null) 'tier': tier,
+    if (category != null) 'category': category,
+    if (repo != null) 'repo': repo,
+    if (state != null) 'state': state,
+    if (type != null) 'type': type,
+    if (limit != null) 'limit': limit,
+    if (offset != null) 'offset': offset,
+  };
 
   // Dashboard
   @override
-  Future<Map<String, dynamic>> getAdminStats() =>
-      _get(Endpoints.adminStats);
+  Future<Map<String, dynamic>> getAdminStats() => _get(Endpoints.adminStats);
 
   // Users
   @override
@@ -525,14 +558,16 @@ class RestClient implements ApiClient {
     String? status,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminUsers,
-          params: _adminParams(
-              search: search,
-              role: role,
-              status: status,
-              limit: limit,
-              offset: offset));
+  }) => _get(
+    Endpoints.adminUsers,
+    params: _adminParams(
+      search: search,
+      role: role,
+      status: status,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
   Future<Map<String, dynamic>> getAdminUser(int id) =>
@@ -540,21 +575,24 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> updateAdminUser(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminUser(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminUser(id), body);
 
   @override
   Future<void> deleteAdminUser(int id) => _delete(Endpoints.adminUser(id));
 
   @override
   Future<Map<String, dynamic>> updateAdminUserRole(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminUserRole(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminUserRole(id), body);
 
   @override
   Future<Map<String, dynamic>> updateAdminUserStatus(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminUserStatus(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminUserStatus(id), body);
 
   @override
   Future<Map<String, dynamic>> listAdminUserProjects(int id) =>
@@ -586,13 +624,15 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> changeAdminUserPassword(
-          int id, Map<String, dynamic> body) =>
-      _post(Endpoints.adminUserPassword(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _post(Endpoints.adminUserPassword(id), body);
 
   @override
   Future<Map<String, dynamic>> sendAdminUserNotification(
-          int id, Map<String, dynamic> body) =>
-      _post(Endpoints.adminUserNotify(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _post(Endpoints.adminUserNotify(id), body);
 
   @override
   Future<Map<String, dynamic>> impersonateAdminUser(int id) =>
@@ -620,9 +660,10 @@ class RestClient implements ApiClient {
     String? search,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminTeams,
-          params: _adminParams(search: search, limit: limit, offset: offset));
+  }) => _get(
+    Endpoints.adminTeams,
+    params: _adminParams(search: search, limit: limit, offset: offset),
+  );
 
   @override
   Future<Map<String, dynamic>> getAdminTeam(int id) =>
@@ -634,8 +675,9 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> updateAdminTeam(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminTeam(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminTeam(id), body);
 
   @override
   Future<void> deleteAdminTeam(int id) => _delete(Endpoints.adminTeam(id));
@@ -646,8 +688,9 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> addAdminTeamMember(
-          int teamId, Map<String, dynamic> body) =>
-      _post(Endpoints.adminTeamMembers(teamId), body);
+    int teamId,
+    Map<String, dynamic> body,
+  ) => _post(Endpoints.adminTeamMembers(teamId), body);
 
   @override
   Future<void> removeAdminTeamMember(int teamId, int userId) =>
@@ -660,17 +703,18 @@ class RestClient implements ApiClient {
     String? category,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminSettings,
-          params: _adminParams(
-              search: search,
-              category: category,
-              limit: limit,
-              offset: offset));
+  }) => _get(
+    Endpoints.adminSettings,
+    params: _adminParams(
+      search: search,
+      category: category,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
-  Future<Map<String, dynamic>> upsertAdminSetting(
-          Map<String, dynamic> body) =>
+  Future<Map<String, dynamic>> upsertAdminSetting(Map<String, dynamic> body) =>
       _put(Endpoints.adminSettings, body);
 
   @override
@@ -679,13 +723,15 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> patchAdminSetting(
-          String key, Map<String, dynamic> body) =>
-      _patch(Endpoints.adminSetting(key), body);
+    String key,
+    Map<String, dynamic> body,
+  ) => _patch(Endpoints.adminSetting(key), body);
 
   @override
   Future<Map<String, dynamic>> updateAdminSetting(
-          String key, Map<String, dynamic> value) =>
-      patchAdminSetting(key, value);
+    String key,
+    Map<String, dynamic> value,
+  ) => patchAdminSetting(key, value);
 
   @override
   Future<void> deleteAdminSetting(String key) =>
@@ -702,10 +748,15 @@ class RestClient implements ApiClient {
     String? status,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminPages,
-          params: _adminParams(
-              search: search, status: status, limit: limit, offset: offset));
+  }) => _get(
+    Endpoints.adminPages,
+    params: _adminParams(
+      search: search,
+      status: status,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
   Future<Map<String, dynamic>> getAdminPage(int id) =>
@@ -717,8 +768,9 @@ class RestClient implements ApiClient {
 
   @override
   Future<Map<String, dynamic>> updateAdminPage(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminPage(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminPage(id), body);
 
   @override
   Future<void> deleteAdminPage(int id) => _delete(Endpoints.adminPage(id));
@@ -729,19 +781,20 @@ class RestClient implements ApiClient {
     String? search,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminCategories,
-          params: _adminParams(search: search, limit: limit, offset: offset));
+  }) => _get(
+    Endpoints.adminCategories,
+    params: _adminParams(search: search, limit: limit, offset: offset),
+  );
 
   @override
-  Future<Map<String, dynamic>> createAdminCategory(
-          Map<String, dynamic> body) =>
+  Future<Map<String, dynamic>> createAdminCategory(Map<String, dynamic> body) =>
       _post(Endpoints.adminCategories, body);
 
   @override
   Future<Map<String, dynamic>> updateAdminCategory(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminCategory(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminCategory(id), body);
 
   @override
   Future<void> deleteAdminCategory(int id) =>
@@ -754,15 +807,21 @@ class RestClient implements ApiClient {
     String? status,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminContact,
-          params: _adminParams(
-              search: search, status: status, limit: limit, offset: offset));
+  }) => _get(
+    Endpoints.adminContact,
+    params: _adminParams(
+      search: search,
+      status: status,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
   Future<Map<String, dynamic>> updateAdminContactStatus(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminContactStatus(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminContactStatus(id), body);
 
   @override
   Future<void> deleteAdminContactMessage(int id) =>
@@ -776,33 +835,37 @@ class RestClient implements ApiClient {
     String? priority,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminIssues,
-          params: _adminParams(
-              search: search,
-              status: status,
-              priority: priority,
-              limit: limit,
-              offset: offset));
+  }) => _get(
+    Endpoints.adminIssues,
+    params: _adminParams(
+      search: search,
+      status: status,
+      priority: priority,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
   Future<Map<String, dynamic>> updateAdminIssueStatus(
-          int id, Map<String, dynamic> body) =>
-      _patch(Endpoints.adminIssue(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _patch(Endpoints.adminIssue(id), body);
 
   // Notifications
   @override
   Future<Map<String, dynamic>> listAdminNotifications({
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminNotifications,
-          params: _adminParams(limit: limit, offset: offset));
+  }) => _get(
+    Endpoints.adminNotifications,
+    params: _adminParams(limit: limit, offset: offset),
+  );
 
   @override
   Future<Map<String, dynamic>> createAdminNotification(
-          Map<String, dynamic> body) =>
-      _post(Endpoints.adminNotifications, body);
+    Map<String, dynamic> body,
+  ) => _post(Endpoints.adminNotifications, body);
 
   // Sponsors
   @override
@@ -812,24 +875,26 @@ class RestClient implements ApiClient {
     String? status,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminSponsors,
-          params: _adminParams(
-              search: search,
-              tier: tier,
-              status: status,
-              limit: limit,
-              offset: offset));
+  }) => _get(
+    Endpoints.adminSponsors,
+    params: _adminParams(
+      search: search,
+      tier: tier,
+      status: status,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
-  Future<Map<String, dynamic>> createAdminSponsor(
-          Map<String, dynamic> body) =>
+  Future<Map<String, dynamic>> createAdminSponsor(Map<String, dynamic> body) =>
       _post(Endpoints.adminSponsors, body);
 
   @override
   Future<Map<String, dynamic>> updateAdminSponsor(
-          int id, Map<String, dynamic> body) =>
-      _put(Endpoints.adminSponsor(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _put(Endpoints.adminSponsor(id), body);
 
   @override
   Future<void> deleteAdminSponsor(int id) =>
@@ -842,15 +907,21 @@ class RestClient implements ApiClient {
     String? status,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminCommunityPosts,
-          params: _adminParams(
-              search: search, status: status, limit: limit, offset: offset));
+  }) => _get(
+    Endpoints.adminCommunityPosts,
+    params: _adminParams(
+      search: search,
+      status: status,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
   Future<Map<String, dynamic>> updateAdminCommunityPost(
-          int id, Map<String, dynamic> body) =>
-      _patch(Endpoints.adminCommunityPost(id), body);
+    int id,
+    Map<String, dynamic> body,
+  ) => _patch(Endpoints.adminCommunityPost(id), body);
 
   @override
   Future<void> deleteAdminCommunityPost(int id) =>
@@ -864,14 +935,16 @@ class RestClient implements ApiClient {
     String? type,
     int? limit,
     int? offset,
-  }) =>
-      _get(Endpoints.adminGitHubIssues,
-          params: _adminParams(
-              repo: repo,
-              state: state,
-              type: type,
-              limit: limit,
-              offset: offset));
+  }) => _get(
+    Endpoints.adminGitHubIssues,
+    params: _adminParams(
+      repo: repo,
+      state: state,
+      type: type,
+      limit: limit,
+      offset: offset,
+    ),
+  );
 
   @override
   Future<Map<String, dynamic>> syncAdminGitHub({String? repo}) =>
@@ -892,8 +965,7 @@ class RestClient implements ApiClient {
       _get(Endpoints.healthProfile);
 
   @override
-  Future<Map<String, dynamic>> updateHealthProfile(
-          Map<String, dynamic> body) =>
+  Future<Map<String, dynamic>> updateHealthProfile(Map<String, dynamic> body) =>
       _put(Endpoints.healthProfile, body);
 
   @override
@@ -902,8 +974,10 @@ class RestClient implements ApiClient {
 
   @override
   Future<List<Map<String, dynamic>>> listWaterLogs({String? date}) async {
-    final r = await dio.get<dynamic>(Endpoints.healthWater,
-        queryParameters: {if (date != null) 'date': date});
+    final r = await dio.get<dynamic>(
+      Endpoints.healthWater,
+      queryParameters: {if (date != null) 'date': date},
+    );
     return _extractList(r.data);
   }
 
@@ -917,8 +991,10 @@ class RestClient implements ApiClient {
 
   @override
   Future<List<Map<String, dynamic>>> listMealLogs({String? date}) async {
-    final r = await dio.get<dynamic>(Endpoints.healthMeals,
-        queryParameters: {if (date != null) 'date': date});
+    final r = await dio.get<dynamic>(
+      Endpoints.healthMeals,
+      queryParameters: {if (date != null) 'date': date},
+    );
     return _extractList(r.data);
   }
 
@@ -928,8 +1004,10 @@ class RestClient implements ApiClient {
 
   @override
   Future<List<Map<String, dynamic>>> listCaffeineLogs({String? date}) async {
-    final r = await dio.get<dynamic>(Endpoints.healthCaffeine,
-        queryParameters: {if (date != null) 'date': date});
+    final r = await dio.get<dynamic>(
+      Endpoints.healthCaffeine,
+      queryParameters: {if (date != null) 'date': date},
+    );
     return _extractList(r.data);
   }
 
@@ -946,9 +1024,13 @@ class RestClient implements ApiClient {
       _post(Endpoints.healthPomodoroEnd(id), {});
 
   @override
-  Future<List<Map<String, dynamic>>> listPomodoroSessions({String? date}) async {
-    final r = await dio.get<dynamic>(Endpoints.healthPomodoro,
-        queryParameters: {if (date != null) 'date': date});
+  Future<List<Map<String, dynamic>>> listPomodoroSessions({
+    String? date,
+  }) async {
+    final r = await dio.get<dynamic>(
+      Endpoints.healthPomodoro,
+      queryParameters: {if (date != null) 'date': date},
+    );
     return _extractList(r.data);
   }
 
@@ -965,13 +1047,17 @@ class RestClient implements ApiClient {
       _post(Endpoints.healthSnapshots, body);
 
   @override
-  Future<List<Map<String, dynamic>>> listSnapshots(
-          {String? from, String? to}) async {
-    final r = await dio.get<dynamic>(Endpoints.healthSnapshots,
-        queryParameters: {
-          if (from != null) 'from': from,
-          if (to != null) 'to': to,
-        });
+  Future<List<Map<String, dynamic>>> listSnapshots({
+    String? from,
+    String? to,
+  }) async {
+    final r = await dio.get<dynamic>(
+      Endpoints.healthSnapshots,
+      queryParameters: {
+        if (from != null) 'from': from,
+        if (to != null) 'to': to,
+      },
+    );
     return _extractList(r.data);
   }
 
@@ -982,11 +1068,10 @@ class RestClient implements ApiClient {
   // ── Search ────────────────────────────────────────────────────────────
 
   @override
-  Future<Map<String, dynamic>> search(String query, {String? scope}) =>
-      _get(Endpoints.search, params: {
-        'q': query,
-        if (scope != null) 'scope': scope,
-      });
+  Future<Map<String, dynamic>> search(String query, {String? scope}) => _get(
+    Endpoints.search,
+    params: {'q': query, if (scope != null) 'scope': scope},
+  );
 
   // ── Sync ──────────────────────────────────────────────────────────────
 

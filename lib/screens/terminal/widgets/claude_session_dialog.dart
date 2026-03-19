@@ -88,10 +88,7 @@ class _ClaudeSessionDialogState extends State<ClaudeSessionDialog> {
                       value: model,
                       child: Text(
                         model,
-                        style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: tokens.fgBright, fontSize: 14),
                       ),
                     ),
                   )
@@ -113,13 +110,12 @@ class _ClaudeSessionDialogState extends State<ClaudeSessionDialog> {
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: tokens.accent, width: 1.5),
                 ),
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
               ),
-              icon: Icon(
-                Icons.expand_more_rounded,
-                color: tokens.fgDim,
-              ),
+              icon: Icon(Icons.expand_more_rounded, color: tokens.fgDim),
             ),
           ],
         ),
@@ -132,10 +128,7 @@ class _ClaudeSessionDialogState extends State<ClaudeSessionDialog> {
         FilledButton(
           onPressed: _submit,
           style: FilledButton.styleFrom(backgroundColor: tokens.accent),
-          child: Text(
-            l10n.create,
-            style: TextStyle(color: tokens.fgBright),
-          ),
+          child: Text(l10n.create, style: TextStyle(color: tokens.fgBright)),
         ),
       ],
     );

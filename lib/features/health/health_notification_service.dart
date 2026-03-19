@@ -80,8 +80,9 @@ class HealthNotificationService {
 
     tz_data.initializeTimeZones();
 
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
 
     const darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -116,8 +117,10 @@ class HealthNotificationService {
   }
 
   Future<void> _createAndroidChannels() async {
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android == null) return;
 
     final channels = <AndroidNotificationChannel>[
@@ -202,8 +205,7 @@ class HealthNotificationService {
     TimeOfDay? endTime,
   }) async {
     await cancelHydrationReminders();
-    debugPrint(
-        '[HealthNotif] scheduling hydration every ${intervalMinutes}m');
+    debugPrint('[HealthNotif] scheduling hydration every ${intervalMinutes}m');
 
     await _plugin.periodicallyShowWithDuration(
       id: _NotificationIds.hydration,
@@ -239,7 +241,8 @@ class HealthNotificationService {
     final scheduledDate = _fromNow(afterMinutes);
     final title = isLongBreak ? 'Long break time' : 'Short break time';
     debugPrint(
-        '[HealthNotif] pomodoro break in ${afterMinutes}m (long=$isLongBreak)');
+      '[HealthNotif] pomodoro break in ${afterMinutes}m (long=$isLongBreak)',
+    );
 
     await _plugin.zonedSchedule(
       id: _NotificationIds.pomodoroBreak,
@@ -259,9 +262,7 @@ class HealthNotificationService {
   /// Schedules a notification for when the pomodoro work session should start.
   ///
   /// Fires [afterMinutes] minutes from now.
-  Future<void> schedulePomodoroWorkStart({
-    required int afterMinutes,
-  }) async {
+  Future<void> schedulePomodoroWorkStart({required int afterMinutes}) async {
     final scheduledDate = _fromNow(afterMinutes);
     debugPrint('[HealthNotif] pomodoro work start in ${afterMinutes}m');
 
@@ -307,8 +308,9 @@ class HealthNotificationService {
     final leadDate = _nextInstanceOfTime(adjustedLead.$1, adjustedLead.$2);
 
     debugPrint(
-        '[HealthNotif] shutdown lead at ${adjustedLead.$1}:${adjustedLead.$2}, '
-        'main at ${shutdownTime.hour}:${shutdownTime.minute}');
+      '[HealthNotif] shutdown lead at ${adjustedLead.$1}:${adjustedLead.$2}, '
+      'main at ${shutdownTime.hour}:${shutdownTime.minute}',
+    );
 
     await _plugin.zonedSchedule(
       id: _NotificationIds.shutdownLead,
@@ -324,8 +326,10 @@ class HealthNotificationService {
       payload: '/health/shutdown',
     );
 
-    final mainDate =
-        _nextInstanceOfTime(shutdownTime.hour, shutdownTime.minute);
+    final mainDate = _nextInstanceOfTime(
+      shutdownTime.hour,
+      shutdownTime.minute,
+    );
 
     await _plugin.zonedSchedule(
       id: _NotificationIds.shutdownMain,
@@ -393,10 +397,7 @@ class HealthNotificationService {
       id: _NotificationIds.meal,
       title: 'Log your meal',
       body: 'Record what you ate to keep your nutrition on track.',
-      notificationDetails: _notificationDetails(
-        _Channels.meal,
-        'Meal Logging',
-      ),
+      notificationDetails: _notificationDetails(_Channels.meal, 'Meal Logging'),
       payload: '/health/meal',
     );
   }
@@ -475,14 +476,15 @@ class HealthNotificationService {
     required bool isHigh,
     required int bpm,
   }) async {
-    final id =
-        isHigh ? _NotificationIds.heartHigh : _NotificationIds.heartLow;
-    final title =
-        isHigh ? 'High heart rate detected' : 'Low heart rate detected';
+    final id = isHigh ? _NotificationIds.heartHigh : _NotificationIds.heartLow;
+    final title = isHigh
+        ? 'High heart rate detected'
+        : 'Low heart rate detected';
     final body =
         'Your heart rate is $bpm bpm. Consider resting and monitoring.';
     debugPrint(
-        '[HealthNotif] heart rate alert: ${isHigh ? "high" : "low"} $bpm bpm');
+      '[HealthNotif] heart rate alert: ${isHigh ? "high" : "low"} $bpm bpm',
+    );
 
     await _plugin.show(
       id: id,
@@ -550,7 +552,8 @@ class HealthNotificationService {
     );
     final date = _nextInstanceOfTime(adjusted.$1, adjusted.$2);
     debugPrint(
-        '[HealthNotif] GERD warning at ${adjusted.$1}:${adjusted.$2} daily');
+      '[HealthNotif] GERD warning at ${adjusted.$1}:${adjusted.$2} daily',
+    );
 
     await _plugin.zonedSchedule(
       id: _NotificationIds.gerd,

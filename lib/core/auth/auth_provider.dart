@@ -32,13 +32,17 @@ class AuthUnauthenticated extends AuthState {
 
 // ── Repository provider ───────────────────────────────────────────────────────
 
-final tokenStorageProvider = Provider<TokenStorage>((ref) => const TokenStorage());
+final tokenStorageProvider = Provider<TokenStorage>(
+  (ref) => const TokenStorage(),
+);
 
 /// Auth always goes through REST (web gate API), never MCP.
-final authRepositoryProvider = Provider<AuthRepository>((ref) => AuthRepository(
-      client: RestClient(dio: ref.watch(dioProvider)),
-      tokenStorage: ref.watch(tokenStorageProvider),
-    ));
+final authRepositoryProvider = Provider<AuthRepository>(
+  (ref) => AuthRepository(
+    client: RestClient(dio: ref.watch(dioProvider)),
+    tokenStorage: ref.watch(tokenStorageProvider),
+  ),
+);
 
 // ── Auth notifier ─────────────────────────────────────────────────────────────
 
@@ -99,7 +103,8 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
         final status = error.response?.statusCode;
         if (status == 401) return 'Invalid email or password';
         if (status == 422) return 'Please check your input';
-        if (status != null && status >= 500) return 'Server error. Try again later.';
+        if (status != null && status >= 500)
+          return 'Server error. Try again later.';
         if (error.type == DioExceptionType.connectionError) {
           return 'Cannot reach server. Check your connection.';
         }
@@ -139,5 +144,6 @@ class AuthNotifier extends AsyncNotifier<AuthState> {
   bool get isAuthenticated => state.value is AuthAuthenticated;
 }
 
-final authProvider =
-    AsyncNotifierProvider<AuthNotifier, AuthState>(AuthNotifier.new);
+final authProvider = AsyncNotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);

@@ -28,8 +28,11 @@ void main() {
     test('trigger foods have at least one condition', () {
       final triggers = FoodRegistry.allFoods.where((f) => !f.isSafe);
       for (final f in triggers) {
-        expect(f.triggerConditions, isNotEmpty,
-            reason: '${f.name} should have triggers');
+        expect(
+          f.triggerConditions,
+          isNotEmpty,
+          reason: '${f.name} should have triggers',
+        );
       }
     });
   });

@@ -71,8 +71,7 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
       appBar: inSelectionMode
           ? SelectionAppBar(
               selectedCount: selectedIds.length,
-              onClear: () =>
-                  ref.read(agentsSelectionProvider.notifier).clear(),
+              onClear: () => ref.read(agentsSelectionProvider.notifier).clear(),
               onDelete: () {
                 showComingSoon(context, 'Delete Agents');
                 ref.read(agentsSelectionProvider.notifier).clear();
@@ -98,11 +97,13 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: Icon(Icons.add_rounded,
-                          color: tokens.accent, size: 22),
+                      icon: Icon(
+                        Icons.add_rounded,
+                        color: tokens.accent,
+                        size: 22,
+                      ),
                       style: IconButton.styleFrom(
-                        backgroundColor:
-                            tokens.accent.withValues(alpha: 0.12),
+                        backgroundColor: tokens.accent.withValues(alpha: 0.12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -115,7 +116,10 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                             context.push('/library/agents/new'),
                         onSmartCreate: (title, content) async {
                           final api = ref.read(apiClientProvider);
-                          await api.createAgent({'name': title, 'content': content});
+                          await api.createAgent({
+                            'name': title,
+                            'content': content,
+                          });
                           ref.invalidate(agentsProvider);
                         },
                       ),
@@ -127,11 +131,14 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
             Expanded(
               child: asyncAgents.when(
                 loading: () => Center(
-                    child:
-                        CircularProgressIndicator(color: tokens.accent)),
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
                 error: (e, _) => Center(
-                    child: Text(l10n.failedToLoadAgents,
-                        style: TextStyle(color: tokens.fgMuted))),
+                  child: Text(
+                    l10n.failedToLoadAgents,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
+                ),
                 data: (agents) {
                   if (agents.isEmpty) {
                     return MobileEmptyState(
@@ -144,14 +151,16 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                   final filtered = q.isEmpty
                       ? agents
                       : agents
-                          .where((a) =>
-                              ((a['name'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((a['description'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q))
-                          .toList();
+                            .where(
+                              (a) =>
+                                  ((a['name'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((a['description'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q),
+                            )
+                            .toList();
                   if (filtered.isEmpty) {
                     return Center(
                       child: Text(
@@ -163,34 +172,30 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                   // Sort pinned first
                   final sorted = List<Map<String, dynamic>>.from(filtered)
                     ..sort((a, b) {
-                      final bool aPin =
-                          pinnedIds.contains(a['name'] ?? '');
-                      final bool bPin =
-                          pinnedIds.contains(b['name'] ?? '');
+                      final bool aPin = pinnedIds.contains(a['name'] ?? '');
+                      final bool bPin = pinnedIds.contains(b['name'] ?? '');
                       if (aPin && !bPin) return -1;
                       if (!aPin && bPin) return 1;
                       return 0;
                     });
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: sorted.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 8),
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final agent = sorted[index];
-                      final name =
-                          (agent['name'] as String?) ?? 'Unknown';
+                      final name = (agent['name'] as String?) ?? 'Unknown';
                       final description =
                           (agent['description'] as String?) ?? '';
                       final id = name;
                       final bool isPinned = pinnedIds.contains(id);
                       final cust = ref.watch(entityCustomizationProvider)[id];
-                      final color =
-                          cust?.color ?? _colorFromName(name);
+                      final color = cust?.color ?? _colorFromName(name);
                       return GlassListTile(
-                        leadingIcon:
-                            cust?.icon ?? Icons.smart_toy_rounded,
+                        leadingIcon: cust?.icon ?? Icons.smart_toy_rounded,
                         leadingColor: color,
                         label: name,
                         description: description,
@@ -198,23 +203,21 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                         isSelected: selectedIds.contains(id),
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(agentsSelectionProvider.notifier)
-                                .toggle(id)
+                                  .read(agentsSelectionProvider.notifier)
+                                  .toggle(id)
                             : () => context.push(Routes.agent(id)),
                         onSelect: () => ref
                             .read(agentsSelectionProvider.notifier)
                             .toggle(id),
-                        onPin: () => ref
-                            .read(agentsPinProvider.notifier)
-                            .toggle(id),
+                        onPin: () =>
+                            ref.read(agentsPinProvider.notifier).toggle(id),
                         contextMenuActions: buildEntityContextActions(
                           l10n: AppLocalizations.of(context),
                           onSelect: () => ref
                               .read(agentsSelectionProvider.notifier)
                               .toggle(id),
-                          onPin: () => ref
-                              .read(agentsPinProvider.notifier)
-                              .toggle(id),
+                          onPin: () =>
+                              ref.read(agentsPinProvider.notifier).toggle(id),
                           isPinned: isPinned,
                           onSync: () => openSyncDialog(
                             context,
@@ -228,26 +231,36 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                                 .read(publishServiceProvider)
                                 .publishAgent(id);
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(ok
-                                    ? AppLocalizations.of(context).agentPublished
-                                    : AppLocalizations.of(context).publishFailed),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    ok
+                                        ? AppLocalizations.of(
+                                            context,
+                                          ).agentPublished
+                                        : AppLocalizations.of(
+                                            context,
+                                          ).publishFailed,
+                                  ),
+                                ),
+                              );
                             }
                           },
                           onExportMarkdown: () {
-                            exportAsMarkdown(
-                              title: name,
-                              content: description,
-                            );
+                            exportAsMarkdown(title: name, content: description);
                           },
                           onChangeIcon: () => pickAndSaveIcon(
-                              context, ref, id,
-                              currentCodePoint: cust?.iconCodePoint),
+                            context,
+                            ref,
+                            id,
+                            currentCodePoint: cust?.iconCodePoint,
+                          ),
                           onChangeColor: () => pickAndSaveColor(
-                              context, ref, id,
-                              currentColor: cust?.color),
+                            context,
+                            ref,
+                            id,
+                            currentColor: cust?.color,
+                          ),
                         ),
                       );
                     },

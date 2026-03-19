@@ -8,8 +8,7 @@ abstract final class RtlUtils {
     BuildContext context, {
     required IconData ltr,
     required IconData rtl,
-  }) =>
-      isRtl(context) ? rtl : ltr;
+  }) => isRtl(context) ? rtl : ltr;
 
   static TextAlign textAlign(BuildContext context) =>
       isRtl(context) ? TextAlign.right : TextAlign.left;
@@ -21,8 +20,7 @@ abstract final class RtlUtils {
     required BuildContext context,
     required double start,
     required double end,
-  }) =>
-      isRtl(context)
-          ? EdgeInsets.only(left: end, right: start)
-          : EdgeInsets.only(left: start, right: end);
+  }) => isRtl(context)
+      ? EdgeInsets.only(left: end, right: start)
+      : EdgeInsets.only(left: start, right: end);
 }

@@ -8,11 +8,11 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 final _sponsorsProvider =
     FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
-  final api = ref.watch(apiClientProvider);
-  final result = await api.listAdminSponsors();
-  final raw = result['sponsors'] as List<dynamic>? ?? <dynamic>[];
-  return raw.cast<Map<String, dynamic>>();
-});
+      final api = ref.watch(apiClientProvider);
+      final result = await api.listAdminSponsors();
+      final raw = result['sponsors'] as List<dynamic>? ?? <dynamic>[];
+      return raw.cast<Map<String, dynamic>>();
+    });
 
 // ── Search state ────────────────────────────────────────────────────────────
 
@@ -23,8 +23,9 @@ class _SponsorSearchNotifier extends Notifier<String> {
   void update(String query) => state = query;
 }
 
-final _searchProvider =
-    NotifierProvider<_SponsorSearchNotifier, String>(_SponsorSearchNotifier.new);
+final _searchProvider = NotifierProvider<_SponsorSearchNotifier, String>(
+  _SponsorSearchNotifier.new,
+);
 
 // ── Shared input decoration ──────────────────────────────────────────────────
 
@@ -77,18 +78,33 @@ void _showCreateSponsorDialog(BuildContext context, WidgetRef ref) {
               TextField(
                 controller: nameCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).name),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).name,
+                ),
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: tier,
                 dropdownColor: tokens.bgAlt,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).tierLabel),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).tierLabel,
+                ),
                 items: [
-                  DropdownMenuItem(value: 'gold', child: Text(AppLocalizations.of(ctx).gold)),
-                  DropdownMenuItem(value: 'silver', child: Text(AppLocalizations.of(ctx).silver)),
-                  DropdownMenuItem(value: 'bronze', child: Text(AppLocalizations.of(ctx).bronze)),
+                  DropdownMenuItem(
+                    value: 'gold',
+                    child: Text(AppLocalizations.of(ctx).gold),
+                  ),
+                  DropdownMenuItem(
+                    value: 'silver',
+                    child: Text(AppLocalizations.of(ctx).silver),
+                  ),
+                  DropdownMenuItem(
+                    value: 'bronze',
+                    child: Text(AppLocalizations.of(ctx).bronze),
+                  ),
                 ],
                 onChanged: (v) {
                   if (v != null) setState(() => tier = v);
@@ -98,13 +114,19 @@ void _showCreateSponsorDialog(BuildContext context, WidgetRef ref) {
               TextField(
                 controller: websiteCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).websiteUrl),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).websiteUrl,
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: logoCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).logoUrl),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).logoUrl,
+                ),
               ),
             ],
           ),
@@ -112,7 +134,10 @@ void _showCreateSponsorDialog(BuildContext context, WidgetRef ref) {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+            child: Text(
+              AppLocalizations.of(ctx).cancel,
+              style: TextStyle(color: tokens.fgDim),
+            ),
           ),
           FilledButton(
             onPressed: () async {
@@ -143,12 +168,15 @@ void _showEditSponsorDialog(
   WidgetRef ref,
   Map<String, dynamic> sponsor,
 ) {
-  final nameCtrl =
-      TextEditingController(text: sponsor['name'] as String? ?? '');
-  final websiteCtrl =
-      TextEditingController(text: sponsor['website_url'] as String? ?? '');
-  final logoCtrl =
-      TextEditingController(text: sponsor['logo_url'] as String? ?? '');
+  final nameCtrl = TextEditingController(
+    text: sponsor['name'] as String? ?? '',
+  );
+  final websiteCtrl = TextEditingController(
+    text: sponsor['website_url'] as String? ?? '',
+  );
+  final logoCtrl = TextEditingController(
+    text: sponsor['logo_url'] as String? ?? '',
+  );
   final tokens = ThemeTokens.of(context);
   String tier = sponsor['tier'] as String? ?? 'gold';
 
@@ -171,18 +199,33 @@ void _showEditSponsorDialog(
               TextField(
                 controller: nameCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).name),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).name,
+                ),
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 initialValue: tier,
                 dropdownColor: tokens.bgAlt,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).tierLabel),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).tierLabel,
+                ),
                 items: [
-                  DropdownMenuItem(value: 'gold', child: Text(AppLocalizations.of(ctx).gold)),
-                  DropdownMenuItem(value: 'silver', child: Text(AppLocalizations.of(ctx).silver)),
-                  DropdownMenuItem(value: 'bronze', child: Text(AppLocalizations.of(ctx).bronze)),
+                  DropdownMenuItem(
+                    value: 'gold',
+                    child: Text(AppLocalizations.of(ctx).gold),
+                  ),
+                  DropdownMenuItem(
+                    value: 'silver',
+                    child: Text(AppLocalizations.of(ctx).silver),
+                  ),
+                  DropdownMenuItem(
+                    value: 'bronze',
+                    child: Text(AppLocalizations.of(ctx).bronze),
+                  ),
                 ],
                 onChanged: (v) {
                   if (v != null) setState(() => tier = v);
@@ -192,13 +235,19 @@ void _showEditSponsorDialog(
               TextField(
                 controller: websiteCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).websiteUrl),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).websiteUrl,
+                ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: logoCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).logoUrl),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(ctx).logoUrl,
+                ),
               ),
             ],
           ),
@@ -206,20 +255,20 @@ void _showEditSponsorDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+            child: Text(
+              AppLocalizations.of(ctx).cancel,
+              style: TextStyle(color: tokens.fgDim),
+            ),
           ),
           FilledButton(
             onPressed: () async {
               final api = ref.read(apiClientProvider);
-              await api.updateAdminSponsor(
-                (sponsor['id'] as num).toInt(),
-                {
-                  'name': nameCtrl.text,
-                  'tier': tier,
-                  'website_url': websiteCtrl.text,
-                  'logo_url': logoCtrl.text,
-                },
-              );
+              await api.updateAdminSponsor((sponsor['id'] as num).toInt(), {
+                'name': nameCtrl.text,
+                'tier': tier,
+                'website_url': websiteCtrl.text,
+                'logo_url': logoCtrl.text,
+              });
               ref.invalidate(_sponsorsProvider);
               if (ctx.mounted) Navigator.of(ctx).pop();
             },
@@ -260,7 +309,10 @@ void _showDeleteSponsorDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
@@ -301,142 +353,140 @@ class SponsorsPage extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: sponsorsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-              const SizedBox(height: 12),
-              Text(
-                AppLocalizations.of(context).failedToLoadSponsors,
-                style: TextStyle(color: tokens.fgBright, fontSize: 16),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '$error',
-                style: TextStyle(color: tokens.fgDim, fontSize: 12),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => ref.invalidate(_sponsorsProvider),
-                child: Text(AppLocalizations.of(context).retry),
-              ),
-            ],
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, _) => Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+                const SizedBox(height: 12),
+                Text(
+                  AppLocalizations.of(context).failedToLoadSponsors,
+                  style: TextStyle(color: tokens.fgBright, fontSize: 16),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '$error',
+                  style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                OutlinedButton(
+                  onPressed: () => ref.invalidate(_sponsorsProvider),
+                  child: Text(AppLocalizations.of(context).retry),
+                ),
+              ],
+            ),
           ),
-        ),
-        data: (sponsors) {
-          final filtered = searchQuery.isEmpty
-              ? sponsors
-              : sponsors.where((s) {
-                  final name =
-                      (s['name'] as String? ?? '').toLowerCase();
-                  final tier =
-                      (s['tier'] as String? ?? '').toLowerCase();
-                  final website =
-                      (s['website_url'] as String? ?? '').toLowerCase();
-                  return name.contains(searchQuery) ||
-                      tier.contains(searchQuery) ||
-                      website.contains(searchQuery);
-                }).toList();
+          data: (sponsors) {
+            final filtered = searchQuery.isEmpty
+                ? sponsors
+                : sponsors.where((s) {
+                    final name = (s['name'] as String? ?? '').toLowerCase();
+                    final tier = (s['tier'] as String? ?? '').toLowerCase();
+                    final website = (s['website_url'] as String? ?? '')
+                        .toLowerCase();
+                    return name.contains(searchQuery) ||
+                        tier.contains(searchQuery) ||
+                        website.contains(searchQuery);
+                  }).toList();
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ── Header ──────────────────────────────────────────────
-              Row(
-                children: [
-                  Text(
-                    AppLocalizations.of(context).sponsors,
-                    style: TextStyle(
-                      color: tokens.fgBright,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Header ──────────────────────────────────────────────
+                Row(
+                  children: [
+                    Text(
+                      AppLocalizations.of(context).sponsors,
+                      style: TextStyle(
+                        color: tokens.fgBright,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  FilledButton.icon(
-                    onPressed: () =>
-                        _showCreateSponsorDialog(context, ref),
-                    icon: const Icon(Icons.add, size: 16),
-                    label: Text(AppLocalizations.of(context).addSponsor),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: tokens.accent,
-                      foregroundColor: tokens.bg,
+                    const Spacer(),
+                    FilledButton.icon(
+                      onPressed: () => _showCreateSponsorDialog(context, ref),
+                      icon: const Icon(Icons.add, size: 16),
+                      label: Text(AppLocalizations.of(context).addSponsor),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: tokens.accent,
+                        foregroundColor: tokens.bg,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                AppLocalizations.of(context).nSponsors(sponsors.length),
-                style: TextStyle(color: tokens.fgDim, fontSize: 13),
-              ),
-              const SizedBox(height: 12),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context).nSponsors(sponsors.length),
+                  style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                ),
+                const SizedBox(height: 12),
 
-              // ── Search bar ──────────────────────────────────────────
-              TextField(
-                onChanged: (v) =>
-                    ref.read(_searchProvider.notifier).update(v),
-                style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).searchSponsors,
-                  hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                  prefixIcon:
-                      Icon(Icons.search, size: 18, color: tokens.fgDim),
-                  filled: true,
-                  fillColor: tokens.bgAlt,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: tokens.border),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: tokens.border),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide(color: tokens.accent),
+                // ── Search bar ──────────────────────────────────────────
+                TextField(
+                  onChanged: (v) =>
+                      ref.read(_searchProvider.notifier).update(v),
+                  style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context).searchSponsors,
+                    hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      size: 18,
+                      color: tokens.fgDim,
+                    ),
+                    filled: true,
+                    fillColor: tokens.bgAlt,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: tokens.border),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: tokens.border),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: tokens.accent),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // ── Sponsor list ────────────────────────────────────────
-              Expanded(
-                child: filtered.isEmpty
-                    ? Center(
-                        child: Text(
-                          searchQuery.isEmpty
-                              ? AppLocalizations.of(context).noSponsorsFound
-                              : AppLocalizations.of(context).noSponsorsMatch(searchQuery),
-                          style: TextStyle(
-                            color: tokens.fgDim,
-                            fontSize: 14,
+                // ── Sponsor list ────────────────────────────────────────
+                Expanded(
+                  child: filtered.isEmpty
+                      ? Center(
+                          child: Text(
+                            searchQuery.isEmpty
+                                ? AppLocalizations.of(context).noSponsorsFound
+                                : AppLocalizations.of(
+                                    context,
+                                  ).noSponsorsMatch(searchQuery),
+                            style: TextStyle(color: tokens.fgDim, fontSize: 14),
                           ),
+                        )
+                      : ListView.separated(
+                          itemCount: filtered.length,
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
+                          itemBuilder: (context, index) {
+                            return _SponsorTile(
+                              tokens: tokens,
+                              sponsor: filtered[index],
+                            );
+                          },
                         ),
-                      )
-                    : ListView.separated(
-                        itemCount: filtered.length,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: 8),
-                        itemBuilder: (context, index) {
-                          return _SponsorTile(
-                            tokens: tokens,
-                            sponsor: filtered[index],
-                          );
-                        },
-                      ),
-              ),
-            ],
-          );
-        },
-      ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -540,8 +590,7 @@ class _SponsorTile extends ConsumerWidget {
           // Status indicator
           if (status != 'active') ...[
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
                 color: tokens.fgDim.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(4),
@@ -577,15 +626,13 @@ class _SponsorTile extends ConsumerWidget {
           const SizedBox(width: 12),
           IconButton(
             icon: Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
-            onPressed: () =>
-                _showEditSponsorDialog(context, ref, sponsor),
+            onPressed: () => _showEditSponsorDialog(context, ref, sponsor),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).edit,
           ),
           IconButton(
             icon: Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
-            onPressed: () =>
-                _showDeleteSponsorDialog(context, ref, sponsor),
+            onPressed: () => _showDeleteSponsorDialog(context, ref, sponsor),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).remove,
           ),

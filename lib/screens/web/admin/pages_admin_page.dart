@@ -6,8 +6,9 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 // ── Data provider ────────────────────────────────────────────────────────────
 
-final _pagesProvider =
-    FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+final _pagesProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final api = ref.watch(apiClientProvider);
   final result = await api.listAdminPages();
   final raw = result['pages'] as List<dynamic>? ?? <dynamic>[];
@@ -63,20 +64,29 @@ void _showCreatePageDialog(BuildContext context, WidgetRef ref) {
             TextField(
               controller: titleCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).title),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).title,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: slugCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).slug),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).slug,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: contentCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
               maxLines: 5,
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).contentLabel),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).contentLabel,
+              ),
             ),
           ],
         ),
@@ -84,7 +94,10 @@ void _showCreatePageDialog(BuildContext context, WidgetRef ref) {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
@@ -114,12 +127,11 @@ void _showEditPageDialog(
   WidgetRef ref,
   Map<String, dynamic> page,
 ) {
-  final titleCtrl =
-      TextEditingController(text: page['title'] as String? ?? '');
-  final slugCtrl =
-      TextEditingController(text: page['slug'] as String? ?? '');
-  final contentCtrl =
-      TextEditingController(text: page['content'] as String? ?? '');
+  final titleCtrl = TextEditingController(text: page['title'] as String? ?? '');
+  final slugCtrl = TextEditingController(text: page['slug'] as String? ?? '');
+  final contentCtrl = TextEditingController(
+    text: page['content'] as String? ?? '',
+  );
   final tokens = ThemeTokens.of(context);
 
   showDialog<void>(
@@ -140,20 +152,29 @@ void _showEditPageDialog(
             TextField(
               controller: titleCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).title),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).title,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: slugCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).slug),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).slug,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: contentCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
               maxLines: 5,
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).contentLabel),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).contentLabel,
+              ),
             ),
           ],
         ),
@@ -161,19 +182,19 @@ void _showEditPageDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
             final api = ref.read(apiClientProvider);
-            await api.updateAdminPage(
-              (page['id'] as num).toInt(),
-              {
-                'title': titleCtrl.text,
-                'slug': slugCtrl.text,
-                'content': contentCtrl.text,
-              },
-            );
+            await api.updateAdminPage((page['id'] as num).toInt(), {
+              'title': titleCtrl.text,
+              'slug': slugCtrl.text,
+              'content': contentCtrl.text,
+            });
             ref.invalidate(_pagesProvider);
             if (ctx.mounted) Navigator.of(ctx).pop();
           },
@@ -213,7 +234,10 @@ void _showDeletePageDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
@@ -258,93 +282,93 @@ class PagesAdminPage extends ConsumerWidget {
             Row(
               children: [
                 Text(
-                AppLocalizations.of(context).pages,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                  AppLocalizations.of(context).pages,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              const Spacer(),
-              OutlinedButton.icon(
-                onPressed: () => _showCreatePageDialog(context, ref),
-                icon: Icon(Icons.add, size: 16, color: tokens.accent),
-                label:
-                    Text(AppLocalizations.of(context).newPage, style: TextStyle(color: tokens.accent)),
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: tokens.accent),
+                const Spacer(),
+                OutlinedButton.icon(
+                  onPressed: () => _showCreatePageDialog(context, ref),
+                  icon: Icon(Icons.add, size: 16, color: tokens.accent),
+                  label: Text(
+                    AppLocalizations.of(context).newPage,
+                    style: TextStyle(color: tokens.accent),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: tokens.accent),
+                  ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            pagesAsync.when(
+              data: (pages) => Text(
+                AppLocalizations.of(context).nStaticPages(pages.length),
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
               ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          pagesAsync.when(
-            data: (pages) => Text(
-              AppLocalizations.of(context).nStaticPages(pages.length),
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              loading: () => Text(
+                AppLocalizations.of(context).loading,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
+              error: (_, _) => Text(
+                AppLocalizations.of(context).failedToLoadPages,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
             ),
-            loading: () => Text(
-              AppLocalizations.of(context).loading,
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-            error: (_, _) => Text(
-              AppLocalizations.of(context).failedToLoadPages,
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-          // ── Page list ───────────────────────────────────────────────────
-          Expanded(
-            child: pagesAsync.when(
-              data: (pages) {
-                if (pages.isEmpty) {
-                  return Center(
-                    child: Text(
-                      AppLocalizations.of(context).noPagesYet,
-                      style: TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
+            // ── Page list ───────────────────────────────────────────────────
+            Expanded(
+              child: pagesAsync.when(
+                data: (pages) {
+                  if (pages.isEmpty) {
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(context).noPagesYet,
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
+                    );
+                  }
+
+                  return ListView.separated(
+                    itemCount: pages.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      return _PageTile(tokens: tokens, page: pages[index]);
+                    },
                   );
-                }
-
-                return ListView.separated(
-                  itemCount: pages.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    return _PageTile(tokens: tokens, page: pages[index]);
-                  },
-                );
-              },
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (error, _) => Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.error_outline,
-                        size: 32, color: tokens.fgDim),
-                    const SizedBox(height: 8),
-                    Text(
-                      AppLocalizations.of(context).failedToLoadPages,
-                      style: TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$error',
-                      style: TextStyle(color: tokens.fgDim, fontSize: 11),
-                    ),
-                    const SizedBox(height: 12),
-                    OutlinedButton(
-                      onPressed: () => ref.invalidate(_pagesProvider),
-                      child: Text(AppLocalizations.of(context).retry),
-                    ),
-                  ],
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.error_outline, size: 32, color: tokens.fgDim),
+                      const SizedBox(height: 8),
+                      Text(
+                        AppLocalizations.of(context).failedToLoadPages,
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$error',
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: () => ref.invalidate(_pagesProvider),
+                        child: Text(AppLocalizations.of(context).retry),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
@@ -362,9 +386,8 @@ class _PageTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final title = page['title'] as String? ?? 'Untitled';
     final slug = page['slug'] as String? ?? '';
-    final updatedAt = page['updated_at'] as String? ??
-        page['created_at'] as String? ??
-        '';
+    final updatedAt =
+        page['updated_at'] as String? ?? page['created_at'] as String? ?? '';
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -413,7 +436,11 @@ class _PageTile extends ConsumerWidget {
                     const SizedBox(width: 12),
                     Text(
                       updatedAt.isNotEmpty
-                          ? AppLocalizations.of(context).updatedDate(updatedAt.length >= 10 ? updatedAt.substring(0, 10) : updatedAt)
+                          ? AppLocalizations.of(context).updatedDate(
+                              updatedAt.length >= 10
+                                  ? updatedAt.substring(0, 10)
+                                  : updatedAt,
+                            )
                           : '',
                       style: TextStyle(color: tokens.fgDim, fontSize: 11),
                     ),
@@ -423,15 +450,13 @@ class _PageTile extends ConsumerWidget {
             ),
           ),
           IconButton(
-            icon:
-                Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
+            icon: Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
             onPressed: () => _showEditPageDialog(context, ref, page),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).editPageTooltip,
           ),
           IconButton(
-            icon:
-                Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
+            icon: Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
             onPressed: () => _showDeletePageDialog(context, ref, page),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).deletePageTooltip,

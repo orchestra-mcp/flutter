@@ -67,8 +67,11 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
         backgroundColor: tokens.bg,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: tokens.fgMuted, size: 18),
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: tokens.fgMuted,
+            size: 18,
+          ),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
         title: Text(
@@ -93,7 +96,10 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
               style: TextStyle(color: tokens.fgBright, fontSize: 14),
               validator: (v) =>
                   (v == null || v.trim().isEmpty) ? 'Title is required' : null,
-              decoration: _inputDecoration(tokens, 'Brief description of the issue'),
+              decoration: _inputDecoration(
+                tokens,
+                'Brief description of the issue',
+              ),
             ),
 
             const SizedBox(height: 16),
@@ -105,9 +111,13 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
               controller: _descriptionCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 14),
               maxLines: 5,
-              validator: (v) =>
-                  (v == null || v.trim().length < 10) ? 'Please provide more detail' : null,
-              decoration: _inputDecoration(tokens, 'Steps to reproduce, expected vs actual behavior...'),
+              validator: (v) => (v == null || v.trim().length < 10)
+                  ? 'Please provide more detail'
+                  : null,
+              decoration: _inputDecoration(
+                tokens,
+                'Steps to reproduce, expected vs actual behavior...',
+              ),
             ),
 
             const SizedBox(height: 16),
@@ -174,16 +184,16 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
         final color = _severityColor(s);
         return Expanded(
           child: Padding(
-            padding: EdgeInsets.only(
-              right: s == _severities.last ? 0 : 6,
-            ),
+            padding: EdgeInsets.only(right: s == _severities.last ? 0 : 6),
             child: GestureDetector(
               onTap: () => setState(() => _severity = s),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: isSelected ? color.withValues(alpha: 0.15) : tokens.bgAlt,
+                  color: isSelected
+                      ? color.withValues(alpha: 0.15)
+                      : tokens.bgAlt,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
                     color: isSelected ? color : tokens.border,
@@ -195,7 +205,9 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
                     s,
                     style: TextStyle(
                       fontSize: 12,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.normal,
                       color: isSelected ? color : tokens.fgMuted,
                     ),
                   ),
@@ -221,14 +233,14 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
   // ── Shared helpers ────────────────────────────────────────────────────
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   InputDecoration _inputDecoration(OrchestraColorTokens tokens, String hint) {
     return InputDecoration(
@@ -279,12 +291,18 @@ class _ReportIssueScreenState extends ConsumerState<ReportIssueScreen> {
           isExpanded: true,
           dropdownColor: tokens.bgAlt,
           style: TextStyle(fontSize: 14, color: tokens.fgBright),
-          icon: Icon(Icons.expand_more_rounded, color: tokens.fgMuted, size: 20),
+          icon: Icon(
+            Icons.expand_more_rounded,
+            color: tokens.fgMuted,
+            size: 20,
+          ),
           items: items
-              .map((item) => DropdownMenuItem<T>(
-                    value: item,
-                    child: Text(item.toString()),
-                  ))
+              .map(
+                (item) => DropdownMenuItem<T>(
+                  value: item,
+                  child: Text(item.toString()),
+                ),
+              )
               .toList(),
           onChanged: onChanged,
         ),

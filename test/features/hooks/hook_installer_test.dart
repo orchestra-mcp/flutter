@@ -90,7 +90,10 @@ void main() {
       final hooks = {
         'tool_use_start': <dynamic>[
           {'command': '/other/hook.sh', 'timeout': 3000},
-          {'command': '/home/.claude/hooks/orchestra-mcp-hook.sh', 'timeout': 5000},
+          {
+            'command': '/home/.claude/hooks/orchestra-mcp-hook.sh',
+            'timeout': 5000,
+          },
         ],
       };
 
@@ -110,7 +113,10 @@ void main() {
       final settings = {
         'hooks': {
           'tool_use_start': [
-            {'command': '/home/.claude/hooks/orchestra-mcp-hook.sh', 'timeout': 5000},
+            {
+              'command': '/home/.claude/hooks/orchestra-mcp-hook.sh',
+              'timeout': 5000,
+            },
           ],
         },
       };

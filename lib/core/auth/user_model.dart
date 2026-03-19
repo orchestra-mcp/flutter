@@ -68,7 +68,8 @@ class User {
       role: (json['role'] ?? 'member') as String,
       teamId: json['team_id']?.toString(),
       workspaceId: json['workspace_id']?.toString(),
-      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ??
+      createdAt:
+          DateTime.tryParse(json['created_at']?.toString() ?? '') ??
           DateTime.now(),
       phone: settings['phone'] as String?,
       bio: settings['bio'] as String?,
@@ -78,8 +79,7 @@ class User {
       language: (prefs['language'] as String?) ?? 'en',
       coverUrl: settings['cover_url'] as String?,
       twoFactorEnabled: json['two_factor_enabled'] == true,
-      publicProfileEnabled:
-          settings['public_profile_enabled'] == true,
+      publicProfileEnabled: settings['public_profile_enabled'] == true,
       showCommentsOnProfile:
           (settings['show_comments_on_profile'] ?? 'true') != 'false',
       socialLinks: _parseSocialLinks(settings['social_links']),
@@ -87,15 +87,15 @@ class User {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'email': email,
-        'name': name,
-        'avatar_url': avatarUrl,
-        'role': role,
-        'team_id': teamId,
-        'workspace_id': workspaceId,
-        'created_at': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'email': email,
+    'name': name,
+    'avatar_url': avatarUrl,
+    'role': role,
+    'team_id': teamId,
+    'workspace_id': workspaceId,
+    'created_at': createdAt.toIso8601String(),
+  };
 
   User copyWith({
     String? id,
@@ -117,28 +117,25 @@ class User {
     bool? publicProfileEnabled,
     bool? showCommentsOnProfile,
     List<Map<String, String>>? socialLinks,
-  }) =>
-      User(
-        id: id ?? this.id,
-        email: email ?? this.email,
-        name: name ?? this.name,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-        role: role ?? this.role,
-        teamId: teamId ?? this.teamId,
-        workspaceId: workspaceId ?? this.workspaceId,
-        createdAt: createdAt ?? this.createdAt,
-        phone: phone ?? this.phone,
-        bio: bio ?? this.bio,
-        position: position ?? this.position,
-        timezone: timezone ?? this.timezone,
-        handle: handle ?? this.handle,
-        language: language ?? this.language,
-        coverUrl: coverUrl ?? this.coverUrl,
-        twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
-        publicProfileEnabled:
-            publicProfileEnabled ?? this.publicProfileEnabled,
-        showCommentsOnProfile:
-            showCommentsOnProfile ?? this.showCommentsOnProfile,
-        socialLinks: socialLinks ?? this.socialLinks,
-      );
+  }) => User(
+    id: id ?? this.id,
+    email: email ?? this.email,
+    name: name ?? this.name,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+    role: role ?? this.role,
+    teamId: teamId ?? this.teamId,
+    workspaceId: workspaceId ?? this.workspaceId,
+    createdAt: createdAt ?? this.createdAt,
+    phone: phone ?? this.phone,
+    bio: bio ?? this.bio,
+    position: position ?? this.position,
+    timezone: timezone ?? this.timezone,
+    handle: handle ?? this.handle,
+    language: language ?? this.language,
+    coverUrl: coverUrl ?? this.coverUrl,
+    twoFactorEnabled: twoFactorEnabled ?? this.twoFactorEnabled,
+    publicProfileEnabled: publicProfileEnabled ?? this.publicProfileEnabled,
+    showCommentsOnProfile: showCommentsOnProfile ?? this.showCommentsOnProfile,
+    socialLinks: socialLinks ?? this.socialLinks,
+  );
 }

@@ -102,8 +102,7 @@ class WidgetGrid extends StatelessWidget {
         separatorBuilder: (_, _) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final row = rows[index];
-          if (row.cards.length == 1 &&
-              row.cards[0].span == GridSpan.full) {
+          if (row.cards.length == 1 && row.cards[0].span == GridSpan.full) {
             return GestureDetector(
               onLongPress: onLongPress,
               child: row.cards[0].builder(),
@@ -243,7 +242,9 @@ class _EditableWidgetGrid extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF44336).withValues(alpha: 0.15),
+                          color: const Color(
+                            0xFFF44336,
+                          ).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: const Icon(

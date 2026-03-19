@@ -16,10 +16,7 @@ import 'package:orchestra/widgets/glass_card.dart';
 /// Full detail screen for a single note. Shows the title, pin indicator,
 /// tags as colored chips, relative timestamp, and renders markdown content.
 class NoteDetailScreen extends ConsumerStatefulWidget {
-  const NoteDetailScreen({
-    super.key,
-    required this.noteId,
-  });
+  const NoteDetailScreen({super.key, required this.noteId});
 
   final String noteId;
 
@@ -53,8 +50,9 @@ class _NoteDetailScreenState extends ConsumerState<NoteDetailScreen> {
 
   Future<void> _loadNote() async {
     try {
-      final note =
-          await ref.read(noteRepositoryProvider).getById(widget.noteId);
+      final note = await ref
+          .read(noteRepositoryProvider)
+          .getById(widget.noteId);
       if (mounted) {
         setState(() {
           _note = note;
@@ -80,10 +78,16 @@ class _NoteDetailScreenState extends ConsumerState<NoteDetailScreen> {
         title: Text(l10n.deleteNoteConfirm),
         content: Text(l10n.deleteItemMessage(_note?.title ?? l10n.note)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.cancel),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: Text(l10n.delete, style: const TextStyle(color: Color(0xFFEF4444))),
+            child: Text(
+              l10n.delete,
+              style: const TextStyle(color: Color(0xFFEF4444)),
+            ),
           ),
         ],
       ),
@@ -96,7 +100,9 @@ class _NoteDetailScreenState extends ConsumerState<NoteDetailScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToDelete}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToDelete}: $e'),
+          ),
         );
       }
     }
@@ -112,12 +118,17 @@ class _NoteDetailScreenState extends ConsumerState<NoteDetailScreen> {
         child: _loading
             ? Center(child: CircularProgressIndicator(color: tokens.accent))
             : (_error != null || _note == null)
-                ? _ErrorState(tokens: tokens, message: _error == 'NOT_FOUND' ? AppLocalizations.of(context).noteNotFound : (_error ?? AppLocalizations.of(context).failedToLoadNote))
-                : _NoteContent(
-                    note: _note!,
-                    tokens: tokens,
-                    onDelete: () => _deleteNote(),
-                  ),
+            ? _ErrorState(
+                tokens: tokens,
+                message: _error == 'NOT_FOUND'
+                    ? AppLocalizations.of(context).noteNotFound
+                    : (_error ?? AppLocalizations.of(context).failedToLoadNote),
+              )
+            : _NoteContent(
+                note: _note!,
+                tokens: tokens,
+                onDelete: () => _deleteNote(),
+              ),
       ),
     );
   }
@@ -263,7 +274,9 @@ class _NoteContent extends StatelessWidget {
                       final color = _tagColor(tag);
                       return Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: color.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(12),
@@ -297,21 +310,24 @@ class _NoteContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: GlassCard(
               child: note.content.isNotEmpty
-                  ? MarkdownRendererWidget(
-                      content: note.content,
-                    )
+                  ? MarkdownRendererWidget(content: note.content)
                   : Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Column(
                           children: [
-                            Icon(Icons.notes_rounded,
-                                color: tokens.fgDim, size: 36),
+                            Icon(
+                              Icons.notes_rounded,
+                              color: tokens.fgDim,
+                              size: 36,
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               l10n.noContent,
                               style: TextStyle(
-                                  color: tokens.fgMuted, fontSize: 14),
+                                color: tokens.fgMuted,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
@@ -339,8 +355,8 @@ class _NoteContent extends StatelessWidget {
       Color(0xFFFB923C), // orange
       Color(0xFFA78BFA), // violet
     ];
-    final index = tag.codeUnits.fold<int>(0, (sum, c) => sum + c) %
-        palette.length;
+    final index =
+        tag.codeUnits.fold<int>(0, (sum, c) => sum + c) % palette.length;
     return palette[index];
   }
 }
@@ -361,8 +377,11 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Color(0xFFEF4444), size: 48),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 48,
+            ),
             const SizedBox(height: 16),
             Text(
               l10n.failedToLoadNote,

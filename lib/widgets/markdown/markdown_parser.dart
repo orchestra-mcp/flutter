@@ -11,7 +11,11 @@ sealed class MarkdownBlock {
 }
 
 class HeadingBlock extends MarkdownBlock {
-  const HeadingBlock({required this.level, required this.text, required this.id});
+  const HeadingBlock({
+    required this.level,
+    required this.text,
+    required this.id,
+  });
   final int level;
   final String text;
   final String id;
@@ -102,12 +106,13 @@ List<TableAlign> _parseAlignments(String separatorLine) {
       .map((c) => c.trim())
       .where((c) => c.isNotEmpty)
       .map((cell) {
-    final left = cell.startsWith(':');
-    final right = cell.endsWith(':');
-    if (left && right) return TableAlign.center;
-    if (right) return TableAlign.right;
-    return TableAlign.left;
-  }).toList();
+        final left = cell.startsWith(':');
+        final right = cell.endsWith(':');
+        if (left && right) return TableAlign.center;
+        if (right) return TableAlign.right;
+        return TableAlign.left;
+      })
+      .toList();
 }
 
 TableBlock? _parseTable(List<String> lines) {
@@ -122,7 +127,9 @@ TableBlock? _parseTable(List<String> lines) {
 }
 
 MarkdownBlock _parseListBlock(List<String> lines) {
-  final stripped = lines.map((l) => l.replaceFirst(RegExp(r'^\s+'), '')).toList();
+  final stripped = lines
+      .map((l) => l.replaceFirst(RegExp(r'^\s+'), ''))
+      .toList();
   final taskMatch = RegExp(r'^[-*+]\s+\[([ xX])\]').firstMatch(stripped[0]);
   if (taskMatch != null) {
     final items = stripped.map((l) {
@@ -136,11 +143,15 @@ MarkdownBlock _parseListBlock(List<String> lines) {
   }
   if (_olRe.hasMatch(stripped[0])) {
     return OrderedListBlock(
-      items: stripped.map((l) => l.replaceFirst(RegExp(r'^\d+[.)]\s*'), '')).toList(),
+      items: stripped
+          .map((l) => l.replaceFirst(RegExp(r'^\d+[.)]\s*'), ''))
+          .toList(),
     );
   }
   return UnorderedListBlock(
-    items: stripped.map((l) => l.replaceFirst(RegExp(r'^[-*+]\s*'), '')).toList(),
+    items: stripped
+        .map((l) => l.replaceFirst(RegExp(r'^[-*+]\s*'), ''))
+        .toList(),
   );
 }
 
@@ -209,11 +220,9 @@ List<MarkdownBlock> parseMarkdown(String content) {
     if (headingMatch != null) {
       final hashes = headingMatch.group(1) ?? '#';
       final text = headingMatch.group(2) ?? '';
-      blocks.add(HeadingBlock(
-        level: hashes.length,
-        text: text,
-        id: _slugify(text),
-      ));
+      blocks.add(
+        HeadingBlock(level: hashes.length, text: text, id: _slugify(text)),
+      );
       i++;
       continue;
     }

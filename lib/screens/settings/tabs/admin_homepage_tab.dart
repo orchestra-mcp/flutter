@@ -63,7 +63,9 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -78,7 +80,9 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -97,8 +101,12 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
             // Hero Subtitle
             _fieldLabel(tokens, l10n.adminHeroSubtitle),
             const SizedBox(height: 6),
-            _field(tokens, _heroSubtitleCtrl,
-                hint: l10n.adminHeroSubtitleHint, maxLines: 2),
+            _field(
+              tokens,
+              _heroSubtitleCtrl,
+              hint: l10n.adminHeroSubtitleHint,
+              maxLines: 2,
+            ),
 
             const SizedBox(height: 24),
             Divider(color: tokens.border.withValues(alpha: 0.4)),
@@ -122,15 +130,19 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
             // Sections toggles
             _sectionHeader(tokens, l10n.adminSections),
             const SizedBox(height: 12),
-            _toggleRow(tokens,
-                label: l10n.adminShowFeaturesSection,
-                value: _showFeatures,
-                onChanged: (v) => setState(() => _showFeatures = v)),
+            _toggleRow(
+              tokens,
+              label: l10n.adminShowFeaturesSection,
+              value: _showFeatures,
+              onChanged: (v) => setState(() => _showFeatures = v),
+            ),
             const SizedBox(height: 8),
-            _toggleRow(tokens,
-                label: l10n.adminShowTestimonialsSection,
-                value: _showTestimonials,
-                onChanged: (v) => setState(() => _showTestimonials = v)),
+            _toggleRow(
+              tokens,
+              label: l10n.adminShowTestimonialsSection,
+              value: _showTestimonials,
+              onChanged: (v) => setState(() => _showTestimonials = v),
+            ),
 
             const SizedBox(height: 24),
             Divider(color: tokens.border.withValues(alpha: 0.4)),
@@ -139,8 +151,11 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
             // Hero Image Upload
             _sectionHeader(tokens, l10n.adminHeroImage),
             const SizedBox(height: 12),
-            _uploadArea(tokens,
-                icon: Icons.panorama_rounded, label: l10n.adminUploadHeroImage),
+            _uploadArea(
+              tokens,
+              icon: Icons.panorama_rounded,
+              label: l10n.adminUploadHeroImage,
+            ),
 
             const SizedBox(height: 28),
             SizedBox(
@@ -152,14 +167,17 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -220,11 +238,12 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
           children: [
             Icon(icon, size: 32, color: tokens.fgDim),
             const SizedBox(height: 8),
-            Text(label,
-                style: TextStyle(fontSize: 13, color: tokens.fgDim)),
+            Text(label, style: TextStyle(fontSize: 13, color: tokens.fgDim)),
             const SizedBox(height: 4),
-            Text(AppLocalizations.of(context).pngJpgLimit,
-                style: TextStyle(fontSize: 11, color: tokens.fgDim)),
+            Text(
+              AppLocalizations.of(context).pngJpgLimit,
+              style: TextStyle(fontSize: 11, color: tokens.fgDim),
+            ),
           ],
         ),
       ),
@@ -232,23 +251,23 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -265,8 +284,10 @@ class _AdminHomepageTabState extends ConsumerState<AdminHomepageTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

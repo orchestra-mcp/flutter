@@ -57,9 +57,7 @@ final projectRepositoryProvider = Provider<ProjectRepository>((ref) {
       db: ref.watch(localDatabaseProvider),
     );
   }
-  return ProjectRepository(
-    db: ref.watch(powersyncDatabaseProvider),
-  );
+  return ProjectRepository(db: ref.watch(powersyncDatabaseProvider));
 });
 
 /// Provider for the offline-first feature repository.
@@ -83,9 +81,7 @@ final noteRepositoryProvider = Provider<NoteRepository>((ref) {
       db: ref.watch(localDatabaseProvider),
     );
   }
-  return NoteRepository(
-    db: ref.watch(powersyncDatabaseProvider),
-  );
+  return NoteRepository(db: ref.watch(powersyncDatabaseProvider));
 });
 
 /// Increment to force any provider watching this to refresh (e.g. sidebar notes).
@@ -95,8 +91,9 @@ class _RefreshCounter extends Notifier<int> {
   void refresh() => state++;
 }
 
-final notesRefreshProvider =
-    NotifierProvider<_RefreshCounter, int>(_RefreshCounter.new);
+final notesRefreshProvider = NotifierProvider<_RefreshCounter, int>(
+  _RefreshCounter.new,
+);
 
 // ── Publish Service ──────────────────────────────────────────────────────────
 

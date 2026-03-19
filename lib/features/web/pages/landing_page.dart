@@ -39,13 +39,37 @@ class LandingPage extends StatelessWidget {
   }
 
   List<Widget> _featureCards(OrchestraColorTokens tokens) => const [
-        _FeatureCard(icon: Icons.build_outlined, title: 'MCP Tools', desc: '290+ tools via Model Context Protocol'),
-        _FeatureCard(icon: Icons.favorite_outline, title: 'Health Tracking', desc: 'HealthKit & Health Connect integration'),
-        _FeatureCard(icon: Icons.devices, title: 'Multi-Platform', desc: 'macOS, Windows, Linux, iOS, Android, Web'),
-        _FeatureCard(icon: Icons.bolt_outlined, title: 'Smart Actions', desc: 'AI-powered project automation'),
-        _FeatureCard(icon: Icons.sync, title: 'Sync Engine', desc: 'Real-time cross-device synchronisation'),
-        _FeatureCard(icon: Icons.code, title: 'Open Source', desc: 'MIT-licensed and community-driven'),
-      ];
+    _FeatureCard(
+      icon: Icons.build_outlined,
+      title: 'MCP Tools',
+      desc: '290+ tools via Model Context Protocol',
+    ),
+    _FeatureCard(
+      icon: Icons.favorite_outline,
+      title: 'Health Tracking',
+      desc: 'HealthKit & Health Connect integration',
+    ),
+    _FeatureCard(
+      icon: Icons.devices,
+      title: 'Multi-Platform',
+      desc: 'macOS, Windows, Linux, iOS, Android, Web',
+    ),
+    _FeatureCard(
+      icon: Icons.bolt_outlined,
+      title: 'Smart Actions',
+      desc: 'AI-powered project automation',
+    ),
+    _FeatureCard(
+      icon: Icons.sync,
+      title: 'Sync Engine',
+      desc: 'Real-time cross-device synchronisation',
+    ),
+    _FeatureCard(
+      icon: Icons.code,
+      title: 'Open Source',
+      desc: 'MIT-licensed and community-driven',
+    ),
+  ];
 }
 
 class _HeroSection extends StatelessWidget {
@@ -56,27 +80,46 @@ class _HeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Container(
-        padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
-        child: Column(
-          children: [
-            Text(l10n.orchestraAi,
-                style: TextStyle(fontSize: 48, fontWeight: FontWeight.w700, color: tokens.fgBright)),
-            const SizedBox(height: 16),
-            Text(l10n.aiDescription,
-                style: TextStyle(fontSize: 18, color: tokens.fgMuted), textAlign: TextAlign.center),
-            const SizedBox(height: 32),
-            Wrap(spacing: 16, children: [
-              GlassButton(label: l10n.getStartedFree, onPressed: () => context.go('/register')),
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+      child: Column(
+        children: [
+          Text(
+            l10n.orchestraAi,
+            style: TextStyle(
+              fontSize: 48,
+              fontWeight: FontWeight.w700,
+              color: tokens.fgBright,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            l10n.aiDescription,
+            style: TextStyle(fontSize: 18, color: tokens.fgMuted),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 32),
+          Wrap(
+            spacing: 16,
+            children: [
+              GlassButton(
+                label: l10n.getStartedFree,
+                onPressed: () => context.go('/register'),
+              ),
               OutlinedButton(onPressed: () {}, child: Text(l10n.viewDemo)),
-            ]),
-          ],
-        ),
-      );
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class _FeatureCard extends StatelessWidget {
-  const _FeatureCard({required this.icon, required this.title, required this.desc});
+  const _FeatureCard({
+    required this.icon,
+    required this.title,
+    required this.desc,
+  });
   final IconData icon;
   final String title;
   final String desc;
@@ -90,7 +133,13 @@ class _FeatureCard extends StatelessWidget {
         children: [
           Icon(icon, color: tokens.accent, size: 28),
           const SizedBox(height: 8),
-          Text(title, style: TextStyle(color: tokens.fgBright, fontWeight: FontWeight.w600)),
+          Text(
+            title,
+            style: TextStyle(
+              color: tokens.fgBright,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
           const SizedBox(height: 4),
           Text(desc, style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
         ],
@@ -105,15 +154,17 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Wrap(
-          spacing: 24,
-          children: ['/docs', '/blog', '/pricing', '/about']
-              .map((r) => TextButton(
-                    onPressed: () => context.go(r),
-                    child: Text(r, style: TextStyle(color: tokens.fgMuted)),
-                  ))
-              .toList(),
-        ),
-      );
+    padding: const EdgeInsets.all(24),
+    child: Wrap(
+      spacing: 24,
+      children: ['/docs', '/blog', '/pricing', '/about']
+          .map(
+            (r) => TextButton(
+              onPressed: () => context.go(r),
+              child: Text(r, style: TextStyle(color: tokens.fgMuted)),
+            ),
+          )
+          .toList(),
+    ),
+  );
 }

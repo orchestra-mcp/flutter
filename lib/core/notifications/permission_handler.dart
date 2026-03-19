@@ -23,8 +23,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class PermissionHandler {
   PermissionHandler();
 
-  final _pendingController =
-      StreamController<PermissionRequest>.broadcast();
+  final _pendingController = StreamController<PermissionRequest>.broadcast();
 
   /// Stream of pending permission requests.
   Stream<PermissionRequest> get onRequest => _pendingController.stream;
@@ -57,13 +56,19 @@ class PermissionHandler {
   }) async {
     try {
       final client = HttpClient();
-      final request = await client.post('127.0.0.1', serverPort, '/permission/respond');
+      final request = await client.post(
+        '127.0.0.1',
+        serverPort,
+        '/permission/respond',
+      );
       request.headers.contentType = ContentType.json;
-      request.write(jsonEncode({
-        'request_id': requestId,
-        'decision': approved ? 'approve' : 'deny',
-        if (reason != null) 'reason': reason,
-      }));
+      request.write(
+        jsonEncode({
+          'request_id': requestId,
+          'decision': approved ? 'approve' : 'deny',
+          if (reason != null) 'reason': reason,
+        }),
+      );
       final response = await request.close();
       await response.drain<void>();
       client.close(force: true);

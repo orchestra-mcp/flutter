@@ -9,8 +9,9 @@ final preferencesProvider = FutureProvider<Map<String, dynamic>>((ref) {
 });
 
 /// Active login sessions for the current user.
-final settingsSessionsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) {
+final settingsSessionsProvider = FutureProvider<List<Map<String, dynamic>>>((
+  ref,
+) {
   return ref.watch(apiClientProvider).listSettingsSessions();
 });
 
@@ -20,15 +21,17 @@ final apiKeysProvider = FutureProvider<List<Map<String, dynamic>>>((ref) {
 });
 
 /// Connected third-party accounts (GitHub, Google, etc.).
-final connectedAccountsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) {
+final connectedAccountsProvider = FutureProvider<List<Map<String, dynamic>>>((
+  ref,
+) {
   return ref.watch(apiClientProvider).listConnectedAccounts();
 });
 
 /// AI notification settings from the local MCP notify_config tool.
 /// Returns all notification settings (bools + strings).
-final aiNotificationSettingsProvider =
-    FutureProvider<Map<String, dynamic>>((ref) async {
+final aiNotificationSettingsProvider = FutureProvider<Map<String, dynamic>>((
+  ref,
+) async {
   const defaults = <String, dynamic>{
     'ai_push_enabled': true,
     'ai_voice_enabled': true,

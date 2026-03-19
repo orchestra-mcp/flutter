@@ -33,8 +33,9 @@ class SyncNotificationService {
   Future<void> initialize() async {
     if (_initialized) return;
 
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: false,
       requestBadgePermission: false,
@@ -56,8 +57,10 @@ class SyncNotificationService {
   }
 
   Future<void> _createAndroidChannel() async {
-    final android = _plugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android == null) return;
     await android.createNotificationChannel(
       const AndroidNotificationChannel(
@@ -96,24 +99,34 @@ class SyncNotificationService {
     if (!_initialized) await initialize();
 
     final (id, title, body, payload) = switch (event) {
-      SyncEntityUpdatedEvent(:final authorName, :final entityTitle, :final entityType) => (
+      SyncEntityUpdatedEvent(
+        :final authorName,
+        :final entityTitle,
+        :final entityType,
+      ) =>
+        (
           _SyncNotifIds.entityUpdated,
           '$authorName updated a $entityType',
           entityTitle,
           '/$entityType',
         ),
-      SyncEntitySharedEvent(:final authorName, :final entityTitle, :final entityType) => (
+      SyncEntitySharedEvent(
+        :final authorName,
+        :final entityTitle,
+        :final entityType,
+      ) =>
+        (
           _SyncNotifIds.entityShared,
           '$authorName shared a $entityType with you',
           entityTitle,
           '/$entityType',
         ),
       SyncEntityDeletedEvent(:final authorName, :final entityType) => (
-          _SyncNotifIds.entityDeleted,
-          '$authorName deleted a shared $entityType',
-          'A shared $entityType was removed',
-          '/$entityType',
-        ),
+        _SyncNotifIds.entityDeleted,
+        '$authorName deleted a shared $entityType',
+        'A shared $entityType was removed',
+        '/$entityType',
+      ),
       _ => (null, null, null, null),
     };
 
@@ -167,7 +180,8 @@ class SyncNotificationService {
 
 // ── Provider ────────────────────────────────────────────────────────────────
 
-final syncNotificationServiceProvider =
-    Provider<SyncNotificationService>((ref) {
+final syncNotificationServiceProvider = Provider<SyncNotificationService>((
+  ref,
+) {
   return SyncNotificationService(ref: ref);
 });

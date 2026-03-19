@@ -53,21 +53,24 @@ class SshTerminalBackend extends TerminalBackend {
       _shell = shell;
 
       // SSH stdout → xterm terminal (stream-decode UTF-8 for multi-byte glyphs)
-      shell.stdout.cast<List<int>>().transform(utf8.decoder).listen(
-        (String data) {
-          terminal.write(data);
-        },
-        onDone: () {
-          terminal.write('\r\n[Connection closed]\r\n');
-        },
-      );
+      shell.stdout
+          .cast<List<int>>()
+          .transform(utf8.decoder)
+          .listen(
+            (String data) {
+              terminal.write(data);
+            },
+            onDone: () {
+              terminal.write('\r\n[Connection closed]\r\n');
+            },
+          );
 
       // SSH stderr → xterm terminal
-      shell.stderr.cast<List<int>>().transform(utf8.decoder).listen(
-        (String data) {
-          terminal.write(data);
-        },
-      );
+      shell.stderr.cast<List<int>>().transform(utf8.decoder).listen((
+        String data,
+      ) {
+        terminal.write(data);
+      });
 
       // xterm keystrokes → SSH stdin
       terminal.onOutput = (String data) {

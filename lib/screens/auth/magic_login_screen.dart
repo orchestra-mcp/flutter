@@ -170,8 +170,11 @@ class _EmailFormView extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: l10n.email,
                   hintText: l10n.emailHint,
-                  prefixIcon: Icon(Icons.mail_outline_rounded,
-                      color: tokens.fgDim, size: 20),
+                  prefixIcon: Icon(
+                    Icons.mail_outline_rounded,
+                    color: tokens.fgDim,
+                    size: 20,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -181,12 +184,15 @@ class _EmailFormView extends StatelessWidget {
                   onPressed: loading ? null : onSubmit,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: tokens.accent,
-                    foregroundColor:
-                        tokens.isLight ? Colors.white : Colors.black,
-                    disabledBackgroundColor:
-                        tokens.accent.withValues(alpha: 0.4),
+                    foregroundColor: tokens.isLight
+                        ? Colors.white
+                        : Colors.black,
+                    disabledBackgroundColor: tokens.accent.withValues(
+                      alpha: 0.4,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                     elevation: 0,
                   ),
                   child: loading
@@ -198,9 +204,13 @@ class _EmailFormView extends StatelessWidget {
                             color: tokens.isLight ? Colors.white : Colors.black,
                           ),
                         )
-                      : Text(l10n.sendMagicLink,
+                      : Text(
+                          l10n.sendMagicLink,
                           style: const TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600)),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                 ),
               ),
             ],
@@ -244,8 +254,11 @@ class _ConfirmationView extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: tokens.accent.withValues(alpha: 0.15),
                 ),
-                child: Icon(Icons.mark_email_read_outlined,
-                    size: 32, color: tokens.accent),
+                child: Icon(
+                  Icons.mark_email_read_outlined,
+                  size: 32,
+                  color: tokens.accent,
+                ),
               ),
               const SizedBox(height: 20),
               Text(
@@ -301,21 +314,21 @@ class _GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: tokens.bg.withValues(alpha: tokens.isLight ? 0.85 : 0.72),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: tokens.borderFaint),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.12),
-              blurRadius: 24,
-              offset: const Offset(0, 8),
-            ),
-          ],
+    padding: const EdgeInsets.all(24),
+    decoration: BoxDecoration(
+      color: tokens.bg.withValues(alpha: tokens.isLight ? 0.85 : 0.72),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: tokens.borderFaint),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.12),
+          blurRadius: 24,
+          offset: const Offset(0, 8),
         ),
-        child: child,
-      );
+      ],
+    ),
+    child: child,
+  );
 }
 
 class _ErrorBanner extends StatelessWidget {
@@ -325,23 +338,27 @@ class _ErrorBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    decoration: BoxDecoration(
+      color: Colors.red.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+    ),
+    child: Row(
+      children: [
+        const Icon(
+          Icons.error_outline_rounded,
+          color: Colors.redAccent,
+          size: 18,
         ),
-        child: Row(
-          children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Colors.redAccent, size: 18),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(message,
-                  style: const TextStyle(
-                      color: Colors.redAccent, fontSize: 13)),
-            ),
-          ],
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

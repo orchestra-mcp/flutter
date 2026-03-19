@@ -45,17 +45,18 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
       _showComments = user.showCommentsOnProfile;
       _coverUrl = user.coverUrl;
       for (final link in user.socialLinks) {
-        _links.add(_SocialLink(
-          platform: link['platform'] ?? 'website',
-          controller: TextEditingController(text: link['url'] ?? ''),
-        ));
+        _links.add(
+          _SocialLink(
+            platform: link['platform'] ?? 'website',
+            controller: TextEditingController(text: link['url'] ?? ''),
+          ),
+        );
       }
     }
     if (_links.isEmpty) {
-      _links.add(_SocialLink(
-        platform: 'website',
-        controller: TextEditingController(),
-      ));
+      _links.add(
+        _SocialLink(platform: 'website', controller: TextEditingController()),
+      );
     }
   }
 
@@ -85,16 +86,18 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content:
-                  Text(AppLocalizations.of(context).socialLinksUpdated)),
+            content: Text(AppLocalizations.of(context).socialLinksUpdated),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  '${AppLocalizations.of(context).failedToSaveSocialLinks}: $e')),
+            content: Text(
+              '${AppLocalizations.of(context).failedToSaveSocialLinks}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -113,8 +116,10 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
         // ── Cover image ──────────────────────────────────────────────
         _sectionHeader(tokens, l10n.coverImage),
         const SizedBox(height: 4),
-        Text(l10n.coverImageDesc,
-            style: TextStyle(fontSize: 12, color: tokens.fgDim)),
+        Text(
+          l10n.coverImageDesc,
+          style: TextStyle(fontSize: 12, color: tokens.fgDim),
+        ),
         const SizedBox(height: 12),
         GestureDetector(
           onTap: () {
@@ -139,12 +144,16 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.add_photo_alternate_outlined,
-                            size: 28, color: tokens.fgDim),
+                        Icon(
+                          Icons.add_photo_alternate_outlined,
+                          size: 28,
+                          color: tokens.fgDim,
+                        ),
                         const SizedBox(height: 4),
-                        Text(l10n.uploadCover,
-                            style: TextStyle(
-                                color: tokens.fgDim, fontSize: 12)),
+                        Text(
+                          l10n.uploadCover,
+                          style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                        ),
                       ],
                     ),
                   )
@@ -176,8 +185,10 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
         // ── Social links ─────────────────────────────────────────────
         _sectionHeader(tokens, l10n.socialLinks),
         const SizedBox(height: 4),
-        Text(l10n.socialLinksDesc,
-            style: TextStyle(fontSize: 12, color: tokens.fgDim)),
+        Text(
+          l10n.socialLinksDesc,
+          style: TextStyle(fontSize: 12, color: tokens.fgDim),
+        ),
         const SizedBox(height: 16),
         ..._links.asMap().entries.map((entry) {
           final idx = entry.key;
@@ -198,21 +209,25 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
                     child: DropdownButton<String>(
                       value: link.platform,
                       dropdownColor: tokens.bgAlt,
-                      style: TextStyle(
-                          color: tokens.fgBright, fontSize: 13),
+                      style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       items: _platforms
-                          .map((p) => DropdownMenuItem(
+                          .map(
+                            (p) => DropdownMenuItem(
                               value: p,
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(_iconForPlatform(p),
-                                      size: 16,
-                                      color: tokens.fgMuted),
+                                  Icon(
+                                    _iconForPlatform(p),
+                                    size: 16,
+                                    color: tokens.fgMuted,
+                                  ),
                                   const SizedBox(width: 6),
                                   Text(_capitalize(p)),
                                 ],
-                              )))
+                              ),
+                            ),
+                          )
                           .toList(),
                       onChanged: (v) {
                         if (v != null) {
@@ -227,8 +242,7 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
                 Expanded(
                   child: TextField(
                     controller: link.controller,
-                    style: TextStyle(
-                        color: tokens.fgBright, fontSize: 13),
+                    style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     decoration: InputDecoration(
                       hintText: 'https://',
                       hintStyle: TextStyle(color: tokens.fgDim),
@@ -236,7 +250,9 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
                       fillColor: tokens.bgAlt,
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 11),
+                        horizontal: 12,
+                        vertical: 11,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(color: tokens.border),
@@ -247,8 +263,7 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: tokens.accent),
+                        borderSide: BorderSide(color: tokens.accent),
                       ),
                     ),
                   ),
@@ -256,8 +271,11 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
                 const SizedBox(width: 6),
                 // Remove button
                 IconButton(
-                  icon: Icon(Icons.close_rounded,
-                      size: 18, color: Colors.redAccent),
+                  icon: Icon(
+                    Icons.close_rounded,
+                    size: 18,
+                    color: Colors.redAccent,
+                  ),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   onPressed: () {
@@ -277,15 +295,19 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
           child: TextButton.icon(
             onPressed: () {
               setState(() {
-                _links.add(_SocialLink(
-                  platform: 'website',
-                  controller: TextEditingController(),
-                ));
+                _links.add(
+                  _SocialLink(
+                    platform: 'website',
+                    controller: TextEditingController(),
+                  ),
+                );
               });
             },
             icon: Icon(Icons.add_rounded, size: 16, color: tokens.accent),
-            label: Text(l10n.addLink,
-                style: TextStyle(color: tokens.accent, fontSize: 13)),
+            label: Text(
+              l10n.addLink,
+              style: TextStyle(color: tokens.accent, fontSize: 13),
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -300,14 +322,17 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: _saving
                 ? const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   )
                 : Text(l10n.save),
           ),
@@ -318,13 +343,13 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _toggle(
     OrchestraColorTokens tokens,
@@ -346,15 +371,19 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500)),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(subtitle,
-                    style:
-                        TextStyle(color: tokens.fgDim, fontSize: 11)),
+                Text(
+                  subtitle,
+                  style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                ),
               ],
             ),
           ),
@@ -369,17 +398,17 @@ class _SocialSettingsTabState extends ConsumerState<SocialSettingsTab> {
   }
 
   static IconData _iconForPlatform(String p) => switch (p) {
-        'github' => Icons.code_rounded,
-        'twitter' => Icons.alternate_email_rounded,
-        'linkedin' => Icons.work_outline_rounded,
-        'youtube' => Icons.play_circle_outline_rounded,
-        'discord' => Icons.chat_rounded,
-        'instagram' => Icons.camera_alt_outlined,
-        'facebook' => Icons.facebook_rounded,
-        'dribbble' => Icons.sports_basketball_rounded,
-        'behance' => Icons.brush_rounded,
-        _ => Icons.language_rounded,
-      };
+    'github' => Icons.code_rounded,
+    'twitter' => Icons.alternate_email_rounded,
+    'linkedin' => Icons.work_outline_rounded,
+    'youtube' => Icons.play_circle_outline_rounded,
+    'discord' => Icons.chat_rounded,
+    'instagram' => Icons.camera_alt_outlined,
+    'facebook' => Icons.facebook_rounded,
+    'dribbble' => Icons.sports_basketball_rounded,
+    'behance' => Icons.brush_rounded,
+    _ => Icons.language_rounded,
+  };
 
   static String _capitalize(String s) =>
       s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';

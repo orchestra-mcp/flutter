@@ -86,21 +86,15 @@ class _IconColorPickerState extends State<IconColorPicker> {
                   color: color,
                   shape: BoxShape.circle,
                   border: isActive
-                      ? Border.all(
-                          color: tokens.fgBright,
-                          width: 2.5,
-                        )
-                      : Border.all(
-                          color: Colors.transparent,
-                          width: 2.5,
-                        ),
+                      ? Border.all(color: tokens.fgBright, width: 2.5)
+                      : Border.all(color: Colors.transparent, width: 2.5),
                   boxShadow: isActive
                       ? [
                           BoxShadow(
                             color: color.withValues(alpha: 0.50),
                             blurRadius: 8,
                             spreadRadius: 1,
-                          )
+                          ),
                         ]
                       : null,
                 ),
@@ -135,9 +129,7 @@ Future<Color?> showIconColorPicker({
     builder: (ctx) {
       final tokens = ThemeTokens.of(ctx);
       return Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.viewInsetsOf(ctx).bottom,
-        ),
+        padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(ctx).bottom),
         child: Container(
           margin: const EdgeInsets.fromLTRB(16, 0, 16, 24),
           padding: const EdgeInsets.all(20),

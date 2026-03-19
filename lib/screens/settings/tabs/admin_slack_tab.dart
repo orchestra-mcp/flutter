@@ -61,7 +61,9 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -87,7 +89,9 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).testFailed}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).testFailed}: $e'),
+          ),
         );
       }
     } finally {
@@ -102,7 +106,9 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -114,8 +120,7 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
 
             // Enable toggle
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
                 color: tokens.bgAlt,
                 borderRadius: BorderRadius.circular(10),
@@ -145,15 +150,23 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
             // Bot Token
             _fieldLabel(tokens, l10n.adminBotToken),
             const SizedBox(height: 6),
-            _field(tokens, _botTokenCtrl,
-                hint: l10n.adminSlackBotTokenHint, obscure: true),
+            _field(
+              tokens,
+              _botTokenCtrl,
+              hint: l10n.adminSlackBotTokenHint,
+              obscure: true,
+            ),
             const SizedBox(height: 16),
 
             // Signing Secret
             _fieldLabel(tokens, l10n.adminSigningSecret),
             const SizedBox(height: 6),
-            _field(tokens, _signingSecretCtrl,
-                hint: l10n.adminSigningSecretHint, obscure: true),
+            _field(
+              tokens,
+              _signingSecretCtrl,
+              hint: l10n.adminSigningSecretHint,
+              obscure: true,
+            ),
             const SizedBox(height: 16),
 
             // Default Channel ID
@@ -165,8 +178,7 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
             // Webhook URL
             _fieldLabel(tokens, l10n.adminWebhookUrl),
             const SizedBox(height: 6),
-            _field(tokens, _webhookUrlCtrl,
-                hint: l10n.adminSlackWebhookHint),
+            _field(tokens, _webhookUrlCtrl, hint: l10n.adminSlackWebhookHint),
 
             const SizedBox(height: 24),
 
@@ -179,16 +191,22 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
                   side: BorderSide(color: tokens.accent),
                   padding: const EdgeInsets.symmetric(vertical: 13),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _testing
                     ? SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: tokens.accent),
+                          strokeWidth: 2,
+                          color: tokens.accent,
+                        ),
                       )
-                    : Text(AppLocalizations.of(context).test, style: TextStyle(color: tokens.accent)),
+                    : Text(
+                        AppLocalizations.of(context).test,
+                        style: TextStyle(color: tokens.accent),
+                      ),
               ),
             ),
             const SizedBox(height: 12),
@@ -203,14 +221,17 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -222,23 +243,23 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -257,8 +278,10 @@ class _AdminSlackTabState extends ConsumerState<AdminSlackTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

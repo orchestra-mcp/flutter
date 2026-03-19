@@ -6,60 +6,65 @@ import 'package:orchestra/screens/settings/tabs/health_settings_tab.dart';
 
 /// A sample profile map with all keys the tab reads.
 Map<String, dynamic> _sampleProfile() => {
-      'weightAlertEnabled': true,
-      'weightAlertHour': 8,
-      'weightAlertMinute': 30,
-      'weightAlertDelayDays': 2,
-      'hygieneAlertEnabled': false,
-      'hygieneAlertDelayDays': 1,
-      'pomodoroStartAlertEnabled': true,
-      'pomodoroStartLeadMinutes': 10,
-      'pomodoroEndAlertEnabled': false,
-      'pomodoroEndLeadMinutes': 5,
-      'heartRateHighThreshold': 140,
-      'heartRateLowThreshold': 45,
-      'mealReminderEnabled': true,
-      'coffeeAlertEnabled': true,
-      'coffeeAlertHour': 15,
-      'coffeeAlertMinute': 0,
-      'hydrationAlertEnabled': true,
-      'hydrationAlertGapMinutes': 90,
-      'movementAlertEnabled': false,
-      'movementAlertIntervalMinutes': 60,
-      'gerdShutdownLeadMinutes': 20,
-      'sleepBedtimeHour': 22,
-      'sleepBedtimeMinute': 45,
-      'shutdownWindowHours': 3,
-    };
+  'weightAlertEnabled': true,
+  'weightAlertHour': 8,
+  'weightAlertMinute': 30,
+  'weightAlertDelayDays': 2,
+  'hygieneAlertEnabled': false,
+  'hygieneAlertDelayDays': 1,
+  'pomodoroStartAlertEnabled': true,
+  'pomodoroStartLeadMinutes': 10,
+  'pomodoroEndAlertEnabled': false,
+  'pomodoroEndLeadMinutes': 5,
+  'heartRateHighThreshold': 140,
+  'heartRateLowThreshold': 45,
+  'mealReminderEnabled': true,
+  'coffeeAlertEnabled': true,
+  'coffeeAlertHour': 15,
+  'coffeeAlertMinute': 0,
+  'hydrationAlertEnabled': true,
+  'hydrationAlertGapMinutes': 90,
+  'movementAlertEnabled': false,
+  'movementAlertIntervalMinutes': 60,
+  'gerdShutdownLeadMinutes': 20,
+  'sleepBedtimeHour': 22,
+  'sleepBedtimeMinute': 45,
+  'shutdownWindowHours': 3,
+};
 
 void main() {
   group('HealthSettingsTab', () {
-    testWidgets('shows loading indicator while health profile loads',
-        (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith(
-            (ref) => Future<Map<String, dynamic>>.delayed(
-              const Duration(seconds: 10),
-              () => {},
+    testWidgets('shows loading indicator while health profile loads', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith(
+              (ref) => Future<Map<String, dynamic>>.delayed(
+                const Duration(seconds: 10),
+                () => {},
+              ),
             ),
-          ),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
     testWidgets('shows error state with retry button', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith(
-            (ref) => Future<Map<String, dynamic>>.error('network down'),
-          ),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith(
+              (ref) => Future<Map<String, dynamic>>.error('network down'),
+            ),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Failed to load health profile'), findsOneWidget);
@@ -67,12 +72,14 @@ void main() {
     });
 
     testWidgets('shows section headers when profile loads', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Notifications'), findsOneWidget);
@@ -80,12 +87,14 @@ void main() {
     });
 
     testWidgets('renders all toggle labels', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Weight Check-in'), findsOneWidget);
@@ -99,12 +108,14 @@ void main() {
     });
 
     testWidgets('renders heart rate steppers', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Heart Rate High'), findsOneWidget);
@@ -114,26 +125,29 @@ void main() {
     });
 
     testWidgets('renders GERD warning stepper', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('GERD Warning'), findsOneWidget);
       expect(find.text('20 min'), findsOneWidget);
     });
 
-    testWidgets('shows conditional sub-rows when toggle is on',
-        (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+    testWidgets('shows conditional sub-rows when toggle is on', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Weight is enabled → should show Alert Time and Delay Days
@@ -146,18 +160,21 @@ void main() {
       expect(find.text('10 min'), findsOneWidget);
     });
 
-    testWidgets('hides conditional sub-rows when toggle is off',
-        (tester) async {
+    testWidgets('hides conditional sub-rows when toggle is off', (
+      tester,
+    ) async {
       final profile = _sampleProfile();
       profile['weightAlertEnabled'] = false;
       profile['coffeeAlertEnabled'] = false;
 
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => profile),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => profile),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Weight sub-rows should not be visible
@@ -168,14 +185,17 @@ void main() {
       expect(find.text('Cutoff Time'), findsNothing);
     });
 
-    testWidgets('renders sleep section with bedtime and shutdown window',
-        (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+    testWidgets('renders sleep section with bedtime and shutdown window', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Bedtime'), findsOneWidget);
@@ -185,27 +205,33 @@ void main() {
     });
 
     testWidgets('renders correct number of switches', (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // 8 toggle rows = 8 switches
       expect(find.byType(Switch), findsNWidgets(8));
     });
 
-    testWidgets('renders with all defaults when profile is empty',
-        (tester) async {
-      await tester.pumpWidget(ProviderScope(
-        overrides: [
-          healthProfileProvider
-              .overrideWith((ref) async => <String, dynamic>{}),
-        ],
-        child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
-      ));
+    testWidgets('renders with all defaults when profile is empty', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            healthProfileProvider.overrideWith(
+              (ref) async => <String, dynamic>{},
+            ),
+          ],
+          child: const MaterialApp(home: Scaffold(body: HealthSettingsTab())),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should still render sections without crashing

@@ -166,11 +166,7 @@ class _LogoMark extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: AppLocalizations.of(context).orchestraLogoSemantics,
-      child: Image.asset(
-        'assets/images/logo.png',
-        width: 88,
-        height: 88,
-      ),
+      child: Image.asset('assets/images/logo.png', width: 88, height: 88),
     );
   }
 }

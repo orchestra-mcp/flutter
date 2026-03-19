@@ -39,13 +39,12 @@ class SyncEngineState {
     DateTime? lastSyncTimestamp,
     String? errorMessage,
     int? syncedDeltaCount,
-  }) =>
-      SyncEngineState(
-        phase: phase ?? this.phase,
-        lastSyncTimestamp: lastSyncTimestamp ?? this.lastSyncTimestamp,
-        errorMessage: errorMessage,
-        syncedDeltaCount: syncedDeltaCount ?? this.syncedDeltaCount,
-      );
+  }) => SyncEngineState(
+    phase: phase ?? this.phase,
+    lastSyncTimestamp: lastSyncTimestamp ?? this.lastSyncTimestamp,
+    errorMessage: errorMessage,
+    syncedDeltaCount: syncedDeltaCount ?? this.syncedDeltaCount,
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -117,8 +116,9 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
       );
       await _applyDeltas(allDeltas);
 
-      final serverTs =
-          allDeltas.isNotEmpty ? allDeltas.last.timestamp : DateTime.now();
+      final serverTs = allDeltas.isNotEmpty
+          ? allDeltas.last.timestamp
+          : DateTime.now();
       await _saveLastSync(serverTs);
       state = state.copyWith(
         phase: SyncPhase.idle,
@@ -143,8 +143,7 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
     if (state.phase == SyncPhase.syncing) return;
     state = state.copyWith(phase: SyncPhase.syncing, errorMessage: null);
     try {
-      final since =
-          state.lastSyncTimestamp ?? DateTime.utc(2000);
+      final since = state.lastSyncTimestamp ?? DateTime.utc(2000);
       final clientId = await _getClientId();
       final response = await _syncClient.pullDeltas(
         SyncPullRequest(since: since),
@@ -186,8 +185,7 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
       final request = SyncPushRequest(
         deltas: pending,
         clientId: clientId,
-        lastSyncTimestamp:
-            state.lastSyncTimestamp ?? DateTime.utc(2000),
+        lastSyncTimestamp: state.lastSyncTimestamp ?? DateTime.utc(2000),
       );
       final response = await _syncClient.pushDeltas(request);
 
@@ -216,14 +214,16 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
         // For useRemote or manual, the remote version already won.
         // Manual conflicts are stored for UI resolution.
         if (resolved.resolution == ResolutionKind.manual) {
-          await _changeTracker.storeConflict(ConflictRecord(
-            id: '${conflict.clientDelta.entityType}-${conflict.clientDelta.entityId}',
-            entityType: conflict.clientDelta.entityType,
-            entityId: conflict.clientDelta.entityId,
-            localDelta: conflict.clientDelta,
-            remoteDelta: conflict.serverDelta,
-            detectedAt: DateTime.now(),
-          ));
+          await _changeTracker.storeConflict(
+            ConflictRecord(
+              id: '${conflict.clientDelta.entityType}-${conflict.clientDelta.entityId}',
+              entityType: conflict.clientDelta.entityType,
+              entityId: conflict.clientDelta.entityId,
+              localDelta: conflict.clientDelta,
+              remoteDelta: conflict.serverDelta,
+              detectedAt: DateTime.now(),
+            ),
+          );
         }
         // For accepted conflicts, clear them from the queue.
         await _changeTracker.markSynced([conflict.clientDelta.id]);
@@ -271,19 +271,20 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
           'operation': entry.operation,
           'payload': payload,
         });
-        await (_db.delete(_db.syncQueueTable)
-              ..where((t) => t.id.equals(entry.id)))
-            .go();
+        await (_db.delete(
+          _db.syncQueueTable,
+        )..where((t) => t.id.equals(entry.id))).go();
       } catch (_) {
-        await (_db.update(_db.syncQueueTable)
-              ..where((t) => t.id.equals(entry.id)))
-            .write(SyncQueueTableCompanion(
-          attempts: Value(entry.attempts + 1),
-          nextRetryAt: Value(
-            DateTime.now()
-                .add(Duration(seconds: 30 * (entry.attempts + 1))),
+        await (_db.update(
+          _db.syncQueueTable,
+        )..where((t) => t.id.equals(entry.id))).write(
+          SyncQueueTableCompanion(
+            attempts: Value(entry.attempts + 1),
+            nextRetryAt: Value(
+              DateTime.now().add(Duration(seconds: 30 * (entry.attempts + 1))),
+            ),
           ),
-        ));
+        );
       }
     }
   }
@@ -298,7 +299,9 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
     required String operation,
     required Map<String, dynamic> payload,
   }) async {
-    await _db.into(_db.syncQueueTable).insert(
+    await _db
+        .into(_db.syncQueueTable)
+        .insert(
           SyncQueueTableCompanion.insert(
             entityType: entityType,
             entityId: entityId,
@@ -330,14 +333,16 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
 
   Future<void> _applyFeatureDelta(SyncDelta delta) async {
     if (delta.operation == SyncOperation.delete) {
-      await (_db.delete(_db.featuresTable)
-            ..where((t) => t.id.equals(delta.entityId)))
-          .go();
+      await (_db.delete(
+        _db.featuresTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
       return;
     }
     final f = delta.data ?? {};
     final projectId = (f['project_id'] as String?) ?? '';
-    await _db.into(_db.featuresTable).insertOnConflictUpdate(
+    await _db
+        .into(_db.featuresTable)
+        .insertOnConflictUpdate(
           FeaturesTableCompanion.insert(
             id: delta.entityId,
             projectId: projectId,
@@ -349,25 +354,27 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
             synced: const Value(true),
             createdAt:
                 DateTime.tryParse(f['created_at'] as String? ?? '') ??
-                    DateTime.now(),
+                DateTime.now(),
             updatedAt:
                 DateTime.tryParse(f['updated_at'] as String? ?? '') ??
-                    DateTime.now(),
+                DateTime.now(),
           ),
         );
   }
 
   Future<void> _applyProjectDelta(SyncDelta delta) async {
     if (delta.operation == SyncOperation.delete) {
-      await (_db.delete(_db.projectsTable)
-            ..where((t) => t.id.equals(delta.entityId)))
-          .go();
+      await (_db.delete(
+        _db.projectsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
       return;
     }
     final p = delta.data ?? {};
     final id = delta.entityId;
     final slug = (p['slug'] as String?) ?? id;
-    await _db.into(_db.projectsTable).insertOnConflictUpdate(
+    await _db
+        .into(_db.projectsTable)
+        .insertOnConflictUpdate(
           ProjectsTableCompanion.insert(
             id: id,
             slug: slug,
@@ -376,23 +383,25 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
             synced: const Value(true),
             createdAt:
                 DateTime.tryParse(p['created_at'] as String? ?? '') ??
-                    DateTime.now(),
+                DateTime.now(),
             updatedAt:
                 DateTime.tryParse(p['updated_at'] as String? ?? '') ??
-                    DateTime.now(),
+                DateTime.now(),
           ),
         );
   }
 
   Future<void> _applyNoteDelta(SyncDelta delta) async {
     if (delta.operation == SyncOperation.delete) {
-      await (_db.delete(_db.notesTable)
-            ..where((t) => t.id.equals(delta.entityId)))
-          .go();
+      await (_db.delete(
+        _db.notesTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
       return;
     }
     final n = delta.data ?? {};
-    await _db.into(_db.notesTable).insertOnConflictUpdate(
+    await _db
+        .into(_db.notesTable)
+        .insertOnConflictUpdate(
           NotesTableCompanion.insert(
             id: delta.entityId,
             projectId: Value(n['project_id'] as String?),
@@ -403,10 +412,10 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
             synced: const Value(true),
             createdAt:
                 DateTime.tryParse(n['created_at'] as String? ?? '') ??
-                    DateTime.now(),
+                DateTime.now(),
             updatedAt:
                 DateTime.tryParse(n['updated_at'] as String? ?? '') ??
-                    DateTime.now(),
+                DateTime.now(),
           ),
         );
   }
@@ -420,5 +429,5 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
 /// [SyncEngineState] and trigger sync operations.
 final syncEngineNotifierProvider =
     NotifierProvider<SyncEngineNotifier, SyncEngineState>(
-  SyncEngineNotifier.new,
-);
+      SyncEngineNotifier.new,
+    );

@@ -146,7 +146,8 @@ class _SmartActionBarState extends ConsumerState<SmartActionBar>
       parameters['custom_prompt'] = customPrompt;
     }
     if (type == TunnelActionType.translate) {
-      parameters['language'] = 'English'; // Default; UI could make this configurable.
+      parameters['language'] =
+          'English'; // Default; UI could make this configurable.
     }
 
     final action = TunnelAction(
@@ -211,7 +212,8 @@ class _SmartActionBarState extends ConsumerState<SmartActionBar>
     final tokens = ThemeTokens.of(context);
     final l10n = AppLocalizations.of(context);
     final actions = _buildActions(l10n);
-    final isDispatching = _activeAction != null &&
+    final isDispatching =
+        _activeAction != null &&
         (_latestResponse == null || !_latestResponse!.isTerminal);
 
     return Column(
@@ -260,7 +262,8 @@ class _SmartActionBarState extends ConsumerState<SmartActionBar>
                             : () {
                                 if (action.type == TunnelActionType.custom) {
                                   setState(
-                                      () => _showCustomInput = !_showCustomInput);
+                                    () => _showCustomInput = !_showCustomInput,
+                                  );
                                 } else {
                                   _dispatchAction(action.type);
                                 }
@@ -340,8 +343,7 @@ class _SmartActionChipState extends State<_SmartActionChip> {
       child: MouseRegion(
         onEnter: (_) => setState(() => _hovered = true),
         onExit: (_) => setState(() => _hovered = false),
-        cursor:
-            isEnabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        cursor: isEnabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(
           onTap: widget.onTap,
           child: AnimatedContainer(
@@ -351,15 +353,15 @@ class _SmartActionChipState extends State<_SmartActionChip> {
               color: widget.isActive
                   ? widget.color.withValues(alpha: 0.20)
                   : _hovered
-                      ? widget.tokens.accentSurface
-                      : Colors.transparent,
+                  ? widget.tokens.accentSurface
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: widget.isActive
                     ? widget.color.withValues(alpha: 0.40)
                     : _hovered
-                        ? widget.tokens.border
-                        : Colors.transparent,
+                    ? widget.tokens.border
+                    : Colors.transparent,
                 width: 0.5,
               ),
             ),
@@ -374,8 +376,7 @@ class _SmartActionChipState extends State<_SmartActionChip> {
                       height: 12,
                       child: CircularProgressIndicator(
                         strokeWidth: 1.5,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(widget.color),
+                        valueColor: AlwaysStoppedAnimation<Color>(widget.color),
                       ),
                     ),
                   )

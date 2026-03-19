@@ -54,8 +54,14 @@ void main() {
     });
 
     test('overwriting tokens replaces previous values', () {
-      storage.saveTokens(accessToken: 'old-access', refreshToken: 'old-refresh');
-      storage.saveTokens(accessToken: 'new-access', refreshToken: 'new-refresh');
+      storage.saveTokens(
+        accessToken: 'old-access',
+        refreshToken: 'old-refresh',
+      );
+      storage.saveTokens(
+        accessToken: 'new-access',
+        refreshToken: 'new-refresh',
+      );
       expect(storage.getAccessToken(), equals('new-access'));
       expect(storage.getRefreshToken(), equals('new-refresh'));
     });
@@ -65,10 +71,7 @@ void main() {
     test('webPlatformGuard does not throw on non-web', () {
       // kIsWeb is false in test environment — guard must be a no-op.
       // Importing via the public package path to exercise the actual guard.
-      expect(
-        () => _callGuard('SomeService.method'),
-        returnsNormally,
-      );
+      expect(() => _callGuard('SomeService.method'), returnsNormally);
     });
   });
 }

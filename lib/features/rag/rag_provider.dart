@@ -36,32 +36,39 @@ final contextBuilderProvider = Provider<ContextBuilder>((ref) {
 
 /// FutureProvider family for searching across all local data.
 /// Usage: `ref.watch(searchResultsProvider('my query'))`
-final searchResultsProvider =
-    FutureProvider.family<List<SearchResult>, String>((ref, query) async {
-  final service = ref.watch(localSearchServiceProvider);
-  return service.search(query);
-});
+final searchResultsProvider = FutureProvider.family<List<SearchResult>, String>(
+  (ref, query) async {
+    final service = ref.watch(localSearchServiceProvider);
+    return service.search(query);
+  },
+);
 
 /// FutureProvider family for building AI context from a query.
 /// Usage: `ref.watch(ragContextProvider('my query'))`
-final ragContextProvider =
-    FutureProvider.family<String, String>((ref, query) async {
+final ragContextProvider = FutureProvider.family<String, String>((
+  ref,
+  query,
+) async {
   final builder = ref.watch(contextBuilderProvider);
   return builder.buildContext(query);
 });
 
 /// FutureProvider family for getting relevant features for a query.
 /// Usage: `ref.watch(relevantFeaturesProvider('my query'))`
-final relevantFeaturesProvider =
-    FutureProvider.family<String, String>((ref, query) async {
+final relevantFeaturesProvider = FutureProvider.family<String, String>((
+  ref,
+  query,
+) async {
   final builder = ref.watch(contextBuilderProvider);
   return builder.getRelevantFeatures(query);
 });
 
 /// FutureProvider family for getting relevant notes for a query.
 /// Usage: `ref.watch(relevantNotesProvider('my query'))`
-final relevantNotesProvider =
-    FutureProvider.family<String, String>((ref, query) async {
+final relevantNotesProvider = FutureProvider.family<String, String>((
+  ref,
+  query,
+) async {
   final builder = ref.watch(contextBuilderProvider);
   return builder.getRelevantNotes(query);
 });

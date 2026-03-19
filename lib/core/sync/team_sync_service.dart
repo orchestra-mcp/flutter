@@ -51,21 +51,23 @@ class TeamSyncService {
     );
 
     // Push to the server.
-    final response = await apiClient.pushDeltas(SyncPushRequest(
-      deltas: [
-        SyncDelta(
-          id: '${entityType}_${entityId}_share_${DateTime.now().microsecondsSinceEpoch}',
-          entityType: entityType,
-          entityId: entityId,
-          operation: SyncOperation.update,
-          data: request.toJson(),
-          timestamp: DateTime.now().toUtc(),
-          version: 0,
-        ),
-      ],
-      clientId: changeTracker.nodeId,
-      lastSyncTimestamp: DateTime.now().toUtc(),
-    ));
+    final response = await apiClient.pushDeltas(
+      SyncPushRequest(
+        deltas: [
+          SyncDelta(
+            id: '${entityType}_${entityId}_share_${DateTime.now().microsecondsSinceEpoch}',
+            entityType: entityType,
+            entityId: entityId,
+            operation: SyncOperation.update,
+            data: request.toJson(),
+            timestamp: DateTime.now().toUtc(),
+            version: 0,
+          ),
+        ],
+        clientId: changeTracker.nodeId,
+        lastSyncTimestamp: DateTime.now().toUtc(),
+      ),
+    );
 
     final shareResponse = ShareResponse(
       shareId: '${entityType}_${entityId}_$teamId',
@@ -101,30 +103,34 @@ class TeamSyncService {
       if (!teamIds.contains(teamId)) {
         teamIds.add(teamId);
       }
-      await repository.upsertMetadata(EntitySyncMetadata(
-        entityType: entityType,
-        entityId: entityId,
-        status: EntitySyncStatus.synced,
-        lastSyncedAt: shareResponse.serverTimestamp,
-        localVersion: shareResponse.version,
-        remoteVersion: shareResponse.version,
-        contentHash: hash,
-        lastSyncedBy: changeTracker.nodeId,
-        sharedWithTeamIds: teamIds,
-      ));
+      await repository.upsertMetadata(
+        EntitySyncMetadata(
+          entityType: entityType,
+          entityId: entityId,
+          status: EntitySyncStatus.synced,
+          lastSyncedAt: shareResponse.serverTimestamp,
+          localVersion: shareResponse.version,
+          remoteVersion: shareResponse.version,
+          contentHash: hash,
+          lastSyncedBy: changeTracker.nodeId,
+          sharedWithTeamIds: teamIds,
+        ),
+      );
 
       // Record a version history entry.
-      await repository.addVersionEntry(SyncVersionEntry(
-        id: '${entityType}_${entityId}_v${shareResponse.version}',
-        entityType: entityType,
-        entityId: entityId,
-        version: shareResponse.version,
-        authorId: changeTracker.nodeId,
-        authorName: changeTracker.nodeId,
-        changeSummary: 'Shared with team $teamId',
-        timestamp: shareResponse.serverTimestamp,
-        contentHash: hash,
-      ));
+      await repository.addVersionEntry(
+        SyncVersionEntry(
+          id: '${entityType}_${entityId}_v${shareResponse.version}',
+          entityType: entityType,
+          entityId: entityId,
+          version: shareResponse.version,
+          authorId: changeTracker.nodeId,
+          authorName: changeTracker.nodeId,
+          changeSummary: 'Shared with team $teamId',
+          timestamp: shareResponse.serverTimestamp,
+          contentHash: hash,
+        ),
+      );
     }
 
     return shareResponse;
@@ -143,10 +149,7 @@ class TeamSyncService {
         checkedAt: DateTime.now(),
       );
     } catch (_) {
-      return TeamUpdateStatus(
-        availableUpdates: 0,
-        checkedAt: DateTime.now(),
-      );
+      return TeamUpdateStatus(availableUpdates: 0, checkedAt: DateTime.now());
     }
   }
 
@@ -160,10 +163,7 @@ class TeamSyncService {
     if (outdated.isEmpty) {
       // Also check for any server-side updates since our last sync.
       final pullResponse = await apiClient.pullDeltas(
-        SyncPullRequest(
-          since: DateTime.utc(2000),
-          limit: 100,
-        ),
+        SyncPullRequest(since: DateTime.utc(2000), limit: 100),
         deviceId: deviceId,
       );
       return pullResponse.deltas.length;
@@ -184,9 +184,11 @@ class TeamSyncService {
 
         // Find deltas for this specific entity.
         final entityDeltas = response.deltas
-            .where((d) =>
-                d.entityType == meta.entityType &&
-                d.entityId == meta.entityId)
+            .where(
+              (d) =>
+                  d.entityType == meta.entityType &&
+                  d.entityId == meta.entityId,
+            )
             .toList();
 
         if (entityDeltas.isNotEmpty) {
@@ -205,17 +207,19 @@ class TeamSyncService {
           );
 
           // Add version history entry.
-          await repository.addVersionEntry(SyncVersionEntry(
-            id: '${meta.entityType}_${meta.entityId}_v${latest.version}',
-            entityType: meta.entityType,
-            entityId: meta.entityId,
-            version: latest.version,
-            authorId: latest.clientId ?? 'server',
-            authorName: latest.clientId ?? 'server',
-            changeSummary: 'Pulled from server',
-            timestamp: latest.timestamp,
-            contentHash: hash,
-          ));
+          await repository.addVersionEntry(
+            SyncVersionEntry(
+              id: '${meta.entityType}_${meta.entityId}_v${latest.version}',
+              entityType: meta.entityType,
+              entityId: meta.entityId,
+              version: latest.version,
+              authorId: latest.clientId ?? 'server',
+              authorName: latest.clientId ?? 'server',
+              changeSummary: 'Pulled from server',
+              timestamp: latest.timestamp,
+              contentHash: hash,
+            ),
+          );
 
           updatedCount++;
         }
@@ -260,13 +264,16 @@ class TeamSyncService {
         );
         responses.add(response);
       } catch (e) {
-        responses.add(ShareResponse(
-          shareId: '${request.entityType}_${request.entityId}_${request.teamId}',
-          success: false,
-          version: 0,
-          serverTimestamp: DateTime.now(),
-          errorMessage: e.toString(),
-        ));
+        responses.add(
+          ShareResponse(
+            shareId:
+                '${request.entityType}_${request.entityId}_${request.teamId}',
+            success: false,
+            version: 0,
+            serverTimestamp: DateTime.now(),
+            errorMessage: e.toString(),
+          ),
+        );
       }
     }
     return responses;
@@ -296,17 +303,19 @@ class TeamSyncService {
     final existing = await repository.getMetadata(entityType, entityId);
     final newVersion = (existing?.localVersion ?? 0) + 1;
 
-    await repository.upsertMetadata(EntitySyncMetadata(
-      entityType: entityType,
-      entityId: entityId,
-      status: EntitySyncStatus.pending,
-      lastSyncedAt: existing?.lastSyncedAt,
-      localVersion: newVersion,
-      remoteVersion: existing?.remoteVersion,
-      contentHash: hash,
-      lastSyncedBy: existing?.lastSyncedBy,
-      sharedWithTeamIds: existing?.sharedWithTeamIds ?? [],
-    ));
+    await repository.upsertMetadata(
+      EntitySyncMetadata(
+        entityType: entityType,
+        entityId: entityId,
+        status: EntitySyncStatus.pending,
+        lastSyncedAt: existing?.lastSyncedAt,
+        localVersion: newVersion,
+        remoteVersion: existing?.remoteVersion,
+        contentHash: hash,
+        lastSyncedBy: existing?.lastSyncedBy,
+        sharedWithTeamIds: existing?.sharedWithTeamIds ?? [],
+      ),
+    );
 
     // Record the change in the change tracker so the sync engine will
     // pick it up during the next push cycle.

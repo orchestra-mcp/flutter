@@ -59,7 +59,9 @@ class FileAccessService {
     }
 
     // Restore workspace bookmarks
-    final keys = prefs.getKeys().where((k) => k.startsWith('${_prefsPrefix}ws_'));
+    final keys = prefs.getKeys().where(
+      (k) => k.startsWith('${_prefsPrefix}ws_'),
+    );
     for (final key in keys) {
       final data = prefs.getString(key);
       if (data != null) {
@@ -97,7 +99,8 @@ class FileAccessService {
 
     final home = _homeDir;
     final result = await _requestFolderAccess(
-      message: 'Orchestra needs access to your home directory to read '
+      message:
+          'Orchestra needs access to your home directory to read '
           'workspace data and the ~/.orchestra/ configuration.',
       initialPath: home,
     );
@@ -140,10 +143,11 @@ class FileAccessService {
   Future<String?> pickDirectory({String? message, String? initialPath}) async {
     if (_isMacOS) {
       try {
-        final result = await _channel.invokeMethod<Map<Object?, Object?>>('requestFolderAccess', {
-          'message': message ?? 'Select a folder',
-          if (initialPath != null) 'initialPath': initialPath,
-        });
+        final result = await _channel
+            .invokeMethod<Map<Object?, Object?>>('requestFolderAccess', {
+              'message': message ?? 'Select a folder',
+              if (initialPath != null) 'initialPath': initialPath,
+            });
         if (result == null) return null;
         return result['path'] as String;
       } on PlatformException catch (e) {
@@ -162,10 +166,13 @@ class FileAccessService {
     String? initialPath,
   }) async {
     try {
-      final result = await _channel.invokeMethod<Map<Object?, Object?>>('requestFolderAccess', {
-        'message': message,
-        if (initialPath != null) 'initialPath': initialPath,
-      });
+      final result = await _channel.invokeMethod<Map<Object?, Object?>>(
+        'requestFolderAccess',
+        {
+          'message': message,
+          if (initialPath != null) 'initialPath': initialPath,
+        },
+      );
 
       if (result == null) return null; // User cancelled
 
@@ -181,9 +188,10 @@ class FileAccessService {
 
   Future<bool> _resolveBookmark(Uint8List bookmarkData) async {
     try {
-      final result = await _channel.invokeMethod<Map<Object?, Object?>>('resolveBookmark', {
-        'bookmark': bookmarkData,
-      });
+      final result = await _channel.invokeMethod<Map<Object?, Object?>>(
+        'resolveBookmark',
+        {'bookmark': bookmarkData},
+      );
 
       if (result == null) return false;
 

@@ -17,12 +17,12 @@ class _NavDest {
 }
 
 const _destinations = [
-  _NavDest(label: 'Summary',       icon: Icons.home_outlined),
+  _NavDest(label: 'Summary', icon: Icons.home_outlined),
   _NavDest(label: 'Notifications', icon: Icons.notifications_outlined),
-  _NavDest(label: 'Projects',      icon: Icons.folder_outlined),
-  _NavDest(label: 'Library',       icon: Icons.book_outlined),
-  _NavDest(label: 'Health',        icon: Icons.favorite_outline),
-  _NavDest(label: 'Settings',      icon: Icons.settings_outlined),
+  _NavDest(label: 'Projects', icon: Icons.folder_outlined),
+  _NavDest(label: 'Library', icon: Icons.book_outlined),
+  _NavDest(label: 'Health', icon: Icons.favorite_outline),
+  _NavDest(label: 'Settings', icon: Icons.settings_outlined),
 ];
 
 // ─── Shell state ─────────────────────────────────────────────────────────────
@@ -41,8 +41,9 @@ class _WebShellNotifier extends Notifier<_WebShellState> {
   void select(int index) => state = state.copyWith(selectedIndex: index);
 }
 
-final _webShellProvider =
-    NotifierProvider<_WebShellNotifier, _WebShellState>(_WebShellNotifier.new);
+final _webShellProvider = NotifierProvider<_WebShellNotifier, _WebShellState>(
+  _WebShellNotifier.new,
+);
 
 // ─── Public shell widget ──────────────────────────────────────────────────────
 
@@ -74,15 +75,13 @@ class _WebShellState2 extends ConsumerState<WebShell> {
             ? _DesktopLayout(
                 tokens: tokens,
                 selectedIndex: shellState.selectedIndex,
-                onSelect: (i) =>
-                    ref.read(_webShellProvider.notifier).select(i),
+                onSelect: (i) => ref.read(_webShellProvider.notifier).select(i),
                 body: widget.body,
               )
             : _MobileLayout(
                 tokens: tokens,
                 selectedIndex: shellState.selectedIndex,
-                onSelect: (i) =>
-                    ref.read(_webShellProvider.notifier).select(i),
+                onSelect: (i) => ref.read(_webShellProvider.notifier).select(i),
                 body: widget.body,
               );
       },
@@ -131,11 +130,7 @@ class _DesktopLayout extends StatelessWidget {
                 ),
             ],
           ),
-          VerticalDivider(
-            thickness: 1,
-            width: 1,
-            color: tokens.border,
-          ),
+          VerticalDivider(thickness: 1, width: 1, color: tokens.border),
           Expanded(child: body),
         ],
       ),
@@ -172,10 +167,7 @@ class _MobileLayout extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         items: [
           for (final dest in _destinations)
-            BottomNavigationBarItem(
-              icon: Icon(dest.icon),
-              label: dest.label,
-            ),
+            BottomNavigationBarItem(icon: Icon(dest.icon), label: dest.label),
         ],
       ),
     );

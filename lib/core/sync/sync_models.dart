@@ -10,11 +10,11 @@ enum SyncOperation {
   delete;
 
   factory SyncOperation.fromString(String value) => switch (value) {
-        'create' => SyncOperation.create,
-        'update' => SyncOperation.update,
-        'delete' => SyncOperation.delete,
-        _ => throw ArgumentError('Unknown SyncOperation: $value'),
-      };
+    'create' => SyncOperation.create,
+    'update' => SyncOperation.update,
+    'delete' => SyncOperation.delete,
+    _ => throw ArgumentError('Unknown SyncOperation: $value'),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -68,31 +68,32 @@ class SyncDelta {
   // -- JSON ------------------------------------------------------------------
 
   factory SyncDelta.fromJson(Map<String, dynamic> json) => SyncDelta(
-        id: json['id'] as String? ?? '',
-        entityType: json['entity_type'] as String? ?? '',
-        entityId: json['entity_id'] as String? ?? '',
-        operation: SyncOperation.fromString(
-            json['operation'] as String? ?? 'update'),
-        data: json['data'] as Map<String, dynamic>?,
-        timestamp: json['timestamp'] != null
-            ? DateTime.parse(json['timestamp'] as String)
-            : DateTime.now(),
-        version: json['version'] as int? ?? 0,
-        clientId: json['client_id'] as String?,
-        versionVector: json['version_vector'] as Map<String, dynamic>?,
-      );
+    id: json['id'] as String? ?? '',
+    entityType: json['entity_type'] as String? ?? '',
+    entityId: json['entity_id'] as String? ?? '',
+    operation: SyncOperation.fromString(
+      json['operation'] as String? ?? 'update',
+    ),
+    data: json['data'] as Map<String, dynamic>?,
+    timestamp: json['timestamp'] != null
+        ? DateTime.parse(json['timestamp'] as String)
+        : DateTime.now(),
+    version: json['version'] as int? ?? 0,
+    clientId: json['client_id'] as String?,
+    versionVector: json['version_vector'] as Map<String, dynamic>?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'operation': operation.name,
-        'data': data,
-        'timestamp': timestamp.toUtc().toIso8601String(),
-        'version': version,
-        if (clientId != null) 'client_id': clientId,
-        if (versionVector != null) 'version_vector': versionVector,
-      };
+    'id': id,
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'operation': operation.name,
+    'data': data,
+    'timestamp': timestamp.toUtc().toIso8601String(),
+    'version': version,
+    if (clientId != null) 'client_id': clientId,
+    if (versionVector != null) 'version_vector': versionVector,
+  };
 
   SyncDelta copyWith({
     String? id,
@@ -104,18 +105,17 @@ class SyncDelta {
     int? version,
     String? clientId,
     Map<String, dynamic>? versionVector,
-  }) =>
-      SyncDelta(
-        id: id ?? this.id,
-        entityType: entityType ?? this.entityType,
-        entityId: entityId ?? this.entityId,
-        operation: operation ?? this.operation,
-        data: data ?? this.data,
-        timestamp: timestamp ?? this.timestamp,
-        version: version ?? this.version,
-        clientId: clientId ?? this.clientId,
-        versionVector: versionVector ?? this.versionVector,
-      );
+  }) => SyncDelta(
+    id: id ?? this.id,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    operation: operation ?? this.operation,
+    data: data ?? this.data,
+    timestamp: timestamp ?? this.timestamp,
+    version: version ?? this.version,
+    clientId: clientId ?? this.clientId,
+    versionVector: versionVector ?? this.versionVector,
+  );
 
   @override
   String toString() =>
@@ -139,10 +139,10 @@ class SyncPushRequest {
   final DateTime lastSyncTimestamp;
 
   Map<String, dynamic> toJson() => {
-        'deltas': deltas.map((d) => d.toJson()).toList(),
-        'client_id': clientId,
-        'last_sync_timestamp': lastSyncTimestamp.toUtc().toIso8601String(),
-      };
+    'deltas': deltas.map((d) => d.toJson()).toList(),
+    'client_id': clientId,
+    'last_sync_timestamp': lastSyncTimestamp.toUtc().toIso8601String(),
+  };
 
   factory SyncPushRequest.fromJson(Map<String, dynamic> json) =>
       SyncPushRequest(
@@ -186,33 +186,32 @@ class SyncPushResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        'accepted': accepted,
-        'conflicts': conflicts.map((c) => c.toJson()).toList(),
-        'server_timestamp': serverTimestamp.toUtc().toIso8601String(),
-      };
+    'accepted': accepted,
+    'conflicts': conflicts.map((c) => c.toJson()).toList(),
+    'server_timestamp': serverTimestamp.toUtc().toIso8601String(),
+  };
 }
 
 /// A conflict returned inside [SyncPushResponse].
 class SyncConflict {
-  const SyncConflict({
-    required this.clientDelta,
-    required this.serverDelta,
-  });
+  const SyncConflict({required this.clientDelta, required this.serverDelta});
 
   final SyncDelta clientDelta;
   final SyncDelta serverDelta;
 
   factory SyncConflict.fromJson(Map<String, dynamic> json) => SyncConflict(
-        clientDelta:
-            SyncDelta.fromJson(json['client_delta'] as Map<String, dynamic>),
-        serverDelta:
-            SyncDelta.fromJson(json['server_delta'] as Map<String, dynamic>),
-      );
+    clientDelta: SyncDelta.fromJson(
+      json['client_delta'] as Map<String, dynamic>,
+    ),
+    serverDelta: SyncDelta.fromJson(
+      json['server_delta'] as Map<String, dynamic>,
+    ),
+  );
 
   Map<String, dynamic> toJson() => {
-        'client_delta': clientDelta.toJson(),
-        'server_delta': serverDelta.toJson(),
-      };
+    'client_delta': clientDelta.toJson(),
+    'server_delta': serverDelta.toJson(),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -242,13 +241,12 @@ class SyncPullRequest {
   final String? deviceId;
 
   Map<String, dynamic> toQueryParams() => {
-        'since': since.toUtc().toIso8601String(),
-        if (entityTypes != null && entityTypes!.isNotEmpty)
-          'entity_types': entityTypes!.join(','),
-        if (limit != null) 'limit': limit.toString(),
-        if (deviceId != null && deviceId!.isNotEmpty)
-          'device_id': deviceId,
-      };
+    'since': since.toUtc().toIso8601String(),
+    if (entityTypes != null && entityTypes!.isNotEmpty)
+      'entity_types': entityTypes!.join(','),
+    if (limit != null) 'limit': limit.toString(),
+    if (deviceId != null && deviceId!.isNotEmpty) 'device_id': deviceId,
+  };
 
   factory SyncPullRequest.fromJson(Map<String, dynamic> json) =>
       SyncPullRequest(
@@ -289,10 +287,10 @@ class SyncPullResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        'deltas': deltas.map((d) => d.toJson()).toList(),
-        'has_more': hasMore,
-        'server_timestamp': serverTimestamp.toUtc().toIso8601String(),
-      };
+    'deltas': deltas.map((d) => d.toJson()).toList(),
+    'has_more': hasMore,
+    'server_timestamp': serverTimestamp.toUtc().toIso8601String(),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -317,27 +315,26 @@ class SyncStatusInfo {
   final bool connected;
 
   factory SyncStatusInfo.fromJson(Map<String, dynamic> json) => SyncStatusInfo(
-        lastSync: json['last_sync'] != null
-            ? DateTime.parse(json['last_sync'] as String)
-            : null,
-        pendingCount: json['pending_count'] as int? ?? 0,
-        connected: json['connected'] as bool? ?? false,
-      );
+    lastSync: json['last_sync'] != null
+        ? DateTime.parse(json['last_sync'] as String)
+        : null,
+    pendingCount: json['pending_count'] as int? ?? 0,
+    connected: json['connected'] as bool? ?? false,
+  );
 
   Map<String, dynamic> toJson() => {
-        'last_sync': lastSync?.toUtc().toIso8601String(),
-        'pending_count': pendingCount,
-        'connected': connected,
-      };
+    'last_sync': lastSync?.toUtc().toIso8601String(),
+    'pending_count': pendingCount,
+    'connected': connected,
+  };
 
   SyncStatusInfo copyWith({
     DateTime? lastSync,
     int? pendingCount,
     bool? connected,
-  }) =>
-      SyncStatusInfo(
-        lastSync: lastSync ?? this.lastSync,
-        pendingCount: pendingCount ?? this.pendingCount,
-        connected: connected ?? this.connected,
-      );
+  }) => SyncStatusInfo(
+    lastSync: lastSync ?? this.lastSync,
+    pendingCount: pendingCount ?? this.pendingCount,
+    connected: connected ?? this.connected,
+  );
 }

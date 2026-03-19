@@ -46,26 +46,26 @@ class AppearanceSettingsTab extends ConsumerWidget {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _groupLabel(OrchestraColorTokens tokens, String text) => Padding(
-        padding: const EdgeInsets.only(bottom: 4),
-        child: Text(
-          text.toUpperCase(),
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w600,
-            color: tokens.fgDim,
-            letterSpacing: 0.8,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.only(bottom: 4),
+    child: Text(
+      text.toUpperCase(),
+      style: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w600,
+        color: tokens.fgDim,
+        letterSpacing: 0.8,
+      ),
+    ),
+  );
 }
 
 class _ThemeCard extends StatelessWidget {
@@ -113,8 +113,7 @@ class _ThemeCard extends StatelessWidget {
               theme.name,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight:
-                    isSelected ? FontWeight.w700 : FontWeight.normal,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
                 color: isSelected ? tokens.accent : tokens.fgMuted,
               ),
               overflow: TextOverflow.ellipsis,
@@ -126,12 +125,8 @@ class _ThemeCard extends StatelessWidget {
   }
 
   Widget _swatch(Color color) => Container(
-        width: 12,
-        height: 12,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
-      );
+    width: 12,
+    height: 12,
+    decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+  );
 }
-

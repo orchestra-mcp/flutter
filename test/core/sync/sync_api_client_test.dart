@@ -70,7 +70,10 @@ void main() {
         shareWithAll: false,
         memberIds: const ['m-1', 'm-2', 'm-3'],
         permission: SharePermission.write,
-        entityData: const {'config': true, 'nested': {'key': 'val'}},
+        entityData: const {
+          'config': true,
+          'nested': {'key': 'val'},
+        },
         contentHash: 'roundtriphash',
       );
 
@@ -115,16 +118,19 @@ void main() {
       final json = request.toJson();
       final keys = json.keys.toSet();
 
-      expect(keys, containsAll([
-        'entity_type',
-        'entity_id',
-        'team_id',
-        'share_with_all',
-        'member_ids',
-        'permission',
-        'entity_data',
-        'content_hash',
-      ]));
+      expect(
+        keys,
+        containsAll([
+          'entity_type',
+          'entity_id',
+          'team_id',
+          'share_with_all',
+          'member_ids',
+          'permission',
+          'entity_data',
+          'content_hash',
+        ]),
+      );
       // Verify no camelCase keys leaked through.
       expect(keys.any((k) => k.contains('entityType')), false);
       expect(keys.any((k) => k.contains('teamId')), false);
@@ -316,9 +322,7 @@ void main() {
     });
 
     test('fromJson defaults available_updates to 0 when missing', () {
-      final json = <String, dynamic>{
-        'checked_at': '2026-03-17T00:00:00.000Z',
-      };
+      final json = <String, dynamic>{'checked_at': '2026-03-17T00:00:00.000Z'};
 
       final status = TeamUpdateStatus.fromJson(json);
 
@@ -478,9 +482,7 @@ void main() {
     });
 
     test('handles empty entries array', () {
-      final serverResponse = <String, dynamic>{
-        'entries': <dynamic>[],
-      };
+      final serverResponse = <String, dynamic>{'entries': <dynamic>[]};
 
       final entries = (serverResponse['entries'] as List)
           .map((e) => SyncVersionEntry.fromJson(e as Map<String, dynamic>))
@@ -565,11 +567,7 @@ void main() {
                 'role': 'admin',
                 'is_online': true,
               },
-              {
-                'id': 'user-2',
-                'name': 'Bob',
-                'role': 'member',
-              },
+              {'id': 'user-2', 'name': 'Bob', 'role': 'member'},
             ],
             'created_at': '2026-01-15T10:00:00.000Z',
           },
@@ -630,9 +628,7 @@ void main() {
     });
 
     test('handles empty teams array', () {
-      final serverResponse = <String, dynamic>{
-        'teams': <dynamic>[],
-      };
+      final serverResponse = <String, dynamic>{'teams': <dynamic>[]};
 
       final teams = (serverResponse['teams'] as List)
           .map((e) => Team.fromJson(e as Map<String, dynamic>))
@@ -718,11 +714,7 @@ void main() {
             'role': 'member',
             'is_online': false,
           },
-          {
-            'id': 'user-c',
-            'name': 'Carol Viewer',
-            'role': 'viewer',
-          },
+          {'id': 'user-c', 'name': 'Carol Viewer', 'role': 'viewer'},
         ],
       };
 
@@ -740,29 +732,21 @@ void main() {
     });
 
     test('defaults role to "member" when missing', () {
-      final json = <String, dynamic>{
-        'id': 'u-1',
-        'name': 'No Role',
-      };
+      final json = <String, dynamic>{'id': 'u-1', 'name': 'No Role'};
 
       final member = TeamMember.fromJson(json);
       expect(member.role, 'member');
     });
 
     test('defaults is_online to false when missing', () {
-      final json = <String, dynamic>{
-        'id': 'u-1',
-        'name': 'Offline',
-      };
+      final json = <String, dynamic>{'id': 'u-1', 'name': 'Offline'};
 
       final member = TeamMember.fromJson(json);
       expect(member.isOnline, false);
     });
 
     test('handles empty members array', () {
-      final serverResponse = <String, dynamic>{
-        'members': <dynamic>[],
-      };
+      final serverResponse = <String, dynamic>{'members': <dynamic>[]};
 
       final members = (serverResponse['members'] as List)
           .map((e) => TeamMember.fromJson(e as Map<String, dynamic>))
@@ -963,9 +947,7 @@ void main() {
     });
 
     test('handles empty shares array', () {
-      final serverResponse = <String, dynamic>{
-        'shares': <dynamic>[],
-      };
+      final serverResponse = <String, dynamic>{'shares': <dynamic>[]};
 
       final shares = (serverResponse['shares'] as List)
           .map((e) => TeamShare.fromJson(e as Map<String, dynamic>))
@@ -1194,10 +1176,7 @@ void main() {
 
     group('missing optional fields', () {
       test('TeamMember fromJson with only required fields', () {
-        final json = <String, dynamic>{
-          'id': 'u-min',
-          'name': 'Minimum',
-        };
+        final json = <String, dynamic>{'id': 'u-min', 'name': 'Minimum'};
 
         final member = TeamMember.fromJson(json);
 
@@ -1320,32 +1299,19 @@ void main() {
       });
 
       test('TeamMember.fromJson throws on missing required id', () {
-        final json = <String, dynamic>{
-          'name': 'No ID',
-        };
+        final json = <String, dynamic>{'name': 'No ID'};
 
-        expect(
-          () => TeamMember.fromJson(json),
-          throwsA(isA<TypeError>()),
-        );
+        expect(() => TeamMember.fromJson(json), throwsA(isA<TypeError>()));
       });
 
       test('TeamMember.fromJson throws on missing required name', () {
-        final json = <String, dynamic>{
-          'id': 'u-1',
-        };
+        final json = <String, dynamic>{'id': 'u-1'};
 
-        expect(
-          () => TeamMember.fromJson(json),
-          throwsA(isA<TypeError>()),
-        );
+        expect(() => TeamMember.fromJson(json), throwsA(isA<TypeError>()));
       });
 
       test('Team.fromJson throws on missing required created_at', () {
-        final json = <String, dynamic>{
-          'id': 't-1',
-          'name': 'Team No Date',
-        };
+        final json = <String, dynamic>{'id': 't-1', 'name': 'Team No Date'};
 
         expect(
           () => Team.fromJson(json),
@@ -1354,14 +1320,9 @@ void main() {
       });
 
       test('ShareResponse.fromJson throws on missing required fields', () {
-        final json = <String, dynamic>{
-          'success': true,
-        };
+        final json = <String, dynamic>{'success': true};
 
-        expect(
-          () => ShareResponse.fromJson(json),
-          throwsA(isA<TypeError>()),
-        );
+        expect(() => ShareResponse.fromJson(json), throwsA(isA<TypeError>()));
       });
 
       test('SyncVersionEntry.fromJson throws on missing required version', () {
@@ -1401,10 +1362,7 @@ void main() {
           // Missing all other required fields.
         };
 
-        expect(
-          () => TeamUpdateEntry.fromJson(json),
-          throwsA(isA<TypeError>()),
-        );
+        expect(() => TeamUpdateEntry.fromJson(json), throwsA(isA<TypeError>()));
       });
     });
 
@@ -1579,10 +1537,7 @@ void main() {
           sharedAt: DateTime.utc(2026),
           version: 3,
         );
-        expect(
-          share.toString(),
-          'TeamShare(project/p-1 -> team:t-1 v3)',
-        );
+        expect(share.toString(), 'TeamShare(project/p-1 -> team:t-1 v3)');
       });
 
       test('SyncVersionEntry.toString includes entity, version, author', () {
@@ -1595,10 +1550,7 @@ void main() {
           authorName: 'Bob',
           timestamp: DateTime.utc(2026),
         );
-        expect(
-          entry.toString(),
-          'SyncVersionEntry(note/n-42 v7 by Bob)',
-        );
+        expect(entry.toString(), 'SyncVersionEntry(note/n-42 v7 by Bob)');
       });
 
       test('TeamUpdateStatus.toString includes update count', () {
@@ -1634,10 +1586,7 @@ void main() {
           status: EntitySyncStatus.pending,
           localVersion: 4,
         );
-        expect(
-          meta.toString(),
-          'EntitySyncMetadata(project/p-1 pending v4)',
-        );
+        expect(meta.toString(), 'EntitySyncMetadata(project/p-1 pending v4)');
       });
     });
   });

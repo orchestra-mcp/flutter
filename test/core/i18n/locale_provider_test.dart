@@ -19,12 +19,17 @@ void main() {
     test('setLocale updates state', () async {
       final container = ProviderContainer();
       addTearDown(container.dispose);
-      await container.read(localeProvider.notifier).setLocale(const Locale('ar'));
+      await container
+          .read(localeProvider.notifier)
+          .setLocale(const Locale('ar'));
       expect(container.read(localeProvider), const Locale('ar'));
     });
 
     test('kSupportedLocales contains en and ar', () {
-      expect(kSupportedLocales, containsAll([const Locale('en'), const Locale('ar')]));
+      expect(
+        kSupportedLocales,
+        containsAll([const Locale('en'), const Locale('ar')]),
+      );
     });
   });
 

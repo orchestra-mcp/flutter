@@ -22,19 +22,20 @@ class McpActionEntry {
   final String? error;
 
   /// Human-readable label for the action.
-  String get humanLabel => _toolHumanLabels[toolName] ?? _formatToolName(toolName);
+  String get humanLabel =>
+      _toolHumanLabels[toolName] ?? _formatToolName(toolName);
 
   /// Category for filtering.
   String get category => _toolCategories[toolName] ?? 'other';
 
   Map<String, dynamic> toJson() => {
-        'tool': toolName,
-        'args': arguments,
-        'timestamp': timestamp.toIso8601String(),
-        'duration_ms': durationMs,
-        'success': success,
-        if (error != null) 'error': error,
-      };
+    'tool': toolName,
+    'args': arguments,
+    'timestamp': timestamp.toIso8601String(),
+    'duration_ms': durationMs,
+    'success': success,
+    if (error != null) 'error': error,
+  };
 
   static String _formatToolName(String name) {
     return name
@@ -131,14 +132,16 @@ class McpActionLogger extends ChangeNotifier {
     required bool success,
     String? error,
   }) {
-    _entries.addFirst(McpActionEntry(
-      toolName: toolName,
-      arguments: _sanitizeArgs(arguments),
-      timestamp: DateTime.now(),
-      durationMs: durationMs,
-      success: success,
-      error: error,
-    ));
+    _entries.addFirst(
+      McpActionEntry(
+        toolName: toolName,
+        arguments: _sanitizeArgs(arguments),
+        timestamp: DateTime.now(),
+        durationMs: durationMs,
+        success: success,
+        error: error,
+      ),
+    );
 
     // Cap the list
     while (_entries.length > maxEntries) {

@@ -27,8 +27,7 @@ class _Project {
 
   int get doneCount => features.where((f) => f.status == 'done').length;
   int get totalCount => features.length;
-  double get progress =>
-      totalCount == 0 ? 0.0 : doneCount / totalCount;
+  double get progress => totalCount == 0 ? 0.0 : doneCount / totalCount;
 }
 
 class _Feature {
@@ -77,24 +76,132 @@ final _mockProjects = [
     icon: Icons.smart_toy_outlined,
     color: const Color(0xFF7C6FFF),
     features: const [
-      _Feature(id: 'FEAT-BWL', title: 'Delegation Notifications', status: 'in-progress', kind: 'feature', priority: 'P1', assignee: 'Sarah Chen'),
-      _Feature(id: 'FEAT-XND', title: 'Activity Feed', status: 'in-progress', kind: 'feature', priority: 'P1', assignee: 'Marcus Rivera'),
-      _Feature(id: 'FEAT-IGV', title: 'Tunnels Dashboard', status: 'todo', kind: 'feature', priority: 'P1', assignee: 'Aisha Patel'),
-      _Feature(id: 'FEAT-KTT', title: 'Workflow Generator', status: 'done', kind: 'chore', priority: 'P2', assignee: 'Sarah Chen'),
-      _Feature(id: 'FEAT-CRJ', title: 'Workflow Sharing', status: 'in-testing', kind: 'feature', priority: 'P2', assignee: 'James Wilson'),
-      _Feature(id: 'FEAT-EPW', title: 'Public Sharing', status: 'in-review', kind: 'feature', priority: 'P1', assignee: 'Marcus Rivera'),
-      _Feature(id: 'FEAT-CUY', title: 'Project Manager UI', status: 'in-progress', kind: 'feature', priority: 'P0', assignee: 'Sarah Chen'),
-      _Feature(id: 'FEAT-UJV', title: 'Web Architecture', status: 'done', kind: 'feature', priority: 'P0', assignee: 'Sarah Chen'),
-      _Feature(id: 'FEAT-FRU', title: 'Web App Shell', status: 'done', kind: 'feature', priority: 'P0', assignee: 'Marcus Rivera'),
-      _Feature(id: 'FEAT-HUF', title: 'Marketing Pages', status: 'done', kind: 'feature', priority: 'P1', assignee: 'Aisha Patel'),
-      _Feature(id: 'FEAT-YOZ', title: 'Auth Web Routes', status: 'in-testing', kind: 'feature', priority: 'P1', assignee: 'James Wilson'),
-      _Feature(id: 'FEAT-FNB', title: 'Admin Panel', status: 'todo', kind: 'feature', priority: 'P2', assignee: 'Aisha Patel'),
+      _Feature(
+        id: 'FEAT-BWL',
+        title: 'Delegation Notifications',
+        status: 'in-progress',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Sarah Chen',
+      ),
+      _Feature(
+        id: 'FEAT-XND',
+        title: 'Activity Feed',
+        status: 'in-progress',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Marcus Rivera',
+      ),
+      _Feature(
+        id: 'FEAT-IGV',
+        title: 'Tunnels Dashboard',
+        status: 'todo',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Aisha Patel',
+      ),
+      _Feature(
+        id: 'FEAT-KTT',
+        title: 'Workflow Generator',
+        status: 'done',
+        kind: 'chore',
+        priority: 'P2',
+        assignee: 'Sarah Chen',
+      ),
+      _Feature(
+        id: 'FEAT-CRJ',
+        title: 'Workflow Sharing',
+        status: 'in-testing',
+        kind: 'feature',
+        priority: 'P2',
+        assignee: 'James Wilson',
+      ),
+      _Feature(
+        id: 'FEAT-EPW',
+        title: 'Public Sharing',
+        status: 'in-review',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Marcus Rivera',
+      ),
+      _Feature(
+        id: 'FEAT-CUY',
+        title: 'Project Manager UI',
+        status: 'in-progress',
+        kind: 'feature',
+        priority: 'P0',
+        assignee: 'Sarah Chen',
+      ),
+      _Feature(
+        id: 'FEAT-UJV',
+        title: 'Web Architecture',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P0',
+        assignee: 'Sarah Chen',
+      ),
+      _Feature(
+        id: 'FEAT-FRU',
+        title: 'Web App Shell',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P0',
+        assignee: 'Marcus Rivera',
+      ),
+      _Feature(
+        id: 'FEAT-HUF',
+        title: 'Marketing Pages',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Aisha Patel',
+      ),
+      _Feature(
+        id: 'FEAT-YOZ',
+        title: 'Auth Web Routes',
+        status: 'in-testing',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'James Wilson',
+      ),
+      _Feature(
+        id: 'FEAT-FNB',
+        title: 'Admin Panel',
+        status: 'todo',
+        kind: 'feature',
+        priority: 'P2',
+        assignee: 'Aisha Patel',
+      ),
     ],
     members: const [
-      _Member(name: 'Sarah Chen', avatar: 'SC', role: 'Lead Engineer', assignedCount: 4, completedCount: 2),
-      _Member(name: 'Marcus Rivera', avatar: 'MR', role: 'Frontend Dev', assignedCount: 3, completedCount: 1),
-      _Member(name: 'Aisha Patel', avatar: 'AP', role: 'Backend Dev', assignedCount: 3, completedCount: 1),
-      _Member(name: 'James Wilson', avatar: 'JW', role: 'QA Engineer', assignedCount: 2, completedCount: 0),
+      _Member(
+        name: 'Sarah Chen',
+        avatar: 'SC',
+        role: 'Lead Engineer',
+        assignedCount: 4,
+        completedCount: 2,
+      ),
+      _Member(
+        name: 'Marcus Rivera',
+        avatar: 'MR',
+        role: 'Frontend Dev',
+        assignedCount: 3,
+        completedCount: 1,
+      ),
+      _Member(
+        name: 'Aisha Patel',
+        avatar: 'AP',
+        role: 'Backend Dev',
+        assignedCount: 3,
+        completedCount: 1,
+      ),
+      _Member(
+        name: 'James Wilson',
+        avatar: 'JW',
+        role: 'QA Engineer',
+        assignedCount: 2,
+        completedCount: 0,
+      ),
     ],
   ),
   _Project(
@@ -103,17 +210,76 @@ final _mockProjects = [
     icon: Icons.apple,
     color: const Color(0xFFFF6B6B),
     features: const [
-      _Feature(id: 'FEAT-BKJ', title: 'Tray-Only Mode', status: 'done', kind: 'feature', priority: 'P0', assignee: 'Sarah Chen'),
-      _Feature(id: 'FEAT-BSI', title: 'Plugin System', status: 'done', kind: 'feature', priority: 'P0', assignee: 'Sarah Chen'),
-      _Feature(id: 'FEAT-CBE', title: 'Smart Input', status: 'in-progress', kind: 'feature', priority: 'P1', assignee: 'Marcus Rivera'),
-      _Feature(id: 'FEAT-DAX', title: 'Workspace Switch', status: 'done', kind: 'feature', priority: 'P1', assignee: 'Aisha Patel'),
-      _Feature(id: 'FEAT-DHD', title: 'Voice Input', status: 'todo', kind: 'feature', priority: 'P2', assignee: 'James Wilson'),
+      _Feature(
+        id: 'FEAT-BKJ',
+        title: 'Tray-Only Mode',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P0',
+        assignee: 'Sarah Chen',
+      ),
+      _Feature(
+        id: 'FEAT-BSI',
+        title: 'Plugin System',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P0',
+        assignee: 'Sarah Chen',
+      ),
+      _Feature(
+        id: 'FEAT-CBE',
+        title: 'Smart Input',
+        status: 'in-progress',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Marcus Rivera',
+      ),
+      _Feature(
+        id: 'FEAT-DAX',
+        title: 'Workspace Switch',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Aisha Patel',
+      ),
+      _Feature(
+        id: 'FEAT-DHD',
+        title: 'Voice Input',
+        status: 'todo',
+        kind: 'feature',
+        priority: 'P2',
+        assignee: 'James Wilson',
+      ),
     ],
     members: const [
-      _Member(name: 'Sarah Chen', avatar: 'SC', role: 'Lead', assignedCount: 2, completedCount: 2),
-      _Member(name: 'Marcus Rivera', avatar: 'MR', role: 'Dev', assignedCount: 1, completedCount: 0),
-      _Member(name: 'Aisha Patel', avatar: 'AP', role: 'Dev', assignedCount: 1, completedCount: 1),
-      _Member(name: 'James Wilson', avatar: 'JW', role: 'QA', assignedCount: 1, completedCount: 0),
+      _Member(
+        name: 'Sarah Chen',
+        avatar: 'SC',
+        role: 'Lead',
+        assignedCount: 2,
+        completedCount: 2,
+      ),
+      _Member(
+        name: 'Marcus Rivera',
+        avatar: 'MR',
+        role: 'Dev',
+        assignedCount: 1,
+        completedCount: 0,
+      ),
+      _Member(
+        name: 'Aisha Patel',
+        avatar: 'AP',
+        role: 'Dev',
+        assignedCount: 1,
+        completedCount: 1,
+      ),
+      _Member(
+        name: 'James Wilson',
+        avatar: 'JW',
+        role: 'QA',
+        assignedCount: 1,
+        completedCount: 0,
+      ),
     ],
   ),
   _Project(
@@ -122,14 +288,53 @@ final _mockProjects = [
     icon: Icons.language_rounded,
     color: const Color(0xFF4ECDC4),
     features: const [
-      _Feature(id: 'FEAT-AAM', title: 'SSR Support', status: 'todo', kind: 'feature', priority: 'P1', assignee: 'Marcus Rivera'),
-      _Feature(id: 'FEAT-BLR', title: 'OAuth2 Flow', status: 'in-progress', kind: 'feature', priority: 'P0', assignee: 'Aisha Patel'),
-      _Feature(id: 'FEAT-CCN', title: 'Dashboard Widgets', status: 'done', kind: 'feature', priority: 'P1', assignee: 'Sarah Chen'),
+      _Feature(
+        id: 'FEAT-AAM',
+        title: 'SSR Support',
+        status: 'todo',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Marcus Rivera',
+      ),
+      _Feature(
+        id: 'FEAT-BLR',
+        title: 'OAuth2 Flow',
+        status: 'in-progress',
+        kind: 'feature',
+        priority: 'P0',
+        assignee: 'Aisha Patel',
+      ),
+      _Feature(
+        id: 'FEAT-CCN',
+        title: 'Dashboard Widgets',
+        status: 'done',
+        kind: 'feature',
+        priority: 'P1',
+        assignee: 'Sarah Chen',
+      ),
     ],
     members: const [
-      _Member(name: 'Sarah Chen', avatar: 'SC', role: 'Lead', assignedCount: 1, completedCount: 1),
-      _Member(name: 'Marcus Rivera', avatar: 'MR', role: 'Dev', assignedCount: 1, completedCount: 0),
-      _Member(name: 'Aisha Patel', avatar: 'AP', role: 'Dev', assignedCount: 1, completedCount: 0),
+      _Member(
+        name: 'Sarah Chen',
+        avatar: 'SC',
+        role: 'Lead',
+        assignedCount: 1,
+        completedCount: 1,
+      ),
+      _Member(
+        name: 'Marcus Rivera',
+        avatar: 'MR',
+        role: 'Dev',
+        assignedCount: 1,
+        completedCount: 0,
+      ),
+      _Member(
+        name: 'Aisha Patel',
+        avatar: 'AP',
+        role: 'Dev',
+        assignedCount: 1,
+        completedCount: 0,
+      ),
     ],
   ),
 ];
@@ -137,20 +342,15 @@ final _mockProjects = [
 // ── State ───────────────────────────────────────────────────────────────────
 
 class _PMState {
-  const _PMState({
-    this.selectedProjectIndex = 0,
-    this.selectedTab = 0,
-  });
+  const _PMState({this.selectedProjectIndex = 0, this.selectedTab = 0});
 
   final int selectedProjectIndex;
   final int selectedTab;
 
-  _PMState copyWith({int? selectedProjectIndex, int? selectedTab}) =>
-      _PMState(
-        selectedProjectIndex:
-            selectedProjectIndex ?? this.selectedProjectIndex,
-        selectedTab: selectedTab ?? this.selectedTab,
-      );
+  _PMState copyWith({int? selectedProjectIndex, int? selectedTab}) => _PMState(
+    selectedProjectIndex: selectedProjectIndex ?? this.selectedProjectIndex,
+    selectedTab: selectedTab ?? this.selectedTab,
+  );
 }
 
 class _PMNotifier extends Notifier<_PMState> {
@@ -160,13 +360,10 @@ class _PMNotifier extends Notifier<_PMState> {
   void selectProject(int index) =>
       state = state.copyWith(selectedProjectIndex: index, selectedTab: 0);
 
-  void selectTab(int tab) =>
-      state = state.copyWith(selectedTab: tab);
+  void selectTab(int tab) => state = state.copyWith(selectedTab: tab);
 }
 
-final _pmProvider = NotifierProvider<_PMNotifier, _PMState>(
-  _PMNotifier.new,
-);
+final _pmProvider = NotifierProvider<_PMNotifier, _PMState>(_PMNotifier.new);
 
 // ── Status helpers ──────────────────────────────────────────────────────────
 
@@ -186,8 +383,20 @@ Color _statusColor(String status) {
   }
 }
 
-const _kanbanStatuses = ['todo', 'in-progress', 'in-testing', 'in-review', 'done'];
-List<String> _kanbanLabelsL10n(AppLocalizations l10n) => [l10n.kanbanTodo, l10n.kanbanInProgress, l10n.kanbanInTesting, l10n.kanbanInReview, l10n.kanbanDone];
+const _kanbanStatuses = [
+  'todo',
+  'in-progress',
+  'in-testing',
+  'in-review',
+  'done',
+];
+List<String> _kanbanLabelsL10n(AppLocalizations l10n) => [
+  l10n.kanbanTodo,
+  l10n.kanbanInProgress,
+  l10n.kanbanInTesting,
+  l10n.kanbanInReview,
+  l10n.kanbanDone,
+];
 
 // ── Screen ──────────────────────────────────────────────────────────────────
 
@@ -195,7 +404,12 @@ List<String> _kanbanLabelsL10n(AppLocalizations l10n) => [l10n.kanbanTodo, l10n.
 class ProjectManagerScreen extends ConsumerWidget {
   const ProjectManagerScreen({super.key});
 
-  static List<String> _tabs(AppLocalizations l10n) => [l10n.tabBoard, l10n.tabTimeline, l10n.tabTeam, l10n.tabReports];
+  static List<String> _tabs(AppLocalizations l10n) => [
+    l10n.tabBoard,
+    l10n.tabTimeline,
+    l10n.tabTeam,
+    l10n.tabReports,
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -250,25 +464,22 @@ class ProjectManagerScreen extends ConsumerWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 8),
                             child: GestureDetector(
-                              onTap: () => ref
-                                  .read(_pmProvider.notifier)
-                                  .selectTab(i),
+                              onTap: () =>
+                                  ref.read(_pmProvider.notifier).selectTab(i),
                               child: AnimatedContainer(
-                                duration:
-                                    const Duration(milliseconds: 180),
+                                duration: const Duration(milliseconds: 180),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 18, vertical: 9),
+                                  horizontal: 18,
+                                  vertical: 9,
+                                ),
                                 decoration: BoxDecoration(
                                   color: pmState.selectedTab == i
-                                      ? tokens.accent
-                                          .withValues(alpha: 0.18)
+                                      ? tokens.accent.withValues(alpha: 0.18)
                                       : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.circular(24),
+                                  borderRadius: BorderRadius.circular(24),
                                   border: Border.all(
                                     color: pmState.selectedTab == i
-                                        ? tokens.accent
-                                            .withValues(alpha: 0.5)
+                                        ? tokens.accent.withValues(alpha: 0.5)
                                         : tokens.borderFaint,
                                   ),
                                 ),
@@ -279,10 +490,9 @@ class ProjectManagerScreen extends ConsumerWidget {
                                         ? tokens.accent
                                         : tokens.fgMuted,
                                     fontSize: 13,
-                                    fontWeight:
-                                        pmState.selectedTab == i
-                                            ? FontWeight.w600
-                                            : FontWeight.w400,
+                                    fontWeight: pmState.selectedTab == i
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
                                   ),
                                 ),
                               ),
@@ -373,8 +583,10 @@ class _ProjectSidebar extends StatelessWidget {
                 final p = projects[i];
                 final isSelected = i == selectedIndex;
                 return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   child: Material(
                     color: isSelected
                         ? tokens.accent.withValues(alpha: 0.12)
@@ -385,7 +597,9 @@ class _ProjectSidebar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                         child: Row(
                           children: [
                             Container(
@@ -395,14 +609,12 @@ class _ProjectSidebar extends StatelessWidget {
                                 color: p.color.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child:
-                                  Icon(p.icon, color: p.color, size: 16),
+                              child: Icon(p.icon, color: p.color, size: 16),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     p.name,
@@ -419,15 +631,14 @@ class _ProjectSidebar extends StatelessWidget {
                                   const SizedBox(height: 2),
                                   // Progress bar.
                                   ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.circular(2),
+                                    borderRadius: BorderRadius.circular(2),
                                     child: LinearProgressIndicator(
                                       value: p.progress,
                                       minHeight: 3,
                                       backgroundColor: tokens.border,
-                                      valueColor:
-                                          AlwaysStoppedAnimation<Color>(
-                                              p.color),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        p.color,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -565,7 +776,9 @@ class _TopBar extends StatelessWidget {
                 ),
               ),
               Text(
-                AppLocalizations.of(context).pmFeaturesComplete(project.doneCount, project.totalCount),
+                AppLocalizations.of(
+                  context,
+                ).pmFeaturesComplete(project.doneCount, project.totalCount),
                 style: TextStyle(color: tokens.fgMuted, fontSize: 12),
               ),
             ],
@@ -582,8 +795,7 @@ class _TopBar extends StatelessWidget {
                 value: project.progress,
                 strokeWidth: 4,
                 backgroundColor: tokens.border,
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(project.color),
+                valueColor: AlwaysStoppedAnimation<Color>(project.color),
               ),
               Text(
                 '${(project.progress * 100).toInt()}%',
@@ -678,8 +890,7 @@ class _KanbanColumn extends StatelessWidget {
         children: [
           // Column header.
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(8),
@@ -690,7 +901,9 @@ class _KanbanColumn extends StatelessWidget {
                   width: 8,
                   height: 8,
                   decoration: BoxDecoration(
-                      color: color, shape: BoxShape.circle),
+                    color: color,
+                    shape: BoxShape.circle,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -704,7 +917,9 @@ class _KanbanColumn extends StatelessWidget {
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 2),
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
@@ -734,91 +949,94 @@ class _KanbanColumn extends StatelessWidget {
               ),
             )
           else
-            ...features.map((f) => Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: GlassCard(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: tokens.accent
-                                    .withValues(alpha: 0.12),
-                                borderRadius:
-                                    BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                f.id,
-                                style: TextStyle(
-                                  color: tokens.accent,
-                                  fontFamily: 'monospace',
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+            ...features.map(
+              (f) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: GlassCard(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 2,
                             ),
-                            const Spacer(),
-                            Text(
-                              f.priority,
+                            decoration: BoxDecoration(
+                              color: tokens.accent.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              f.id,
                               style: TextStyle(
-                                color: f.priority == 'P0'
-                                    ? const Color(0xFFF44336)
-                                    : tokens.fgDim,
-                                fontSize: 10,
+                                color: tokens.accent,
+                                fontFamily: 'monospace',
+                                fontSize: 9,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          f.title,
-                          style: TextStyle(
-                            color: tokens.fgBright,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: tokens.fgDim
-                                    .withValues(alpha: 0.10),
-                                borderRadius:
-                                    BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                f.kind,
-                                style: TextStyle(
-                                    color: tokens.fgDim,
-                                    fontSize: 9),
-                              ),
+                          const Spacer(),
+                          Text(
+                            f.priority,
+                            style: TextStyle(
+                              color: f.priority == 'P0'
+                                  ? const Color(0xFFF44336)
+                                  : tokens.fgDim,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
                             ),
-                            const Spacer(),
-                            Text(
-                              f.assignee.split(' ').first,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        f.title,
+                        style: TextStyle(
+                          color: tokens.fgBright,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: tokens.fgDim.withValues(alpha: 0.10),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              f.kind,
                               style: TextStyle(
-                                color: tokens.fgMuted,
-                                fontSize: 10,
+                                color: tokens.fgDim,
+                                fontSize: 9,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            f.assignee.split(' ').first,
+                            style: TextStyle(
+                              color: tokens.fgMuted,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                )),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -838,7 +1056,8 @@ class _TimelineTab extends StatelessWidget {
     // Simple timeline representation: features listed in status order.
     final sorted = List<_Feature>.of(project.features)
       ..sort((a, b) {
-        final order = _kanbanStatuses.indexOf(a.status)
+        final order = _kanbanStatuses
+            .indexOf(a.status)
             .compareTo(_kanbanStatuses.indexOf(b.status));
         if (order != 0) return order;
         return a.priority.compareTo(b.priority);
@@ -883,11 +1102,7 @@ class _TimelineTab extends StatelessWidget {
                       ),
                     ),
                     if (!isLast)
-                      Container(
-                        width: 2,
-                        height: 56,
-                        color: tokens.border,
-                      ),
+                      Container(width: 2, height: 56, color: tokens.border),
                   ],
                 ),
               ),
@@ -902,8 +1117,7 @@ class _TimelineTab extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 f.title,
@@ -939,7 +1153,9 @@ class _TimelineTab extends StatelessWidget {
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 3),
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: color.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(12),
@@ -988,96 +1204,93 @@ class _TeamTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        ...members.map((m) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: GlassCard(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    // Avatar.
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: tokens.accent.withValues(alpha: 0.12),
-                        borderRadius: BorderRadius.circular(22),
-                      ),
-                      child: Center(
-                        child: Text(
-                          m.avatar,
-                          style: TextStyle(
-                            color: tokens.accent,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                          ),
+        ...members.map(
+          (m) => Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: GlassCard(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  // Avatar.
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: tokens.accent.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Center(
+                      child: Text(
+                        m.avatar,
+                        style: TextStyle(
+                          color: tokens.accent,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
-                    const SizedBox(width: 14),
-                    // Info.
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            m.name,
-                            style: TextStyle(
-                              color: tokens.fgBright,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                            m.role,
-                            style: TextStyle(
-                              color: tokens.fgMuted,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Stats.
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                  ),
+                  const SizedBox(width: 14),
+                  // Info.
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context).pmNAssigned(m.assignedCount),
+                          m.name,
                           style: TextStyle(
                             color: tokens.fgBright,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          AppLocalizations.of(context).pmNCompleted(m.completedCount),
-                          style: TextStyle(
-                            color: const Color(0xFF4CAF50),
-                            fontSize: 11,
-                          ),
+                          m.role,
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                         ),
                       ],
                     ),
-                    const SizedBox(width: 16),
-                    // Workload indicator.
-                    _WorkloadIndicator(
-                      value: m.workload,
-                      tokens: tokens,
-                    ),
-                  ],
-                ),
+                  ),
+                  // Stats.
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        AppLocalizations.of(
+                          context,
+                        ).pmNAssigned(m.assignedCount),
+                        style: TextStyle(
+                          color: tokens.fgBright,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        AppLocalizations.of(
+                          context,
+                        ).pmNCompleted(m.completedCount),
+                        style: TextStyle(
+                          color: const Color(0xFF4CAF50),
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 16),
+                  // Workload indicator.
+                  _WorkloadIndicator(value: m.workload, tokens: tokens),
+                ],
               ),
-            )),
+            ),
+          ),
+        ),
       ],
     );
   }
 }
 
 class _WorkloadIndicator extends StatelessWidget {
-  const _WorkloadIndicator({
-    required this.value,
-    required this.tokens,
-  });
+  const _WorkloadIndicator({required this.value, required this.tokens});
 
   final double value;
   final OrchestraColorTokens tokens;
@@ -1087,8 +1300,8 @@ class _WorkloadIndicator extends StatelessWidget {
     final color = value > 0.75
         ? const Color(0xFFF44336)
         : value > 0.5
-            ? const Color(0xFFFF9800)
-            : const Color(0xFF4CAF50);
+        ? const Color(0xFFFF9800)
+        : const Color(0xFF4CAF50);
 
     return SizedBox(
       width: 36,
@@ -1154,10 +1367,7 @@ class _ReportsTab extends StatelessWidget {
               total: project.features.length,
               tokens: tokens,
             );
-            final velocity = _VelocityCard(
-              project: project,
-              tokens: tokens,
-            );
+            final velocity = _VelocityCard(project: project, tokens: tokens);
 
             if (isWide) {
               return Row(
@@ -1170,11 +1380,7 @@ class _ReportsTab extends StatelessWidget {
               );
             }
             return Column(
-              children: [
-                chart,
-                const SizedBox(height: 16),
-                velocity,
-              ],
+              children: [chart, const SizedBox(height: 16), velocity],
             );
           },
         ),
@@ -1287,8 +1493,7 @@ class _DonutChart extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     '${e.key} (${e.value})',
-                    style:
-                        TextStyle(color: tokens.fgMuted, fontSize: 11),
+                    style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                   ),
                 ],
               );
@@ -1324,7 +1529,10 @@ class _DonutPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = math.min(size.width, size.height) / 2;
     const strokeWidth = 24.0;
-    final rect = Rect.fromCircle(center: center, radius: radius - strokeWidth / 2);
+    final rect = Rect.fromCircle(
+      center: center,
+      radius: radius - strokeWidth / 2,
+    );
 
     final paint = Paint()
       ..style = PaintingStyle.stroke
@@ -1497,11 +1705,7 @@ class _BurndownPainter extends CustomPainter {
       ..strokeWidth = 1.5
       ..style = PaintingStyle.stroke;
 
-    canvas.drawLine(
-      Offset(pad, pad),
-      Offset(pad + w, pad + h),
-      idealPaint,
-    );
+    canvas.drawLine(Offset(pad, pad), Offset(pad + w, pad + h), idealPaint);
 
     // Actual line (stepped based on done ratio).
     final progress = done / (total == 0 ? 1 : total);

@@ -27,13 +27,13 @@ class NotificationItem {
   final bool isRead;
 
   NotificationItem copyWith({bool? isRead}) => NotificationItem(
-        id: id,
-        type: type,
-        title: title,
-        body: body,
-        timestamp: timestamp,
-        isRead: isRead ?? this.isRead,
-      );
+    id: id,
+    type: type,
+    title: title,
+    body: body,
+    timestamp: timestamp,
+    isRead: isRead ?? this.isRead,
+  );
 }
 
 // ── Placeholder data ───────────────────────────────────────────────────────────
@@ -120,9 +120,11 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   List<NotificationItem> get _updates => _items
-      .where((n) =>
-          n.type == NotificationType.featureUpdate ||
-          n.type == NotificationType.mention)
+      .where(
+        (n) =>
+            n.type == NotificationType.featureUpdate ||
+            n.type == NotificationType.mention,
+      )
       .toList();
 
   List<NotificationItem> get _healthAlerts =>
@@ -146,8 +148,11 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                 children: [
                   if (Navigator.of(context).canPop()) ...[
                     IconButton(
-                      icon: Icon(Icons.arrow_back_ios_rounded,
-                          color: tokens.fgBright, size: 20),
+                      icon: Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: tokens.fgBright,
+                        size: 20,
+                      ),
                       onPressed: () => Navigator.of(context).pop(),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
@@ -173,8 +178,10 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                           foregroundColor: tokens.accent,
                           tapTargetSize: MaterialTapTargetSize.padded,
                         ),
-                        child: Text(l10n.markAllReadAction,
-                            style: TextStyle(fontSize: 13)),
+                        child: Text(
+                          l10n.markAllReadAction,
+                          style: TextStyle(fontSize: 13),
+                        ),
                       ),
                     ),
                 ],
@@ -193,15 +200,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         slivers: [
                           if (_updates.isNotEmpty) ...[
-                            _SectionHeader(
-                                label: l10n.updates, tokens: tokens),
+                            _SectionHeader(label: l10n.updates, tokens: tokens),
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (_, i) => _NotificationTile(
                                   item: _updates[i],
                                   tokens: tokens,
-                                  onDismissed: () =>
-                                      _dismiss(_updates[i].id),
+                                  onDismissed: () => _dismiss(_updates[i].id),
                                 ),
                                 childCount: _updates.length,
                               ),
@@ -209,7 +214,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                           ],
                           if (_healthAlerts.isNotEmpty) ...[
                             _SectionHeader(
-                                label: l10n.healthAlerts, tokens: tokens),
+                              label: l10n.healthAlerts,
+                              tokens: tokens,
+                            ),
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (_, i) => _NotificationTile(
@@ -222,8 +229,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                               ),
                             ),
                           ],
-                          const SliverToBoxAdapter(
-                              child: SizedBox(height: 24)),
+                          const SliverToBoxAdapter(child: SizedBox(height: 24)),
                         ],
                       ),
                     ),
@@ -301,7 +307,8 @@ class _NotificationTile extends StatelessWidget {
     final iconColor = _iconColor(tokens);
     final l10n = AppLocalizations.of(context);
     return Semantics(
-      label: '${item.title}, ${formatRelative(item.timestamp)}, '
+      label:
+          '${item.title}, ${formatRelative(item.timestamp)}, '
           '${item.isRead ? l10n.notificationRead : l10n.notificationUnread}',
       child: Dismissible(
         key: ValueKey(item.id),
@@ -347,16 +354,14 @@ class _NotificationTile extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         item.body,
-                        style:
-                            TextStyle(color: tokens.fgMuted, fontSize: 13),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 13),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
                       Text(
                         formatRelative(item.timestamp),
-                        style:
-                            TextStyle(color: tokens.fgDim, fontSize: 11),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
                       ),
                     ],
                   ),
@@ -397,8 +402,11 @@ class _EmptyState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.notifications_none_rounded,
-                  size: 48, color: tokens.fgDim),
+              Icon(
+                Icons.notifications_none_rounded,
+                size: 48,
+                color: tokens.fgDim,
+              ),
               const SizedBox(height: 16),
               Text(
                 AppLocalizations.of(context).allCaughtUp,

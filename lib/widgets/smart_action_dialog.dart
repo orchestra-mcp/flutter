@@ -37,7 +37,8 @@ Future<String?> _generateWithAI(
   try {
     final typeLabel = type.name;
     final result = await mcp.callTool('ai_prompt', {
-      'prompt': 'Generate a $typeLabel in markdown format based on this request: $prompt',
+      'prompt':
+          'Generate a $typeLabel in markdown format based on this request: $prompt',
       'wait': true,
     });
 
@@ -126,8 +127,11 @@ class _CreateDialogState extends State<_CreateDialog>
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.close_rounded,
-                        color: tokens.fgDim, size: 20),
+                    icon: Icon(
+                      Icons.close_rounded,
+                      color: tokens.fgDim,
+                      size: 20,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -142,7 +146,9 @@ class _CreateDialogState extends State<_CreateDialog>
               indicatorColor: tokens.accent,
               indicatorSize: TabBarIndicatorSize.label,
               labelStyle: const TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w600),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
               tabs: [
                 Tab(
                   icon: const Icon(Icons.auto_awesome_rounded, size: 16),
@@ -176,7 +182,10 @@ class _CreateDialogState extends State<_CreateDialog>
   }
 
   Widget _buildAiTab(
-      OrchestraColorTokens tokens, AppLocalizations l10n, String typeLabel) {
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n,
+    String typeLabel,
+  ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
       child: Column(
@@ -210,10 +219,14 @@ class _CreateDialogState extends State<_CreateDialog>
                     final prompt = _promptController.text.trim();
                     if (prompt.isEmpty) return;
                     setState(() => _generating = true);
-                    final title =
-                        prompt.length > 40 ? '${prompt.substring(0, 40)}...' : prompt;
+                    final title = prompt.length > 40
+                        ? '${prompt.substring(0, 40)}...'
+                        : prompt;
                     final content = await _generateWithAI(
-                        widget.ref, widget.type, prompt);
+                      widget.ref,
+                      widget.type,
+                      prompt,
+                    );
                     if (mounted) Navigator.pop(context);
                     if (content != null) {
                       widget.onSmartCreate(title, content);
@@ -229,8 +242,7 @@ class _CreateDialogState extends State<_CreateDialog>
                     ),
                   )
                 : const Icon(Icons.auto_awesome_rounded, size: 16),
-            label: Text(
-                _generating ? l10n.generating : l10n.generate),
+            label: Text(_generating ? l10n.generating : l10n.generate),
           ),
         ],
       ),

@@ -234,7 +234,8 @@ const _authRoutes = {
 String? _authRedirect(AuthState? authState, GoRouterState state) {
   if (authState == null) return null; // still loading
 
-  final isAuthRoute = _authRoutes.contains(state.matchedLocation) ||
+  final isAuthRoute =
+      _authRoutes.contains(state.matchedLocation) ||
       state.matchedLocation.startsWith('/auth/');
 
   if (authState is AuthUnauthenticated && !isAuthRoute) {
@@ -279,11 +280,7 @@ class _Placeholder extends StatelessWidget {
 // ── Router factory ────────────────────────────────────────────────────────────
 
 // Routes that correspond to startup gate screens.
-const _gateRoutes = {
-  Routes.fileAccess,
-  Routes.installer,
-  Routes.welcome,
-};
+const _gateRoutes = {Routes.fileAccess, Routes.installer, Routes.welcome};
 
 GoRouter buildRouter(Ref ref) {
   return GoRouter(
@@ -321,18 +318,12 @@ GoRouter buildRouter(Ref ref) {
     },
     routes: [
       // ── Public routes (no shell) ────────────────────────────────────────
-      GoRoute(
-        path: Routes.splash,
-        builder: (_, __) => const SplashScreen(),
-      ),
+      GoRoute(path: Routes.splash, builder: (_, __) => const SplashScreen()),
       GoRoute(
         path: Routes.onboarding,
         builder: (_, __) => const OnboardingScreen(),
       ),
-      GoRoute(
-        path: Routes.login,
-        builder: (_, __) => const LoginScreen(),
-      ),
+      GoRoute(path: Routes.login, builder: (_, __) => const LoginScreen()),
       GoRoute(
         path: Routes.register,
         builder: (_, __) => const RegisterScreen(),
@@ -343,9 +334,8 @@ GoRouter buildRouter(Ref ref) {
       ),
       GoRoute(
         path: Routes.resetPassword,
-        builder: (_, state) => ResetPasswordScreen(
-          token: state.uri.queryParameters['token'],
-        ),
+        builder: (_, state) =>
+            ResetPasswordScreen(token: state.uri.queryParameters['token']),
       ),
       GoRoute(
         path: Routes.twoFactor,
@@ -355,10 +345,7 @@ GoRouter buildRouter(Ref ref) {
         path: Routes.magicLogin,
         builder: (_, __) => const MagicLoginScreen(),
       ),
-      GoRoute(
-        path: Routes.passkey,
-        builder: (_, __) => const PasskeyScreen(),
-      ),
+      GoRoute(path: Routes.passkey, builder: (_, __) => const PasskeyScreen()),
       GoRoute(
         path: Routes.authCallback,
         builder: (_, state) => AuthCallbackScreen(
@@ -368,9 +355,8 @@ GoRouter buildRouter(Ref ref) {
       ),
       GoRoute(
         path: Routes.authMagic,
-        builder: (_, state) => MagicCallbackScreen(
-          token: state.uri.queryParameters['token'],
-        ),
+        builder: (_, state) =>
+            MagicCallbackScreen(token: state.uri.queryParameters['token']),
       ),
       GoRoute(
         path: Routes.fileAccess,
@@ -380,10 +366,7 @@ GoRouter buildRouter(Ref ref) {
         path: Routes.installer,
         builder: (_, __) => const InstallerScreen(),
       ),
-      GoRoute(
-        path: Routes.welcome,
-        builder: (_, __) => const WelcomeScreen(),
-      ),
+      GoRoute(path: Routes.welcome, builder: (_, __) => const WelcomeScreen()),
       GoRoute(
         path: Routes.setupDesktop,
         builder: (_, __) => const SetupDesktopScreen(),
@@ -511,7 +494,8 @@ GoRouter buildRouter(Ref ref) {
               GoRoute(
                 path: ':id',
                 builder: (_, s) => ProjectDetailScreen(
-                    projectId: s.pathParameters['id'] ?? ''),
+                  projectId: s.pathParameters['id'] ?? '',
+                ),
                 routes: [
                   GoRoute(
                     path: 'features/new',
@@ -619,10 +603,7 @@ GoRouter buildRouter(Ref ref) {
             path: Routes.notes,
             builder: (_, _) => const NotesScreen(),
             routes: [
-              GoRoute(
-                path: 'new',
-                builder: (_, _) => const NoteEditorScreen(),
-              ),
+              GoRoute(path: 'new', builder: (_, _) => const NoteEditorScreen()),
               GoRoute(
                 path: ':id',
                 builder: (_, s) =>
@@ -735,9 +716,8 @@ GoRouter buildRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: 'new',
-                builder: (_, _) => const McpEntityEditorScreen(
-                  entityType: McpEntityType.doc,
-                ),
+                builder: (_, _) =>
+                    const McpEntityEditorScreen(entityType: McpEntityType.doc),
               ),
               GoRoute(
                 path: ':id',
@@ -765,7 +745,8 @@ GoRouter buildRouter(Ref ref) {
               GoRoute(
                 path: ':id',
                 builder: (_, s) => DelegationDetailScreen(
-                    delegationId: s.pathParameters['id'] ?? ''),
+                  delegationId: s.pathParameters['id'] ?? '',
+                ),
               ),
             ],
           ),
@@ -788,91 +769,233 @@ GoRouter buildRouter(Ref ref) {
             builder: (_, _) => const SettingsScreen(),
             routes: [
               // Account
-              GoRoute(path: 'profile', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'password', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'appearance', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'profile',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'password',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'appearance',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               // Security
-              GoRoute(path: 'two-factor', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'passkeys', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'sessions', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'security', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'two-factor',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'passkeys',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'sessions',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'security',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               // Developer
-              GoRoute(path: 'api-tokens', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'integrations', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'api-tokens',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'integrations',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               // Notifications
-              GoRoute(path: 'notifications', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'notifications',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               // Health
-              GoRoute(path: 'health', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'health',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               // Other
               GoRoute(path: 'team', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'desktop', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'desktop',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               GoRoute(path: 'about', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'social', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'report-issue', builder: (_, _) => const ReportIssueScreen()),
+              GoRoute(
+                path: 'social',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'report-issue',
+                builder: (_, _) => const ReportIssueScreen(),
+              ),
               // Claude / AI
-              GoRoute(path: 'agent-instructions', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'claude-settings', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'agent-instructions',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'claude-settings',
+                builder: (_, _) => const SettingsScreen(),
+              ),
               // Admin settings
-              GoRoute(path: 'admin-general', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-features', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-homepage', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-agents', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-email', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-contact', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-pricing', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-download', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-integrations', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-seo', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-discord', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-slack', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-github', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-social', builder: (_, _) => const SettingsScreen()),
-              GoRoute(path: 'admin-prompts', builder: (_, _) => const SettingsScreen()),
+              GoRoute(
+                path: 'admin-general',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-features',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-homepage',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-agents',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-email',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-contact',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-pricing',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-download',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-integrations',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-seo',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-discord',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-slack',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-github',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-social',
+                builder: (_, _) => const SettingsScreen(),
+              ),
+              GoRoute(
+                path: 'admin-prompts',
+                builder: (_, _) => const SettingsScreen(),
+              ),
             ],
           ),
 
           // Admin panel — NoTransitionPage prevents bleed-through between pages
           GoRoute(
             path: Routes.admin,
-            pageBuilder: (_, s) => const NoTransitionPage(child: AdminOverviewPage()),
+            pageBuilder: (_, s) =>
+                const NoTransitionPage(child: AdminOverviewPage()),
             routes: [
               GoRoute(
                 path: 'users',
-                pageBuilder: (_, s) => const NoTransitionPage(child: UsersPage()),
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: UsersPage()),
                 routes: [
                   GoRoute(
                     path: ':id',
                     pageBuilder: (_, s) => NoTransitionPage(
                       child: UserDetailPage(
-                          userId: s.pathParameters['id'] ?? ''),
+                        userId: s.pathParameters['id'] ?? '',
+                      ),
                     ),
                   ),
                 ],
               ),
-              GoRoute(path: 'roles', pageBuilder: (_, s) => const NoTransitionPage(child: RolesPage())),
+              GoRoute(
+                path: 'roles',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: RolesPage()),
+              ),
               GoRoute(
                 path: 'teams',
-                pageBuilder: (_, s) => const NoTransitionPage(child: TeamsPage()),
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: TeamsPage()),
                 routes: [
                   GoRoute(
                     path: ':id',
                     pageBuilder: (_, s) => NoTransitionPage(
                       child: TeamDetailPage(
-                          teamId: s.pathParameters['id'] ?? ''),
+                        teamId: s.pathParameters['id'] ?? '',
+                      ),
                     ),
                   ),
                 ],
               ),
-              GoRoute(path: 'posts', pageBuilder: (_, s) => const NoTransitionPage(child: PostsPage())),
-              GoRoute(path: 'pages', pageBuilder: (_, s) => const NoTransitionPage(child: PagesAdminPage())),
-              GoRoute(path: 'docs', pageBuilder: (_, s) => const NoTransitionPage(child: DocsAdminPage())),
-              GoRoute(path: 'categories', pageBuilder: (_, s) => const NoTransitionPage(child: CategoriesPage())),
-              GoRoute(path: 'community', pageBuilder: (_, s) => const NoTransitionPage(child: CommunityPage())),
-              GoRoute(path: 'contact', pageBuilder: (_, s) => const NoTransitionPage(child: ContactAdminPage())),
-              GoRoute(path: 'issues', pageBuilder: (_, s) => const NoTransitionPage(child: IssuesPage())),
-              GoRoute(path: 'marketplace', pageBuilder: (_, s) => const NoTransitionPage(child: MarketplacePage())),
-              GoRoute(path: 'sponsors', pageBuilder: (_, s) => const NoTransitionPage(child: SponsorsPage())),
-              GoRoute(path: 'notifications', pageBuilder: (_, s) => const NoTransitionPage(child: NotificationsAdminPage())),
+              GoRoute(
+                path: 'posts',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: PostsPage()),
+              ),
+              GoRoute(
+                path: 'pages',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: PagesAdminPage()),
+              ),
+              GoRoute(
+                path: 'docs',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: DocsAdminPage()),
+              ),
+              GoRoute(
+                path: 'categories',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: CategoriesPage()),
+              ),
+              GoRoute(
+                path: 'community',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: CommunityPage()),
+              ),
+              GoRoute(
+                path: 'contact',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: ContactAdminPage()),
+              ),
+              GoRoute(
+                path: 'issues',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: IssuesPage()),
+              ),
+              GoRoute(
+                path: 'marketplace',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: MarketplacePage()),
+              ),
+              GoRoute(
+                path: 'sponsors',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: SponsorsPage()),
+              ),
+              GoRoute(
+                path: 'notifications',
+                pageBuilder: (_, s) =>
+                    const NoTransitionPage(child: NotificationsAdminPage()),
+              ),
             ],
           ),
         ],

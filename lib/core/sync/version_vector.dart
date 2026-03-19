@@ -95,9 +95,8 @@ class VersionVector {
   }
 
   @override
-  int get hashCode => Object.hashAll(
-        _clocks.entries.map((e) => Object.hash(e.key, e.value)),
-      );
+  int get hashCode =>
+      Object.hashAll(_clocks.entries.map((e) => Object.hash(e.key, e.value)));
 
   // ── Serialization ──────────────────────────────────────────────────────
 

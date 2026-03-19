@@ -36,8 +36,11 @@ class _McpActivityScreenState extends ConsumerState<McpActivityScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back_ios_rounded,
-                        color: tokens.fgBright, size: 20),
+                    icon: Icon(
+                      Icons.arrow_back_ios_rounded,
+                      color: tokens.fgBright,
+                      size: 20,
+                    ),
                     onPressed: () {
                       if (Navigator.canPop(context)) {
                         Navigator.pop(context);
@@ -109,8 +112,11 @@ class _McpActivityScreenState extends ConsumerState<McpActivityScreen> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.history_rounded,
-                              size: 48, color: tokens.fgDim),
+                          Icon(
+                            Icons.history_rounded,
+                            size: 48,
+                            color: tokens.fgDim,
+                          ),
                           const SizedBox(height: 16),
                           Text(
                             l10n.activityNoActivityYet,
@@ -123,8 +129,10 @@ class _McpActivityScreenState extends ConsumerState<McpActivityScreen> {
                           const SizedBox(height: 8),
                           Text(
                             l10n.activityMcpToolCalls,
-                            style:
-                                TextStyle(color: tokens.fgMuted, fontSize: 14),
+                            style: TextStyle(
+                              color: tokens.fgMuted,
+                              fontSize: 14,
+                            ),
                           ),
                         ],
                       ),
@@ -185,7 +193,9 @@ class _FilterChip extends StatelessWidget {
               : tokens.bgAlt,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected ? tokens.accent : tokens.fgDim.withValues(alpha: 0.2),
+            color: isSelected
+                ? tokens.accent
+                : tokens.fgDim.withValues(alpha: 0.2),
           ),
         ),
         child: Text(
@@ -225,16 +235,15 @@ class _ActionTile extends StatelessWidget {
             width: 32,
             height: 32,
             decoration: BoxDecoration(
-              color: (entry.success
-                      ? const Color(0xFF22C55E)
-                      : const Color(0xFFEF4444))
-                  .withValues(alpha: 0.12),
+              color:
+                  (entry.success
+                          ? const Color(0xFF22C55E)
+                          : const Color(0xFFEF4444))
+                      .withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
-              entry.success
-                  ? Icons.check_rounded
-                  : Icons.error_outline_rounded,
+              entry.success ? Icons.check_rounded : Icons.error_outline_rounded,
               size: 16,
               color: entry.success
                   ? const Color(0xFF22C55E)

@@ -82,6 +82,9 @@ dependencies:
   share_plus: ^12.0.1
   file_picker: ^10.3.10
 
+  # Deep links
+  app_links: ^6.4.0
+
   # Auth
   sign_in_with_apple: ^7.0.1
   google_sign_in: ^7.2.0

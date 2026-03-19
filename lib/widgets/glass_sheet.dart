@@ -26,18 +26,12 @@ Future<T?> showGlassSheet<T>({
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     barrierColor: Colors.black.withValues(alpha: 0.40),
-    builder: (ctx) => _GlassSheetContent(
-      fullHeight: fullHeight,
-      child: child,
-    ),
+    builder: (ctx) => _GlassSheetContent(fullHeight: fullHeight, child: child),
   );
 }
 
 class _GlassSheetContent extends StatelessWidget {
-  const _GlassSheetContent({
-    required this.child,
-    required this.fullHeight,
-  });
+  const _GlassSheetContent({required this.child, required this.fullHeight});
 
   final Widget child;
   final bool fullHeight;
@@ -52,9 +46,7 @@ class _GlassSheetContent extends StatelessWidget {
 
     return Padding(
       // Keep the sheet above the keyboard when it appears.
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.viewInsetsOf(context).bottom,
-      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: Column(
         mainAxisSize: fullHeight ? MainAxisSize.max : MainAxisSize.min,
         children: [

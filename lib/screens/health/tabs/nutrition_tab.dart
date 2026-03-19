@@ -56,10 +56,7 @@ class NutritionTab extends ConsumerWidget {
 
           // Category breakdown
           if (state.todayEntries.isNotEmpty) ...[
-            _CategoryBreakdownCard(
-              entries: state.todayEntries,
-              tokens: tokens,
-            ),
+            _CategoryBreakdownCard(entries: state.todayEntries, tokens: tokens),
             const SizedBox(height: 16),
           ],
 
@@ -193,10 +190,7 @@ class _ErrorBanner extends StatelessWidget {
             Expanded(
               child: Text(
                 error,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 12,
-                ),
+                style: TextStyle(color: tokens.fgBright, fontSize: 12),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -275,11 +269,10 @@ class _SafetyScoreCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 6),
                   child: Text(
-                    AppLocalizations.of(context).itemsLoggedToday(state.todayEntries.length),
-                    style: TextStyle(
-                      color: tokens.fgDim,
-                      fontSize: 11,
-                    ),
+                    AppLocalizations.of(
+                      context,
+                    ).itemsLoggedToday(state.todayEntries.length),
+                    style: TextStyle(color: tokens.fgDim, fontSize: 11),
                   ),
                 ),
               ],
@@ -333,11 +326,7 @@ class _ArcGauge extends StatelessWidget {
               ),
               Text(
                 AppLocalizations.of(context).outOf100,
-                style: TextStyle(
-                  color: tokens.fgDim,
-                  fontSize: 9,
-                  height: 1.2,
-                ),
+                style: TextStyle(color: tokens.fgDim, fontSize: 9, height: 1.2),
               ),
             ],
           ),
@@ -462,15 +451,14 @@ class _StatusChip extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _TriggerWarningsCard extends StatelessWidget {
-  const _TriggerWarningsCard({
-    required this.conditions,
-    required this.tokens,
-  });
+  const _TriggerWarningsCard({required this.conditions, required this.tokens});
 
   final Set<TriggerCondition> conditions;
   final OrchestraColorTokens tokens;
 
-  static Map<TriggerCondition, String> _conditionLabels(AppLocalizations l10n) => {
+  static Map<TriggerCondition, String> _conditionLabels(
+    AppLocalizations l10n,
+  ) => {
     TriggerCondition.ibs: l10n.conditionIbs,
     TriggerCondition.gerd: l10n.conditionGerd,
     TriggerCondition.gout: l10n.conditionGout,
@@ -560,10 +548,7 @@ class _TriggerWarningsCard extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _CategoryBreakdownCard extends StatelessWidget {
-  const _CategoryBreakdownCard({
-    required this.entries,
-    required this.tokens,
-  });
+  const _CategoryBreakdownCard({required this.entries, required this.tokens});
 
   final List<NutritionEntry> entries;
   final OrchestraColorTokens tokens;
@@ -600,8 +585,7 @@ class _CategoryBreakdownCard extends StatelessWidget {
     // Count items per category
     final counts = <FoodCategory, int>{};
     for (final entry in entries) {
-      counts[entry.food.category] =
-          (counts[entry.food.category] ?? 0) + 1;
+      counts[entry.food.category] = (counts[entry.food.category] ?? 0) + 1;
     }
     if (counts.isEmpty) return const SizedBox.shrink();
 
@@ -629,8 +613,7 @@ class _CategoryBreakdownCard extends StatelessWidget {
               child: Row(
                 children: counts.entries.map((e) {
                   final fraction = e.value / total;
-                  final color =
-                      _categoryColors[e.key] ?? tokens.accent;
+                  final color = _categoryColors[e.key] ?? tokens.accent;
                   return Expanded(
                     flex: (fraction * 1000).round(),
                     child: Container(color: color),
@@ -642,12 +625,11 @@ class _CategoryBreakdownCard extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Category rows
-          ...FoodCategory.values
-              .where((cat) => counts.containsKey(cat))
-              .map((cat) {
+          ...FoodCategory.values.where((cat) => counts.containsKey(cat)).map((
+            cat,
+          ) {
             final count = counts[cat]!;
-            final color =
-                _categoryColors[cat] ?? tokens.accent;
+            final color = _categoryColors[cat] ?? tokens.accent;
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 3),
               child: Row(
@@ -670,18 +652,12 @@ class _CategoryBreakdownCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       labels[cat] ?? cat.name,
-                      style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 13,
-                      ),
+                      style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     ),
                   ),
                   Text(
                     l10n.nItemsPlural(count),
-                    style: TextStyle(
-                      color: tokens.fgMuted,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                   ),
                 ],
               ),
@@ -749,21 +725,24 @@ class _LogMealCardState extends State<_LogMealCard> {
             decoration: InputDecoration(
               hintText: l10n.addMeal,
               hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-              prefixIcon: Icon(Icons.search_rounded,
-                  color: tokens.fgDim, size: 18),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: tokens.fgDim,
+                size: 18,
+              ),
               filled: true,
               fillColor: tokens.bg.withValues(alpha: 0.5),
               contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 12, vertical: 8),
+                horizontal: 12,
+                vertical: 8,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                    color: tokens.borderFaint, width: 0.5),
+                borderSide: BorderSide(color: tokens.borderFaint, width: 0.5),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
-                    color: tokens.borderFaint, width: 0.5),
+                borderSide: BorderSide(color: tokens.borderFaint, width: 0.5),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -798,15 +777,20 @@ class _LogMealCardState extends State<_LogMealCard> {
                       color: tokens.accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(Icons.add_rounded,
-                        color: tokens.accent, size: 20),
+                    child: Icon(
+                      Icons.add_rounded,
+                      color: tokens.accent,
+                      size: 20,
+                    ),
                   ),
                   child: InkWell(
                     onTap: () => setState(() => _selectedFood = f),
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 4),
+                        vertical: 8,
+                        horizontal: 4,
+                      ),
                       decoration: isSelected
                           ? BoxDecoration(
                               color: tokens.accent.withValues(alpha: 0.10),
@@ -840,18 +824,23 @@ class _LogMealCardState extends State<_LogMealCard> {
                             ),
                           ),
                           if (!f.isSafe)
-                            ...f.triggerConditions.map((t) => Padding(
-                                  padding:
-                                      const EdgeInsetsDirectional.only(end: 4),
-                                  child: Text(
-                                    t.name.toUpperCase(),
-                                    style: TextStyle(
-                                        color: const Color(0xFFFF9800)
-                                            .withValues(alpha: 0.7),
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w600),
+                            ...f.triggerConditions.map(
+                              (t) => Padding(
+                                padding: const EdgeInsetsDirectional.only(
+                                  end: 4,
+                                ),
+                                child: Text(
+                                  t.name.toUpperCase(),
+                                  style: TextStyle(
+                                    color: const Color(
+                                      0xFFFF9800,
+                                    ).withValues(alpha: 0.7),
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                )),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -864,7 +853,9 @@ class _LogMealCardState extends State<_LogMealCard> {
           Row(
             children: [
               Text(
-                AppLocalizations.of(context).portionSpoons(_spoons.toStringAsFixed(1)),
+                AppLocalizations.of(
+                  context,
+                ).portionSpoons(_spoons.toStringAsFixed(1)),
                 style: TextStyle(color: tokens.fgMuted, fontSize: 13),
               ),
               Expanded(
@@ -896,8 +887,7 @@ class _LogMealCardState extends State<_LogMealCard> {
               style: FilledButton.styleFrom(
                 backgroundColor: tokens.accent,
                 foregroundColor: tokens.bg,
-                disabledBackgroundColor:
-                    tokens.accent.withValues(alpha: 0.3),
+                disabledBackgroundColor: tokens.accent.withValues(alpha: 0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -951,15 +941,14 @@ class _TodaysLogCard extends StatelessWidget {
               const Spacer(),
               Text(
                 AppLocalizations.of(context).nItemsPlural(entries.length),
-                style: TextStyle(
-                  color: tokens.fgDim,
-                  fontSize: 11,
-                ),
+                style: TextStyle(color: tokens.fgDim, fontSize: 11),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          ...entries.reversed.take(8).map(
+          ...entries.reversed
+              .take(8)
+              .map(
                 (e) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
@@ -976,7 +965,9 @@ class _TodaysLogCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          e.food.localizedName(Localizations.localeOf(context).languageCode),
+                          e.food.localizedName(
+                            Localizations.localeOf(context).languageCode,
+                          ),
                           style: TextStyle(
                             color: tokens.fgBright,
                             fontSize: 13,
@@ -985,27 +976,17 @@ class _TodaysLogCard extends StatelessWidget {
                       ),
                       Text(
                         _formatTime(e.timestamp),
-                        style: TextStyle(
-                          color: tokens.fgDim,
-                          fontSize: 11,
-                        ),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         '${e.portionSpoons.toStringAsFixed(1)} sp',
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
                         onTap: () => notifier.removeEntry(e.id),
-                        child: Icon(
-                          Icons.close,
-                          color: tokens.fgDim,
-                          size: 14,
-                        ),
+                        child: Icon(Icons.close, color: tokens.fgDim, size: 14),
                       ),
                     ],
                   ),
@@ -1033,11 +1014,7 @@ class _EmptyMealState extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 12),
-            Icon(
-              Icons.restaurant_menu_rounded,
-              color: tokens.fgDim,
-              size: 40,
-            ),
+            Icon(Icons.restaurant_menu_rounded, color: tokens.fgDim, size: 40),
             const SizedBox(height: 12),
             Text(
               AppLocalizations.of(context).noResults,
@@ -1051,11 +1028,7 @@ class _EmptyMealState extends StatelessWidget {
             Text(
               AppLocalizations.of(context).addMeal,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: tokens.fgDim,
-                fontSize: 12,
-                height: 1.5,
-              ),
+              style: TextStyle(color: tokens.fgDim, fontSize: 12, height: 1.5),
             ),
             const SizedBox(height: 12),
           ],

@@ -13,14 +13,11 @@ List<InlineSpan> parseInline(String text) {
   final codeSlots = <String>[];
 
   // Step 1: Extract inline code to protect from other formatting
-  final result = text.replaceAllMapped(
-    RegExp(r'`([^`]+)`'),
-    (m) {
-      final idx = codeSlots.length;
-      codeSlots.add(m.group(1) ?? '');
-      return '\x00CODE$idx\x00';
-    },
-  );
+  final result = text.replaceAllMapped(RegExp(r'`([^`]+)`'), (m) {
+    final idx = codeSlots.length;
+    codeSlots.add(m.group(1) ?? '');
+    return '\x00CODE$idx\x00';
+  });
 
   // Step 2: Parse into segments
   _parseSegments(result, codeSlots, spans, const InlineStyle());
@@ -36,7 +33,9 @@ TextSpan buildInlineSpan(
 }) {
   final segments = parseInline(text);
   return TextSpan(
-    children: segments.map((s) => s.toTextSpan(baseStyle, onLinkClick)).toList(),
+    children: segments
+        .map((s) => s.toTextSpan(baseStyle, onLinkClick))
+        .toList(),
   );
 }
 
@@ -46,7 +45,11 @@ Widget buildInlineWidget(
   TextStyle? baseStyle,
   LinkCallback? onLinkClick,
 }) {
-  final span = buildInlineSpan(text, baseStyle: baseStyle, onLinkClick: onLinkClick);
+  final span = buildInlineSpan(
+    text,
+    baseStyle: baseStyle,
+    onLinkClick: onLinkClick,
+  );
   return Text.rich(span);
 }
 
@@ -132,7 +135,7 @@ class InlineSpan {
         style: ts,
         recognizer: onLinkClick != null && style.linkHref != null
             ? (TapGestureRecognizer()
-              ..onTap = () => onLinkClick(style.linkHref!))
+                ..onTap = () => onLinkClick(style.linkHref!))
             : null,
       );
     }
@@ -194,7 +197,9 @@ void _parseSegments(
 
   // Text before the match
   if (m.start > 0) {
-    spans.add(InlineSpan(text: text.substring(0, m.start), style: currentStyle));
+    spans.add(
+      InlineSpan(text: text.substring(0, m.start), style: currentStyle),
+    );
   }
 
   switch (m.type) {
@@ -203,17 +208,22 @@ void _parseSegments(
       if (idxStr == null) break;
       final idx = int.tryParse(idxStr) ?? 0;
       final codeText = idx < codeSlots.length ? codeSlots[idx] : '';
-      spans.add(InlineSpan(
-        text: codeText,
-        style: currentStyle.copyWith(isCode: true),
-      ));
+      spans.add(
+        InlineSpan(text: codeText, style: currentStyle.copyWith(isCode: true)),
+      );
     case 'image':
       final alt = m.match.group(1) ?? '';
       final src = m.match.group(2) ?? '';
-      spans.add(InlineSpan(
-        text: alt.isNotEmpty ? '[$alt]' : '[image]',
-        style: currentStyle.copyWith(isImage: true, imageSrc: src, imageAlt: alt),
-      ));
+      spans.add(
+        InlineSpan(
+          text: alt.isNotEmpty ? '[$alt]' : '[image]',
+          style: currentStyle.copyWith(
+            isImage: true,
+            imageSrc: src,
+            imageAlt: alt,
+          ),
+        ),
+      );
     case 'link':
       final linkText = m.match.group(1) ?? '';
       final href = m.match.group(2) ?? '';
@@ -228,26 +238,42 @@ void _parseSegments(
     case 'bolditalic':
       final inner = m.match.group(1) ?? '';
       if (inner.isNotEmpty) {
-        _parseSegments(inner, codeSlots, spans,
-            currentStyle.copyWith(bold: true, italic: true));
+        _parseSegments(
+          inner,
+          codeSlots,
+          spans,
+          currentStyle.copyWith(bold: true, italic: true),
+        );
       }
     case 'bold' || 'bold2':
       final inner = m.match.group(1) ?? '';
       if (inner.isNotEmpty) {
-        _parseSegments(inner, codeSlots, spans,
-            currentStyle.copyWith(bold: true));
+        _parseSegments(
+          inner,
+          codeSlots,
+          spans,
+          currentStyle.copyWith(bold: true),
+        );
       }
     case 'italic' || 'italic2':
       final inner = m.match.group(1) ?? '';
       if (inner.isNotEmpty) {
-        _parseSegments(inner, codeSlots, spans,
-            currentStyle.copyWith(italic: true));
+        _parseSegments(
+          inner,
+          codeSlots,
+          spans,
+          currentStyle.copyWith(italic: true),
+        );
       }
     case 'strike':
       final inner = m.match.group(1) ?? '';
       if (inner.isNotEmpty) {
-        _parseSegments(inner, codeSlots, spans,
-            currentStyle.copyWith(strikethrough: true));
+        _parseSegments(
+          inner,
+          codeSlots,
+          spans,
+          currentStyle.copyWith(strikethrough: true),
+        );
       }
   }
 

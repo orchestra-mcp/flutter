@@ -16,7 +16,8 @@ class SmartAction {
 }
 
 /// Callback signature when a smart action is selected.
-typedef SmartActionCallback = void Function(SmartAction action, String? customPrompt);
+typedef SmartActionCallback =
+    void Function(SmartAction action, String? customPrompt);
 
 /// Builds localized default smart actions.
 List<SmartAction> buildDefaultSmartActions(AppLocalizations l10n) => [
@@ -104,7 +105,11 @@ class SmartActionButton extends StatelessWidget {
               ),
             ],
           ),
-          child: const Icon(Icons.auto_awesome_rounded, size: 20, color: Colors.white),
+          child: const Icon(
+            Icons.auto_awesome_rounded,
+            size: 20,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -119,7 +124,8 @@ class SmartActionButton extends StatelessWidget {
       barrierColor: Colors.black.withValues(alpha: 0.40),
       builder: (ctx) => _SmartActionSheet(
         tokens: tokens,
-        actions: actions ?? buildDefaultSmartActions(AppLocalizations.of(context)),
+        actions:
+            actions ?? buildDefaultSmartActions(AppLocalizations.of(context)),
         onAction: onAction,
       ),
     );
@@ -178,9 +184,7 @@ class _SmartActionSheetState extends State<_SmartActionSheet> {
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
 
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.viewInsetsOf(context).bottom,
-      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: tokens.bgAlt,
@@ -210,7 +214,11 @@ class _SmartActionSheetState extends State<_SmartActionSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Row(
                 children: [
-                  Icon(Icons.auto_awesome_rounded, size: 18, color: tokens.accent),
+                  Icon(
+                    Icons.auto_awesome_rounded,
+                    size: 18,
+                    color: tokens.accent,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     AppLocalizations.of(context).smartActions,
@@ -228,11 +236,13 @@ class _SmartActionSheetState extends State<_SmartActionSheet> {
 
             // Actions list
             if (!_showCustomInput)
-              ...widget.actions.map((action) => _ActionTile(
-                    action: action,
-                    tokens: tokens,
-                    onTap: () => _selectAction(action),
-                  )),
+              ...widget.actions.map(
+                (action) => _ActionTile(
+                  action: action,
+                  tokens: tokens,
+                  onTap: () => _selectAction(action),
+                ),
+              ),
 
             // Custom prompt input
             if (_showCustomInput)
@@ -256,12 +266,16 @@ class _SmartActionSheetState extends State<_SmartActionSheet> {
                       maxLines: 3,
                       style: TextStyle(color: tokens.fgBright, fontSize: 14),
                       decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context).enterYourInstruction,
+                        hintText: AppLocalizations.of(
+                          context,
+                        ).enterYourInstruction,
                         hintStyle: TextStyle(color: tokens.fgDim),
                         filled: true,
                         fillColor: tokens.bg,
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 12),
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(color: tokens.border),

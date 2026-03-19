@@ -97,9 +97,11 @@ class RealtimeService {
   }
 
   Future<void> _doConnect() async {
-    _setState(_retryCount == 0
-        ? RealtimeConnectionState.connecting
-        : RealtimeConnectionState.reconnecting);
+    _setState(
+      _retryCount == 0
+          ? RealtimeConnectionState.connecting
+          : RealtimeConnectionState.reconnecting,
+    );
 
     try {
       final url = '${Env.wsBaseUrl}/realtime?token=$_authToken';
@@ -209,17 +211,11 @@ class RealtimeService {
   }
 
   void _sendSubscribe(String channel) {
-    _rawSend({
-      'type': 'subscribe',
-      'channel': channel,
-    });
+    _rawSend({'type': 'subscribe', 'channel': channel});
   }
 
   void _sendUnsubscribe(String channel) {
-    _rawSend({
-      'type': 'unsubscribe',
-      'channel': channel,
-    });
+    _rawSend({'type': 'unsubscribe', 'channel': channel});
   }
 
   // ── Public API ──────────────────────────────────────────────────────────
@@ -237,8 +233,7 @@ class RealtimeService {
       }
     }
 
-    return _eventController.stream
-        .where((event) => event.channel == channel);
+    return _eventController.stream.where((event) => event.channel == channel);
   }
 
   /// Unsubscribes from [channel] and stops receiving its events.

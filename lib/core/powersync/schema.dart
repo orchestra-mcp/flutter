@@ -6,7 +6,6 @@ import 'package:powersync/powersync.dart';
 /// PowerSync auto-creates an `id` column (TEXT primary key).
 const powersyncSchema = Schema([
   // ── Health tables ──────────────────────────────────────────────
-
   Table('water_logs', [
     Column.integer('user_id'),
     Column.integer('amount_ml'),
@@ -97,7 +96,6 @@ const powersyncSchema = Schema([
   ]),
 
   // ── App data tables ────────────────────────────────────────────
-
   Table('notes', [
     Column.integer('user_id'),
     Column.text('title'),

@@ -52,7 +52,10 @@ void main() {
     test('case-insensitive literal search creates escaped regex', () {
       const query = 'hello';
       const caseSensitive = false;
-      final pattern = RegExp(RegExp.escape(query), caseSensitive: caseSensitive);
+      final pattern = RegExp(
+        RegExp.escape(query),
+        caseSensitive: caseSensitive,
+      );
       expect(pattern.hasMatch('Hello World'), isTrue);
       expect(pattern.hasMatch('HELLO'), isTrue);
       expect(pattern.hasMatch('goodbye'), isFalse);
@@ -104,7 +107,9 @@ void main() {
 
     test('empty query produces no matches', () {
       const query = '';
-      final matches = query.isEmpty ? <Match>[] : 'some text'.allMatches(query).toList();
+      final matches = query.isEmpty
+          ? <Match>[]
+          : 'some text'.allMatches(query).toList();
       expect(matches, isEmpty);
     });
 
@@ -203,10 +208,7 @@ void main() {
 
     /// Reproduce the sanitization logic inline for testing.
     String sanitize(String data) {
-      return data.replaceAll(
-        RegExp('[\uFE0E\uFE0F\u200D]'),
-        '',
-      );
+      return data.replaceAll(RegExp('[\uFE0E\uFE0F\u200D]'), '');
     }
 
     test('strips VS15 (U+FE0E) text presentation selector', () {
@@ -360,17 +362,32 @@ void main() {
 
     test('TerminalSessionType has 3 values', () {
       expect(TerminalSessionType.values.length, 3);
-      expect(TerminalSessionType.values, contains(TerminalSessionType.terminal));
+      expect(
+        TerminalSessionType.values,
+        contains(TerminalSessionType.terminal),
+      );
       expect(TerminalSessionType.values, contains(TerminalSessionType.ssh));
       expect(TerminalSessionType.values, contains(TerminalSessionType.claude));
     });
 
     test('TerminalSessionStatus has 4 values', () {
       expect(TerminalSessionStatus.values.length, 4);
-      expect(TerminalSessionStatus.values, contains(TerminalSessionStatus.connecting));
-      expect(TerminalSessionStatus.values, contains(TerminalSessionStatus.connected));
-      expect(TerminalSessionStatus.values, contains(TerminalSessionStatus.disconnected));
-      expect(TerminalSessionStatus.values, contains(TerminalSessionStatus.error));
+      expect(
+        TerminalSessionStatus.values,
+        contains(TerminalSessionStatus.connecting),
+      );
+      expect(
+        TerminalSessionStatus.values,
+        contains(TerminalSessionStatus.connected),
+      );
+      expect(
+        TerminalSessionStatus.values,
+        contains(TerminalSessionStatus.disconnected),
+      );
+      expect(
+        TerminalSessionStatus.values,
+        contains(TerminalSessionStatus.error),
+      );
     });
   });
 
@@ -414,21 +431,28 @@ void main() {
 
     test('increase font size', () {
       container.read(terminalFontSizeProvider.notifier).increase();
-      expect(container.read(terminalFontSizeProvider),
-          kTerminalFontSizeDefault + kTerminalFontSizeStep);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault + kTerminalFontSizeStep,
+      );
     });
 
     test('decrease font size', () {
       container.read(terminalFontSizeProvider.notifier).decrease();
-      expect(container.read(terminalFontSizeProvider),
-          kTerminalFontSizeDefault - kTerminalFontSizeStep);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault - kTerminalFontSizeStep,
+      );
     });
 
     test('reset font size returns to default', () {
       container.read(terminalFontSizeProvider.notifier).increase();
       container.read(terminalFontSizeProvider.notifier).increase();
       container.read(terminalFontSizeProvider.notifier).reset();
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('font size does not exceed max', () {

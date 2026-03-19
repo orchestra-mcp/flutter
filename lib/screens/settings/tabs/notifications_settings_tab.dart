@@ -24,7 +24,9 @@ class _NotificationsSettingsTabState
   Map<String, dynamic>? _pendingAiToggles;
   bool _savingAi = false;
 
-  static List<({String key, IconData icon, String label, String sub})> _items(AppLocalizations l10n) => [
+  static List<({String key, IconData icon, String label, String sub})> _items(
+    AppLocalizations l10n,
+  ) => [
     (
       key: 'push',
       icon: Icons.notifications_rounded,
@@ -61,9 +63,7 @@ class _NotificationsSettingsTabState
     final raw = prefs['notifications'];
     const keys = ['push', 'sync', 'email', 'health', 'pomodoro'];
     if (raw is Map) {
-      return {
-        for (final key in keys) key: raw[key] != false,
-      };
+      return {for (final key in keys) key: raw[key] != false};
     }
     // Fallback: check top-level keys with notification_ prefix.
     return {
@@ -72,8 +72,11 @@ class _NotificationsSettingsTabState
     };
   }
 
-  Future<void> _toggleAi(String key, bool value,
-      Map<String, dynamic> current) async {
+  Future<void> _toggleAi(
+    String key,
+    bool value,
+    Map<String, dynamic> current,
+  ) async {
     final updated = {...current, key: value};
     setState(() {
       _pendingAiToggles = updated;
@@ -82,16 +85,17 @@ class _NotificationsSettingsTabState
     try {
       final mcp = ref.read(mcpClientProvider);
       if (mcp != null) {
-        await mcp.callTool('notify_config', {
-          'action': 'set',
-          key: value,
-        });
+        await mcp.callTool('notify_config', {'action': 'set', key: value});
       }
       ref.invalidate(aiNotificationSettingsProvider);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSaveAiSetting}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToSaveAiSetting}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -104,8 +108,11 @@ class _NotificationsSettingsTabState
     }
   }
 
-  Future<void> _toggle(String key, bool value,
-      Map<String, bool> current) async {
+  Future<void> _toggle(
+    String key,
+    bool value,
+    Map<String, bool> current,
+  ) async {
     final updated = {...current, key: value};
     setState(() {
       _pendingToggles = updated;
@@ -119,7 +126,11 @@ class _NotificationsSettingsTabState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSavePreference}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToSavePreference}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -146,8 +157,7 @@ class _NotificationsSettingsTabState
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 40, color: tokens.fgDim),
+              Icon(Icons.error_outline_rounded, size: 40, color: tokens.fgDim),
               const SizedBox(height: 12),
               Text(
                 l10n.notifSettingsFailedToLoadPreferences,
@@ -169,8 +179,7 @@ class _NotificationsSettingsTabState
         ),
       ),
       data: (prefs) {
-        final notifications =
-            _pendingToggles ?? _extractNotifications(prefs);
+        final notifications = _pendingToggles ?? _extractNotifications(prefs);
         final items = _items(l10n);
         return ListView(
           padding: const EdgeInsets.all(20),
@@ -207,8 +216,7 @@ class _NotificationsSettingsTabState
                       tokens: tokens,
                       onChanged: _saving
                           ? null
-                          : (v) => _toggle(
-                              items[i].key, v, notifications),
+                          : (v) => _toggle(items[i].key, v, notifications),
                     ),
                   ],
                 ],
@@ -248,10 +256,12 @@ class _AiNotificationSection extends ConsumerWidget {
   final Map<String, dynamic>? pendingToggles;
   final bool saving;
   final void Function(String key, bool value, Map<String, dynamic> current)
-      onToggle;
+  onToggle;
   final OrchestraColorTokens tokens;
 
-  static List<({String key, IconData icon, String label, String sub})> _aiItems(AppLocalizations l10n) => [
+  static List<({String key, IconData icon, String label, String sub})> _aiItems(
+    AppLocalizations l10n,
+  ) => [
     (
       key: 'ai_push_enabled',
       icon: Icons.smart_toy_outlined,
@@ -351,23 +361,38 @@ class _AiNotificationSection extends ConsumerWidget {
                   _InfoRow(
                     icon: Icons.record_voice_over_rounded,
                     label: l10n.notifSettingsVoice,
-                    value: voiceName.isEmpty ? l10n.notifSettingsSystemDefault : voiceName,
+                    value: voiceName.isEmpty
+                        ? l10n.notifSettingsSystemDefault
+                        : voiceName,
                     tokens: tokens,
                   ),
-                  Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+                  Divider(
+                    height: 1,
+                    indent: 56,
+                    color: tokens.border.withValues(alpha: 0.4),
+                  ),
                   _InfoRow(
                     icon: Icons.speed_rounded,
                     label: l10n.notifSettingsSpeed,
-                    value: voiceSpeed.isEmpty ? l10n.notifSettingsSpeedDefault : l10n.notifSettingsSpeedWpm(voiceSpeed),
+                    value: voiceSpeed.isEmpty
+                        ? l10n.notifSettingsSpeedDefault
+                        : l10n.notifSettingsSpeedWpm(voiceSpeed),
                     tokens: tokens,
                   ),
-                  Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+                  Divider(
+                    height: 1,
+                    indent: 56,
+                    color: tokens.border.withValues(alpha: 0.4),
+                  ),
                   _InfoRow(
                     icon: Icons.do_not_disturb_on_outlined,
                     label: l10n.notifSettingsQuietHours,
                     value: quietStart.isEmpty
                         ? l10n.notifSettingsQuietHoursOff
-                        : l10n.notifSettingsQuietHoursRange(quietStart, quietEnd),
+                        : l10n.notifSettingsQuietHoursRange(
+                            quietStart,
+                            quietEnd,
+                          ),
                     tokens: tokens,
                   ),
                 ],
@@ -419,10 +444,7 @@ class _InfoRow extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(fontSize: 12, color: tokens.fgMuted),
-          ),
+          Text(value, style: TextStyle(fontSize: 12, color: tokens.fgMuted)),
         ],
       ),
     );

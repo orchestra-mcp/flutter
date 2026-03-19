@@ -60,8 +60,9 @@ final themeIdProvider = Provider<String>((ref) {
 });
 
 /// Themes grouped for the settings picker.
-final groupedThemesProvider =
-    Provider<Map<ThemeGroup, List<OrchestraTheme>>>((ref) {
+final groupedThemesProvider = Provider<Map<ThemeGroup, List<OrchestraTheme>>>((
+  ref,
+) {
   final grouped = <ThemeGroup, List<OrchestraTheme>>{};
   for (final t in OrchestraTheme.allThemes) {
     grouped.putIfAbsent(t.group, () => []).add(t);

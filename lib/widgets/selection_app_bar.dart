@@ -67,8 +67,10 @@ class SelectionAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         if (onDelete != null)
           IconButton(
-            icon: const Icon(Icons.delete_outline_rounded,
-                color: Color(0xFFDC2626)),
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              color: Color(0xFFDC2626),
+            ),
             tooltip: l10n.delete,
             onPressed: onDelete,
           ),

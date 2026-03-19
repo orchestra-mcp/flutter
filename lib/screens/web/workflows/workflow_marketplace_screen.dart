@@ -25,15 +25,14 @@ class _MarketplaceState {
     String? Function()? selectedCategory,
     List<SharedWorkflow>? workflows,
     bool? isLoading,
-  }) =>
-      _MarketplaceState(
-        query: query ?? this.query,
-        selectedCategory: selectedCategory != null
-            ? selectedCategory()
-            : this.selectedCategory,
-        workflows: workflows ?? this.workflows,
-        isLoading: isLoading ?? this.isLoading,
-      );
+  }) => _MarketplaceState(
+    query: query ?? this.query,
+    selectedCategory: selectedCategory != null
+        ? selectedCategory()
+        : this.selectedCategory,
+    workflows: workflows ?? this.workflows,
+    isLoading: isLoading ?? this.isLoading,
+  );
 }
 
 class _MarketplaceNotifier extends Notifier<_MarketplaceState> {
@@ -62,8 +61,7 @@ class _MarketplaceNotifier extends Notifier<_MarketplaceState> {
   }
 
   Future<void> setCategory(String? category) async {
-    state = state.copyWith(
-        selectedCategory: () => category, isLoading: true);
+    state = state.copyWith(selectedCategory: () => category, isLoading: true);
     final results = await _service.listSharedWorkflows(
       filter: SharedWorkflowFilter(
         query: state.query.isEmpty ? null : state.query,
@@ -80,8 +78,8 @@ class _MarketplaceNotifier extends Notifier<_MarketplaceState> {
 
 final _marketplaceProvider =
     NotifierProvider<_MarketplaceNotifier, _MarketplaceState>(
-  _MarketplaceNotifier.new,
-);
+      _MarketplaceNotifier.new,
+    );
 
 // ── Categories ──────────────────────────────────────────────────────────────
 
@@ -160,23 +158,25 @@ class _WorkflowMarketplaceScreenState
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context).searchWorkflows,
                 hintStyle: TextStyle(color: tokens.fgDim),
-                prefixIcon:
-                    Icon(Icons.search_rounded, color: tokens.fgDim),
+                prefixIcon: Icon(Icons.search_rounded, color: tokens.fgDim),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
-                        icon: Icon(Icons.clear_rounded,
-                            color: tokens.fgDim, size: 18),
+                        icon: Icon(
+                          Icons.clear_rounded,
+                          color: tokens.fgDim,
+                          size: 18,
+                        ),
                         onPressed: () {
                           _searchController.clear();
-                          ref
-                              .read(_marketplaceProvider.notifier)
-                              .search('');
+                          ref.read(_marketplaceProvider.notifier).search('');
                         },
                       )
                     : null,
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 14),
+                  horizontal: 16,
+                  vertical: 14,
+                ),
               ),
             ),
           ),
@@ -187,16 +187,16 @@ class _WorkflowMarketplaceScreenState
             spacing: 8,
             runSpacing: 8,
             children: categories.map((cat) {
-              final isSelected =
-                  cat.$2 == mState.selectedCategory;
+              final isSelected = cat.$2 == mState.selectedCategory;
               return GestureDetector(
-                onTap: () => ref
-                    .read(_marketplaceProvider.notifier)
-                    .setCategory(cat.$2),
+                onTap: () =>
+                    ref.read(_marketplaceProvider.notifier).setCategory(cat.$2),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 7),
+                    horizontal: 14,
+                    vertical: 7,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? tokens.accent.withValues(alpha: 0.18)
@@ -211,8 +211,7 @@ class _WorkflowMarketplaceScreenState
                   child: Text(
                     cat.$1,
                     style: TextStyle(
-                      color:
-                          isSelected ? tokens.accent : tokens.fgMuted,
+                      color: isSelected ? tokens.accent : tokens.fgMuted,
                       fontSize: 12,
                       fontWeight: isSelected
                           ? FontWeight.w600
@@ -230,8 +229,7 @@ class _WorkflowMarketplaceScreenState
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(48),
-                child:
-                    CircularProgressIndicator(color: tokens.accent),
+                child: CircularProgressIndicator(color: tokens.accent),
               ),
             )
           else if (mState.workflows.isEmpty)
@@ -240,13 +238,15 @@ class _WorkflowMarketplaceScreenState
                 padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Column(
                   children: [
-                    Icon(Icons.search_off_rounded,
-                        color: tokens.fgDim, size: 48),
+                    Icon(
+                      Icons.search_off_rounded,
+                      color: tokens.fgDim,
+                      size: 48,
+                    ),
                     const SizedBox(height: 12),
                     Text(
                       AppLocalizations.of(context).noWorkflowsFound,
-                      style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 14),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 14),
                     ),
                   ],
                 ),
@@ -258,13 +258,12 @@ class _WorkflowMarketplaceScreenState
                 final cols = constraints.maxWidth >= 900
                     ? 3
                     : constraints.maxWidth >= 560
-                        ? 2
-                        : 1;
+                    ? 2
+                    : 1;
                 return GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: cols,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
@@ -338,8 +337,7 @@ class _WorkflowCard extends StatelessWidget {
                     ),
                     Text(
                       workflow.author,
-                      style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 11),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                     ),
                   ],
                 ),
@@ -347,10 +345,11 @@ class _WorkflowCard extends StatelessWidget {
               if (workflow.visibility == WorkflowVisibility.team)
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 2),
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF9C27B0)
-                        .withValues(alpha: 0.15),
+                    color: const Color(0xFF9C27B0).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
@@ -384,15 +383,16 @@ class _WorkflowCard extends StatelessWidget {
               children: workflow.tags.take(3).map((tag) {
                 return Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 6, vertical: 2),
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: tokens.fgDim.withValues(alpha: 0.10),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     tag,
-                    style: TextStyle(
-                        color: tokens.fgDim, fontSize: 10),
+                    style: TextStyle(color: tokens.fgDim, fontSize: 10),
                   ),
                 );
               }).toList(),
@@ -403,8 +403,11 @@ class _WorkflowCard extends StatelessWidget {
           // ── Footer: stars, downloads, install button ────────────
           Row(
             children: [
-              const Icon(Icons.star_rounded,
-                  color: Color(0xFFFFB300), size: 14),
+              const Icon(
+                Icons.star_rounded,
+                color: Color(0xFFFFB300),
+                size: 14,
+              ),
               const SizedBox(width: 3),
               Text(
                 workflow.rating.toStringAsFixed(1),
@@ -416,24 +419,23 @@ class _WorkflowCard extends StatelessWidget {
               ),
               Text(
                 ' (${workflow.ratingCount})',
-                style:
-                    TextStyle(color: tokens.fgDim, fontSize: 10),
+                style: TextStyle(color: tokens.fgDim, fontSize: 10),
               ),
               const SizedBox(width: 12),
-              Icon(Icons.download_rounded,
-                  color: tokens.fgDim, size: 13),
+              Icon(Icons.download_rounded, color: tokens.fgDim, size: 13),
               const SizedBox(width: 3),
               Text(
                 _formatNumber(workflow.downloads),
-                style:
-                    TextStyle(color: tokens.fgMuted, fontSize: 11),
+                style: TextStyle(color: tokens.fgMuted, fontSize: 11),
               ),
               const Spacer(),
               GestureDetector(
                 onTap: () => _installWorkflow(context),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12, vertical: 5),
+                    horizontal: 12,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [tokens.accent, tokens.accentAlt],
@@ -465,7 +467,9 @@ class _WorkflowCard extends StatelessWidget {
   void _installWorkflow(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(AppLocalizations.of(context).workflowInstalling(workflow.name)),
+        content: Text(
+          AppLocalizations.of(context).workflowInstalling(workflow.name),
+        ),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -500,26 +504,31 @@ class _WorkflowCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      AppLocalizations.of(context).workflowByAuthor(workflow.author),
-                      style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 13),
+                      AppLocalizations.of(
+                        context,
+                      ).workflowByAuthor(workflow.author),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 13),
                     ),
                     const Spacer(),
-                    const Icon(Icons.star_rounded,
-                        color: Color(0xFFFFB300), size: 16),
+                    const Icon(
+                      Icons.star_rounded,
+                      color: Color(0xFFFFB300),
+                      size: 16,
+                    ),
                     const SizedBox(width: 4),
                     Text(
-                      AppLocalizations.of(context).workflowRatingsCount(workflow.rating.toString(), workflow.ratingCount),
-                      style: TextStyle(
-                          color: tokens.fgBright, fontSize: 13),
+                      AppLocalizations.of(context).workflowRatingsCount(
+                        workflow.rating.toString(),
+                        workflow.ratingCount,
+                      ),
+                      style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     ),
                   ],
                 ),
                 const SizedBox(height: 16),
                 Text(
                   workflow.description,
-                  style: TextStyle(
-                      color: tokens.fgBright, fontSize: 13),
+                  style: TextStyle(color: tokens.fgBright, fontSize: 13),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -552,22 +561,24 @@ class _WorkflowCard extends StatelessWidget {
                 const SizedBox(height: 16),
                 Row(
                   children: [
-                    Icon(Icons.download_rounded,
-                        color: tokens.fgDim, size: 14),
+                    Icon(Icons.download_rounded, color: tokens.fgDim, size: 14),
                     const SizedBox(width: 4),
                     Text(
-                      AppLocalizations.of(context).workflowDownloadsCount(workflow.downloads),
-                      style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 12),
+                      AppLocalizations.of(
+                        context,
+                      ).workflowDownloadsCount(workflow.downloads),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     ),
                     const SizedBox(width: 16),
-                    Icon(Icons.visibility_outlined,
-                        color: tokens.fgDim, size: 14),
+                    Icon(
+                      Icons.visibility_outlined,
+                      color: tokens.fgDim,
+                      size: 14,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       workflow.visibility.name,
-                      style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 12),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     ),
                   ],
                 ),
@@ -578,16 +589,16 @@ class _WorkflowCard extends StatelessWidget {
                   children: workflow.tags.map((tag) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
-                        color:
-                            tokens.accent.withValues(alpha: 0.12),
+                        color: tokens.accent.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
                         tag,
-                        style: TextStyle(
-                            color: tokens.accent, fontSize: 11),
+                        style: TextStyle(color: tokens.accent, fontSize: 11),
                       ),
                     );
                   }).toList(),
@@ -599,16 +610,21 @@ class _WorkflowCard extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child:
-                Text(AppLocalizations.of(context).close, style: TextStyle(color: tokens.fgMuted)),
+            child: Text(
+              AppLocalizations.of(context).close,
+              style: TextStyle(color: tokens.fgMuted),
+            ),
           ),
           FilledButton(
             onPressed: () {
               Navigator.of(ctx).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content:
-                      Text(AppLocalizations.of(context).workflowInstalling(workflow.name)),
+                  content: Text(
+                    AppLocalizations.of(
+                      context,
+                    ).workflowInstalling(workflow.name),
+                  ),
                   behavior: SnackBarBehavior.floating,
                 ),
               );
@@ -650,15 +666,16 @@ class _ContentRow extends StatelessWidget {
         children: [
           Icon(icon, color: tokens.accent, size: 16),
           const SizedBox(width: 8),
-          Text(label,
-              style: TextStyle(color: tokens.fgBright, fontSize: 13)),
+          Text(label, style: TextStyle(color: tokens.fgBright, fontSize: 13)),
           const Spacer(),
-          Text('$count',
-              style: TextStyle(
-                color: tokens.fgMuted,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              )),
+          Text(
+            '$count',
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );

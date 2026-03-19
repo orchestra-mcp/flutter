@@ -75,12 +75,14 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
     if (name.isEmpty || path.isEmpty) return;
 
     setState(() {
-      _workspaces.add(_Workspace(
-        id: 'WS-${_workspaces.length + 1}'.padLeft(3, '0'),
-        name: name,
-        path: path,
-        isActive: false,
-      ));
+      _workspaces.add(
+        _Workspace(
+          id: 'WS-${_workspaces.length + 1}'.padLeft(3, '0'),
+          name: name,
+          path: path,
+          isActive: false,
+        ),
+      );
       _addWorkspaceNameCtrl.clear();
       _addWorkspacePathCtrl.clear();
     });
@@ -123,7 +125,9 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
 
   Widget _buildOrchestratorCard(OrchestraColorTokens tokens) {
     final isConnected = _status == _OrchestratorStatus.connected;
-    final statusColor = isConnected ? const Color(0xFF22C55E) : const Color(0xFFEF4444);
+    final statusColor = isConnected
+        ? const Color(0xFF22C55E)
+        : const Color(0xFFEF4444);
     final statusLabel = isConnected ? 'Connected' : 'Disconnected';
 
     return Container(
@@ -175,7 +179,10 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
                 ),
                 child: Text(
                   isConnected ? 'Disconnect' : 'Reconnect',
@@ -202,10 +209,7 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
   Widget _infoRow(OrchestraColorTokens tokens, String label, String value) {
     return Row(
       children: [
-        Text(
-          label,
-          style: TextStyle(fontSize: 12, color: tokens.fgDim),
-        ),
+        Text(label, style: TextStyle(fontSize: 12, color: tokens.fgDim)),
         const Spacer(),
         Text(
           value,
@@ -351,11 +355,17 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: TextStyle(color: tokens.fgMuted),
+            ),
           ),
           TextButton(
             onPressed: _addWorkspace,
-            child: Text(AppLocalizations.of(context).add, style: TextStyle(color: tokens.accent)),
+            child: Text(
+              AppLocalizations.of(context).add,
+              style: TextStyle(color: tokens.accent),
+            ),
           ),
         ],
       ),
@@ -365,23 +375,23 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
   // ── Shared helpers ──────────────────────────────────────────────────────
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _buildDropdown<T>({
     required OrchestraColorTokens tokens,
@@ -403,12 +413,18 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
           isExpanded: true,
           dropdownColor: tokens.bgAlt,
           style: TextStyle(fontSize: 14, color: tokens.fgBright),
-          icon: Icon(Icons.expand_more_rounded, color: tokens.fgMuted, size: 20),
+          icon: Icon(
+            Icons.expand_more_rounded,
+            color: tokens.fgMuted,
+            size: 20,
+          ),
           items: items
-              .map((item) => DropdownMenuItem<T>(
-                    value: item,
-                    child: Text(labelBuilder(item)),
-                  ))
+              .map(
+                (item) => DropdownMenuItem<T>(
+                  value: item,
+                  child: Text(labelBuilder(item)),
+                ),
+              )
               .toList(),
           onChanged: onChanged,
         ),
@@ -429,7 +445,10 @@ class _DesktopSettingsTabState extends ConsumerState<DesktopSettingsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bg,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),
@@ -563,7 +582,10 @@ class _WorkspaceRow extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 minimumSize: Size.zero,
                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),

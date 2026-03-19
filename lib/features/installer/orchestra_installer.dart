@@ -50,38 +50,49 @@ class OrchestraInstaller {
   Future<void> install({required ProgressCallback onProgress}) async {
     if (kIsWeb) throw UnsupportedError('Installer not supported on web.');
 
-    onProgress(const InstallProgress(
-      stage: InstallStage.fetchingVersion,
-      percent: 5,
-      message: 'Fetching latest release...',
-    ));
+    onProgress(
+      const InstallProgress(
+        stage: InstallStage.fetchingVersion,
+        percent: 5,
+        message: 'Fetching latest release...',
+      ),
+    );
 
     // Placeholder: real implementation would use Dio + archive package.
     // For now we record the expected stages.
 
-    onProgress(InstallProgress(
-      stage: InstallStage.downloading,
-      percent: 10,
-      message: 'Downloading $_assetName...',
-    ));
+    onProgress(
+      InstallProgress(
+        stage: InstallStage.downloading,
+        percent: 10,
+        message: 'Downloading $_assetName...',
+      ),
+    );
 
-    onProgress(const InstallProgress(
-      stage: InstallStage.extracting,
-      percent: 80,
-      message: 'Extracting archive...',
-    ));
+    onProgress(
+      const InstallProgress(
+        stage: InstallStage.extracting,
+        percent: 80,
+        message: 'Extracting archive...',
+      ),
+    );
 
-    onProgress(InstallProgress(
-      stage: InstallStage.installing,
-      percent: 88,
-      message: 'Installing to ${_installPath.replaceAll(RegExp('.+/'), '')}...',
-    ));
+    onProgress(
+      InstallProgress(
+        stage: InstallStage.installing,
+        percent: 88,
+        message:
+            'Installing to ${_installPath.replaceAll(RegExp('.+/'), '')}...',
+      ),
+    );
 
-    onProgress(const InstallProgress(
-      stage: InstallStage.verifying,
-      percent: 95,
-      message: 'Verifying SHA-256...',
-    ));
+    onProgress(
+      const InstallProgress(
+        stage: InstallStage.verifying,
+        percent: 95,
+        message: 'Verifying SHA-256...',
+      ),
+    );
 
     // Post-install platform steps.
     await _postInstall();
@@ -89,24 +100,32 @@ class OrchestraInstaller {
     // Install MCP hooks for event forwarding.
     await HookInstaller.install();
 
-    onProgress(const InstallProgress(
-      stage: InstallStage.done,
-      percent: 100,
-      message: 'Orchestra installed successfully.',
-    ));
+    onProgress(
+      const InstallProgress(
+        stage: InstallStage.done,
+        percent: 100,
+        message: 'Orchestra installed successfully.',
+      ),
+    );
   }
 
   Future<void> _postInstall() async {
     if (kIsWeb) return;
     if (Platform.isMacOS) {
       try {
-        await Process.run('xattr', ['-dr', 'com.apple.quarantine', _installPath]);
+        await Process.run('xattr', [
+          '-dr',
+          'com.apple.quarantine',
+          _installPath,
+        ]);
       } catch (_) {}
     } else if (Platform.isLinux) {
       // Create .desktop entry and local bin symlink (best-effort).
       try {
         final home = Platform.environment['HOME'] ?? '';
-        final desktop = File('$home/.local/share/applications/orchestra.desktop');
+        final desktop = File(
+          '$home/.local/share/applications/orchestra.desktop',
+        );
         await desktop.parent.create(recursive: true);
         await desktop.writeAsString(
           '[Desktop Entry]\nName=Orchestra\nExec=$_installPath\nType=Application\n',

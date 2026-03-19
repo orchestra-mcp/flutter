@@ -22,42 +22,46 @@ class TeamSyncRepository {
     String entityType,
     String entityId,
   ) async {
-    final row = await (db.select(db.entitySyncMetadataTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
-        .getSingleOrNull();
+    final row =
+        await (db.select(db.entitySyncMetadataTable)..where(
+              (t) =>
+                  t.entityType.equals(entityType) & t.entityId.equals(entityId),
+            ))
+            .getSingleOrNull();
     if (row == null) return null;
     return _rowToMetadata(row);
   }
 
   /// Returns all sync metadata entries for a given entity type.
   Future<List<EntitySyncMetadata>> getMetadataByType(String entityType) async {
-    final rows = await (db.select(db.entitySyncMetadataTable)
-          ..where((t) => t.entityType.equals(entityType)))
-        .get();
+    final rows = await (db.select(
+      db.entitySyncMetadataTable,
+    )..where((t) => t.entityType.equals(entityType))).get();
     return rows.map(_rowToMetadata).toList();
   }
 
   /// Returns all entities with `pending` sync status.
   Future<List<EntitySyncMetadata>> getPendingEntities() async {
-    final rows = await (db.select(db.entitySyncMetadataTable)
-          ..where((t) => t.status.equals('pending')))
-        .get();
+    final rows = await (db.select(
+      db.entitySyncMetadataTable,
+    )..where((t) => t.status.equals('pending'))).get();
     return rows.map(_rowToMetadata).toList();
   }
 
   /// Returns all entities with `outdated` sync status.
   Future<List<EntitySyncMetadata>> getOutdatedEntities() async {
-    final rows = await (db.select(db.entitySyncMetadataTable)
-          ..where((t) => t.status.equals('outdated')))
-        .get();
+    final rows = await (db.select(
+      db.entitySyncMetadataTable,
+    )..where((t) => t.status.equals('outdated'))).get();
     return rows.map(_rowToMetadata).toList();
   }
 
   /// Inserts or updates sync metadata for an entity. Uses the composite
   /// primary key (entityType, entityId) for conflict resolution.
   Future<void> upsertMetadata(EntitySyncMetadata metadata) async {
-    await db.into(db.entitySyncMetadataTable).insertOnConflictUpdate(
+    await db
+        .into(db.entitySyncMetadataTable)
+        .insertOnConflictUpdate(
           EntitySyncMetadataTableCompanion.insert(
             entityType: metadata.entityType,
             entityId: metadata.entityId,
@@ -67,8 +71,7 @@ class TeamSyncRepository {
             remoteVersion: Value(metadata.remoteVersion),
             contentHash: Value(metadata.contentHash),
             lastSyncedBy: Value(metadata.lastSyncedBy),
-            sharedWithTeamIds:
-                Value(jsonEncode(metadata.sharedWithTeamIds)),
+            sharedWithTeamIds: Value(jsonEncode(metadata.sharedWithTeamIds)),
             updatedAt: DateTime.now(),
           ),
         );
@@ -80,13 +83,15 @@ class TeamSyncRepository {
     String entityId,
     EntitySyncStatus status,
   ) async {
-    await (db.update(db.entitySyncMetadataTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
-        .write(EntitySyncMetadataTableCompanion(
-      status: Value(status.toJson()),
-      updatedAt: Value(DateTime.now()),
-    ));
+    await (db.update(db.entitySyncMetadataTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
+        .write(
+          EntitySyncMetadataTableCompanion(
+            status: Value(status.toJson()),
+            updatedAt: Value(DateTime.now()),
+          ),
+        );
   }
 
   /// Marks an entity as fully synced with the server.
@@ -98,43 +103,43 @@ class TeamSyncRepository {
     String? syncedBy,
   }) async {
     final now = DateTime.now();
-    await (db.update(db.entitySyncMetadataTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
-        .write(EntitySyncMetadataTableCompanion(
-      status: const Value('synced'),
-      lastSyncedAt: Value(now),
-      remoteVersion: Value(version),
-      localVersion: Value(version),
-      contentHash: Value(contentHash),
-      lastSyncedBy: Value(syncedBy),
-      updatedAt: Value(now),
-    ));
+    await (db.update(db.entitySyncMetadataTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
+        .write(
+          EntitySyncMetadataTableCompanion(
+            status: const Value('synced'),
+            lastSyncedAt: Value(now),
+            remoteVersion: Value(version),
+            localVersion: Value(version),
+            contentHash: Value(contentHash),
+            lastSyncedBy: Value(syncedBy),
+            updatedAt: Value(now),
+          ),
+        );
   }
 
   /// Deletes the sync metadata for a specific entity.
   Future<void> deleteMetadata(String entityType, String entityId) async {
-    await (db.delete(db.entitySyncMetadataTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+    await (db.delete(db.entitySyncMetadataTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
         .go();
   }
 
   /// Watches all entity sync metadata as a reactive stream.
   Stream<List<EntitySyncMetadata>> watchAll() {
-    return db.select(db.entitySyncMetadataTable).watch().map(
-          (rows) => rows.map(_rowToMetadata).toList(),
-        );
+    return db
+        .select(db.entitySyncMetadataTable)
+        .watch()
+        .map((rows) => rows.map(_rowToMetadata).toList());
   }
 
   /// Watches the sync metadata for a specific entity.
-  Stream<EntitySyncMetadata?> watchEntity(
-    String entityType,
-    String entityId,
-  ) {
-    return (db.select(db.entitySyncMetadataTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+  Stream<EntitySyncMetadata?> watchEntity(String entityType, String entityId) {
+    return (db.select(db.entitySyncMetadataTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
         .watchSingleOrNull()
         .map((row) => row == null ? null : _rowToMetadata(row));
   }
@@ -143,7 +148,9 @@ class TeamSyncRepository {
 
   /// Saves a team share record (insert or update on conflict).
   Future<void> saveShare(TeamShare share) async {
-    await db.into(db.teamSharesTable).insertOnConflictUpdate(
+    await db
+        .into(db.teamSharesTable)
+        .insertOnConflictUpdate(
           TeamSharesTableCompanion.insert(
             id: share.id,
             entityType: share.entityType,
@@ -166,36 +173,35 @@ class TeamSyncRepository {
     String entityType,
     String entityId,
   ) async {
-    final rows = await (db.select(db.teamSharesTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
-        .get();
+    final rows =
+        await (db.select(db.teamSharesTable)..where(
+              (t) =>
+                  t.entityType.equals(entityType) & t.entityId.equals(entityId),
+            ))
+            .get();
     return rows.map(_rowToShare).toList();
   }
 
   /// Returns all shares belonging to a specific team.
   Future<List<TeamShare>> getSharesByTeam(String teamId) async {
-    final rows = await (db.select(db.teamSharesTable)
-          ..where((t) => t.teamId.equals(teamId)))
-        .get();
+    final rows = await (db.select(
+      db.teamSharesTable,
+    )..where((t) => t.teamId.equals(teamId))).get();
     return rows.map(_rowToShare).toList();
   }
 
   /// Deletes a single share by its ID.
   Future<void> deleteShare(String shareId) async {
-    await (db.delete(db.teamSharesTable)
-          ..where((t) => t.id.equals(shareId)))
-        .go();
+    await (db.delete(
+      db.teamSharesTable,
+    )..where((t) => t.id.equals(shareId))).go();
   }
 
   /// Deletes all shares for a specific entity.
-  Future<void> deleteSharesForEntity(
-    String entityType,
-    String entityId,
-  ) async {
-    await (db.delete(db.teamSharesTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+  Future<void> deleteSharesForEntity(String entityType, String entityId) async {
+    await (db.delete(db.teamSharesTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
         .go();
   }
 
@@ -204,9 +210,9 @@ class TeamSyncRepository {
     String entityType,
     String entityId,
   ) {
-    return (db.select(db.teamSharesTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+    return (db.select(db.teamSharesTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
         .watch()
         .map((rows) => rows.map(_rowToShare).toList());
   }
@@ -215,7 +221,9 @@ class TeamSyncRepository {
 
   /// Adds a new version history entry.
   Future<void> addVersionEntry(SyncVersionEntry entry) async {
-    await db.into(db.syncVersionHistoryTable).insertOnConflictUpdate(
+    await db
+        .into(db.syncVersionHistoryTable)
+        .insertOnConflictUpdate(
           SyncVersionHistoryTableCompanion.insert(
             id: entry.id,
             entityType: entry.entityType,
@@ -235,11 +243,15 @@ class TeamSyncRepository {
     String entityType,
     String entityId,
   ) async {
-    final rows = await (db.select(db.syncVersionHistoryTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId))
-          ..orderBy([(t) => OrderingTerm.desc(t.version)]))
-        .get();
+    final rows =
+        await (db.select(db.syncVersionHistoryTable)
+              ..where(
+                (t) =>
+                    t.entityType.equals(entityType) &
+                    t.entityId.equals(entityId),
+              )
+              ..orderBy([(t) => OrderingTerm.desc(t.version)]))
+            .get();
     return rows.map(_rowToVersionEntry).toList();
   }
 
@@ -248,24 +260,25 @@ class TeamSyncRepository {
     String entityType,
     String entityId,
   ) async {
-    final row = await (db.select(db.syncVersionHistoryTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId))
-          ..orderBy([(t) => OrderingTerm.desc(t.version)])
-          ..limit(1))
-        .getSingleOrNull();
+    final row =
+        await (db.select(db.syncVersionHistoryTable)
+              ..where(
+                (t) =>
+                    t.entityType.equals(entityType) &
+                    t.entityId.equals(entityId),
+              )
+              ..orderBy([(t) => OrderingTerm.desc(t.version)])
+              ..limit(1))
+            .getSingleOrNull();
     if (row == null) return null;
     return _rowToVersionEntry(row);
   }
 
   /// Deletes all version history entries for an entity.
-  Future<void> deleteVersionHistory(
-    String entityType,
-    String entityId,
-  ) async {
-    await (db.delete(db.syncVersionHistoryTable)
-          ..where(
-              (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId)))
+  Future<void> deleteVersionHistory(String entityType, String entityId) async {
+    await (db.delete(db.syncVersionHistoryTable)..where(
+          (t) => t.entityType.equals(entityType) & t.entityId.equals(entityId),
+        ))
         .go();
   }
 

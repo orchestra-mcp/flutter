@@ -76,9 +76,7 @@ class _CodeBlockWidgetState extends State<CodeBlockWidget> {
     final file = File('${dir.path}/${uniqueFileName(defaultName)}');
     await file.writeAsString(widget.code);
 
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)]),
-    );
+    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
   }
 
   Future<void> _handleExportImage() async {
@@ -92,15 +90,12 @@ class _CodeBlockWidgetState extends State<CodeBlockWidget> {
   }
 
   Future<void> _handleShare() async {
-    await SharePlus.instance.share(
-      ShareParams(text: widget.code),
-    );
+    await SharePlus.instance.share(ShareParams(text: widget.code));
   }
 
   void _showContextMenu(BuildContext context, Offset position) {
     final tokens = ThemeTokens.of(context);
-    final overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
     showMenu<String>(
       context: context,
@@ -113,37 +108,53 @@ class _CodeBlockWidgetState extends State<CodeBlockWidget> {
         if (widget.copyable)
           PopupMenuItem(
             value: 'copy',
-            child: _menuItem(Icons.copy_rounded, AppLocalizations.of(context).copyCode),
+            child: _menuItem(
+              Icons.copy_rounded,
+              AppLocalizations.of(context).copyCode,
+            ),
           ),
         PopupMenuItem(
           value: 'share',
-          child: _menuItem(Icons.share_rounded, AppLocalizations.of(context).share),
+          child: _menuItem(
+            Icons.share_rounded,
+            AppLocalizations.of(context).share,
+          ),
         ),
         PopupMenuItem(
           value: 'wrap',
           child: _menuItem(
             _wrapped ? Icons.notes_rounded : Icons.wrap_text_rounded,
-            _wrapped ? AppLocalizations.of(context).disableWordWrap : AppLocalizations.of(context).enableWordWrap,
+            _wrapped
+                ? AppLocalizations.of(context).disableWordWrap
+                : AppLocalizations.of(context).enableWordWrap,
           ),
         ),
         if (widget.exportable || widget.exportImage) const PopupMenuDivider(),
         if (widget.exportable)
           PopupMenuItem(
             value: 'export_file',
-            child: _menuItem(Icons.save_rounded, AppLocalizations.of(context).saveAsFile),
+            child: _menuItem(
+              Icons.save_rounded,
+              AppLocalizations.of(context).saveAsFile,
+            ),
           ),
         if (widget.exportImage)
           PopupMenuItem(
             value: 'export_image',
-            child: _menuItem(Icons.image_rounded, AppLocalizations.of(context).saveAsImage),
+            child: _menuItem(
+              Icons.image_rounded,
+              AppLocalizations.of(context).saveAsImage,
+            ),
           ),
         if (widget.onConvertToMermaid != null &&
             widget.language.toLowerCase() != 'mermaid') ...[
           const PopupMenuDivider(),
           PopupMenuItem(
             value: 'mermaid',
-            child:
-                _menuItem(Icons.account_tree_rounded, AppLocalizations.of(context).convertToMermaid),
+            child: _menuItem(
+              Icons.account_tree_rounded,
+              AppLocalizations.of(context).convertToMermaid,
+            ),
           ),
         ],
       ],
@@ -302,8 +313,12 @@ class _CodeBlockWidgetState extends State<CodeBlockWidget> {
                   final isHighlighted = highlightSet.contains(i + 1);
 
                   final lineSpans = widget.language.isNotEmpty
-                      ? highlightLine(line, widget.language,
-                          isDark: isDark, baseStyle: codeStyle)
+                      ? highlightLine(
+                          line,
+                          widget.language,
+                          isDark: isDark,
+                          baseStyle: codeStyle,
+                        )
                       : [TextSpan(text: line, style: codeStyle)];
 
                   return TextSpan(
@@ -349,11 +364,25 @@ class _CodeBlockWidgetState extends State<CodeBlockWidget> {
 
   static String _languageExtension(String lang) {
     const extensions = {
-      'javascript': 'js', 'typescript': 'ts', 'python': 'py',
-      'ruby': 'rb', 'rust': 'rs', 'go': 'go', 'java': 'java',
-      'css': 'css', 'html': 'html', 'json': 'json', 'yaml': 'yml',
-      'bash': 'sh', 'shell': 'sh', 'sql': 'sql', 'markdown': 'md',
-      'php': 'php', 'csharp': 'cs', 'swift': 'swift', 'kotlin': 'kt',
+      'javascript': 'js',
+      'typescript': 'ts',
+      'python': 'py',
+      'ruby': 'rb',
+      'rust': 'rs',
+      'go': 'go',
+      'java': 'java',
+      'css': 'css',
+      'html': 'html',
+      'json': 'json',
+      'yaml': 'yml',
+      'bash': 'sh',
+      'shell': 'sh',
+      'sql': 'sql',
+      'markdown': 'md',
+      'php': 'php',
+      'csharp': 'cs',
+      'swift': 'swift',
+      'kotlin': 'kt',
       'dart': 'dart',
     };
     return extensions[lang.toLowerCase()] ?? lang.toLowerCase();

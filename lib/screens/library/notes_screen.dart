@@ -58,13 +58,13 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
       appBar: inSelectionMode
           ? SelectionAppBar(
               selectedCount: selectedIds.length,
-              onClear: () =>
-                  ref.read(notesSelectionProvider.notifier).clear(),
+              onClear: () => ref.read(notesSelectionProvider.notifier).clear(),
               onSelectAll: () {
                 final notes = asyncNotes.value;
                 if (notes != null) {
-                  ref.read(notesSelectionProvider.notifier).selectAll(
-                      notes.map((Note n) => n.id).toSet());
+                  ref
+                      .read(notesSelectionProvider.notifier)
+                      .selectAll(notes.map((Note n) => n.id).toSet());
                 }
               },
               onDelete: () async {
@@ -94,8 +94,11 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: Icon(Icons.add_rounded,
-                          color: tokens.accent, size: 22),
+                      icon: Icon(
+                        Icons.add_rounded,
+                        color: tokens.accent,
+                        size: 22,
+                      ),
                       style: IconButton.styleFrom(
                         backgroundColor: tokens.accent.withValues(alpha: 0.12),
                         shape: RoundedRectangleBorder(
@@ -120,21 +123,26 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
             Expanded(
               child: asyncNotes.when(
                 loading: () => Center(
-                    child:
-                        CircularProgressIndicator(color: tokens.accent)),
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
                 error: (e, _) => Center(
-                    child: Text(l10n.failedToLoadNotes,
-                        style: TextStyle(color: tokens.fgMuted))),
+                  child: Text(
+                    l10n.failedToLoadNotes,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
+                ),
                 data: (notes) {
                   if (notes.isEmpty) return _EmptyState(tokens: tokens);
                   final q = _search.toLowerCase();
                   final filtered = q.isEmpty
                       ? notes
                       : notes
-                          .where((n) =>
-                              n.title.toLowerCase().contains(q) ||
-                              n.content.toLowerCase().contains(q))
-                          .toList();
+                            .where(
+                              (n) =>
+                                  n.title.toLowerCase().contains(q) ||
+                                  n.content.toLowerCase().contains(q),
+                            )
+                            .toList();
                   if (filtered.isEmpty) {
                     return Center(
                       child: Text(
@@ -146,13 +154,16 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                   // Already sorted by the SQL query (pinned DESC, updated_at DESC)
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: filtered.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 8),
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final note = filtered[index];
-                      final cust = ref.watch(entityCustomizationProvider)[note.id];
+                      final cust = ref.watch(
+                        entityCustomizationProvider,
+                      )[note.id];
                       return GlassListTile(
                         leadingIcon: cust?.icon ?? Icons.sticky_note_2_rounded,
                         leadingColor: cust?.color ?? const Color(0xFFFBBF24),
@@ -162,23 +173,23 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                         isSelected: selectedIds.contains(note.id),
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(
-                                    notesSelectionProvider.notifier)
-                                .toggle(note.id)
-                            : () => context.push(
-                                  Routes.note(note.id),
-                                ),
+                                  .read(notesSelectionProvider.notifier)
+                                  .toggle(note.id)
+                            : () => context.push(Routes.note(note.id)),
                         onSelect: () => ref
                             .read(notesSelectionProvider.notifier)
                             .toggle(note.id),
                         onPin: () async {
-                          await ref.read(noteRepositoryProvider).togglePin(note.id);
+                          await ref
+                              .read(noteRepositoryProvider)
+                              .togglePin(note.id);
                         },
                         onDelete: () async {
-                          await ref.read(noteRepositoryProvider).delete(note.id);
+                          await ref
+                              .read(noteRepositoryProvider)
+                              .delete(note.id);
                         },
-                        contextMenuActions:
-                            buildEntityContextActions(
+                        contextMenuActions: buildEntityContextActions(
                           l10n: AppLocalizations.of(context),
                           onRename: () async {
                             final newName = await showRenameDialog(
@@ -192,19 +203,25 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                             }
                           },
                           onChangeIcon: () => pickAndSaveIcon(
-                              context, ref, note.id,
-                              currentCodePoint: cust?.iconCodePoint),
+                            context,
+                            ref,
+                            note.id,
+                            currentCodePoint: cust?.iconCodePoint,
+                          ),
                           onChangeColor: () => pickAndSaveColor(
-                              context, ref, note.id,
-                              currentColor: cust?.color),
+                            context,
+                            ref,
+                            note.id,
+                            currentColor: cust?.color,
+                          ),
                           onSelect: () => ref
                               .read(notesSelectionProvider.notifier)
                               .toggle(note.id),
-                          onEdit: () => context.push(
-                            Routes.note(note.id),
-                          ),
+                          onEdit: () => context.push(Routes.note(note.id)),
                           onPin: () async {
-                            await ref.read(noteRepositoryProvider).togglePin(note.id);
+                            await ref
+                                .read(noteRepositoryProvider)
+                                .togglePin(note.id);
                           },
                           isPinned: note.pinned,
                           onSync: () => openSyncDialog(
@@ -217,12 +234,19 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                                 .read(publishServiceProvider)
                                 .publishNote(note.id);
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                content: Text(ok
-                                    ? AppLocalizations.of(context).notePublished
-                                    : AppLocalizations.of(context).publishFailed),
-                              ));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    ok
+                                        ? AppLocalizations.of(
+                                            context,
+                                          ).notePublished
+                                        : AppLocalizations.of(
+                                            context,
+                                          ).publishFailed,
+                                  ),
+                                ),
+                              );
                             }
                           },
                           onExportMarkdown: () => exportAsMarkdown(
@@ -230,7 +254,9 @@ class _NotesScreenState extends ConsumerState<NotesScreen> {
                             content: note.content,
                           ),
                           onDelete: () async {
-                            await ref.read(noteRepositoryProvider).delete(note.id);
+                            await ref
+                                .read(noteRepositoryProvider)
+                                .delete(note.id);
                           },
                         ),
                       );
@@ -262,8 +288,7 @@ class _EmptyState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.sticky_note_2_rounded,
-                  size: 48, color: tokens.fgDim),
+              Icon(Icons.sticky_note_2_rounded, size: 48, color: tokens.fgDim),
               const SizedBox(height: 16),
               Text(
                 l10n.noNotesYet,

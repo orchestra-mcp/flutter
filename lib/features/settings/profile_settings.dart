@@ -17,8 +17,7 @@ class ProfileSettingsScreen extends ConsumerStatefulWidget {
       _ProfileSettingsScreenState();
 }
 
-class _ProfileSettingsScreenState
-    extends ConsumerState<ProfileSettingsScreen> {
+class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
   final _nameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
@@ -37,7 +36,12 @@ class _ProfileSettingsScreenState
   bool _uploading = false;
   bool _loading = true;
 
-  static const _genderOptions = ['male', 'female', 'other', 'prefer_not_to_say'];
+  static const _genderOptions = [
+    'male',
+    'female',
+    'other',
+    'prefer_not_to_say',
+  ];
 
   @override
   void initState() {
@@ -54,11 +58,17 @@ class _ProfileSettingsScreenState
 
       // Extended fields live in `settings` JSON.
       final settings = profile['settings'];
-      final s = settings is Map<String, dynamic> ? settings : <String, dynamic>{};
-      _phoneCtrl.text = (s['phone'] as String?) ?? (profile['phone'] as String?) ?? '';
-      _positionCtrl.text = (s['position'] as String?) ?? (profile['position'] as String?) ?? '';
-      _bioCtrl.text = (s['bio'] as String?) ?? (profile['bio'] as String?) ?? '';
-      _timezoneCtrl.text = (s['timezone'] as String?) ?? (profile['timezone'] as String?) ?? '';
+      final s = settings is Map<String, dynamic>
+          ? settings
+          : <String, dynamic>{};
+      _phoneCtrl.text =
+          (s['phone'] as String?) ?? (profile['phone'] as String?) ?? '';
+      _positionCtrl.text =
+          (s['position'] as String?) ?? (profile['position'] as String?) ?? '';
+      _bioCtrl.text =
+          (s['bio'] as String?) ?? (profile['bio'] as String?) ?? '';
+      _timezoneCtrl.text =
+          (s['timezone'] as String?) ?? (profile['timezone'] as String?) ?? '';
       _gender = (s['gender'] as String?) ?? (profile['gender'] as String?);
       _handleCtrl.text = (s['handle'] as String?) ?? '';
       _coverUrl = s['cover_url'] as String?;
@@ -68,10 +78,12 @@ class _ProfileSettingsScreenState
       if (rawLinks is List) {
         _socialLinks = rawLinks
             .whereType<Map<String, dynamic>>()
-            .map((l) => {
-                  'platform': (l['platform'] as String?) ?? 'website',
-                  'url': (l['url'] as String?) ?? '',
-                })
+            .map(
+              (l) => {
+                'platform': (l['platform'] as String?) ?? 'website',
+                'url': (l['url'] as String?) ?? '',
+              },
+            )
             .toList();
       }
     } catch (_) {
@@ -99,8 +111,7 @@ class _ProfileSettingsScreenState
 
     setState(() => _uploading = true);
     try {
-      final result =
-          await ref.read(apiClientProvider).uploadAvatar(image.path);
+      final result = await ref.read(apiClientProvider).uploadAvatar(image.path);
       final newUrl = result['avatar_url'] as String?;
       if (newUrl != null && mounted) {
         setState(() => _avatarUrl = newUrl);
@@ -115,7 +126,11 @@ class _ProfileSettingsScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToUploadAvatar}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToUploadAvatar}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -137,7 +152,9 @@ class _ProfileSettingsScreenState
         'handle': _handleCtrl.text.trim(),
         'public_profile_enabled': _publicProfileEnabled,
         'show_comments_on_profile': _showComments,
-        'social_links': _socialLinks.where((l) => l['url']!.trim().isNotEmpty).toList(),
+        'social_links': _socialLinks
+            .where((l) => l['url']!.trim().isNotEmpty)
+            .toList(),
       });
       // Refresh auth state so the cached user name/email stays in sync.
       ref.invalidate(authProvider);
@@ -149,7 +166,9 @@ class _ProfileSettingsScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -213,8 +232,11 @@ class _ProfileSettingsScreenState
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Icon(Icons.camera_alt,
-                                    size: 14, color: Colors.white),
+                                : const Icon(
+                                    Icons.camera_alt,
+                                    size: 14,
+                                    color: Colors.white,
+                                  ),
                           ),
                         ),
                       ],
@@ -228,13 +250,21 @@ class _ProfileSettingsScreenState
                 const SizedBox(height: 12),
 
                 // ── Email ───────────────────────────────────────────
-                _field(_emailCtrl, l10n.email, tokens,
-                    keyboardType: TextInputType.emailAddress),
+                _field(
+                  _emailCtrl,
+                  l10n.email,
+                  tokens,
+                  keyboardType: TextInputType.emailAddress,
+                ),
                 const SizedBox(height: 12),
 
                 // ── Phone ───────────────────────────────────────────
-                _field(_phoneCtrl, l10n.phone, tokens,
-                    keyboardType: TextInputType.phone),
+                _field(
+                  _phoneCtrl,
+                  l10n.phone,
+                  tokens,
+                  keyboardType: TextInputType.phone,
+                ),
                 const SizedBox(height: 12),
 
                 // ── Gender ──────────────────────────────────────────
@@ -263,8 +293,12 @@ class _ProfileSettingsScreenState
                 const SizedBox(height: 12),
 
                 // ── Timezone ────────────────────────────────────────
-                _field(_timezoneCtrl, l10n.timezone, tokens,
-                    hint: 'e.g. Africa/Cairo'),
+                _field(
+                  _timezoneCtrl,
+                  l10n.timezone,
+                  tokens,
+                  hint: 'e.g. Africa/Cairo',
+                ),
                 const SizedBox(height: 12),
 
                 // ── Language ──────────────────────────────────────────
@@ -291,16 +325,27 @@ class _ProfileSettingsScreenState
                 ),
                 const SizedBox(height: 12),
 
-                _field(_handleCtrl, l10n.handle, tokens,
-                    hint: l10n.handleHint, icon: Icons.alternate_email),
+                _field(
+                  _handleCtrl,
+                  l10n.handle,
+                  tokens,
+                  hint: l10n.handleHint,
+                  icon: Icons.alternate_email,
+                ),
                 const SizedBox(height: 12),
 
                 // Public profile toggle
                 SwitchListTile(
                   value: _publicProfileEnabled,
                   onChanged: (v) => setState(() => _publicProfileEnabled = v),
-                  title: Text(l10n.publicProfileToggle, style: TextStyle(color: tokens.fgBright, fontSize: 14)),
-                  subtitle: Text(l10n.publicProfileSubtitle, style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+                  title: Text(
+                    l10n.publicProfileToggle,
+                    style: TextStyle(color: tokens.fgBright, fontSize: 14),
+                  ),
+                  subtitle: Text(
+                    l10n.publicProfileSubtitle,
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
                   activeColor: tokens.accent,
                   contentPadding: EdgeInsets.zero,
                 ),
@@ -309,8 +354,14 @@ class _ProfileSettingsScreenState
                 SwitchListTile(
                   value: _showComments,
                   onChanged: (v) => setState(() => _showComments = v),
-                  title: Text(l10n.showComments, style: TextStyle(color: tokens.fgBright, fontSize: 14)),
-                  subtitle: Text(l10n.showCommentsSubtitle, style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+                  title: Text(
+                    l10n.showComments,
+                    style: TextStyle(color: tokens.fgBright, fontSize: 14),
+                  ),
+                  subtitle: Text(
+                    l10n.showCommentsSubtitle,
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
                   activeColor: tokens.accent,
                   contentPadding: EdgeInsets.zero,
                 ),
@@ -330,7 +381,9 @@ class _ProfileSettingsScreenState
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
-                                strokeWidth: 2, color: Colors.white),
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
                           )
                         : Text(l10n.save),
                   ),
@@ -363,9 +416,16 @@ class _ProfileSettingsScreenState
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.add_photo_alternate_outlined, size: 32, color: tokens.fgDim),
+                    Icon(
+                      Icons.add_photo_alternate_outlined,
+                      size: 32,
+                      color: tokens.fgDim,
+                    ),
                     const SizedBox(height: 4),
-                    Text(AppLocalizations.of(context).addCoverImage, style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+                    Text(
+                      AppLocalizations.of(context).addCoverImage,
+                      style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                    ),
                   ],
                 ),
               )
@@ -376,7 +436,11 @@ class _ProfileSettingsScreenState
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.black54,
-                    child: const Icon(Icons.edit, size: 14, color: Colors.white),
+                    child: const Icon(
+                      Icons.edit,
+                      size: 14,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -401,7 +465,9 @@ class _ProfileSettingsScreenState
       final result = await api.updateSettingsProfile({
         'cover_path': image.path,
       });
-      final newUrl = result['cover_url'] as String? ?? result['settings']?['cover_url'] as String?;
+      final newUrl =
+          result['cover_url'] as String? ??
+          result['settings']?['cover_url'] as String?;
       if (newUrl != null && mounted) {
         setState(() => _coverUrl = newUrl);
       }
@@ -413,7 +479,11 @@ class _ProfileSettingsScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToUploadCover}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToUploadCover}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -425,12 +495,27 @@ class _ProfileSettingsScreenState
 
   static const _platformOptions = [
     ('github', 'GitHub', Icons.code, 'https://github.com/...'),
-    ('twitter', 'Twitter / X', Icons.alternate_email, 'https://twitter.com/...'),
+    (
+      'twitter',
+      'Twitter / X',
+      Icons.alternate_email,
+      'https://twitter.com/...',
+    ),
     ('linkedin', 'LinkedIn', Icons.work_outline, 'https://linkedin.com/in/...'),
-    ('youtube', 'YouTube', Icons.play_circle_outline, 'https://youtube.com/...'),
+    (
+      'youtube',
+      'YouTube',
+      Icons.play_circle_outline,
+      'https://youtube.com/...',
+    ),
     ('discord', 'Discord', Icons.chat_bubble_outline, 'https://discord.gg/...'),
     ('website', 'Website', Icons.language, 'https://...'),
-    ('instagram', 'Instagram', Icons.camera_alt_outlined, 'https://instagram.com/...'),
+    (
+      'instagram',
+      'Instagram',
+      Icons.camera_alt_outlined,
+      'https://instagram.com/...',
+    ),
     ('bluesky', 'Bluesky', Icons.cloud_outlined, 'https://bsky.app/...'),
     ('other', 'Other', Icons.link, 'https://...'),
   ];
@@ -441,7 +526,12 @@ class _ProfileSettingsScreenState
       children: [
         Text(
           AppLocalizations.of(context).socialLinksSection,
-          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, letterSpacing: 1.2, color: tokens.fgDim),
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.2,
+            color: tokens.fgDim,
+          ),
         ),
         const SizedBox(height: 8),
         for (int i = 0; i < _socialLinks.length; i++) ...[
@@ -450,9 +540,14 @@ class _ProfileSettingsScreenState
         ],
         if (_socialLinks.length < 10)
           TextButton.icon(
-            onPressed: () => setState(() => _socialLinks.add({'platform': 'website', 'url': ''})),
+            onPressed: () => setState(
+              () => _socialLinks.add({'platform': 'website', 'url': ''}),
+            ),
             icon: Icon(Icons.add_rounded, size: 18, color: tokens.accent),
-            label: Text(AppLocalizations.of(context).addLink, style: TextStyle(color: tokens.accent, fontSize: 13)),
+            label: Text(
+              AppLocalizations.of(context).addLink,
+              style: TextStyle(color: tokens.accent, fontSize: 13),
+            ),
           ),
       ],
     );
@@ -461,23 +556,34 @@ class _ProfileSettingsScreenState
   Widget _socialLinkRow(OrchestraColorTokens tokens, int index) {
     final link = _socialLinks[index];
     final platform = link['platform'] ?? 'website';
-    final option = _platformOptions.firstWhere((o) => o.$1 == platform, orElse: () => _platformOptions.last);
+    final option = _platformOptions.firstWhere(
+      (o) => o.$1 == platform,
+      orElse: () => _platformOptions.last,
+    );
 
     return Row(
       children: [
         // Platform dropdown
         PopupMenuButton<String>(
-          onSelected: (v) => setState(() => _socialLinks[index] = {...link, 'platform': v}),
-          itemBuilder: (_) => _platformOptions.map((o) => PopupMenuItem(
-                value: o.$1,
-                child: Row(
-                  children: [
-                    Icon(o.$3, size: 18, color: tokens.fgMuted),
-                    const SizedBox(width: 8),
-                    Text(o.$2, style: TextStyle(color: tokens.fgBright, fontSize: 13)),
-                  ],
+          onSelected: (v) =>
+              setState(() => _socialLinks[index] = {...link, 'platform': v}),
+          itemBuilder: (_) => _platformOptions
+              .map(
+                (o) => PopupMenuItem(
+                  value: o.$1,
+                  child: Row(
+                    children: [
+                      Icon(o.$3, size: 18, color: tokens.fgMuted),
+                      const SizedBox(width: 8),
+                      Text(
+                        o.$2,
+                        style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                      ),
+                    ],
+                  ),
                 ),
-              )).toList(),
+              )
+              .toList(),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
@@ -504,12 +610,27 @@ class _ProfileSettingsScreenState
             style: TextStyle(color: tokens.fgBright, fontSize: 13),
             decoration: InputDecoration(
               hintText: option.$4,
-              hintStyle: TextStyle(color: tokens.fgDim.withValues(alpha: 0.5), fontSize: 13),
+              hintStyle: TextStyle(
+                color: tokens.fgDim.withValues(alpha: 0.5),
+                fontSize: 13,
+              ),
               isDense: true,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.border)),
-              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.border)),
-              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.accent)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: tokens.border),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: tokens.border),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: tokens.accent),
+              ),
             ),
           ),
         ),
@@ -525,20 +646,40 @@ class _ProfileSettingsScreenState
     );
   }
 
-  Widget _buildLanguagePicker(OrchestraColorTokens tokens, AppLocalizations l10n) {
+  Widget _buildLanguagePicker(
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n,
+  ) {
     final currentLocale = ref.watch(localeProvider);
-    final currentLabel = currentLocale.languageCode == 'ar' ? l10n.arabic : l10n.english;
+    final currentLabel = currentLocale.languageCode == 'ar'
+        ? l10n.arabic
+        : l10n.english;
 
     return InkWell(
       onTap: () {
         showDialog<void>(
           context: context,
           builder: (ctx) => SimpleDialog(
-            title: Text(l10n.selectLanguage, style: TextStyle(color: tokens.fgBright)),
+            title: Text(
+              l10n.selectLanguage,
+              style: TextStyle(color: tokens.fgBright),
+            ),
             backgroundColor: tokens.bg,
             children: [
-              _languageOption(ctx, tokens, l10n.english, 'en', currentLocale.languageCode == 'en'),
-              _languageOption(ctx, tokens, l10n.arabic, 'ar', currentLocale.languageCode == 'ar'),
+              _languageOption(
+                ctx,
+                tokens,
+                l10n.english,
+                'en',
+                currentLocale.languageCode == 'en',
+              ),
+              _languageOption(
+                ctx,
+                tokens,
+                l10n.arabic,
+                'ar',
+                currentLocale.languageCode == 'ar',
+              ),
             ],
           ),
         );
@@ -555,7 +696,13 @@ class _ProfileSettingsScreenState
     );
   }
 
-  Widget _languageOption(BuildContext ctx, OrchestraColorTokens tokens, String label, String code, bool isSelected) {
+  Widget _languageOption(
+    BuildContext ctx,
+    OrchestraColorTokens tokens,
+    String label,
+    String code,
+    bool isSelected,
+  ) {
     return ListTile(
       leading: isSelected
           ? Icon(Icons.check_circle_rounded, color: tokens.accent)
@@ -612,17 +759,19 @@ class _ProfileSettingsScreenState
         hintText: hint,
         labelStyle: TextStyle(color: tokens.fgMuted),
         hintStyle: TextStyle(color: tokens.fgMuted.withValues(alpha: 0.5)),
-        prefixIcon: icon != null ? Icon(icon, color: tokens.fgDim, size: 20) : null,
+        prefixIcon: icon != null
+            ? Icon(icon, color: tokens.fgDim, size: 20)
+            : null,
       ),
       style: TextStyle(color: tokens.fgBright),
     );
   }
 
   String _genderLabel(String value, AppLocalizations l10n) => switch (value) {
-        'male' => l10n.male,
-        'female' => l10n.female,
-        'other' => l10n.genderOther,
-        'prefer_not_to_say' => l10n.preferNotToSay,
-        _ => value,
-      };
+    'male' => l10n.male,
+    'female' => l10n.female,
+    'other' => l10n.genderOther,
+    'prefer_not_to_say' => l10n.preferNotToSay,
+    _ => value,
+  };
 }

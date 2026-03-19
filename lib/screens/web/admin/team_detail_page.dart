@@ -8,18 +8,18 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 final _teamDetailProvider = FutureProvider.autoDispose
     .family<Map<String, dynamic>, int>((ref, teamId) async {
-  final api = ref.watch(apiClientProvider);
-  return api.getAdminTeam(teamId);
-});
+      final api = ref.watch(apiClientProvider);
+      return api.getAdminTeam(teamId);
+    });
 
 final _teamMembersProvider = FutureProvider.autoDispose
     .family<List<Map<String, dynamic>>, int>((ref, teamId) async {
-  final api = ref.watch(apiClientProvider);
-  final result = await api.listAdminTeamMembers(teamId);
-  final raw = result['members'];
-  if (raw is! List) return [];
-  return raw.cast<Map<String, dynamic>>();
-});
+      final api = ref.watch(apiClientProvider);
+      final result = await api.listAdminTeamMembers(teamId);
+      final raw = result['members'];
+      if (raw is! List) return [];
+      return raw.cast<Map<String, dynamic>>();
+    });
 
 // ── Team detail page ────────────────────────────────────────────────────────
 
@@ -42,33 +42,32 @@ class TeamDetailPage extends ConsumerWidget {
     return ColoredBox(
       color: tokens.bg,
       child: teamAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-            const SizedBox(height: 12),
-            Text(
-              AppLocalizations.of(context).failedToLoadTeam,
-              style: TextStyle(color: tokens.fgBright, fontSize: 16),
-            ),
-            const SizedBox(height: 4),
-            Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () =>
-                  ref.invalidate(_teamDetailProvider(parsedId)),
-              child: Text(AppLocalizations.of(context).retry),
-            ),
-          ],
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context).failedToLoadTeam,
+                style: TextStyle(color: tokens.fgBright, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.invalidate(_teamDetailProvider(parsedId)),
+                child: Text(AppLocalizations.of(context).retry),
+              ),
+            ],
+          ),
         ),
-      ),
-      data: (team) => _TeamDetailContent(
-        teamId: teamId,
-        team: team,
-        membersAsync: membersAsync,
-      ),
+        data: (team) => _TeamDetailContent(
+          teamId: teamId,
+          team: team,
+          membersAsync: membersAsync,
+        ),
       ),
     );
   }
@@ -111,11 +110,15 @@ class _TeamDetailContent extends ConsumerWidget {
               CircleAvatar(
                 radius: 20,
                 backgroundColor: tokens.accent.withValues(alpha: 0.15),
-                backgroundImage:
-                    avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                backgroundImage: avatarUrl != null
+                    ? NetworkImage(avatarUrl)
+                    : null,
                 child: avatarUrl == null
-                    ? Icon(Icons.groups_outlined,
-                        size: 22, color: tokens.accent)
+                    ? Icon(
+                        Icons.groups_outlined,
+                        size: 22,
+                        color: tokens.accent,
+                      )
                     : null,
               ),
               const SizedBox(width: 14),
@@ -161,13 +164,13 @@ class _TeamDetailContent extends ConsumerWidget {
           membersAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (e, _) => Text(
-              AppLocalizations.of(context).failedToLoadMembersError(e.toString()),
+              AppLocalizations.of(
+                context,
+              ).failedToLoadMembersError(e.toString()),
               style: TextStyle(color: tokens.fgDim, fontSize: 13),
             ),
-            data: (members) => _MembersSection(
-              tokens: tokens,
-              members: members,
-            ),
+            data: (members) =>
+                _MembersSection(tokens: tokens, members: members),
           ),
           const SizedBox(height: 32),
 
@@ -205,9 +208,18 @@ class _TeamDetailContent extends ConsumerWidget {
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
                 underline: Container(height: 1, color: tokens.border),
                 items: [
-                  DropdownMenuItem(value: 'Owner', child: Text(AppLocalizations.of(context).ownerRole)),
-                  DropdownMenuItem(value: 'Manager', child: Text(AppLocalizations.of(context).teamManagerTarget)),
-                  DropdownMenuItem(value: 'Member', child: Text(AppLocalizations.of(context).memberRole)),
+                  DropdownMenuItem(
+                    value: 'Owner',
+                    child: Text(AppLocalizations.of(context).ownerRole),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Manager',
+                    child: Text(AppLocalizations.of(context).teamManagerTarget),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Member',
+                    child: Text(AppLocalizations.of(context).memberRole),
+                  ),
                 ],
                 onChanged: (_) {},
               ),
@@ -255,8 +267,7 @@ class _MembersSection extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
                 color: tokens.fgDim.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(10),

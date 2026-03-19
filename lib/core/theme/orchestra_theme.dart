@@ -34,8 +34,7 @@ class OrchestraTheme {
   final bool isLight;
 
   /// Glass background opacity — 0.15 for light, 0.12 for dark.
-  Color get glassColor =>
-      bg.withValues(alpha: isLight ? 0.15 : 0.12);
+  Color get glassColor => bg.withValues(alpha: isLight ? 0.15 : 0.12);
 
   // ─── All 25 themes ────────────────────────────────────────────────────────
 

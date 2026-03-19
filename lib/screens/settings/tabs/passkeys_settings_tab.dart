@@ -22,11 +22,12 @@ class _PasskeyEntry {
   final String? lastUsedAt;
 
   factory _PasskeyEntry.fromJson(Map<String, dynamic> json) => _PasskeyEntry(
-        id: (json['id'] ?? json['ID'] ?? 0) as int,
-        name: (json['name'] ?? json['Name'] ?? 'Passkey') as String,
-        createdAt: (json['created_at'] ?? json['CreatedAt'] ?? '').toString(),
-        lastUsedAt: json['last_used_at']?.toString() ?? json['LastUsedAt']?.toString(),
-      );
+    id: (json['id'] ?? json['ID'] ?? 0) as int,
+    name: (json['name'] ?? json['Name'] ?? 'Passkey') as String,
+    createdAt: (json['created_at'] ?? json['CreatedAt'] ?? '').toString(),
+    lastUsedAt:
+        json['last_used_at']?.toString() ?? json['LastUsedAt']?.toString(),
+  );
 }
 
 /// Passkeys settings tab — register and manage WebAuthn passkeys.
@@ -78,12 +79,18 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
     } on DioException catch (e) {
       if (mounted) {
         setState(() {
-          _error = e.response?.data?['error']?.toString() ?? 'Failed to load passkeys';
+          _error =
+              e.response?.data?['error']?.toString() ??
+              'Failed to load passkeys';
           _loading = false;
         });
       }
     } catch (e) {
-      if (mounted) setState(() { _error = e.toString(); _loading = false; });
+      if (mounted)
+        setState(() {
+          _error = e.toString();
+          _loading = false;
+        });
     }
   }
 
@@ -94,8 +101,13 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
         final tokens = ThemeTokens.of(ctx);
         return AlertDialog(
           backgroundColor: tokens.bg,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text('Delete Passkey', style: TextStyle(color: tokens.fgBright)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Delete Passkey',
+            style: TextStyle(color: tokens.fgBright),
+          ),
           content: Text(
             'This passkey will be permanently removed. You won\'t be able to use it to sign in.',
             style: TextStyle(color: tokens.fgMuted, fontSize: 13),
@@ -127,7 +139,10 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
         _successMsg = 'Passkey deleted';
       });
     } on DioException catch (e) {
-      setState(() => _error = e.response?.data?['error']?.toString() ?? 'Failed to delete');
+      setState(
+        () => _error =
+            e.response?.data?['error']?.toString() ?? 'Failed to delete',
+      );
     }
   }
 
@@ -139,8 +154,13 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
         final tokens = ThemeTokens.of(ctx);
         return AlertDialog(
           backgroundColor: tokens.bg,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text('Rename Passkey', style: TextStyle(color: tokens.fgBright)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Rename Passkey',
+            style: TextStyle(color: tokens.fgBright),
+          ),
           content: TextField(
             controller: nameCtrl,
             autofocus: true,
@@ -189,7 +209,10 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
         _successMsg = 'Passkey renamed';
       });
     } on DioException catch (e) {
-      setState(() => _error = e.response?.data?['error']?.toString() ?? 'Failed to rename');
+      setState(
+        () => _error =
+            e.response?.data?['error']?.toString() ?? 'Failed to rename',
+      );
     }
   }
 
@@ -253,7 +276,10 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
           Center(
             child: Padding(
               padding: const EdgeInsets.all(24),
-              child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
+              child: CircularProgressIndicator(
+                color: tokens.accent,
+                strokeWidth: 2,
+              ),
             ),
           )
         else if (_passkeys.isEmpty)
@@ -277,7 +303,8 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
                   _PasskeyRow(
                     entry: _passkeys[i],
                     tokens: tokens,
-                    onRename: () => _renamePasskey(_passkeys[i].id, _passkeys[i].name),
+                    onRename: () =>
+                        _renamePasskey(_passkeys[i].id, _passkeys[i].name),
                     onDelete: () => _deletePasskey(_passkeys[i].id),
                   ),
                 ],
@@ -289,13 +316,13 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _emptyState(OrchestraColorTokens tokens, AppLocalizations l10n) =>
       Container(
@@ -328,41 +355,45 @@ class _PasskeysSettingsTabState extends ConsumerState<PasskeysSettingsTab> {
         ),
       );
 
-  Widget _messageBanner(OrchestraColorTokens tokens, String message,
-          {required bool isError}) =>
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: isError
-              ? Colors.red.withValues(alpha: 0.12)
-              : const Color(0xFF22C55E).withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: isError
-                ? Colors.red.withValues(alpha: 0.3)
-                : const Color(0xFF22C55E).withValues(alpha: 0.3),
+  Widget _messageBanner(
+    OrchestraColorTokens tokens,
+    String message, {
+    required bool isError,
+  }) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    decoration: BoxDecoration(
+      color: isError
+          ? Colors.red.withValues(alpha: 0.12)
+          : const Color(0xFF22C55E).withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(
+        color: isError
+            ? Colors.red.withValues(alpha: 0.3)
+            : const Color(0xFF22C55E).withValues(alpha: 0.3),
+      ),
+    ),
+    child: Row(
+      children: [
+        Icon(
+          isError
+              ? Icons.error_outline_rounded
+              : Icons.check_circle_outline_rounded,
+          color: isError ? Colors.redAccent : const Color(0xFF22C55E),
+          size: 18,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            message,
+            style: TextStyle(
+              color: isError ? Colors.redAccent : const Color(0xFF22C55E),
+              fontSize: 13,
+            ),
           ),
         ),
-        child: Row(
-          children: [
-            Icon(
-              isError ? Icons.error_outline_rounded : Icons.check_circle_outline_rounded,
-              color: isError ? Colors.redAccent : const Color(0xFF22C55E),
-              size: 18,
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                message,
-                style: TextStyle(
-                  color: isError ? Colors.redAccent : const Color(0xFF22C55E),
-                  fontSize: 13,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+      ],
+    ),
+  );
 }
 
 // ── Passkey row widget ──────────────────────────────────────────────────────
@@ -427,21 +458,21 @@ class _PasskeyRow extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: onRename,
-                icon: Icon(Icons.edit_rounded,
-                    size: 16, color: tokens.fgMuted),
+                icon: Icon(Icons.edit_rounded, size: 16, color: tokens.fgMuted),
                 tooltip: l10n.rename,
-                constraints:
-                    const BoxConstraints(minWidth: 32, minHeight: 32),
+                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                 padding: EdgeInsets.zero,
               ),
               const SizedBox(width: 4),
               IconButton(
                 onPressed: onDelete,
-                icon: const Icon(Icons.delete_outline_rounded,
-                    size: 16, color: Color(0xFFEF4444)),
+                icon: const Icon(
+                  Icons.delete_outline_rounded,
+                  size: 16,
+                  color: Color(0xFFEF4444),
+                ),
                 tooltip: l10n.delete,
-                constraints:
-                    const BoxConstraints(minWidth: 32, minHeight: 32),
+                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                 padding: EdgeInsets.zero,
               ),
             ],

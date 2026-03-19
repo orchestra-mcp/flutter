@@ -76,14 +76,14 @@ class TeamMember {
   final DateTime? joinedAt;
 
   factory TeamMember.fromJson(Map<String, dynamic> json) => TeamMember(
-        id: json['id'].toString(),
-        name: (json['name'] ?? '') as String,
-        email: (json['email'] ?? '') as String,
-        role: (json['role'] ?? 'member') as String,
-        avatarUrl: json['avatar_url'] as String?,
-        status: json['status'] as String?,
-        joinedAt: DateTime.tryParse(json['joined_at']?.toString() ?? ''),
-      );
+    id: json['id'].toString(),
+    name: (json['name'] ?? '') as String,
+    email: (json['email'] ?? '') as String,
+    role: (json['role'] ?? 'member') as String,
+    avatarUrl: json['avatar_url'] as String?,
+    status: json['status'] as String?,
+    joinedAt: DateTime.tryParse(json['joined_at']?.toString() ?? ''),
+  );
 }
 
 // ── Active team state ───────────────────────────────────────────────────────
@@ -103,8 +103,9 @@ class _ActiveTeamNotifier extends Notifier<String> {
   }
 }
 
-final activeTeamIdProvider =
-    NotifierProvider<_ActiveTeamNotifier, String>(_ActiveTeamNotifier.new);
+final activeTeamIdProvider = NotifierProvider<_ActiveTeamNotifier, String>(
+  _ActiveTeamNotifier.new,
+);
 
 /// Cached active team ID — call [initActiveTeam] once at startup.
 String? _cachedActiveTeam;
@@ -134,10 +135,7 @@ final teamsProvider = FutureProvider<List<Team>>((ref) async {
 final activeTeamProvider = Provider<Team>((ref) {
   final activeId = ref.watch(activeTeamIdProvider);
   final teams = ref.watch(teamsProvider).value ?? [Team.personal];
-  return teams.firstWhere(
-    (t) => t.id == activeId,
-    orElse: () => teams.first,
-  );
+  return teams.firstWhere((t) => t.id == activeId, orElse: () => teams.first);
 });
 
 /// Members of the currently active team.

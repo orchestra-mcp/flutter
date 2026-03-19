@@ -42,12 +42,15 @@ class _SecuritySettingsScreenState
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(l10n.changePassword,
-              style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1)),
+          Text(
+            l10n.changePassword,
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
           const SizedBox(height: 12),
           TextField(
             controller: _currentCtrl,
@@ -87,26 +90,34 @@ class _SecuritySettingsScreenState
             ),
           ),
           const SizedBox(height: 24),
-          Text(l10n.twoFactorAuth,
-              style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1)),
+          Text(
+            l10n.twoFactorAuth,
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
           SwitchListTile(
             value: _twoFaEnabled,
             onChanged: (v) => setState(() => _twoFaEnabled = v),
-            title:
-                Text(l10n.enable2FA, style: TextStyle(color: tokens.fgBright)),
+            title: Text(
+              l10n.enable2FA,
+              style: TextStyle(color: tokens.fgBright),
+            ),
             activeColor: tokens.accent,
           ),
           const SizedBox(height: 24),
-          Text(l10n.passkeys,
-              style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1)),
+          Text(
+            l10n.passkeys,
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
           const SizedBox(height: 8),
           OutlinedButton.icon(
             onPressed: () {},

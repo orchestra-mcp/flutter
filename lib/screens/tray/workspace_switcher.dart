@@ -20,9 +20,7 @@ void showWorkspaceSwitcher(BuildContext context) {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 360),
-        child: WorkspaceSwitcher(
-          onSwitch: (_) => Navigator.of(context).pop(),
-        ),
+        child: WorkspaceSwitcher(onSwitch: (_) => Navigator.of(context).pop()),
       ),
     ),
   );
@@ -133,15 +131,19 @@ class WorkspaceSwitcher extends ConsumerWidget {
           ),
           error: (_, _) => Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(AppLocalizations.of(context).failedToLoadWorkspaces,
-                style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+            child: Text(
+              AppLocalizations.of(context).failedToLoadWorkspaces,
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ),
           ),
           data: (workspaces) {
             if (workspaces.isEmpty) {
               return Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text(AppLocalizations.of(context).noRecentWorkspaces,
-                    style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+                child: Text(
+                  AppLocalizations.of(context).noRecentWorkspaces,
+                  style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                ),
               );
             }
             return Column(
@@ -163,9 +165,7 @@ class WorkspaceSwitcher extends ConsumerWidget {
           },
         ),
         const Divider(height: 1),
-        _OpenFolderButton(
-          onSwitch: onSwitch,
-        ),
+        _OpenFolderButton(onSwitch: onSwitch),
         _CloseWorkspaceButton(
           onClose: () {
             Navigator.of(context).pop();
@@ -196,16 +196,16 @@ class _OpenFolderButton extends ConsumerWidget {
                 color: tokens.fgDim.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: Icon(Icons.folder_open_rounded,
-                  size: 14, color: tokens.fgMuted),
+              child: Icon(
+                Icons.folder_open_rounded,
+                size: 14,
+                color: tokens.fgMuted,
+              ),
             ),
             const SizedBox(width: 10),
             Text(
               AppLocalizations.of(context).openFolderAction,
-              style: TextStyle(
-                fontSize: 13,
-                color: tokens.fgMuted,
-              ),
+              style: TextStyle(fontSize: 13, color: tokens.fgMuted),
             ),
           ],
         ),
@@ -223,13 +223,17 @@ class _OpenFolderButton extends ConsumerWidget {
     if (!WorkspaceInitializer.isInitialized(result)) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).initializingWorkspace)),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).initializingWorkspace),
+          ),
         );
       }
       final ok = await WorkspaceInitializer.ensureInitialized(result);
       if (!ok && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).failedToInitWorkspace)),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).failedToInitWorkspace),
+          ),
         );
         return;
       }
@@ -263,16 +267,16 @@ class _CloseWorkspaceButton extends ConsumerWidget {
                 color: const Color(0xFFDC2626).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: const Icon(Icons.close_rounded,
-                  size: 14, color: Color(0xFFDC2626)),
+              child: const Icon(
+                Icons.close_rounded,
+                size: 14,
+                color: Color(0xFFDC2626),
+              ),
             ),
             const SizedBox(width: 10),
             Text(
               AppLocalizations.of(context).closeWorkspace,
-              style: TextStyle(
-                fontSize: 13,
-                color: tokens.fgMuted,
-              ),
+              style: TextStyle(fontSize: 13, color: tokens.fgMuted),
             ),
           ],
         ),
@@ -381,8 +385,10 @@ class TeamSwitcher extends ConsumerWidget {
           ),
           error: (_, _) => Padding(
             padding: const EdgeInsets.all(16),
-            child: Text(AppLocalizations.of(context).failedToLoadTeams,
-                style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+            child: Text(
+              AppLocalizations.of(context).failedToLoadTeams,
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ),
           ),
           data: (teams) => Column(
             mainAxisSize: MainAxisSize.min,
@@ -420,8 +426,11 @@ class TeamSwitcher extends ConsumerWidget {
                     color: tokens.fgDim.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Icon(Icons.settings_outlined,
-                      size: 14, color: tokens.fgMuted),
+                  child: Icon(
+                    Icons.settings_outlined,
+                    size: 14,
+                    color: tokens.fgMuted,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Text(
@@ -450,8 +459,11 @@ class TeamSwitcher extends ConsumerWidget {
                     color: tokens.accent.withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Icon(Icons.add_rounded,
-                      size: 14, color: tokens.accent),
+                  child: Icon(
+                    Icons.add_rounded,
+                    size: 14,
+                    color: tokens.accent,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Text(
@@ -501,8 +513,9 @@ class _TeamRow extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       color: isActive ? tokens.fgBright : tokens.fgMuted,
-                      fontWeight:
-                          isActive ? FontWeight.w600 : FontWeight.normal,
+                      fontWeight: isActive
+                          ? FontWeight.w600
+                          : FontWeight.normal,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -513,10 +526,7 @@ class _TeamRow extends StatelessWidget {
                           '${team.memberCount} member${team.memberCount == 1 ? '' : 's'}',
                         if (team.role != null) team.role,
                       ].join(' \u00B7 '),
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: tokens.fgDim,
-                      ),
+                      style: TextStyle(fontSize: 11, color: tokens.fgDim),
                     ),
                 ],
               ),
@@ -573,13 +583,21 @@ class _CreateTeamSheetState extends State<_CreateTeamSheet> {
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).teamCreatedMessage(name))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).teamCreatedMessage(name),
+            ),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToCreateTeam}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToCreateTeam}: $e',
+            ),
+          ),
         );
         setState(() => _creating = false);
       }
@@ -632,16 +650,21 @@ class _CreateTeamSheetState extends State<_CreateTeamSheet> {
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context).teamNameHint,
               hintStyle: TextStyle(color: tokens.fgDim),
-              prefixIcon: Icon(Icons.group_outlined,
-                  size: 20, color: tokens.fgDim),
+              prefixIcon: Icon(
+                Icons.group_outlined,
+                size: 20,
+                color: tokens.fgDim,
+              ),
               filled: true,
               fillColor: tokens.bg,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide.none,
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 14,
+              ),
             ),
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => _create(),
@@ -666,10 +689,17 @@ class _CreateTeamSheetState extends State<_CreateTeamSheet> {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white))
-                  : Text(AppLocalizations.of(context).createTeam,
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      AppLocalizations.of(context).createTeam,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
             ),
           ),
         ],

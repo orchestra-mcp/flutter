@@ -46,24 +46,24 @@ class AiInsights {
   final DateTime generatedAt;
 
   factory AiInsights.placeholder(AppLocalizations l10n) => AiInsights(
-        top3Wins: [
-          l10n.insightConsistentHydration,
-          l10n.insightPomodoroStreaks,
-          l10n.insightCleanCaffeine,
-        ],
-        top3Concerns: [
-          l10n.insightCortisolCaffeine,
-          l10n.insightSleepBelow7h,
-          l10n.insightShutdownViolatedNights,
-        ],
-        recommendations: [
-          l10n.insightDrinkWaterPomodoro,
-          l10n.insightMoveCaffeine,
-          l10n.insightStartShutdownRitual,
-        ],
-        triggerAnalysis: l10n.insightNoTriggersDetected,
-        generatedAt: DateTime.now(),
-      );
+    top3Wins: [
+      l10n.insightConsistentHydration,
+      l10n.insightPomodoroStreaks,
+      l10n.insightCleanCaffeine,
+    ],
+    top3Concerns: [
+      l10n.insightCortisolCaffeine,
+      l10n.insightSleepBelow7h,
+      l10n.insightShutdownViolatedNights,
+    ],
+    recommendations: [
+      l10n.insightDrinkWaterPomodoro,
+      l10n.insightMoveCaffeine,
+      l10n.insightStartShutdownRitual,
+    ],
+    triggerAnalysis: l10n.insightNoTriggersDetected,
+    generatedAt: DateTime.now(),
+  );
 }
 
 /// Thrown when insights were generated less than 5 minutes ago.
@@ -80,11 +80,7 @@ class CooldownException implements Exception {
 // ---------------------------------------------------------------------------
 
 class AiInsightState {
-  const AiInsightState({
-    this.insights,
-    this.isLoading = false,
-    this.error,
-  });
+  const AiInsightState({this.insights, this.isLoading = false, this.error});
 
   final AiInsights? insights;
   final bool isLoading;
@@ -117,7 +113,10 @@ class AiInsightNotifier extends AsyncNotifier<AiInsightState> {
   /// Generate insights from the given [context].
   ///
   /// Throws [CooldownException] if called within 5 minutes of the last call.
-  Future<void> generateInsights(HealthContext context, AppLocalizations l10n) async {
+  Future<void> generateInsights(
+    HealthContext context,
+    AppLocalizations l10n,
+  ) async {
     // Cooldown check.
     final last = _lastGeneratedAt;
     if (last != null) {
@@ -144,7 +143,10 @@ class AiInsightNotifier extends AsyncNotifier<AiInsightState> {
     }
   }
 
-  AiInsights _buildPlaceholderInsights(HealthContext ctx, AppLocalizations l10n) {
+  AiInsights _buildPlaceholderInsights(
+    HealthContext ctx,
+    AppLocalizations l10n,
+  ) {
     final wins = <String>[];
     final concerns = <String>[];
     final recs = <String>[];
@@ -152,8 +154,11 @@ class AiInsightNotifier extends AsyncNotifier<AiInsightState> {
     if (ctx.hydrationMl >= ctx.hydrationGoalMl) {
       wins.add(l10n.insightDailyHydrationGoalReached);
     } else {
-      concerns.add(l10n.insightHydrationAtPercent(
-          (ctx.hydrationMl / ctx.hydrationGoalMl * 100).toInt()));
+      concerns.add(
+        l10n.insightHydrationAtPercent(
+          (ctx.hydrationMl / ctx.hydrationGoalMl * 100).toInt(),
+        ),
+      );
       recs.add(l10n.insightDrinkMoreMl(ctx.hydrationGoalMl - ctx.hydrationMl));
     }
 
@@ -165,16 +170,22 @@ class AiInsightNotifier extends AsyncNotifier<AiInsightState> {
     }
 
     if (ctx.nutritionSafetyScore >= 75) {
-      wins.add(l10n.insightNutritionSafetyScore(ctx.nutritionSafetyScore.toInt()));
+      wins.add(
+        l10n.insightNutritionSafetyScore(ctx.nutritionSafetyScore.toInt()),
+      );
     } else {
-      concerns.add(l10n.insightNutritionBelowThreshold(ctx.nutritionSafetyScore.toInt()));
+      concerns.add(
+        l10n.insightNutritionBelowThreshold(ctx.nutritionSafetyScore.toInt()),
+      );
     }
 
     if (ctx.shutdownCompliant) {
       wins.add(l10n.insightShutdownCompleted);
     } else {
       concerns.add(l10n.insightShutdownViolatedLastNight);
-      recs.add(l10n.insightStartShutdownHours(ctx.hydrationGoalMl > 0 ? '4' : '2'));
+      recs.add(
+        l10n.insightStartShutdownHours(ctx.hydrationGoalMl > 0 ? '4' : '2'),
+      );
     }
 
     final triggerAnalysis = ctx.recentTriggerFoods.isEmpty
@@ -197,5 +208,5 @@ class AiInsightNotifier extends AsyncNotifier<AiInsightState> {
 
 final aiInsightProvider =
     AsyncNotifierProvider<AiInsightNotifier, AiInsightState>(
-  AiInsightNotifier.new,
-);
+      AiInsightNotifier.new,
+    );

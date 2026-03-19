@@ -19,8 +19,10 @@ void main() {
       expect(event.entityTitle, 'Meeting Notes');
       expect(event.entityType, 'note');
       // Expected title: "Alice updated a note"
-      expect('${event.authorName} updated a ${event.entityType}',
-          'Alice updated a note');
+      expect(
+        '${event.authorName} updated a ${event.entityType}',
+        'Alice updated a note',
+      );
       // Expected body: entity title
       expect(event.entityTitle, 'Meeting Notes');
     });
@@ -36,8 +38,10 @@ void main() {
         permission: 'write',
       );
 
-      expect('${event.authorName} shared a ${event.entityType} with you',
-          'Carol shared a project with you');
+      expect(
+        '${event.authorName} shared a ${event.entityType} with you',
+        'Carol shared a project with you',
+      );
       expect(event.entityTitle, 'Orchestra');
     });
 
@@ -50,10 +54,14 @@ void main() {
         teamId: 'team-2',
       );
 
-      expect('${event.authorName} deleted a shared ${event.entityType}',
-          'Eve deleted a shared workflow');
-      expect('A shared ${event.entityType} was removed',
-          'A shared workflow was removed');
+      expect(
+        '${event.authorName} deleted a shared ${event.entityType}',
+        'Eve deleted a shared workflow',
+      );
+      expect(
+        'A shared ${event.entityType} was removed',
+        'A shared workflow was removed',
+      );
     });
 
     test('non-sync events produce no notification content', () {
@@ -79,10 +87,7 @@ void main() {
   group('Notification preference extraction', () {
     test('sync key defaults to enabled when missing', () {
       final prefs = <String, dynamic>{
-        'notifications': <String, dynamic>{
-          'push': true,
-          'email': false,
-        },
+        'notifications': <String, dynamic>{'push': true, 'email': false},
       };
       final notifications = prefs['notifications'] as Map;
       // sync key not present — should default to enabled (not false).
@@ -114,9 +119,7 @@ void main() {
     });
 
     test('fallback extraction with notification_ prefix', () {
-      final prefs = <String, dynamic>{
-        'notification_sync': false,
-      };
+      final prefs = <String, dynamic>{'notification_sync': false};
       // Fallback logic: notification_sync != false
       expect(prefs['notification_sync'] != false, false);
     });
@@ -179,7 +182,14 @@ void main() {
     });
 
     test('all entity types produce valid routes', () {
-      for (final type in ['note', 'project', 'skill', 'workflow', 'doc', 'agent']) {
+      for (final type in [
+        'note',
+        'project',
+        'skill',
+        'workflow',
+        'doc',
+        'agent',
+      ]) {
         final route = '/$type';
         expect(route, startsWith('/'));
         expect(route.length, greaterThan(1));

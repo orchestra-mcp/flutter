@@ -47,8 +47,9 @@ class _FeatureDetailScreenState extends ConsumerState<FeatureDetailScreen> {
   Future<void> _loadFeature() async {
     try {
       // Fast path: local database.
-      final local =
-          await ref.read(featureRepositoryProvider).getById(widget.featureId);
+      final local = await ref
+          .read(featureRepositoryProvider)
+          .getById(widget.featureId);
       if (local != null && mounted) {
         setState(() {
           _feature = local;
@@ -58,8 +59,9 @@ class _FeatureDetailScreenState extends ConsumerState<FeatureDetailScreen> {
 
       // Slow path: API for fresh data (fire-and-forget update).
       try {
-        final remote =
-            await ref.read(apiClientProvider).getFeature(widget.featureId);
+        final remote = await ref
+            .read(apiClientProvider)
+            .getFeature(widget.featureId);
         if (mounted && remote.isNotEmpty) {
           // Re-fetch from local after the repository caches the API response.
           final refreshed = await ref
@@ -102,12 +104,12 @@ class _FeatureDetailScreenState extends ConsumerState<FeatureDetailScreen> {
         child: _loading
             ? Center(child: CircularProgressIndicator(color: tokens.accent))
             : _error != null
-                ? _ErrorState(tokens: tokens, message: _error!)
-                : _FeatureContent(
-                    feature: _feature!,
-                    projectId: widget.projectId,
-                    tokens: tokens,
-                  ),
+            ? _ErrorState(tokens: tokens, message: _error!)
+            : _FeatureContent(
+                feature: _feature!,
+                projectId: widget.projectId,
+                tokens: tokens,
+              ),
       ),
     );
   }
@@ -128,8 +130,7 @@ class _FeatureContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final markdownContent =
-        feature.body ?? feature.description ?? '';
+    final markdownContent = feature.body ?? feature.description ?? '';
 
     return CustomScrollView(
       slivers: [
@@ -216,21 +217,24 @@ class _FeatureContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: GlassCard(
               child: markdownContent.isNotEmpty
-                  ? MarkdownRendererWidget(
-                      content: markdownContent,
-                    )
+                  ? MarkdownRendererWidget(content: markdownContent)
                   : Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Column(
                           children: [
-                            Icon(Icons.article_outlined,
-                                color: tokens.fgDim, size: 36),
+                            Icon(
+                              Icons.article_outlined,
+                              color: tokens.fgDim,
+                              size: 36,
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               AppLocalizations.of(context).noDescription,
                               style: TextStyle(
-                                  color: tokens.fgMuted, fontSize: 14),
+                                color: tokens.fgMuted,
+                                fontSize: 14,
+                              ),
                             ),
                           ],
                         ),
@@ -249,10 +253,7 @@ class _FeatureContent extends StatelessWidget {
 // -- Metadata card -----------------------------------------------------------
 
 class _MetadataCard extends StatelessWidget {
-  const _MetadataCard({
-    required this.feature,
-    required this.tokens,
-  });
+  const _MetadataCard({required this.feature, required this.tokens});
 
   final LocalFeature feature;
   final OrchestraColorTokens tokens;
@@ -287,7 +288,9 @@ class _MetadataCard extends StatelessWidget {
           // Assignee
           _MetadataRow(
             label: AppLocalizations.of(context).featureDetailAssignee,
-            value: feature.assigneeId ?? AppLocalizations.of(context).featureDetailUnassigned,
+            value:
+                feature.assigneeId ??
+                AppLocalizations.of(context).featureDetailUnassigned,
             tokens: tokens,
           ),
           const SizedBox(height: 8),
@@ -320,8 +323,10 @@ class _MetadataCard extends StatelessWidget {
               runSpacing: 6,
               children: labels.map((label) {
                 return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: tokens.accent.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
@@ -394,14 +399,14 @@ class _StatusBadge extends StatelessWidget {
   final String status;
 
   Color _statusColor(String status) => switch (status) {
-        'done' => const Color(0xFF4ADE80),
-        'in-progress' => const Color(0xFF00E5FF),
-        'in-review' => const Color(0xFFFBBF24),
-        'in-testing' => const Color(0xFF38BDF8),
-        'in-docs' => const Color(0xFF6366F1),
-        'needs-edits' => const Color(0xFFEF4444),
-        _ => const Color(0xFF6B7280),
-      };
+    'done' => const Color(0xFF4ADE80),
+    'in-progress' => const Color(0xFF00E5FF),
+    'in-review' => const Color(0xFFFBBF24),
+    'in-testing' => const Color(0xFF38BDF8),
+    'in-docs' => const Color(0xFF6366F1),
+    'needs-edits' => const Color(0xFFEF4444),
+    _ => const Color(0xFF6B7280),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -430,11 +435,11 @@ class _PriorityBadge extends StatelessWidget {
   final String priority;
 
   Color _priorityColor(String priority) => switch (priority) {
-        'P0' => const Color(0xFFEF4444),
-        'P1' => const Color(0xFFF97316),
-        'P2' => const Color(0xFFFBBF24),
-        _ => const Color(0xFF6B7280),
-      };
+    'P0' => const Color(0xFFEF4444),
+    'P1' => const Color(0xFFF97316),
+    'P2' => const Color(0xFFFBBF24),
+    _ => const Color(0xFF6B7280),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -464,12 +469,12 @@ class _KindBadge extends StatelessWidget {
   final OrchestraColorTokens tokens;
 
   IconData _kindIcon(String kind) => switch (kind) {
-        'bug' => Icons.bug_report_rounded,
-        'hotfix' => Icons.local_fire_department_rounded,
-        'chore' => Icons.build_rounded,
-        'testcase' => Icons.science_rounded,
-        _ => Icons.auto_awesome_rounded,
-      };
+    'bug' => Icons.bug_report_rounded,
+    'hotfix' => Icons.local_fire_department_rounded,
+    'chore' => Icons.build_rounded,
+    'testcase' => Icons.science_rounded,
+    _ => Icons.auto_awesome_rounded,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -478,8 +483,10 @@ class _KindBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: tokens.fgDim.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
-        border:
-            Border.all(color: tokens.fgDim.withValues(alpha: 0.3), width: 0.5),
+        border: Border.all(
+          color: tokens.fgDim.withValues(alpha: 0.3),
+          width: 0.5,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -515,8 +522,11 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Color(0xFFEF4444), size: 48),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 48,
+            ),
             const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context).failedToLoadFeature,

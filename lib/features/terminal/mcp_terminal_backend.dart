@@ -10,14 +10,14 @@ import 'package:orchestra/features/terminal/terminal_backend.dart';
 /// Used by mobile to get a terminal on the remote machine through the tunnel.
 /// The Go `orchestra serve` process spawns the actual PTY.
 class McpTerminalBackend extends TerminalBackend {
-  McpTerminalBackend({
-    required this.callTool,
-    this.shell,
-  });
+  McpTerminalBackend({required this.callTool, this.shell});
 
   /// Calls an MCP tool. Returns the unwrapped result map.
   final Future<Map<String, dynamic>> Function(
-      String name, Map<String, dynamic> arguments) callTool;
+    String name,
+    Map<String, dynamic> arguments,
+  )
+  callTool;
   final String? shell;
 
   late final Terminal _terminal;

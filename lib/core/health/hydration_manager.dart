@@ -13,10 +13,7 @@ import 'package:uuid/uuid.dart';
 enum HydrationStatus { onTrack, slightlyBehind, dehydrated, goalReached }
 
 class HydrationEntry {
-  const HydrationEntry({
-    required this.ml,
-    required this.timestamp,
-  });
+  const HydrationEntry({required this.ml, required this.timestamp});
   final int ml;
   final DateTime timestamp;
 }
@@ -103,7 +100,9 @@ class HydrationNotifier extends Notifier<HydrationState> {
   void _watchHydration() {
     // Watch ALL water_logs — filter by today's date in Dart to avoid
     // SQL timestamp format mismatches between local writes and PowerSync sync.
-    final stream = _db.watch('SELECT * FROM water_logs ORDER BY created_at ASC');
+    final stream = _db.watch(
+      'SELECT * FROM water_logs ORDER BY created_at ASC',
+    );
 
     StreamSubscription<dynamic>? sub;
     sub = stream.listen((results) {
@@ -113,25 +112,30 @@ class HydrationNotifier extends Notifier<HydrationState> {
       debugPrint('[Hydration] watch fired: ${results.length} total rows');
 
       for (final row in results) {
-        final loggedStr = (row['logged_at'] as String?) ??
-            (row['created_at'] as String?) ?? '';
+        final loggedStr =
+            (row['logged_at'] as String?) ??
+            (row['created_at'] as String?) ??
+            '';
         final ml = (row['amount_ml'] as num?)?.toInt() ?? 0;
         final ts = DateTime.tryParse(loggedStr)?.toLocal();
 
-        debugPrint('[Hydration]   row: amount_ml=$ml logged_at=$loggedStr parsed=${ts?.toLocal()} id=${row['id']}');
+        debugPrint(
+          '[Hydration]   row: amount_ml=$ml logged_at=$loggedStr parsed=${ts?.toLocal()} id=${row['id']}',
+        );
 
         if (ts == null) continue;
 
         // Filter: only include today's entries.
-        if (ts.year != now.year ||
-            ts.month != now.month ||
-            ts.day != now.day) continue;
+        if (ts.year != now.year || ts.month != now.month || ts.day != now.day)
+          continue;
 
         entries.add(HydrationEntry(ml: ml, timestamp: ts));
       }
 
       final totalMl = entries.fold<int>(0, (sum, e) => sum + e.ml);
-      debugPrint('[Hydration] today entries: ${entries.length}, total: ${totalMl}ml');
+      debugPrint(
+        '[Hydration] today entries: ${entries.length}, total: ${totalMl}ml',
+      );
 
       state = HydrationState(
         totalMl: totalMl,
@@ -162,7 +166,10 @@ class HydrationNotifier extends Notifier<HydrationState> {
     // Optimistic local state update.
     state = state.copyWith(
       totalMl: newTotal,
-      entries: [...state.entries, HydrationEntry(ml: ml, timestamp: now)],
+      entries: [
+        ...state.entries,
+        HydrationEntry(ml: ml, timestamp: now),
+      ],
       lastLoggedAt: now,
     );
 
@@ -171,9 +178,18 @@ class HydrationNotifier extends Notifier<HydrationState> {
     await _db.execute(
       'INSERT INTO water_logs(id, user_id, amount_ml, logged_at, source, is_gout_flush, created_at, updated_at) '
       'VALUES(?, 0, ?, ?, ?, 0, ?, ?)',
-      [_uuid.v4(), ml, now.toIso8601String(), 'manual', now.toIso8601String(), now.toIso8601String()],
+      [
+        _uuid.v4(),
+        ml,
+        now.toIso8601String(),
+        'manual',
+        now.toIso8601String(),
+        now.toIso8601String(),
+      ],
     );
-    debugPrint('[Hydration] +$ml ml → total $newTotal ml → PowerSync auto-sync');
+    debugPrint(
+      '[Hydration] +$ml ml → total $newTotal ml → PowerSync auto-sync',
+    );
   }
 
   /// Refresh data — re-triggers the PowerSync watch.
@@ -196,7 +212,6 @@ class HydrationNotifier extends Notifier<HydrationState> {
 // Provider
 // ---------------------------------------------------------------------------
 
-final hydrationProvider =
-    NotifierProvider<HydrationNotifier, HydrationState>(
+final hydrationProvider = NotifierProvider<HydrationNotifier, HydrationState>(
   HydrationNotifier.new,
 );

@@ -5,17 +5,18 @@ import 'package:orchestra/core/theme/orchestra_theme.dart';
 abstract final class AppThemeBuilder {
   static ThemeData build(OrchestraTheme t) {
     final brightness = t.isLight ? Brightness.light : Brightness.dark;
-    final scheme = ColorScheme.fromSeed(
-      seedColor: t.accent,
-      brightness: brightness,
-      surface: t.bgAlt,
-      onSurface: t.fgBright,
-    ).copyWith(
-      primary: t.accent,
-      secondary: t.accentAlt,
-      onPrimary: t.isLight ? Colors.white : Colors.black,
-      outline: t.border,
-    );
+    final scheme =
+        ColorScheme.fromSeed(
+          seedColor: t.accent,
+          brightness: brightness,
+          surface: t.bgAlt,
+          onSurface: t.fgBright,
+        ).copyWith(
+          primary: t.accent,
+          secondary: t.accentAlt,
+          onPrimary: t.isLight ? Colors.white : Colors.black,
+          outline: t.border,
+        );
 
     const ibmFont = 'IBM Plex Sans';
     const ibmFallback = ['IBM Plex Sans Arabic', 'sans-serif'];
@@ -129,12 +130,11 @@ abstract final class AppThemeBuilder {
     final base = brightness == Brightness.dark
         ? ThemeData.dark().textTheme
         : ThemeData.light().textTheme;
-    return base
-        .apply(
-          bodyColor: t.fgMuted,
-          displayColor: t.fgBright,
-          fontFamily: 'IBM Plex Sans',
-          fontFamilyFallback: const ['IBM Plex Sans Arabic', 'sans-serif'],
-        );
+    return base.apply(
+      bodyColor: t.fgMuted,
+      displayColor: t.fgBright,
+      fontFamily: 'IBM Plex Sans',
+      fontFamilyFallback: const ['IBM Plex Sans Arabic', 'sans-serif'],
+    );
   }
 }

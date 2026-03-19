@@ -26,8 +26,12 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen>
     with TickerProviderStateMixin {
   static const _tabCount = 4;
 
-  static List<String> _tabs(AppLocalizations l10n) =>
-      [l10n.features, l10n.plans, l10n.requests, l10n.persons];
+  static List<String> _tabs(AppLocalizations l10n) => [
+    l10n.features,
+    l10n.plans,
+    l10n.requests,
+    l10n.persons,
+  ];
 
   late final TabController _tabController;
   String? _projectSlug;
@@ -49,7 +53,8 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen>
     );
     if (row != null && mounted) {
       // Prefer slug, fall back to name, then to the raw projectId.
-      final slug = (row['slug'] as String?) ??
+      final slug =
+          (row['slug'] as String?) ??
           (row['name'] as String?) ??
           widget.projectId;
       setState(() => _projectSlug = slug);
@@ -100,10 +105,7 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen>
 // -- Header ------------------------------------------------------------------
 
 class _ProjectHeader extends ConsumerWidget {
-  const _ProjectHeader({
-    required this.projectId,
-    required this.tokens,
-  });
+  const _ProjectHeader({required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
@@ -115,7 +117,9 @@ class _ProjectHeader extends ConsumerWidget {
       builder: (context, snapshot) {
         final project = snapshot.data;
         final displayName = project?.name ?? projectId;
-        final subtitle = project?.description ?? AppLocalizations.of(context).managedByOrchestra;
+        final subtitle =
+            project?.description ??
+            AppLocalizations.of(context).managedByOrchestra;
 
         return SafeArea(
           bottom: false,
@@ -205,10 +209,7 @@ class _DetailTabBar extends StatelessWidget {
         labelColor: tokens.accent,
         unselectedLabelColor: tokens.fgMuted,
         dividerColor: tokens.border.withValues(alpha: 0.3),
-        labelStyle: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-        ),
+        labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
         unselectedLabelStyle: const TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w400,
@@ -222,29 +223,26 @@ class _DetailTabBar extends StatelessWidget {
 // -- Features tab ------------------------------------------------------------
 
 class _FeaturesTab extends ConsumerWidget {
-  const _FeaturesTab({
-    required this.projectId,
-    required this.tokens,
-  });
+  const _FeaturesTab({required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
 
   Color _statusColor(String status) => switch (status) {
-        'done' => const Color(0xFF4ADE80),
-        'in-progress' => tokens.accent,
-        'in-review' => const Color(0xFFFBBF24),
-        'in-testing' => const Color(0xFF38BDF8),
-        _ => tokens.fgDim,
-      };
+    'done' => const Color(0xFF4ADE80),
+    'in-progress' => tokens.accent,
+    'in-review' => const Color(0xFFFBBF24),
+    'in-testing' => const Color(0xFF38BDF8),
+    _ => tokens.fgDim,
+  };
 
   IconData _statusIcon(String status) => switch (status) {
-        'done' => Icons.check_circle_rounded,
-        'in-progress' => Icons.play_circle_rounded,
-        'in-review' => Icons.rate_review_rounded,
-        'in-testing' => Icons.science_rounded,
-        _ => Icons.radio_button_unchecked_rounded,
-      };
+    'done' => Icons.check_circle_rounded,
+    'in-progress' => Icons.play_circle_rounded,
+    'in-review' => Icons.rate_review_rounded,
+    'in-testing' => Icons.science_rounded,
+    _ => Icons.radio_button_unchecked_rounded,
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -256,15 +254,10 @@ class _FeaturesTab extends ConsumerWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(color: tokens.accent),
-          );
+          return Center(child: CircularProgressIndicator(color: tokens.accent));
         }
         if (snapshot.hasError) {
-          return _ErrorTab(
-            error: snapshot.error.toString(),
-            tokens: tokens,
-          );
+          return _ErrorTab(error: snapshot.error.toString(), tokens: tokens);
         }
         final features = snapshot.data ?? [];
         if (features.isEmpty) {
@@ -288,9 +281,7 @@ class _FeaturesTab extends ConsumerWidget {
               leadingColor: _statusColor(status),
               label: id,
               description: '$title — $status',
-              onTap: () => context.push(
-                Routes.projectFeature(projectId, id),
-              ),
+              onTap: () => context.push(Routes.projectFeature(projectId, id)),
             );
           },
         );
@@ -302,29 +293,26 @@ class _FeaturesTab extends ConsumerWidget {
 // -- Plans tab ---------------------------------------------------------------
 
 class _PlansTab extends ConsumerWidget {
-  const _PlansTab({
-    required this.projectId,
-    required this.tokens,
-  });
+  const _PlansTab({required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
 
   Color _statusColor(String status) => switch (status) {
-        'approved' => const Color(0xFF4ADE80),
-        'in-progress' => tokens.accent,
-        'completed' => const Color(0xFF4ADE80),
-        'draft' => tokens.fgDim,
-        _ => tokens.fgDim,
-      };
+    'approved' => const Color(0xFF4ADE80),
+    'in-progress' => tokens.accent,
+    'completed' => const Color(0xFF4ADE80),
+    'draft' => tokens.fgDim,
+    _ => tokens.fgDim,
+  };
 
   IconData _statusIcon(String status) => switch (status) {
-        'approved' => Icons.check_circle_outline_rounded,
-        'in-progress' => Icons.play_circle_rounded,
-        'completed' => Icons.check_circle_rounded,
-        'draft' => Icons.edit_note_rounded,
-        _ => Icons.description_rounded,
-      };
+    'approved' => Icons.check_circle_outline_rounded,
+    'in-progress' => Icons.play_circle_rounded,
+    'completed' => Icons.check_circle_rounded,
+    'draft' => Icons.edit_note_rounded,
+    _ => Icons.description_rounded,
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -336,15 +324,10 @@ class _PlansTab extends ConsumerWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(color: tokens.accent),
-          );
+          return Center(child: CircularProgressIndicator(color: tokens.accent));
         }
         if (snapshot.hasError) {
-          return _ErrorTab(
-            error: snapshot.error.toString(),
-            tokens: tokens,
-          );
+          return _ErrorTab(error: snapshot.error.toString(), tokens: tokens);
         }
         final plans = snapshot.data ?? [];
         if (plans.isEmpty) {
@@ -368,9 +351,7 @@ class _PlansTab extends ConsumerWidget {
               leadingColor: _statusColor(status),
               label: id,
               description: '$title — $status',
-              onTap: () => context.push(
-                Routes.projectPlan(projectId, id),
-              ),
+              onTap: () => context.push(Routes.projectPlan(projectId, id)),
             );
           },
         );
@@ -382,27 +363,24 @@ class _PlansTab extends ConsumerWidget {
 // -- Requests tab ------------------------------------------------------------
 
 class _RequestsTab extends ConsumerWidget {
-  const _RequestsTab({
-    required this.projectId,
-    required this.tokens,
-  });
+  const _RequestsTab({required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
 
   Color _kindColor(String kind) => switch (kind) {
-        'bug' => const Color(0xFFEF4444),
-        'hotfix' => const Color(0xFFF97316),
-        'feature' => tokens.accent,
-        _ => tokens.fgDim,
-      };
+    'bug' => const Color(0xFFEF4444),
+    'hotfix' => const Color(0xFFF97316),
+    'feature' => tokens.accent,
+    _ => tokens.fgDim,
+  };
 
   IconData _kindIcon(String kind) => switch (kind) {
-        'bug' => Icons.bug_report_rounded,
-        'hotfix' => Icons.local_fire_department_rounded,
-        'feature' => Icons.auto_awesome_rounded,
-        _ => Icons.inbox_rounded,
-      };
+    'bug' => Icons.bug_report_rounded,
+    'hotfix' => Icons.local_fire_department_rounded,
+    'feature' => Icons.auto_awesome_rounded,
+    _ => Icons.inbox_rounded,
+  };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -414,15 +392,10 @@ class _RequestsTab extends ConsumerWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(color: tokens.accent),
-          );
+          return Center(child: CircularProgressIndicator(color: tokens.accent));
         }
         if (snapshot.hasError) {
-          return _ErrorTab(
-            error: snapshot.error.toString(),
-            tokens: tokens,
-          );
+          return _ErrorTab(error: snapshot.error.toString(), tokens: tokens);
         }
         final requests = snapshot.data ?? [];
         if (requests.isEmpty) {
@@ -446,9 +419,7 @@ class _RequestsTab extends ConsumerWidget {
               leadingColor: _kindColor(kind),
               label: id,
               description: '$title — $kind',
-              onTap: () => context.push(
-                Routes.projectRequest(projectId, id),
-              ),
+              onTap: () => context.push(Routes.projectRequest(projectId, id)),
             );
           },
         );
@@ -460,10 +431,7 @@ class _RequestsTab extends ConsumerWidget {
 // -- Persons tab -------------------------------------------------------------
 
 class _PersonsTab extends ConsumerWidget {
-  const _PersonsTab({
-    required this.projectId,
-    required this.tokens,
-  });
+  const _PersonsTab({required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
@@ -478,15 +446,10 @@ class _PersonsTab extends ConsumerWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(color: tokens.accent),
-          );
+          return Center(child: CircularProgressIndicator(color: tokens.accent));
         }
         if (snapshot.hasError) {
-          return _ErrorTab(
-            error: snapshot.error.toString(),
-            tokens: tokens,
-          );
+          return _ErrorTab(error: snapshot.error.toString(), tokens: tokens);
         }
         final persons = snapshot.data ?? [];
         if (persons.isEmpty) {
@@ -510,9 +473,7 @@ class _PersonsTab extends ConsumerWidget {
               leadingColor: tokens.accent,
               label: name,
               description: role.isNotEmpty ? role : id,
-              onTap: () => context.push(
-                Routes.projectPerson(projectId, id),
-              ),
+              onTap: () => context.push(Routes.projectPerson(projectId, id)),
             );
           },
         );
@@ -542,10 +503,7 @@ class _EmptyTab extends StatelessWidget {
         children: [
           Icon(icon, color: tokens.fgDim, size: 48),
           const SizedBox(height: 12),
-          Text(
-            label,
-            style: TextStyle(color: tokens.fgMuted, fontSize: 15),
-          ),
+          Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 15)),
         ],
       ),
     );
@@ -555,10 +513,7 @@ class _EmptyTab extends StatelessWidget {
 // -- Error state helper ------------------------------------------------------
 
 class _ErrorTab extends StatelessWidget {
-  const _ErrorTab({
-    required this.error,
-    required this.tokens,
-  });
+  const _ErrorTab({required this.error, required this.tokens});
 
   final String error;
   final OrchestraColorTokens tokens;

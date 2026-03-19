@@ -118,14 +118,14 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
     final now = DateTime.now();
     try {
       final results = await Future.wait([
-        hs.getSteps(now),            // 0
-        hs.getHeartRate(now),         // 1
-        hs.getActiveCalories(now),    // 2
-        hs.getHeartRateRange(now),    // 3
-        hs.getSleepHours(now),        // 4
-        hs.getLatestWeight(),         // 5
-        hs.getBloodOxygen(now),       // 6
-        hs.getRespiratoryRate(now),   // 7
+        hs.getSteps(now), // 0
+        hs.getHeartRate(now), // 1
+        hs.getActiveCalories(now), // 2
+        hs.getHeartRateRange(now), // 3
+        hs.getSleepHours(now), // 4
+        hs.getLatestWeight(), // 5
+        hs.getBloodOxygen(now), // 6
+        hs.getRespiratoryRate(now), // 7
       ]);
       if (mounted) {
         setState(() {
@@ -187,16 +187,11 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
     final l10n = AppLocalizations.of(context);
 
     if (_isLoading) {
-      return Center(
-        child: CircularProgressIndicator(color: tokens.accent),
-      );
+      return Center(child: CircularProgressIndicator(color: tokens.accent));
     }
 
     if (!_hasPermissions) {
-      return _EmptyState(
-        tokens: tokens,
-        onConnect: _requestPermissions,
-      );
+      return _EmptyState(tokens: tokens, onConnect: _requestPermissions);
     }
 
     return RefreshIndicator(
@@ -208,11 +203,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 120),
         children: [
           // Steps
-          _StepsCard(
-            tokens: tokens,
-            steps: _steps,
-            isLoading: _dataLoading,
-          ),
+          _StepsCard(tokens: tokens, steps: _steps, isLoading: _dataLoading),
           const SizedBox(height: 12),
 
           // Energy + Heart Rate
@@ -265,9 +256,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 child: _MetricCard(
                   tokens: tokens,
                   title: l10n.weight,
-                  value: _weight != null
-                      ? _weight!.toStringAsFixed(1)
-                      : null,
+                  value: _weight != null ? _weight!.toStringAsFixed(1) : null,
                   unit: AppLocalizations.of(context).unitKg,
                   icon: Icons.monitor_weight_rounded,
                   iconColor: const Color(0xFF26A69A),
@@ -336,10 +325,7 @@ String _formatNumber(int n) {
 // ---------------------------------------------------------------------------
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({
-    required this.tokens,
-    required this.onConnect,
-  });
+  const _EmptyState({required this.tokens, required this.onConnect});
 
   final OrchestraColorTokens tokens;
   final VoidCallback onConnect;
@@ -410,10 +396,7 @@ class _EmptyState extends StatelessWidget {
               onPressed: onConnect,
               child: Text(
                 AppLocalizations.of(context).help,
-                style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 13,
-                ),
+                style: TextStyle(color: tokens.fgMuted, fontSize: 13),
               ),
             ),
           ],
@@ -452,14 +435,20 @@ class _StepsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.directions_walk_rounded,
-                  color: tokens.accent, size: 18),
+              Icon(
+                Icons.directions_walk_rounded,
+                color: tokens.accent,
+                size: 18,
+              ),
               const SizedBox(width: 6),
-              Text(AppLocalizations.of(context).steps,
-                  style: TextStyle(
-                      color: tokens.fgBright,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14)),
+              Text(
+                AppLocalizations.of(context).steps,
+                style: TextStyle(
+                  color: tokens.fgBright,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
               const Spacer(),
               if (isLoading)
                 SizedBox(
@@ -522,8 +511,10 @@ class _StepsCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Text(AppLocalizations.of(context).today,
-                style: TextStyle(color: tokens.fgDim, fontSize: 10)),
+            Text(
+              AppLocalizations.of(context).today,
+              style: TextStyle(color: tokens.fgDim, fontSize: 10),
+            ),
           ],
         ],
       ),
@@ -564,11 +555,14 @@ class _MetricCard extends StatelessWidget {
             children: [
               Icon(icon, color: iconColor ?? tokens.accent, size: 16),
               const SizedBox(width: 4),
-              Text(title,
-                  style: TextStyle(
-                      color: tokens.fgMuted,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500)),
+              Text(
+                title,
+                style: TextStyle(
+                  color: tokens.fgMuted,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -582,13 +576,15 @@ class _MetricCard extends StatelessWidget {
               ),
             )
           else
-            Text(value ?? '\u2014',
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700)),
-          Text(unit,
-              style: TextStyle(color: tokens.fgDim, fontSize: 11)),
+            Text(
+              value ?? '\u2014',
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          Text(unit, style: TextStyle(color: tokens.fgDim, fontSize: 11)),
         ],
       ),
     );
@@ -620,14 +616,20 @@ class _HeartRateCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.favorite_rounded,
-                  color: Color(0xFFF44336), size: 16),
+              const Icon(
+                Icons.favorite_rounded,
+                color: Color(0xFFF44336),
+                size: 16,
+              ),
               const SizedBox(width: 4),
-              Text(AppLocalizations.of(context).heartRate,
-                  style: TextStyle(
-                      color: tokens.fgMuted,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500)),
+              Text(
+                AppLocalizations.of(context).heartRate,
+                style: TextStyle(
+                  color: tokens.fgMuted,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -641,17 +643,24 @@ class _HeartRateCard extends StatelessWidget {
               ),
             )
           else
-            Text(bpm != null ? '$bpm' : '\u2014',
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700)),
-          Text(AppLocalizations.of(context).unitBpm,
-              style: TextStyle(color: tokens.fgDim, fontSize: 11)),
+            Text(
+              bpm != null ? '$bpm' : '\u2014',
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          Text(
+            AppLocalizations.of(context).unitBpm,
+            style: TextStyle(color: tokens.fgDim, fontSize: 11),
+          ),
           const SizedBox(height: 4),
           Text(
             range != null
-                ? AppLocalizations.of(context).heartRateRange(range!.min, range!.max)
+                ? AppLocalizations.of(
+                    context,
+                  ).heartRateRange(range!.min, range!.max)
                 : AppLocalizations.of(context).noRangeData,
             style: TextStyle(color: tokens.fgMuted, fontSize: 11),
           ),
@@ -666,10 +675,7 @@ class _HeartRateCard extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _ZeppScaleSection extends StatefulWidget {
-  const _ZeppScaleSection({
-    required this.tokens,
-    this.healthKitWeight,
-  });
+  const _ZeppScaleSection({required this.tokens, this.healthKitWeight});
 
   final OrchestraColorTokens tokens;
   final double? healthKitWeight;
@@ -716,8 +722,9 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
   Widget build(BuildContext context) {
     final tokens = widget.tokens;
     final metAge = int.tryParse(_metAgeCtrl.text) ?? 0;
-    final metAgeColor =
-        metAge <= 35 ? const Color(0xFF4CAF50) : const Color(0xFFF44336);
+    final metAgeColor = metAge <= 35
+        ? const Color(0xFF4CAF50)
+        : const Color(0xFFF44336);
 
     return GlassCard(
       child: Column(
@@ -727,11 +734,14 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
             children: [
               Icon(Icons.scale_rounded, color: tokens.accent, size: 18),
               const SizedBox(width: 6),
-              Text(AppLocalizations.of(context).zeppScale,
-                  style: TextStyle(
-                      color: tokens.fgBright,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14)),
+              Text(
+                AppLocalizations.of(context).zeppScale,
+                style: TextStyle(
+                  color: tokens.fgBright,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -739,18 +749,20 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
             children: [
               Expanded(
                 child: _ZeppField(
-                    controller: _weightCtrl,
-                    label: AppLocalizations.of(context).weight,
-                    unit: AppLocalizations.of(context).unitKg,
-                    tokens: tokens),
+                  controller: _weightCtrl,
+                  label: AppLocalizations.of(context).weight,
+                  unit: AppLocalizations.of(context).unitKg,
+                  tokens: tokens,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
                 child: _ZeppField(
-                    controller: _bodyFatCtrl,
-                    label: AppLocalizations.of(context).bodyFat,
-                    unit: AppLocalizations.of(context).unitPercent,
-                    tokens: tokens),
+                  controller: _bodyFatCtrl,
+                  label: AppLocalizations.of(context).bodyFat,
+                  unit: AppLocalizations.of(context).unitPercent,
+                  tokens: tokens,
+                ),
               ),
             ],
           ),
@@ -793,7 +805,8 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
                 backgroundColor: tokens.accent,
                 foregroundColor: tokens.bg,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: Text(AppLocalizations.of(context).saveMeasurements),
             ),
@@ -846,8 +859,10 @@ class _ZeppField extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: tokens.accent),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
         isDense: true,
       ),
     );

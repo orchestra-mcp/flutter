@@ -65,9 +65,17 @@ void main() {
 
     test('inserts multiple entries independently', () async {
       await engine.enqueue(
-          entityType: 'note', entityId: 'n-1', operation: 'create', payload: {});
+        entityType: 'note',
+        entityId: 'n-1',
+        operation: 'create',
+        payload: {},
+      );
       await engine.enqueue(
-          entityType: 'note', entityId: 'n-2', operation: 'create', payload: {});
+        entityType: 'note',
+        entityId: 'n-2',
+        operation: 'create',
+        payload: {},
+      );
       final rows = await db.select(db.syncQueueTable).get();
       expect(rows.length, 2);
     });
@@ -97,10 +105,11 @@ void main() {
     test('increments attempts and schedules retry on failure', () async {
       fakeClient.throwOnPush = true;
       await engine.enqueue(
-          entityType: 'feature',
-          entityId: 'f-err',
-          operation: 'delete',
-          payload: {});
+        entityType: 'feature',
+        entityId: 'f-err',
+        operation: 'delete',
+        payload: {},
+      );
       await engine.push();
 
       final rows = await db.select(db.syncQueueTable).get();
@@ -111,14 +120,17 @@ void main() {
 
     test('skips entries whose nextRetryAt is in the future', () async {
       await engine.enqueue(
-          entityType: 'feature',
-          entityId: 'f-skip',
-          operation: 'create',
-          payload: {});
-      await (db.update(db.syncQueueTable)).write(SyncQueueTableCompanion(
-        nextRetryAt: Value(DateTime.now().add(const Duration(hours: 1))),
-        attempts: const Value(1),
-      ));
+        entityType: 'feature',
+        entityId: 'f-skip',
+        operation: 'create',
+        payload: {},
+      );
+      await (db.update(db.syncQueueTable)).write(
+        SyncQueueTableCompanion(
+          nextRetryAt: Value(DateTime.now().add(const Duration(hours: 1))),
+          attempts: const Value(1),
+        ),
+      );
       await engine.push();
       expect(fakeClient.pushCalls, isEmpty);
     });
@@ -143,7 +155,7 @@ void main() {
             'labels': '[]',
             'created_at': '2025-01-01T00:00:00Z',
             'updated_at': '2025-01-01T00:00:00Z',
-          }
+          },
         ],
         'projects': <Map<String, dynamic>>[],
         'notes': <Map<String, dynamic>>[],
@@ -167,7 +179,7 @@ void main() {
             'stacks': '["go"]',
             'created_at': '2025-01-01T00:00:00Z',
             'updated_at': '2025-01-01T00:00:00Z',
-          }
+          },
         ],
         'notes': <Map<String, dynamic>>[],
       };
@@ -191,7 +203,7 @@ void main() {
             'tags': '[]',
             'created_at': '2025-01-01T00:00:00Z',
             'updated_at': '2025-01-01T00:00:00Z',
-          }
+          },
         ],
       };
       await engine.pull();
@@ -210,10 +222,11 @@ void main() {
   group('SyncEngine.sync', () {
     test('pulls then pushes', () async {
       await engine.enqueue(
-          entityType: 'note',
-          entityId: 'n-local',
-          operation: 'create',
-          payload: {'title': 'hi'});
+        entityType: 'note',
+        entityId: 'n-local',
+        operation: 'create',
+        payload: {'title': 'hi'},
+      );
       await engine.sync();
       expect(fakeClient.pushCalls.length, 1);
     });

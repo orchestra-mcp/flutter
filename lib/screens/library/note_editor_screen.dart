@@ -64,8 +64,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
 
   Future<void> _loadNote() async {
     try {
-      final note =
-          await ref.read(noteRepositoryProvider).getById(widget.noteId!);
+      final note = await ref
+          .read(noteRepositoryProvider)
+          .getById(widget.noteId!);
       if (note != null && mounted) {
         setState(() {
           _titleController.text = note.title;
@@ -118,12 +119,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
 
       if (widget.isNew) {
         final id = const Uuid().v4();
-        await repo.create(
-          id: id,
-          title: title,
-          content: content,
-          tags: _tags,
-        );
+        await repo.create(id: id, title: title, content: content, tags: _tags);
         if (mounted) context.go('/library/notes/$id');
       } else {
         await repo.update(
@@ -137,7 +133,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
         setState(() => _saving = false);
       }
@@ -222,10 +220,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                       const SizedBox(height: 16),
 
                       // Divider
-                      Divider(
-                        color: tokens.border,
-                        height: 1,
-                      ),
+                      Divider(color: tokens.border, height: 1),
 
                       const SizedBox(height: 16),
 
@@ -251,9 +246,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: tokens.border, width: 0.5),
-        ),
+        border: Border(bottom: BorderSide(color: tokens.border, width: 0.5)),
       ),
       child: Row(
         children: [
@@ -266,7 +259,11 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                 context.go('/library/notes/${widget.noteId}');
               }
             },
-            icon: Icon(Icons.arrow_back_rounded, size: 18, color: tokens.fgMuted),
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              size: 18,
+              color: tokens.fgMuted,
+            ),
             label: Text(
               l10n.cancel,
               style: TextStyle(color: tokens.fgMuted, fontSize: 13),
@@ -308,7 +305,10 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
               backgroundColor: tokens.accent,
               foregroundColor: tokens.isLight ? Colors.white : Colors.black,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              textStyle: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
               minimumSize: const Size(0, 34),
             ),
           ),
@@ -341,7 +341,10 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                 deleteIcon: Icon(Icons.close_rounded, size: 14, color: color),
                 onDeleted: () => _removeTag(tag),
                 backgroundColor: color.withValues(alpha: 0.1),
-                side: BorderSide(color: color.withValues(alpha: 0.25), width: 0.5),
+                side: BorderSide(
+                  color: color.withValues(alpha: 0.25),
+                  width: 0.5,
+                ),
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 labelPadding: const EdgeInsets.only(left: 4),
@@ -361,8 +364,11 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
             decoration: InputDecoration(
               hintText: l10n.addTagHint,
               hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-              prefixIcon: Icon(Icons.label_outline_rounded,
-                  size: 16, color: tokens.fgDim),
+              prefixIcon: Icon(
+                Icons.label_outline_rounded,
+                size: 16,
+                color: tokens.fgDim,
+              ),
               prefixIconConstraints: const BoxConstraints(
                 minWidth: 32,
                 minHeight: 0,
@@ -379,8 +385,10 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: tokens.accent),
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 0,
+              ),
               isDense: true,
             ),
             onSubmitted: _addTag,
@@ -435,9 +443,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       );
     }
 
-    return MarkdownRendererWidget(
-      content: text,
-    );
+    return MarkdownRendererWidget(content: text);
   }
 
   Color _tagColor(String tag) {
@@ -503,8 +509,7 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.auto_awesome_rounded,
-                      size: 18, color: _noteColor),
+                  Icon(Icons.auto_awesome_rounded, size: 18, color: _noteColor),
                   const SizedBox(width: 8),
                   Text(
                     l10n.describeYourNote,
@@ -577,8 +582,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                             height: 14,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color:
-                                  tokens.isLight ? Colors.white : Colors.black,
+                              color: tokens.isLight
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           )
                         : const Icon(Icons.auto_awesome_rounded, size: 16),
@@ -587,9 +593,13 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                       backgroundColor: _noteColor,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       textStyle: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w600),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
                       minimumSize: const Size(0, 34),
                     ),
                   ),
@@ -622,14 +632,14 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                           event.isError
                               ? Icons.error_outline_rounded
                               : event.isDone
-                                  ? Icons.check_circle_outline_rounded
-                                  : Icons.circle_outlined,
+                              ? Icons.check_circle_outline_rounded
+                              : Icons.circle_outlined,
                           size: 14,
                           color: event.isError
                               ? const Color(0xFFEF4444)
                               : event.isDone
-                                  ? const Color(0xFF22C55E)
-                                  : tokens.fgDim,
+                              ? const Color(0xFF22C55E)
+                              : tokens.fgDim,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -709,18 +719,14 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
 
       _addEvent(l10n.aiGenerating);
 
-      final result = await mcp.callTool(
-        'ai_prompt',
-        {
-          'prompt': prompt,
-          'system_prompt': systemPrompt,
-          'wait': true,
-          'model': _selectedModel,
-          'permission_mode': 'bypassPermissions',
-          'max_budget': 0.05,
-        },
-        timeout: const Duration(seconds: 300),
-      );
+      final result = await mcp.callTool('ai_prompt', {
+        'prompt': prompt,
+        'system_prompt': systemPrompt,
+        'wait': true,
+        'model': _selectedModel,
+        'permission_mode': 'bypassPermissions',
+        'max_budget': 0.05,
+      }, timeout: const Duration(seconds: 300));
 
       _addEvent(l10n.responseReceived);
 
@@ -777,8 +783,10 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
         _smartMode = false;
       });
     } catch (e) {
-      _addEvent('Error: ${e.toString().replaceAll('Exception: ', '')}',
-          isError: true);
+      _addEvent(
+        'Error: ${e.toString().replaceAll('Exception: ', '')}',
+        isError: true,
+      );
       setState(() => _generating = false);
     }
   }
@@ -931,9 +939,7 @@ class _SmartModeChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon,
-                size: 14,
-                color: isActive ? activeColor : tokens.fgDim),
+            Icon(icon, size: 14, color: isActive ? activeColor : tokens.fgDim),
             const SizedBox(width: 6),
             Text(
               label,

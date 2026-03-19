@@ -30,21 +30,21 @@ class ClaudeTerminalBackend extends TerminalBackend {
       columns: terminal.viewWidth > 0 ? terminal.viewWidth : 80,
       rows: terminal.viewHeight > 0 ? terminal.viewHeight : 25,
       workingDirectory: workingDirectory,
-      environment: {
-        ...Platform.environment,
-        'TERM': 'xterm-256color',
-      },
+      environment: {...Platform.environment, 'TERM': 'xterm-256color'},
     );
     _pty = pty;
 
-    pty.output.cast<List<int>>().transform(utf8.decoder).listen(
-      (String data) {
-        terminal.write(_sanitizeUnicode(data));
-      },
-      onDone: () {
-        terminal.write('\r\n[Claude session ended]\r\n');
-      },
-    );
+    pty.output
+        .cast<List<int>>()
+        .transform(utf8.decoder)
+        .listen(
+          (String data) {
+            terminal.write(_sanitizeUnicode(data));
+          },
+          onDone: () {
+            terminal.write('\r\n[Claude session ended]\r\n');
+          },
+        );
 
     terminal.onOutput = (String data) {
       pty.write(Uint8List.fromList(utf8.encode(data)));
@@ -58,10 +58,7 @@ class ClaudeTerminalBackend extends TerminalBackend {
   /// Strip variation selectors (VS15/VS16) and zero-width joiners that cause
   /// xterm.dart's Unicode 11 wcwidth table to miscalculate character widths.
   static String _sanitizeUnicode(String data) {
-    return data.replaceAll(
-      RegExp('[\uFE0E\uFE0F\u200D]'),
-      '',
-    );
+    return data.replaceAll(RegExp('[\uFE0E\uFE0F\u200D]'), '');
   }
 
   @override

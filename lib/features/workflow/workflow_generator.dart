@@ -19,13 +19,12 @@ class SkillConfig {
     String? path,
     String? description,
     bool? enabled,
-  }) =>
-      SkillConfig(
-        command: command ?? this.command,
-        path: path ?? this.path,
-        description: description ?? this.description,
-        enabled: enabled ?? this.enabled,
-      );
+  }) => SkillConfig(
+    command: command ?? this.command,
+    path: path ?? this.path,
+    description: description ?? this.description,
+    enabled: enabled ?? this.enabled,
+  );
 }
 
 /// An agent definition.
@@ -47,13 +46,12 @@ class AgentConfig {
     String? file,
     String? description,
     bool? enabled,
-  }) =>
-      AgentConfig(
-        name: name ?? this.name,
-        file: file ?? this.file,
-        description: description ?? this.description,
-        enabled: enabled ?? this.enabled,
-      );
+  }) => AgentConfig(
+    name: name ?? this.name,
+    file: file ?? this.file,
+    description: description ?? this.description,
+    enabled: enabled ?? this.enabled,
+  );
 }
 
 /// A hook definition.
@@ -75,13 +73,12 @@ class HookConfig {
     String? file,
     String? description,
     bool? enabled,
-  }) =>
-      HookConfig(
-        name: name ?? this.name,
-        file: file ?? this.file,
-        description: description ?? this.description,
-        enabled: enabled ?? this.enabled,
-      );
+  }) => HookConfig(
+    name: name ?? this.name,
+    file: file ?? this.file,
+    description: description ?? this.description,
+    enabled: enabled ?? this.enabled,
+  );
 }
 
 /// Project metadata for markdown generation.
@@ -146,7 +143,8 @@ class WorkflowGenerator {
     buf.writeln('# CLAUDE.md');
     buf.writeln();
     buf.writeln(
-        'This project uses [Orchestra MCP](https://github.com/orchestra-mcp/framework) for AI-powered project management.');
+      'This project uses [Orchestra MCP](https://github.com/orchestra-mcp/framework) for AI-powered project management.',
+    );
     buf.writeln();
 
     // Available tools.
@@ -154,10 +152,12 @@ class WorkflowGenerator {
       buf.writeln('## Available Tools');
       buf.writeln();
       buf.writeln(
-          'Orchestra provides **${project.toolCount} tools** via MCP and **${project.promptCount} prompts**.');
+        'Orchestra provides **${project.toolCount} tools** via MCP and **${project.promptCount} prompts**.',
+      );
       buf.writeln();
       buf.writeln(
-          'Run `orchestra serve` to start the MCP server. IDE config is in `.mcp.json`.');
+        'Run `orchestra serve` to start the MCP server. IDE config is in `.mcp.json`.',
+      );
       buf.writeln();
     }
 
@@ -180,7 +180,8 @@ class WorkflowGenerator {
       buf.writeln('## Agents');
       buf.writeln();
       buf.writeln(
-          'Specialized agents in `.claude/agents/` auto-delegate based on task context.');
+        'Specialized agents in `.claude/agents/` auto-delegate based on task context.',
+      );
       buf.writeln();
       buf.writeln('| Agent | File |');
       buf.writeln('|-------|------|');
@@ -215,7 +216,8 @@ class WorkflowGenerator {
     buf.writeln('## Agent Registry');
     buf.writeln();
     buf.writeln(
-        'This file documents the specialized agents available in this project.');
+      'This file documents the specialized agents available in this project.',
+    );
     buf.writeln();
 
     final enabledAgents = agents.where((a) => a.enabled).toList();
@@ -227,8 +229,9 @@ class WorkflowGenerator {
     buf.writeln('| Agent | File | Description |');
     buf.writeln('|-------|------|-------------|');
     for (final agent in enabledAgents) {
-      final desc =
-          agent.description.isNotEmpty ? agent.description : 'No description';
+      final desc = agent.description.isNotEmpty
+          ? agent.description
+          : 'No description';
       buf.writeln('| `${agent.name}` | `${agent.file}` | $desc |');
     }
     buf.writeln();
@@ -236,7 +239,8 @@ class WorkflowGenerator {
     buf.writeln('## Usage');
     buf.writeln();
     buf.writeln(
-        'Agents are automatically selected based on task context. Each agent has a dedicated markdown file in `.claude/agents/` that defines its system prompt, capabilities, and delegation rules.');
+      'Agents are automatically selected based on task context. Each agent has a dedicated markdown file in `.claude/agents/` that defines its system prompt, capabilities, and delegation rules.',
+    );
     buf.writeln();
 
     for (final agent in enabledAgents) {

@@ -62,11 +62,7 @@ class PomodoroTab extends ConsumerWidget {
                 const SizedBox(height: 16),
                 _TimerRing(state: state, tokens: tokens),
                 const SizedBox(height: 24),
-                _Controls(
-                  state: state,
-                  notifier: notifier,
-                  tokens: tokens,
-                ),
+                _Controls(state: state, notifier: notifier, tokens: tokens),
               ],
             ),
           ),
@@ -140,8 +136,10 @@ class PomodoroTab extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
                     value: state.dailyTarget > 0
-                        ? (state.completedToday / state.dailyTarget)
-                            .clamp(0.0, 1.0)
+                        ? (state.completedToday / state.dailyTarget).clamp(
+                            0.0,
+                            1.0,
+                          )
                         : 0.0,
                     backgroundColor: tokens.border.withValues(alpha: 0.3),
                     valueColor: AlwaysStoppedAnimation<Color>(
@@ -303,8 +301,11 @@ class _ErrorBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: errorColor, size: 20),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: errorColor,
+              size: 20,
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -318,8 +319,10 @@ class _ErrorBanner extends StatelessWidget {
             GestureDetector(
               onTap: onRetry,
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: errorColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),
@@ -450,9 +453,14 @@ class _PhaseLabel extends StatelessWidget {
         border: Border.all(color: color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(_label(l10n),
-          style: TextStyle(
-              color: color, fontSize: 13, fontWeight: FontWeight.w600)),
+      child: Text(
+        _label(l10n),
+        style: TextStyle(
+          color: color,
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 }
@@ -666,10 +674,12 @@ class _Controls extends StatelessWidget {
           onPressed: state.phase == PomodoroPhase.work
               ? notifier.skipToBreak
               : null,
-          icon: Icon(Icons.skip_next_rounded,
-              color: state.phase == PomodoroPhase.work
-                  ? tokens.fgMuted
-                  : tokens.fgDim),
+          icon: Icon(
+            Icons.skip_next_rounded,
+            color: state.phase == PomodoroPhase.work
+                ? tokens.fgMuted
+                : tokens.fgDim,
+          ),
           tooltip: l10n.skipToBreak,
         ),
       ],
@@ -828,8 +838,7 @@ class _FocusStreakRow extends StatelessWidget {
     final totalFocusMinutes = state.completedToday * 25;
     final hours = totalFocusMinutes ~/ 60;
     final minutes = totalFocusMinutes % 60;
-    final focusTimeLabel =
-        hours > 0 ? '${hours}h ${minutes}m' : '${minutes}m';
+    final focusTimeLabel = hours > 0 ? '${hours}h ${minutes}m' : '${minutes}m';
 
     // Streak = consecutive completed sessions within the current 4-cycle set.
     final cyclesComplete = state.cycleIndex;
@@ -932,14 +941,16 @@ class _Stat extends StatelessWidget {
       children: [
         Icon(icon, color: color, size: 18),
         const SizedBox(height: 6),
-        Text(value,
-            style: TextStyle(
-                color: tokens.fgBright,
-                fontSize: 22,
-                fontWeight: FontWeight.w700)),
+        Text(
+          value,
+          style: TextStyle(
+            color: tokens.fgBright,
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         const SizedBox(height: 2),
-        Text(label,
-            style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
+        Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
       ],
     );
   }

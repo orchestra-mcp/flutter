@@ -24,11 +24,7 @@ class SetupDesktopScreen extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  Icons.desktop_mac_rounded,
-                  size: 56,
-                  color: tokens.accent,
-                ),
+                Icon(Icons.desktop_mac_rounded, size: 56, color: tokens.accent),
                 const SizedBox(height: 16),
                 Text(
                   l10n.desktopRequired,
@@ -48,9 +44,8 @@ class SetupDesktopScreen extends ConsumerWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: () => launchUrl(
-                      Uri.parse('https://orchestra.dev/download'),
-                    ),
+                    onPressed: () =>
+                        launchUrl(Uri.parse('https://orchestra.dev/download')),
                     icon: const Icon(Icons.download_rounded),
                     label: Text(l10n.downloadDesktopApp),
                     style: ElevatedButton.styleFrom(

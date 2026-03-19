@@ -29,7 +29,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    await ref.read(authProvider.notifier).register(
+    await ref
+        .read(authProvider.notifier)
+        .register(
           _emailController.text.trim(),
           _passwordController.text,
           _nameController.text.trim(),
@@ -109,10 +111,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         children: [
                           // Error banner
                           if (errorMessage != null) ...[
-                            _ErrorBanner(
-                              message: errorMessage,
-                              tokens: tokens,
-                            ),
+                            _ErrorBanner(message: errorMessage, tokens: tokens),
                             const SizedBox(height: 16),
                           ],
 
@@ -126,8 +125,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             decoration: InputDecoration(
                               labelText: l10n.fullName,
                               hintText: l10n.yourName,
-                              prefixIcon: Icon(Icons.person_outline_rounded,
-                                  color: tokens.fgDim, size: 20),
+                              prefixIcon: Icon(
+                                Icons.person_outline_rounded,
+                                color: tokens.fgDim,
+                                size: 20,
+                              ),
                             ),
                             validator: (v) => _validateName(v, l10n),
                           ),
@@ -143,8 +145,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             decoration: InputDecoration(
                               labelText: l10n.email,
                               hintText: l10n.emailHint,
-                              prefixIcon: Icon(Icons.mail_outline_rounded,
-                                  color: tokens.fgDim, size: 20),
+                              prefixIcon: Icon(
+                                Icons.mail_outline_rounded,
+                                color: tokens.fgDim,
+                                size: 20,
+                              ),
                             ),
                             validator: (v) => _validateEmail(v, l10n),
                           ),
@@ -155,13 +160,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             controller: _passwordController,
                             obscureText: _obscurePassword,
                             textInputAction: TextInputAction.done,
-                            onFieldSubmitted: (_) => isLoading ? null : _submit(),
+                            onFieldSubmitted: (_) =>
+                                isLoading ? null : _submit(),
                             style: TextStyle(color: tokens.fgBright),
                             decoration: InputDecoration(
                               labelText: l10n.password,
                               hintText: l10n.minEightCharacters,
-                              prefixIcon: Icon(Icons.lock_outline_rounded,
-                                  color: tokens.fgDim, size: 20),
+                              prefixIcon: Icon(
+                                Icons.lock_outline_rounded,
+                                color: tokens.fgDim,
+                                size: 20,
+                              ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword
@@ -171,7 +180,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   size: 20,
                                 ),
                                 onPressed: () => setState(
-                                    () => _obscurePassword = !_obscurePassword),
+                                  () => _obscurePassword = !_obscurePassword,
+                                ),
                               ),
                             ),
                             validator: (v) => _validatePassword(v, l10n),
@@ -185,10 +195,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               onPressed: isLoading ? null : _submit,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: tokens.accent,
-                                foregroundColor:
-                                    tokens.isLight ? Colors.white : Colors.black,
-                                disabledBackgroundColor:
-                                    tokens.accent.withValues(alpha: 0.4),
+                                foregroundColor: tokens.isLight
+                                    ? Colors.white
+                                    : Colors.black,
+                                disabledBackgroundColor: tokens.accent
+                                    .withValues(alpha: 0.4),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -208,8 +219,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   : Text(
                                       l10n.createAccount,
                                       style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                             ),
                           ),
@@ -235,7 +247,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         child: Text(
                           l10n.signIn,
                           style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w600),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
@@ -296,7 +310,11 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 18),
+          const Icon(
+            Icons.error_outline_rounded,
+            color: Colors.redAccent,
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

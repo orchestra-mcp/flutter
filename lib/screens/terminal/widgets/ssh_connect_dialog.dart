@@ -116,8 +116,9 @@ class _SshConnectDialogState extends State<SshConnectDialog> {
                   controller: _hostController,
                   label: l10n.host,
                   hint: l10n.hostHint,
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? l10n.hostRequired : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.hostRequired
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 _buildTextField(
@@ -125,8 +126,9 @@ class _SshConnectDialogState extends State<SshConnectDialog> {
                   controller: _userController,
                   label: l10n.user,
                   hint: 'root',
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? l10n.userRequired : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.userRequired
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 _buildTextField(
@@ -180,10 +182,7 @@ class _SshConnectDialogState extends State<SshConnectDialog> {
         FilledButton(
           onPressed: _submit,
           style: FilledButton.styleFrom(backgroundColor: tokens.accent),
-          child: Text(
-            l10n.connect,
-            style: TextStyle(color: tokens.fgBright),
-          ),
+          child: Text(l10n.connect, style: TextStyle(color: tokens.fgBright)),
         ),
       ],
     );
@@ -287,8 +286,10 @@ class _SshConnectDialogState extends State<SshConnectDialog> {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: Colors.redAccent),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
       ),
     );
   }
@@ -319,10 +320,7 @@ class _AuthRadioOption extends StatelessWidget {
             return tokens.fgDim;
           }),
         ),
-        Text(
-          label,
-          style: TextStyle(color: tokens.fgBright, fontSize: 13),
-        ),
+        Text(label, style: TextStyle(color: tokens.fgBright, fontSize: 13)),
       ],
     );
   }

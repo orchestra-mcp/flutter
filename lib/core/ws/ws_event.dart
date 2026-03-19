@@ -150,10 +150,7 @@ class SyncEntityDeletedEvent extends WsEvent {
 /// The backend broadcasts this after any health mutation (water, caffeine,
 /// meal, pomodoro, shutdown, weight, sleep).
 class HealthDataUpdatedEvent extends WsEvent {
-  const HealthDataUpdatedEvent({
-    required this.dimension,
-    required this.userId,
-  });
+  const HealthDataUpdatedEvent({required this.dimension, required this.userId});
 
   /// Which health dimension changed: hydration, caffeine, nutrition,
   /// pomodoro, shutdown, weight, sleep, or "all" for full refresh.
@@ -175,10 +172,7 @@ class HealthDataUpdatedEvent extends WsEvent {
 /// The backend sends these when Claude Code tool calls, agent spawns,
 /// or notifications occur via the hook bridge.
 sealed class McpEvent extends WsEvent {
-  const McpEvent({
-    required this.sessionId,
-    required this.timestamp,
-  });
+  const McpEvent({required this.sessionId, required this.timestamp});
 
   final String sessionId;
   final int timestamp;

@@ -19,10 +19,7 @@ import 'package:orchestra/core/theme/color_tokens.dart';
 /// )
 /// ```
 class GlassBackground extends StatelessWidget {
-  const GlassBackground({
-    super.key,
-    this.child,
-  });
+  const GlassBackground({super.key, this.child});
 
   /// Optional child layered on top of the background.
   final Widget? child;
@@ -87,10 +84,7 @@ class _AccentBlob extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       ),
     );
   }

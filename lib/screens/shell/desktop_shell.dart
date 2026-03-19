@@ -46,8 +46,9 @@ class _SidebarVisible extends Notifier<bool> {
   void set(bool value) => state = value;
 }
 
-final sidebarVisibleProvider =
-    NotifierProvider<_SidebarVisible, bool>(_SidebarVisible.new);
+final sidebarVisibleProvider = NotifierProvider<_SidebarVisible, bool>(
+  _SidebarVisible.new,
+);
 
 /// Tracks which sidebar section is currently shown (independent of route).
 class _SidebarSection extends Notifier<_SidebarType> {
@@ -56,8 +57,9 @@ class _SidebarSection extends Notifier<_SidebarType> {
   void set(_SidebarType value) => state = value;
 }
 
-final _sidebarSectionProvider =
-    NotifierProvider<_SidebarSection, _SidebarType>(_SidebarSection.new);
+final _sidebarSectionProvider = NotifierProvider<_SidebarSection, _SidebarType>(
+  _SidebarSection.new,
+);
 
 // ── Icon rail destinations ───────────────────────────────────────────────────
 
@@ -75,34 +77,105 @@ class _RailDest {
 }
 
 const _railDestinations = [
-  _RailDest(icon: Icons.home_rounded, label: 'Summary', route: Routes.summary, sidebar: _SidebarType.dashboard),
-  _RailDest(icon: Icons.sticky_note_2_rounded, label: 'Notes', route: Routes.notes, sidebar: _SidebarType.notes),
-  _RailDest(icon: Icons.folder_rounded, label: 'Projects', route: Routes.projects, sidebar: _SidebarType.projects),
-  _RailDest(icon: Icons.smart_toy_rounded, label: 'Agents', route: Routes.agents, sidebar: _SidebarType.agents),
-  _RailDest(icon: Icons.bolt_rounded, label: 'Skills', route: Routes.skills, sidebar: _SidebarType.skills),
-  _RailDest(icon: Icons.account_tree_rounded, label: 'Workflows', route: Routes.workflows, sidebar: _SidebarType.workflows),
-  _RailDest(icon: Icons.menu_book_rounded, label: 'Docs', route: Routes.docs, sidebar: _SidebarType.docs),
-  _RailDest(icon: Icons.sync_alt_rounded, label: 'Delegations', route: Routes.delegations, sidebar: _SidebarType.delegations),
-  _RailDest(icon: Icons.terminal_rounded, label: 'Terminal', route: Routes.terminal, sidebar: _SidebarType.terminal),
-  _RailDest(icon: Icons.favorite_rounded, label: 'Health', route: Routes.health, sidebar: _SidebarType.health),
+  _RailDest(
+    icon: Icons.home_rounded,
+    label: 'Summary',
+    route: Routes.summary,
+    sidebar: _SidebarType.dashboard,
+  ),
+  _RailDest(
+    icon: Icons.sticky_note_2_rounded,
+    label: 'Notes',
+    route: Routes.notes,
+    sidebar: _SidebarType.notes,
+  ),
+  _RailDest(
+    icon: Icons.folder_rounded,
+    label: 'Projects',
+    route: Routes.projects,
+    sidebar: _SidebarType.projects,
+  ),
+  _RailDest(
+    icon: Icons.smart_toy_rounded,
+    label: 'Agents',
+    route: Routes.agents,
+    sidebar: _SidebarType.agents,
+  ),
+  _RailDest(
+    icon: Icons.bolt_rounded,
+    label: 'Skills',
+    route: Routes.skills,
+    sidebar: _SidebarType.skills,
+  ),
+  _RailDest(
+    icon: Icons.account_tree_rounded,
+    label: 'Workflows',
+    route: Routes.workflows,
+    sidebar: _SidebarType.workflows,
+  ),
+  _RailDest(
+    icon: Icons.menu_book_rounded,
+    label: 'Docs',
+    route: Routes.docs,
+    sidebar: _SidebarType.docs,
+  ),
+  _RailDest(
+    icon: Icons.sync_alt_rounded,
+    label: 'Delegations',
+    route: Routes.delegations,
+    sidebar: _SidebarType.delegations,
+  ),
+  _RailDest(
+    icon: Icons.terminal_rounded,
+    label: 'Terminal',
+    route: Routes.terminal,
+    sidebar: _SidebarType.terminal,
+  ),
+  _RailDest(
+    icon: Icons.favorite_rounded,
+    label: 'Health',
+    route: Routes.health,
+    sidebar: _SidebarType.health,
+  ),
 ];
 
 // Footer rail items (settings, admin)
 const _railFooterDestinations = [
-  _RailDest(icon: Icons.settings_rounded, label: 'Settings', route: Routes.settings, sidebar: _SidebarType.settings),
-  _RailDest(icon: Icons.admin_panel_settings, label: 'Admin', route: Routes.admin, sidebar: _SidebarType.admin),
+  _RailDest(
+    icon: Icons.settings_rounded,
+    label: 'Settings',
+    route: Routes.settings,
+    sidebar: _SidebarType.settings,
+  ),
+  _RailDest(
+    icon: Icons.admin_panel_settings,
+    label: 'Admin',
+    route: Routes.admin,
+    sidebar: _SidebarType.admin,
+  ),
 ];
 
-String _localizedRailLabel(AppLocalizations l10n, int index, {bool isFooter = false}) {
+String _localizedRailLabel(
+  AppLocalizations l10n,
+  int index, {
+  bool isFooter = false,
+}) {
   if (isFooter) {
     const footerKeys = ['settings', 'admin'];
     final labels = [l10n.settings, l10n.admin];
     return index < labels.length ? labels[index] : footerKeys[index];
   }
   final labels = [
-    l10n.summary, l10n.notes, l10n.projects, l10n.agents,
-    l10n.skills, l10n.workflows, l10n.docs, l10n.delegations,
-    l10n.terminal, l10n.health,
+    l10n.summary,
+    l10n.notes,
+    l10n.projects,
+    l10n.agents,
+    l10n.skills,
+    l10n.workflows,
+    l10n.docs,
+    l10n.delegations,
+    l10n.terminal,
+    l10n.health,
   ];
   return index < labels.length ? labels[index] : _railDestinations[index].label;
 }
@@ -134,12 +207,30 @@ int _railIndexFromSidebarType(_SidebarType type) {
 
 // ── Sidebar type detection ───────────────────────────────────────────────────
 
-enum _SidebarType { dashboard, notes, projects, agents, skills, workflows, docs, delegations, terminal, health, settings, admin, none }
+enum _SidebarType {
+  dashboard,
+  notes,
+  projects,
+  agents,
+  skills,
+  workflows,
+  docs,
+  delegations,
+  terminal,
+  health,
+  settings,
+  admin,
+  none,
+}
 
 // ── DesktopShell ─────────────────────────────────────────────────────────────
 
 class DesktopShell extends ConsumerWidget {
-  const DesktopShell({super.key, required this.child, this.canShowSidebar = true});
+  const DesktopShell({
+    super.key,
+    required this.child,
+    this.canShowSidebar = true,
+  });
 
   final Widget child;
 
@@ -226,7 +317,11 @@ class DesktopShell extends ConsumerWidget {
                           type: sidebarSection,
                           location: location,
                         ),
-                        VerticalDivider(thickness: 1, width: 1, color: tokens.border),
+                        VerticalDivider(
+                          thickness: 1,
+                          width: 1,
+                          color: tokens.border,
+                        ),
                       ],
                     ),
                   ),
@@ -272,8 +367,8 @@ class _IconRail extends ConsumerWidget {
     final footerDests = isAdmin
         ? _railFooterDestinations
         : _railFooterDestinations
-            .where((d) => d.route != Routes.admin)
-            .toList();
+              .where((d) => d.route != Routes.admin)
+              .toList();
 
     return Container(
       width: _kRailWidth,
@@ -296,44 +391,54 @@ class _IconRail extends ConsumerWidget {
           const SizedBox(height: 8),
           // Nav items
           Expanded(
-            child: Builder(builder: (context) {
-              final l10n = AppLocalizations.of(context);
-              return ListView(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                children: [
-                  for (int i = 0; i < _railDestinations.length; i++)
-                    _IconRailItem(
-                      tokens: tokens,
-                      icon: _railDestinations[i].icon,
-                      label: _localizedRailLabel(l10n, i),
-                      isSelected: i == selectedIndex,
-                      onTap: () => onSelect(i),
-                    ),
-                ],
-              );
-            }),
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context);
+                return ListView(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  children: [
+                    for (int i = 0; i < _railDestinations.length; i++)
+                      _IconRailItem(
+                        tokens: tokens,
+                        icon: _railDestinations[i].icon,
+                        label: _localizedRailLabel(l10n, i),
+                        isSelected: i == selectedIndex,
+                        onTap: () => onSelect(i),
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
           // Footer items (settings, admin only for admin role)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Builder(builder: (context) {
-              final l10n = AppLocalizations.of(context);
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Divider(height: 1, indent: 12, endIndent: 12, color: tokens.border),
-                  const SizedBox(height: 4),
-                  for (int i = 0; i < footerDests.length; i++)
-                    _IconRailItem(
-                      tokens: tokens,
-                      icon: footerDests[i].icon,
-                      label: _localizedRailLabel(l10n, i, isFooter: true),
-                      isSelected: (_railDestinations.length + i) == selectedIndex,
-                      onTap: () => onSelect(_railDestinations.length + i),
+            child: Builder(
+              builder: (context) {
+                final l10n = AppLocalizations.of(context);
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Divider(
+                      height: 1,
+                      indent: 12,
+                      endIndent: 12,
+                      color: tokens.border,
                     ),
-                ],
-              );
-            }),
+                    const SizedBox(height: 4),
+                    for (int i = 0; i < footerDests.length; i++)
+                      _IconRailItem(
+                        tokens: tokens,
+                        icon: footerDests[i].icon,
+                        label: _localizedRailLabel(l10n, i, isFooter: true),
+                        isSelected:
+                            (_railDestinations.length + i) == selectedIndex,
+                        onTap: () => onSelect(_railDestinations.length + i),
+                      ),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -448,7 +553,10 @@ class _HeaderBar extends ConsumerWidget {
                       ),
                       const SizedBox(width: 12),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: tokens.border.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(4),
@@ -473,7 +581,9 @@ class _HeaderBar extends ConsumerWidget {
               // Theme toggle
               _HeaderIcon(
                 tokens: tokens,
-                icon: theme.isLight ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                icon: theme.isLight
+                    ? Icons.dark_mode_rounded
+                    : Icons.light_mode_rounded,
                 onTap: () {
                   final newId = theme.isLight ? 'midnight' : 'github-light';
                   ref.read(themeProvider.notifier).setTheme(newId);
@@ -493,10 +603,7 @@ class _HeaderBar extends ConsumerWidget {
 // ── Header profile dropdown ─────────────────────────────────────────────────
 
 class _HeaderProfileDropdown extends ConsumerWidget {
-  const _HeaderProfileDropdown({
-    required this.tokens,
-    required this.authState,
-  });
+  const _HeaderProfileDropdown({required this.tokens, required this.authState});
 
   final OrchestraColorTokens tokens;
   final AsyncValue<AuthState> authState;
@@ -540,53 +647,78 @@ class _HeaderProfileDropdown extends ConsumerWidget {
               CircleAvatar(
                 radius: 14,
                 backgroundColor: tokens.accent.withValues(alpha: 0.2),
-                backgroundImage:
-                    avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                backgroundImage: avatarUrl != null
+                    ? NetworkImage(avatarUrl)
+                    : null,
                 child: avatarUrl == null
-                    ? Text(initials,
+                    ? Text(
+                        initials,
                         style: TextStyle(
-                            color: tokens.accent,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 11))
+                          color: tokens.accent,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11,
+                        ),
+                      )
                     : null,
               ),
               const SizedBox(width: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(fullName,
-                      style: TextStyle(
-                          color: tokens.fgBright,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600)),
-                  Text(AppLocalizations.of(context).personalWorkspace,
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 11)),
+                  Text(
+                    fullName,
+                    style: TextStyle(
+                      color: tokens.fgBright,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    AppLocalizations.of(context).personalWorkspace,
+                    style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                  ),
                 ],
               ),
             ],
           ),
         ),
         const PopupMenuDivider(),
-        _popupItem('settings', Icons.settings_outlined, AppLocalizations.of(context).settings),
-        _popupItem('switch_team', Icons.group_outlined, AppLocalizations.of(context).switchTeam),
         _popupItem(
-            'switch_workspace', Icons.folder_outlined, AppLocalizations.of(context).switchWorkspace),
+          'settings',
+          Icons.settings_outlined,
+          AppLocalizations.of(context).settings,
+        ),
+        _popupItem(
+          'switch_team',
+          Icons.group_outlined,
+          AppLocalizations.of(context).switchTeam,
+        ),
+        _popupItem(
+          'switch_workspace',
+          Icons.folder_outlined,
+          AppLocalizations.of(context).switchWorkspace,
+        ),
         const PopupMenuDivider(),
-        _popupItem('logout', Icons.logout_rounded, AppLocalizations.of(context).signOut,
-            isDestructive: true),
+        _popupItem(
+          'logout',
+          Icons.logout_rounded,
+          AppLocalizations.of(context).signOut,
+          isDestructive: true,
+        ),
       ],
       child: CircleAvatar(
         radius: 14,
         backgroundColor: tokens.accent.withValues(alpha: 0.2),
-        backgroundImage:
-            avatarUrl != null ? NetworkImage(avatarUrl) : null,
+        backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl) : null,
         child: avatarUrl == null
-            ? Text(initials,
+            ? Text(
+                initials,
                 style: TextStyle(
-                    color: tokens.accent,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12))
+                  color: tokens.accent,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                ),
+              )
             : null,
       ),
     );
@@ -741,7 +873,11 @@ class _SidebarPanel extends ConsumerWidget {
                 hoverColor: tokens.border.withValues(alpha: 0.2),
                 child: Padding(
                   padding: const EdgeInsets.all(4),
-                  child: Icon(Icons.add_rounded, size: 18, color: tokens.fgMuted),
+                  child: Icon(
+                    Icons.add_rounded,
+                    size: 18,
+                    color: tokens.fgMuted,
+                  ),
                 ),
               ),
             ),
@@ -755,68 +891,68 @@ class _SidebarPanel extends ConsumerWidget {
       _SidebarType.notes => _NotesSidebar(tokens: tokens),
       _SidebarType.projects => _ProjectsSidebar(tokens: tokens),
       _SidebarType.agents => _AsyncListSidebar(
-          tokens: tokens,
-          provider: agentsProvider,
-          nameKey: 'name',
-          iconData: Icons.smart_toy_rounded,
-          emptyMessage: 'No agents',
-          selectionProvider: agentsSelectionProvider,
-          pinProvider: agentsPinProvider,
-          descriptionKey: 'description',
-          basePath: '/library/agents',
-          entityType: 'agent',
-          onTap: (item) => context.go('/library/agents/${item['id']}'),
-        ),
+        tokens: tokens,
+        provider: agentsProvider,
+        nameKey: 'name',
+        iconData: Icons.smart_toy_rounded,
+        emptyMessage: 'No agents',
+        selectionProvider: agentsSelectionProvider,
+        pinProvider: agentsPinProvider,
+        descriptionKey: 'description',
+        basePath: '/library/agents',
+        entityType: 'agent',
+        onTap: (item) => context.go('/library/agents/${item['id']}'),
+      ),
       _SidebarType.skills => _AsyncListSidebar(
-          tokens: tokens,
-          provider: skillsProvider,
-          nameKey: 'name',
-          iconData: Icons.bolt_rounded,
-          emptyMessage: 'No skills',
-          selectionProvider: skillsSelectionProvider,
-          pinProvider: skillsPinProvider,
-          descriptionKey: 'description',
-          basePath: '/library/skills',
-          entityType: 'skill',
-          onTap: (item) => context.go('/library/skills/${item['id']}'),
-        ),
+        tokens: tokens,
+        provider: skillsProvider,
+        nameKey: 'name',
+        iconData: Icons.bolt_rounded,
+        emptyMessage: 'No skills',
+        selectionProvider: skillsSelectionProvider,
+        pinProvider: skillsPinProvider,
+        descriptionKey: 'description',
+        basePath: '/library/skills',
+        entityType: 'skill',
+        onTap: (item) => context.go('/library/skills/${item['id']}'),
+      ),
       _SidebarType.workflows => _AsyncListSidebar(
-          tokens: tokens,
-          provider: workflowsProvider,
-          nameKey: 'description',
-          iconData: Icons.account_tree_rounded,
-          emptyMessage: 'No workflows',
-          selectionProvider: workflowsSelectionProvider,
-          pinProvider: workflowsPinProvider,
-          descriptionKey: 'name',
-          basePath: '/library/workflows',
-          entityType: 'workflow',
-          onTap: (item) => context.go('/library/workflows/${item['id']}'),
-        ),
+        tokens: tokens,
+        provider: workflowsProvider,
+        nameKey: 'description',
+        iconData: Icons.account_tree_rounded,
+        emptyMessage: 'No workflows',
+        selectionProvider: workflowsSelectionProvider,
+        pinProvider: workflowsPinProvider,
+        descriptionKey: 'name',
+        basePath: '/library/workflows',
+        entityType: 'workflow',
+        onTap: (item) => context.go('/library/workflows/${item['id']}'),
+      ),
       _SidebarType.docs => _AsyncListSidebar(
-          tokens: tokens,
-          provider: docsProvider,
-          nameKey: 'title',
-          iconData: Icons.menu_book_rounded,
-          emptyMessage: 'No docs',
-          selectionProvider: docsSelectionProvider,
-          pinProvider: docsPinProvider,
-          descriptionKey: 'path',
-          basePath: '/library/docs',
-          entityType: 'doc',
-          onTap: (item) => context.go('/library/docs/${item['id']}'),
-        ),
+        tokens: tokens,
+        provider: docsProvider,
+        nameKey: 'title',
+        iconData: Icons.menu_book_rounded,
+        emptyMessage: 'No docs',
+        selectionProvider: docsSelectionProvider,
+        pinProvider: docsPinProvider,
+        descriptionKey: 'path',
+        basePath: '/library/docs',
+        entityType: 'doc',
+        onTap: (item) => context.go('/library/docs/${item['id']}'),
+      ),
       _SidebarType.delegations => _AsyncListSidebar(
-          tokens: tokens,
-          provider: delegationsProvider,
-          nameKey: 'question',
-          iconData: Icons.sync_alt_rounded,
-          emptyMessage: 'No delegations',
-          selectionProvider: delegationsSelectionProvider,
-          pinProvider: delegationsPinProvider,
-          basePath: '/library/delegations',
-          onTap: (item) => context.go('/library/delegations/${item['id'] ?? ''}'),
-        ),
+        tokens: tokens,
+        provider: delegationsProvider,
+        nameKey: 'question',
+        iconData: Icons.sync_alt_rounded,
+        emptyMessage: 'No delegations',
+        selectionProvider: delegationsSelectionProvider,
+        pinProvider: delegationsPinProvider,
+        basePath: '/library/delegations',
+        onTap: (item) => context.go('/library/delegations/${item['id'] ?? ''}'),
+      ),
       _SidebarType.dashboard => _DashboardSidebar(tokens: tokens),
       _SidebarType.health => _HealthSidebar(tokens: tokens),
       _SidebarType.settings => _SettingsSidebar(tokens: tokens),
@@ -849,7 +985,8 @@ class _TeamSwitcherBar extends ConsumerWidget {
         return PopupMenuButton<String>(
           offset: const Offset(0, 40),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12)),
+            borderRadius: BorderRadius.circular(12),
+          ),
           color: tokens.bgAlt,
           surfaceTintColor: Colors.transparent,
           onSelected: (id) {
@@ -879,8 +1016,7 @@ class _TeamSwitcherBar extends ConsumerWidget {
                       ),
                     ),
                     if (team.id == activeTeam.id)
-                      Icon(Icons.check_rounded,
-                          size: 16, color: tokens.accent),
+                      Icon(Icons.check_rounded, size: 16, color: tokens.accent),
                   ],
                 ),
               ),
@@ -979,7 +1115,8 @@ class _SidebarItem extends StatelessWidget {
 
   void _showContextMenuAt(BuildContext context, Offset position) {
     if (contextMenuActions.isEmpty) return;
-    final overlay = Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
     showMenu<void>(
       context: context,
       position: RelativeRect.fromRect(
@@ -987,8 +1124,9 @@ class _SidebarItem extends StatelessWidget {
         Offset.zero & overlay.size,
       ),
       items: contextMenuActions.map((a) {
-        final color =
-            a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
+        final color = a.isDestructive
+            ? const Color(0xFFDC2626)
+            : tokens.fgBright;
         return PopupMenuItem<void>(
           onTap: a.onTap,
           child: Row(
@@ -1020,7 +1158,8 @@ class _SidebarItem extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               margin: const EdgeInsets.only(top: 12, bottom: 8),
               decoration: BoxDecoration(
                 color: tokens.fgDim.withValues(alpha: 0.6),
@@ -1029,18 +1168,29 @@ class _SidebarItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: Text(label,
-                style: TextStyle(color: tokens.fgBright, fontSize: 15, fontWeight: FontWeight.w600),
-                maxLines: 1, overflow: TextOverflow.ellipsis,
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: tokens.fgBright,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(height: 4),
             ...contextMenuActions.map((a) {
-              final color = a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
+              final color = a.isDestructive
+                  ? const Color(0xFFDC2626)
+                  : tokens.fgBright;
               return ListTile(
                 leading: Icon(a.icon, color: color, size: 20),
                 title: Text(a.label, style: TextStyle(color: color)),
-                onTap: () { Navigator.of(ctx).pop(); a.onTap(); },
+                onTap: () {
+                  Navigator.of(ctx).pop();
+                  a.onTap();
+                },
               );
             }),
             const SizedBox(height: 8),
@@ -1055,16 +1205,28 @@ class _SidebarItem extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text(AppLocalizations.of(context).deleteItemTitle(label), style: TextStyle(color: tokens.fgBright)),
-        content: Text(AppLocalizations.of(context).deleteConfirm, style: TextStyle(color: tokens.fgMuted)),
+        title: Text(
+          AppLocalizations.of(context).deleteItemTitle(label),
+          style: TextStyle(color: tokens.fgBright),
+        ),
+        content: Text(
+          AppLocalizations.of(context).deleteConfirm,
+          style: TextStyle(color: tokens.fgMuted),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: TextStyle(color: tokens.fgMuted),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(AppLocalizations.of(context).delete, style: const TextStyle(color: Color(0xFFDC2626))),
+            child: Text(
+              AppLocalizations.of(context).delete,
+              style: const TextStyle(color: Color(0xFFDC2626)),
+            ),
           ),
         ],
       ),
@@ -1087,8 +1249,8 @@ class _SidebarItem extends StatelessWidget {
           color: isChecked
               ? tokens.accent.withValues(alpha: 0.12)
               : isSelected
-                  ? tokens.accentSurface
-                  : Colors.transparent,
+              ? tokens.accentSurface
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           child: InkWell(
             onTap: onTap,
@@ -1101,8 +1263,13 @@ class _SidebarItem extends StatelessWidget {
                   // Leading: checkbox in selection mode, icon otherwise
                   if (isChecked)
                     SizedBox(
-                      width: 28, height: 28,
-                      child: Icon(Icons.check_circle_rounded, size: 18, color: tokens.accent),
+                      width: 28,
+                      height: 28,
+                      child: Icon(
+                        Icons.check_circle_rounded,
+                        size: 18,
+                        color: tokens.accent,
+                      ),
                     )
                   else
                     Stack(
@@ -1112,13 +1279,16 @@ class _SidebarItem extends StatelessWidget {
                           width: 28,
                           height: 28,
                           decoration: BoxDecoration(
-                            color: (isSelected
-                                    ? tokens.accent
-                                    : iconColor ?? tokens.fgMuted)
-                                .withValues(alpha: 0.14),
+                            color:
+                                (isSelected
+                                        ? tokens.accent
+                                        : iconColor ?? tokens.fgMuted)
+                                    .withValues(alpha: 0.14),
                             borderRadius: BorderRadius.circular(7),
                           ),
-                          child: Icon(icon, size: 15,
+                          child: Icon(
+                            icon,
+                            size: 15,
                             color: isSelected
                                 ? tokens.accent
                                 : iconColor ?? tokens.fgMuted,
@@ -1126,9 +1296,12 @@ class _SidebarItem extends StatelessWidget {
                         ),
                         if (isPinned)
                           const Positioned(
-                            top: -3, right: -3,
-                            child: Icon(Icons.push_pin_rounded,
-                              size: 8, color: Color(0xFFD97706),
+                            top: -3,
+                            right: -3,
+                            child: Icon(
+                              Icons.push_pin_rounded,
+                              size: 8,
+                              color: Color(0xFFD97706),
                             ),
                           ),
                       ],
@@ -1143,9 +1316,13 @@ class _SidebarItem extends StatelessWidget {
                               Text(
                                 label,
                                 style: TextStyle(
-                                  color: isSelected ? tokens.accent : tokens.fgBright,
+                                  color: isSelected
+                                      ? tokens.accent
+                                      : tokens.fgBright,
                                   fontSize: 13,
-                                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w600
+                                      : FontWeight.w500,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -1153,7 +1330,10 @@ class _SidebarItem extends StatelessWidget {
                               const SizedBox(height: 2),
                               Text(
                                 subtitle!,
-                                style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                                style: TextStyle(
+                                  color: tokens.fgDim,
+                                  fontSize: 11,
+                                ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -1162,9 +1342,13 @@ class _SidebarItem extends StatelessWidget {
                         : Text(
                             label,
                             style: TextStyle(
-                              color: isSelected ? tokens.accent : tokens.fgBright,
+                              color: isSelected
+                                  ? tokens.accent
+                                  : tokens.fgBright,
                               fontSize: 13,
-                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -1185,8 +1369,8 @@ class _SidebarItem extends StatelessWidget {
         direction: onDelete != null && onPin != null
             ? DismissDirection.horizontal
             : onPin != null
-                ? DismissDirection.startToEnd
-                : DismissDirection.endToStart,
+            ? DismissDirection.startToEnd
+            : DismissDirection.endToStart,
         background: Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 16),
@@ -1195,7 +1379,11 @@ class _SidebarItem extends StatelessWidget {
             color: const Color(0xFFD97706).withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Icon(Icons.push_pin_rounded, size: 16, color: Color(0xFFD97706)),
+          child: const Icon(
+            Icons.push_pin_rounded,
+            size: 16,
+            color: Color(0xFFD97706),
+          ),
         ),
         secondaryBackground: Container(
           alignment: Alignment.centerRight,
@@ -1205,7 +1393,11 @@ class _SidebarItem extends StatelessWidget {
             color: const Color(0xFFDC2626).withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Icon(Icons.delete_rounded, size: 16, color: Color(0xFFDC2626)),
+          child: const Icon(
+            Icons.delete_rounded,
+            size: 16,
+            color: Color(0xFFDC2626),
+          ),
         ),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
@@ -1262,12 +1454,20 @@ class _SidebarSelectionHeader extends StatelessWidget {
           ),
           Text(
             '$count selected',
-            style: TextStyle(color: tokens.fgBright, fontSize: 12, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: tokens.fgBright,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const Spacer(),
           if (onSelectAll != null)
             IconButton(
-              icon: Icon(Icons.select_all_rounded, size: 16, color: tokens.fgMuted),
+              icon: Icon(
+                Icons.select_all_rounded,
+                size: 16,
+                color: tokens.fgMuted,
+              ),
               onPressed: onSelectAll,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
@@ -1275,7 +1475,11 @@ class _SidebarSelectionHeader extends StatelessWidget {
             ),
           if (onDelete != null)
             IconButton(
-              icon: const Icon(Icons.delete_outline_rounded, size: 16, color: Color(0xFFDC2626)),
+              icon: const Icon(
+                Icons.delete_outline_rounded,
+                size: 16,
+                color: Color(0xFFDC2626),
+              ),
               onPressed: onDelete,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
@@ -1328,14 +1532,23 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
     final bool inSelectionMode = selectedIds.isNotEmpty;
 
     return asyncNotes.when(
-      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2)),
+      loading: () => Center(
+        child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
+      ),
       error: (_, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoad, style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoad,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (notes) {
-        final filtered = notes.where((n) =>
-          _search.isEmpty || n.title.toLowerCase().contains(_search.toLowerCase()),
-        ).toList();
+        final filtered = notes
+            .where(
+              (n) =>
+                  _search.isEmpty ||
+                  n.title.toLowerCase().contains(_search.toLowerCase()),
+            )
+            .toList();
 
         // Sort pinned first, then by updated
         filtered.sort((Note a, Note b) {
@@ -1351,11 +1564,15 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
               _SidebarSelectionHeader(
                 tokens: tokens,
                 count: selectedIds.length,
-                onClear: () => ref.read(notesSelectionProvider.notifier).clear(),
-                onSelectAll: () => ref.read(notesSelectionProvider.notifier)
+                onClear: () =>
+                    ref.read(notesSelectionProvider.notifier).clear(),
+                onSelectAll: () => ref
+                    .read(notesSelectionProvider.notifier)
                     .selectAll(filtered.map((n) => n.id).toSet()),
                 onDelete: () async {
-                  for (final id in selectedIds) { await _deleteNote(id); }
+                  for (final id in selectedIds) {
+                    await _deleteNote(id);
+                  }
                   ref.read(notesSelectionProvider.notifier).clear();
                 },
               ),
@@ -1372,7 +1589,11 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context).searchNotes,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                      prefixIcon: Icon(Icons.search_rounded, size: 16, color: tokens.fgDim),
+                      prefixIcon: Icon(
+                        Icons.search_rounded,
+                        size: 16,
+                        color: tokens.fgDim,
+                      ),
                       prefixIconConstraints: const BoxConstraints(minWidth: 32),
                       filled: true,
                       fillColor: tokens.bg,
@@ -1387,7 +1608,10 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: tokens.accent, width: 1.5),
+                        borderSide: BorderSide(
+                          color: tokens.accent,
+                          width: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -1397,16 +1621,24 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
             Expanded(
               child: filtered.isEmpty
                   ? Center(
-                      child: Text(AppLocalizations.of(context).noNotes, style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+                      child: Text(
+                        AppLocalizations.of(context).noNotes,
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
                     )
                   : ListView.builder(
                       padding: const EdgeInsets.only(bottom: 8),
                       itemCount: filtered.length,
                       itemBuilder: (context, i) {
                         final note = filtered[i];
-                        final cust = ref.watch(entityCustomizationProvider)[note.id];
-                        final location = GoRouterState.of(context).matchedLocation;
-                        final isActive = location == '/library/notes/${note.id}';
+                        final cust = ref.watch(
+                          entityCustomizationProvider,
+                        )[note.id];
+                        final location = GoRouterState.of(
+                          context,
+                        ).matchedLocation;
+                        final isActive =
+                            location == '/library/notes/${note.id}';
                         return _SidebarItem(
                           tokens: tokens,
                           icon: cust?.icon ?? Icons.sticky_note_2_outlined,
@@ -1419,19 +1651,40 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
                           isSelected: isActive && !inSelectionMode,
                           isChecked: selectedIds.contains(note.id),
                           onTap: inSelectionMode
-                              ? () => ref.read(notesSelectionProvider.notifier).toggle(note.id)
+                              ? () => ref
+                                    .read(notesSelectionProvider.notifier)
+                                    .toggle(note.id)
                               : () => context.go('/library/notes/${note.id}'),
-                          onSelect: () => ref.read(notesSelectionProvider.notifier).toggle(note.id),
+                          onSelect: () => ref
+                              .read(notesSelectionProvider.notifier)
+                              .toggle(note.id),
                           onPin: () => _togglePin(note.id),
                           onDelete: () => _deleteNote(note.id),
-                          contextMenuActions: buildEntityContextActions(l10n: AppLocalizations.of(context),
+                          contextMenuActions: buildEntityContextActions(
+                            l10n: AppLocalizations.of(context),
                             onRename: () async {
-                              final newName = await showRenameDialog(context, currentName: note.title);
-                              if (newName != null) await _renameNote(note.id, newName);
+                              final newName = await showRenameDialog(
+                                context,
+                                currentName: note.title,
+                              );
+                              if (newName != null)
+                                await _renameNote(note.id, newName);
                             },
-                            onChangeIcon: () => pickAndSaveIcon(context, ref, note.id, currentCodePoint: cust?.iconCodePoint),
-                            onChangeColor: () => pickAndSaveColor(context, ref, note.id, currentColor: cust?.color),
-                            onSelect: () => ref.read(notesSelectionProvider.notifier).toggle(note.id),
+                            onChangeIcon: () => pickAndSaveIcon(
+                              context,
+                              ref,
+                              note.id,
+                              currentCodePoint: cust?.iconCodePoint,
+                            ),
+                            onChangeColor: () => pickAndSaveColor(
+                              context,
+                              ref,
+                              note.id,
+                              currentColor: cust?.color,
+                            ),
+                            onSelect: () => ref
+                                .read(notesSelectionProvider.notifier)
+                                .toggle(note.id),
                             onEdit: () => context.push(Routes.note(note.id)),
                             onPin: () => _togglePin(note.id),
                             isPinned: note.pinned,
@@ -1440,9 +1693,15 @@ class _NotesSidebarState extends ConsumerState<_NotesSidebar> {
                               entityType: 'note',
                               entityId: note.id,
                               ref: ref,
-                              entityData: {'title': note.title, 'content': note.content},
+                              entityData: {
+                                'title': note.title,
+                                'content': note.content,
+                              },
                             ),
-                            onExportMarkdown: () => exportAsMarkdown(title: note.title, content: note.content),
+                            onExportMarkdown: () => exportAsMarkdown(
+                              title: note.title,
+                              content: note.content,
+                            ),
                             onDelete: () => _deleteNote(note.id),
                           ),
                         );
@@ -1481,22 +1740,32 @@ class _ProjectsSidebarState extends ConsumerState<_ProjectsSidebar> {
         child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
       ),
       error: (_, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoad, style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoad,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (projects) {
         if (projects.isEmpty) {
           return Center(
-            child: Text(AppLocalizations.of(context).noProjects, style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+            child: Text(
+              AppLocalizations.of(context).noProjects,
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ),
           );
         }
 
         final q = _search.toLowerCase();
         final filtered = q.isEmpty
             ? projects
-            : projects.where((p) =>
-                p.name.toLowerCase().contains(q) ||
-                (p.description ?? '').toLowerCase().contains(q) ||
-                (p.mode ?? '').toLowerCase().contains(q)).toList();
+            : projects
+                  .where(
+                    (p) =>
+                        p.name.toLowerCase().contains(q) ||
+                        (p.description ?? '').toLowerCase().contains(q) ||
+                        (p.mode ?? '').toLowerCase().contains(q),
+                  )
+                  .toList();
 
         return Column(
           children: [
@@ -1504,8 +1773,10 @@ class _ProjectsSidebarState extends ConsumerState<_ProjectsSidebar> {
               _SidebarSelectionHeader(
                 tokens: tokens,
                 count: selectedIds.length,
-                onClear: () => ref.read(projectsSelectionProvider.notifier).clear(),
-                onSelectAll: () => ref.read(projectsSelectionProvider.notifier)
+                onClear: () =>
+                    ref.read(projectsSelectionProvider.notifier).clear(),
+                onSelectAll: () => ref
+                    .read(projectsSelectionProvider.notifier)
                     .selectAll(filtered.map((p) => p.id).toSet()),
                 onDelete: () async {
                   for (final id in selectedIds) {
@@ -1528,7 +1799,11 @@ class _ProjectsSidebarState extends ConsumerState<_ProjectsSidebar> {
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context).searchProjects,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                      prefixIcon: Icon(Icons.search_rounded, size: 16, color: tokens.fgDim),
+                      prefixIcon: Icon(
+                        Icons.search_rounded,
+                        size: 16,
+                        color: tokens.fgDim,
+                      ),
                       prefixIconConstraints: const BoxConstraints(minWidth: 32),
                       filled: true,
                       fillColor: tokens.bg,
@@ -1543,7 +1818,10 @@ class _ProjectsSidebarState extends ConsumerState<_ProjectsSidebar> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: tokens.accent, width: 1.5),
+                        borderSide: BorderSide(
+                          color: tokens.accent,
+                          width: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -1558,60 +1836,93 @@ class _ProjectsSidebarState extends ConsumerState<_ProjectsSidebar> {
                       ),
                     )
                   : ListView.builder(
-                padding: const EdgeInsets.only(top: 4, bottom: 8),
-                itemCount: filtered.length,
-                itemBuilder: (context, i) {
-                  final p = filtered[i];
-                  final cust = ref.watch(entityCustomizationProvider)[p.id];
-                  final location = GoRouterState.of(context).matchedLocation;
-                  final isActive = location == '/projects/${p.id}';
-                  return _SidebarItem(
-                    tokens: tokens,
-                    icon: cust?.icon ?? Icons.folder_rounded,
-                    iconColor: cust?.color,
-                    label: p.name,
-                    subtitle: p.mode,
-                    isSelected: isActive && !inSelectionMode,
-                    isChecked: selectedIds.contains(p.id),
-                    onTap: inSelectionMode
-                        ? () => ref.read(projectsSelectionProvider.notifier).toggle(p.id)
-                        : () => context.go('/projects/${p.id}'),
-                    onSelect: () => ref.read(projectsSelectionProvider.notifier).toggle(p.id),
-                    onDelete: () async {
-                      await ref.read(projectRepositoryProvider).delete(p.id);
-                      ref.invalidate(projectsProvider);
-                    },
-                    contextMenuActions: buildEntityContextActions(l10n: AppLocalizations.of(context),
-                      onRename: () async {
-                        final newName = await showRenameDialog(context, currentName: p.name);
-                        if (newName != null) {
-                          await ref.read(projectRepositoryProvider).update(p.id, name: newName);
-                          ref.invalidate(projectsProvider);
-                        }
-                      },
-                      onChangeIcon: () => pickAndSaveIcon(context, ref, p.id, currentCodePoint: cust?.iconCodePoint),
-                      onChangeColor: () => pickAndSaveColor(context, ref, p.id, currentColor: cust?.color),
-                      onSelect: () => ref.read(projectsSelectionProvider.notifier).toggle(p.id),
-                      onEdit: () => context.push(Routes.project(p.id)),
-                      onSync: () => openSyncDialog(
-                        context,
-                        entityType: 'project',
-                        entityId: p.id,
-                        ref: ref,
-                        entityData: {'name': p.name, 'description': p.description ?? ''},
-                      ),
-                      onExportMarkdown: () => exportAsMarkdown(
-                        title: p.name,
-                        content: p.description ?? '',
-                      ),
-                      onDelete: () async {
-                        await ref.read(projectRepositoryProvider).delete(p.id);
-                        ref.invalidate(projectsProvider);
+                      padding: const EdgeInsets.only(top: 4, bottom: 8),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, i) {
+                        final p = filtered[i];
+                        final cust = ref.watch(
+                          entityCustomizationProvider,
+                        )[p.id];
+                        final location = GoRouterState.of(
+                          context,
+                        ).matchedLocation;
+                        final isActive = location == '/projects/${p.id}';
+                        return _SidebarItem(
+                          tokens: tokens,
+                          icon: cust?.icon ?? Icons.folder_rounded,
+                          iconColor: cust?.color,
+                          label: p.name,
+                          subtitle: p.mode,
+                          isSelected: isActive && !inSelectionMode,
+                          isChecked: selectedIds.contains(p.id),
+                          onTap: inSelectionMode
+                              ? () => ref
+                                    .read(projectsSelectionProvider.notifier)
+                                    .toggle(p.id)
+                              : () => context.go('/projects/${p.id}'),
+                          onSelect: () => ref
+                              .read(projectsSelectionProvider.notifier)
+                              .toggle(p.id),
+                          onDelete: () async {
+                            await ref
+                                .read(projectRepositoryProvider)
+                                .delete(p.id);
+                            ref.invalidate(projectsProvider);
+                          },
+                          contextMenuActions: buildEntityContextActions(
+                            l10n: AppLocalizations.of(context),
+                            onRename: () async {
+                              final newName = await showRenameDialog(
+                                context,
+                                currentName: p.name,
+                              );
+                              if (newName != null) {
+                                await ref
+                                    .read(projectRepositoryProvider)
+                                    .update(p.id, name: newName);
+                                ref.invalidate(projectsProvider);
+                              }
+                            },
+                            onChangeIcon: () => pickAndSaveIcon(
+                              context,
+                              ref,
+                              p.id,
+                              currentCodePoint: cust?.iconCodePoint,
+                            ),
+                            onChangeColor: () => pickAndSaveColor(
+                              context,
+                              ref,
+                              p.id,
+                              currentColor: cust?.color,
+                            ),
+                            onSelect: () => ref
+                                .read(projectsSelectionProvider.notifier)
+                                .toggle(p.id),
+                            onEdit: () => context.push(Routes.project(p.id)),
+                            onSync: () => openSyncDialog(
+                              context,
+                              entityType: 'project',
+                              entityId: p.id,
+                              ref: ref,
+                              entityData: {
+                                'name': p.name,
+                                'description': p.description ?? '',
+                              },
+                            ),
+                            onExportMarkdown: () => exportAsMarkdown(
+                              title: p.name,
+                              content: p.description ?? '',
+                            ),
+                            onDelete: () async {
+                              await ref
+                                  .read(projectRepositoryProvider)
+                                  .delete(p.id);
+                              ref.invalidate(projectsProvider);
+                            },
+                          ),
+                        );
                       },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         );
@@ -1639,6 +1950,7 @@ class _AsyncListSidebar extends ConsumerStatefulWidget {
   });
 
   final OrchestraColorTokens tokens;
+
   /// Provider that returns AsyncValue<List<Map<String, dynamic>>>.
   /// Accepts both FutureProvider and StreamProvider.
   final dynamic provider;
@@ -1669,7 +1981,8 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
   String _search = '';
 
   String _itemId(Map<String, dynamic> item) {
-    return (item[widget.nameKey] ?? item['name'] ?? item['title'] ?? '').toString();
+    return (item[widget.nameKey] ?? item['name'] ?? item['title'] ?? '')
+        .toString();
   }
 
   String _itemName(Map<String, dynamic> item) {
@@ -1681,9 +1994,13 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
     final tokens = widget.tokens;
     final AsyncValue<List<Map<String, dynamic>>> asyncData;
     if (widget.provider is StreamProvider<List<Map<String, dynamic>>>) {
-      asyncData = ref.watch(widget.provider as StreamProvider<List<Map<String, dynamic>>>);
+      asyncData = ref.watch(
+        widget.provider as StreamProvider<List<Map<String, dynamic>>>,
+      );
     } else {
-      asyncData = ref.watch(widget.provider as FutureProvider<List<Map<String, dynamic>>>);
+      asyncData = ref.watch(
+        widget.provider as FutureProvider<List<Map<String, dynamic>>>,
+      );
     }
     final Set<String> selectedIds = ref.watch(widget.selectionProvider);
     final Set<String> pinnedIds = ref.watch(widget.pinProvider);
@@ -1694,12 +2011,18 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
         child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
       ),
       error: (_, _) => Center(
-        child: Text(AppLocalizations.of(context).failedToLoad, style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+        child: Text(
+          AppLocalizations.of(context).failedToLoad,
+          style: TextStyle(color: tokens.fgDim, fontSize: 13),
+        ),
       ),
       data: (items) {
         if (items.isEmpty) {
           return Center(
-            child: Text(widget.emptyMessage, style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+            child: Text(
+              widget.emptyMessage,
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ),
           );
         }
 
@@ -1710,7 +2033,8 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
             : items.where((item) {
                 final name = _itemName(item).toLowerCase();
                 final desc = widget.descriptionKey != null
-                    ? ((item[widget.descriptionKey] as String?) ?? '').toLowerCase()
+                    ? ((item[widget.descriptionKey] as String?) ?? '')
+                          .toLowerCase()
                     : '';
                 return name.contains(q) || desc.contains(q);
               }).toList();
@@ -1731,8 +2055,10 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
               _SidebarSelectionHeader(
                 tokens: tokens,
                 count: selectedIds.length,
-                onClear: () => ref.read(widget.selectionProvider.notifier).clear(),
-                onSelectAll: () => ref.read(widget.selectionProvider.notifier)
+                onClear: () =>
+                    ref.read(widget.selectionProvider.notifier).clear(),
+                onSelectAll: () => ref
+                    .read(widget.selectionProvider.notifier)
                     .selectAll(sorted.map(_itemId).toSet()),
               ),
             // Search field
@@ -1746,9 +2072,15 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
                     style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     cursorColor: tokens.accent,
                     decoration: InputDecoration(
-                      hintText: widget.searchHint ?? AppLocalizations.of(context).search,
+                      hintText:
+                          widget.searchHint ??
+                          AppLocalizations.of(context).search,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                      prefixIcon: Icon(Icons.search_rounded, size: 16, color: tokens.fgDim),
+                      prefixIcon: Icon(
+                        Icons.search_rounded,
+                        size: 16,
+                        color: tokens.fgDim,
+                      ),
                       prefixIconConstraints: const BoxConstraints(minWidth: 32),
                       filled: true,
                       fillColor: tokens.bg,
@@ -1763,7 +2095,10 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: tokens.accent, width: 1.5),
+                        borderSide: BorderSide(
+                          color: tokens.accent,
+                          width: 1.5,
+                        ),
                       ),
                     ),
                   ),
@@ -1778,58 +2113,81 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
                       ),
                     )
                   : ListView.builder(
-                padding: const EdgeInsets.only(top: 4, bottom: 8),
-                itemCount: sorted.length,
-                itemBuilder: (context, i) {
-                  final item = sorted[i];
-                  final id = _itemId(item);
-                  final name = _itemName(item);
-                  final bool isPinned = pinnedIds.contains(id);
-                  final cust = ref.watch(entityCustomizationProvider)[id];
-                  final String? desc = widget.descriptionKey != null
-                      ? (item[widget.descriptionKey] as String?)
-                      : null;
-                  final itemRouteId = item['id']?.toString() ?? id;
-                  final location = GoRouterState.of(context).matchedLocation;
-                  final isActive = widget.basePath != null &&
-                      location == '${widget.basePath}/$itemRouteId';
-                  return _SidebarItem(
-                    tokens: tokens,
-                    icon: cust?.icon ?? widget.iconData,
-                    iconColor: cust?.color,
-                    label: name,
-                    subtitle: desc,
-                    isPinned: isPinned,
-                    isSelected: isActive && !inSelectionMode,
-                    isChecked: selectedIds.contains(id),
-                    onTap: inSelectionMode
-                        ? () => ref.read(widget.selectionProvider.notifier).toggle(id)
-                        : () => widget.onTap(item),
-                    onSelect: () => ref.read(widget.selectionProvider.notifier).toggle(id),
-                    onPin: () => ref.read(widget.pinProvider.notifier).toggle(id),
-                    contextMenuActions: buildEntityContextActions(l10n: AppLocalizations.of(context),
-                      onChangeIcon: () => pickAndSaveIcon(context, ref, id, currentCodePoint: cust?.iconCodePoint),
-                      onChangeColor: () => pickAndSaveColor(context, ref, id, currentColor: cust?.color),
-                      onSelect: () => ref.read(widget.selectionProvider.notifier).toggle(id),
-                      onPin: () => ref.read(widget.pinProvider.notifier).toggle(id),
-                      isPinned: isPinned,
-                      onSync: widget.entityType != null
-                          ? () => openSyncDialog(
-                                context,
-                                entityType: widget.entityType!,
-                                entityId: id,
-                                ref: ref,
-                                entityData: Map<String, dynamic>.from(item),
-                              )
-                          : null,
-                      onExportMarkdown: () => exportAsMarkdown(
-                        title: name,
-                        content: desc ?? '',
-                      ),
+                      padding: const EdgeInsets.only(top: 4, bottom: 8),
+                      itemCount: sorted.length,
+                      itemBuilder: (context, i) {
+                        final item = sorted[i];
+                        final id = _itemId(item);
+                        final name = _itemName(item);
+                        final bool isPinned = pinnedIds.contains(id);
+                        final cust = ref.watch(entityCustomizationProvider)[id];
+                        final String? desc = widget.descriptionKey != null
+                            ? (item[widget.descriptionKey] as String?)
+                            : null;
+                        final itemRouteId = item['id']?.toString() ?? id;
+                        final location = GoRouterState.of(
+                          context,
+                        ).matchedLocation;
+                        final isActive =
+                            widget.basePath != null &&
+                            location == '${widget.basePath}/$itemRouteId';
+                        return _SidebarItem(
+                          tokens: tokens,
+                          icon: cust?.icon ?? widget.iconData,
+                          iconColor: cust?.color,
+                          label: name,
+                          subtitle: desc,
+                          isPinned: isPinned,
+                          isSelected: isActive && !inSelectionMode,
+                          isChecked: selectedIds.contains(id),
+                          onTap: inSelectionMode
+                              ? () => ref
+                                    .read(widget.selectionProvider.notifier)
+                                    .toggle(id)
+                              : () => widget.onTap(item),
+                          onSelect: () => ref
+                              .read(widget.selectionProvider.notifier)
+                              .toggle(id),
+                          onPin: () =>
+                              ref.read(widget.pinProvider.notifier).toggle(id),
+                          contextMenuActions: buildEntityContextActions(
+                            l10n: AppLocalizations.of(context),
+                            onChangeIcon: () => pickAndSaveIcon(
+                              context,
+                              ref,
+                              id,
+                              currentCodePoint: cust?.iconCodePoint,
+                            ),
+                            onChangeColor: () => pickAndSaveColor(
+                              context,
+                              ref,
+                              id,
+                              currentColor: cust?.color,
+                            ),
+                            onSelect: () => ref
+                                .read(widget.selectionProvider.notifier)
+                                .toggle(id),
+                            onPin: () => ref
+                                .read(widget.pinProvider.notifier)
+                                .toggle(id),
+                            isPinned: isPinned,
+                            onSync: widget.entityType != null
+                                ? () => openSyncDialog(
+                                    context,
+                                    entityType: widget.entityType!,
+                                    entityId: id,
+                                    ref: ref,
+                                    entityData: Map<String, dynamic>.from(item),
+                                  )
+                                : null,
+                            onExportMarkdown: () => exportAsMarkdown(
+                              title: name,
+                              content: desc ?? '',
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         );
@@ -2017,107 +2375,227 @@ class _SettingsSidebar extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final location = GoRouterState.of(context).matchedLocation;
     final authState = ref.watch(authProvider).value;
-    final isAdmin = authState is AuthAuthenticated && authState.user.role == 'admin';
+    final isAdmin =
+        authState is AuthAuthenticated && authState.user.role == 'admin';
 
     return ListView(
       padding: const EdgeInsets.only(top: 4, bottom: 8),
       children: [
         // ── Account ──
-        _SidebarItem(tokens: tokens, icon: Icons.person_rounded, label: l10n.settingsProfile,
-          isSelected: location == Routes.settingsProfile || location == Routes.settings,
-          onTap: () => context.go(Routes.settingsProfile)),
-        _SidebarItem(tokens: tokens, icon: Icons.lock_rounded, label: l10n.settingsPasswordNav,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.person_rounded,
+          label: l10n.settingsProfile,
+          isSelected:
+              location == Routes.settingsProfile || location == Routes.settings,
+          onTap: () => context.go(Routes.settingsProfile),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.lock_rounded,
+          label: l10n.settingsPasswordNav,
           isSelected: location == Routes.settingsPassword,
-          onTap: () => context.go(Routes.settingsPassword)),
-        _SidebarItem(tokens: tokens, icon: Icons.palette_rounded, label: l10n.settingsAppearance,
+          onTap: () => context.go(Routes.settingsPassword),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.palette_rounded,
+          label: l10n.settingsAppearance,
           isSelected: location == Routes.settingsAppearance,
-          onTap: () => context.go(Routes.settingsAppearance)),
+          onTap: () => context.go(Routes.settingsAppearance),
+        ),
         // ── Security ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.settingsSecurity),
-        _SidebarItem(tokens: tokens, icon: Icons.shield_rounded, label: l10n.settingsTwoFactor,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.shield_rounded,
+          label: l10n.settingsTwoFactor,
           isSelected: location == Routes.settingsTwoFactor,
-          onTap: () => context.go(Routes.settingsTwoFactor)),
-        _SidebarItem(tokens: tokens, icon: Icons.fingerprint_rounded, label: l10n.settingsPasskeys,
+          onTap: () => context.go(Routes.settingsTwoFactor),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.fingerprint_rounded,
+          label: l10n.settingsPasskeys,
           isSelected: location == Routes.settingsPasskeys,
-          onTap: () => context.go(Routes.settingsPasskeys)),
-        _SidebarItem(tokens: tokens, icon: Icons.devices_rounded, label: l10n.settingsSessions,
+          onTap: () => context.go(Routes.settingsPasskeys),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.devices_rounded,
+          label: l10n.settingsSessions,
           isSelected: location == Routes.settingsSessions,
-          onTap: () => context.go(Routes.settingsSessions)),
+          onTap: () => context.go(Routes.settingsSessions),
+        ),
         // ── Developer ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.settingsDeveloper),
-        _SidebarItem(tokens: tokens, icon: Icons.key_rounded, label: l10n.settingsApiTokens,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.key_rounded,
+          label: l10n.settingsApiTokens,
           isSelected: location == Routes.settingsApiTokens,
-          onTap: () => context.go(Routes.settingsApiTokens)),
-        _SidebarItem(tokens: tokens, icon: Icons.power_rounded, label: l10n.settingsIntegrations,
+          onTap: () => context.go(Routes.settingsApiTokens),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.power_rounded,
+          label: l10n.settingsIntegrations,
           isSelected: location == Routes.settingsIntegrations,
-          onTap: () => context.go(Routes.settingsIntegrations)),
+          onTap: () => context.go(Routes.settingsIntegrations),
+        ),
         // ── Notifications ──
-        _SidebarGroupLabel(tokens: tokens, label: l10n.settingsNotificationsNav),
-        _SidebarItem(tokens: tokens, icon: Icons.notifications_rounded, label: l10n.settingsNotificationsNav,
+        _SidebarGroupLabel(
+          tokens: tokens,
+          label: l10n.settingsNotificationsNav,
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.notifications_rounded,
+          label: l10n.settingsNotificationsNav,
           isSelected: location == Routes.settingsNotifications,
-          onTap: () => context.go(Routes.settingsNotifications)),
-        _SidebarItem(tokens: tokens, icon: Icons.favorite_rounded, label: l10n.settingsHealthNav,
+          onTap: () => context.go(Routes.settingsNotifications),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.favorite_rounded,
+          label: l10n.settingsHealthNav,
           isSelected: location == Routes.settingsHealth,
-          onTap: () => context.go(Routes.settingsHealth)),
+          onTap: () => context.go(Routes.settingsHealth),
+        ),
         // ── Other ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.settingsOther),
-        _SidebarItem(tokens: tokens, icon: Icons.share_rounded, label: l10n.settingsSocialNav,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.share_rounded,
+          label: l10n.settingsSocialNav,
           isSelected: location == Routes.settingsSocial,
-          onTap: () => context.go(Routes.settingsSocial)),
-        _SidebarItem(tokens: tokens, icon: Icons.desktop_mac_rounded, label: l10n.settingsDesktop,
+          onTap: () => context.go(Routes.settingsSocial),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.desktop_mac_rounded,
+          label: l10n.settingsDesktop,
           isSelected: location == Routes.settingsDesktop,
-          onTap: () => context.go(Routes.settingsDesktop)),
-        _SidebarItem(tokens: tokens, icon: Icons.info_rounded, label: l10n.settingsAbout,
+          onTap: () => context.go(Routes.settingsDesktop),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.info_rounded,
+          label: l10n.settingsAbout,
           isSelected: location == Routes.settingsAbout,
-          onTap: () => context.go(Routes.settingsAbout)),
+          onTap: () => context.go(Routes.settingsAbout),
+        ),
         // ── Administration (admin only) ──
         if (isAdmin) ...[
-          _SidebarGroupLabel(tokens: tokens, label: l10n.settingsAdministration),
-          _SidebarItem(tokens: tokens, icon: Icons.settings_rounded, label: l10n.settingsGeneral,
+          _SidebarGroupLabel(
+            tokens: tokens,
+            label: l10n.settingsAdministration,
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.settings_rounded,
+            label: l10n.settingsGeneral,
             isSelected: location == Routes.settingsAdminGeneral,
-            onTap: () => context.go(Routes.settingsAdminGeneral)),
-          _SidebarItem(tokens: tokens, icon: Icons.toggle_on_rounded, label: l10n.settingsFeatures,
+            onTap: () => context.go(Routes.settingsAdminGeneral),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.toggle_on_rounded,
+            label: l10n.settingsFeatures,
             isSelected: location == Routes.settingsAdminFeatures,
-            onTap: () => context.go(Routes.settingsAdminFeatures)),
-          _SidebarItem(tokens: tokens, icon: Icons.home_rounded, label: l10n.settingsHomepage,
+            onTap: () => context.go(Routes.settingsAdminFeatures),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.home_rounded,
+            label: l10n.settingsHomepage,
             isSelected: location == Routes.settingsAdminHomepage,
-            onTap: () => context.go(Routes.settingsAdminHomepage)),
-          _SidebarItem(tokens: tokens, icon: Icons.smart_toy_rounded, label: l10n.settingsAiAgents,
+            onTap: () => context.go(Routes.settingsAdminHomepage),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.smart_toy_rounded,
+            label: l10n.settingsAiAgents,
             isSelected: location == Routes.settingsAdminAgents,
-            onTap: () => context.go(Routes.settingsAdminAgents)),
-          _SidebarItem(tokens: tokens, icon: Icons.email_rounded, label: l10n.settingsEmail,
+            onTap: () => context.go(Routes.settingsAdminAgents),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.email_rounded,
+            label: l10n.settingsEmail,
             isSelected: location == Routes.settingsAdminEmail,
-            onTap: () => context.go(Routes.settingsAdminEmail)),
-          _SidebarItem(tokens: tokens, icon: Icons.message_rounded, label: l10n.settingsContact,
+            onTap: () => context.go(Routes.settingsAdminEmail),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.message_rounded,
+            label: l10n.settingsContact,
             isSelected: location == Routes.settingsAdminContact,
-            onTap: () => context.go(Routes.settingsAdminContact)),
-          _SidebarItem(tokens: tokens, icon: Icons.attach_money_rounded, label: l10n.settingsPricing,
+            onTap: () => context.go(Routes.settingsAdminContact),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.attach_money_rounded,
+            label: l10n.settingsPricing,
             isSelected: location == Routes.settingsAdminPricing,
-            onTap: () => context.go(Routes.settingsAdminPricing)),
-          _SidebarItem(tokens: tokens, icon: Icons.download_rounded, label: l10n.settingsDownloads,
+            onTap: () => context.go(Routes.settingsAdminPricing),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.download_rounded,
+            label: l10n.settingsDownloads,
             isSelected: location == Routes.settingsAdminDownload,
-            onTap: () => context.go(Routes.settingsAdminDownload)),
-          _SidebarItem(tokens: tokens, icon: Icons.power_rounded, label: l10n.settingsIntegrations,
+            onTap: () => context.go(Routes.settingsAdminDownload),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.power_rounded,
+            label: l10n.settingsIntegrations,
             isSelected: location == Routes.settingsAdminIntegrations,
-            onTap: () => context.go(Routes.settingsAdminIntegrations)),
-          _SidebarItem(tokens: tokens, icon: Icons.search_rounded, label: l10n.settingsSeo,
+            onTap: () => context.go(Routes.settingsAdminIntegrations),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.search_rounded,
+            label: l10n.settingsSeo,
             isSelected: location == Routes.settingsAdminSeo,
-            onTap: () => context.go(Routes.settingsAdminSeo)),
-          _SidebarItem(tokens: tokens, icon: Icons.discord, label: 'Discord',
+            onTap: () => context.go(Routes.settingsAdminSeo),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.discord,
+            label: 'Discord',
             isSelected: location == Routes.settingsAdminDiscord,
-            onTap: () => context.go(Routes.settingsAdminDiscord)),
-          _SidebarItem(tokens: tokens, icon: Icons.chat_rounded, label: 'Slack',
+            onTap: () => context.go(Routes.settingsAdminDiscord),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.chat_rounded,
+            label: 'Slack',
             isSelected: location == Routes.settingsAdminSlack,
-            onTap: () => context.go(Routes.settingsAdminSlack)),
-          _SidebarItem(tokens: tokens, icon: Icons.code_rounded, label: 'GitHub',
+            onTap: () => context.go(Routes.settingsAdminSlack),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.code_rounded,
+            label: 'GitHub',
             isSelected: location == Routes.settingsAdminGithub,
-            onTap: () => context.go(Routes.settingsAdminGithub)),
-          _SidebarItem(tokens: tokens, icon: Icons.share_rounded, label: l10n.settingsSocialNav,
+            onTap: () => context.go(Routes.settingsAdminGithub),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.share_rounded,
+            label: l10n.settingsSocialNav,
             isSelected: location == Routes.settingsAdminSocial,
-            onTap: () => context.go(Routes.settingsAdminSocial)),
-          _SidebarItem(tokens: tokens, icon: Icons.auto_awesome_rounded, label: l10n.settingsSmartPrompts,
+            onTap: () => context.go(Routes.settingsAdminSocial),
+          ),
+          _SidebarItem(
+            tokens: tokens,
+            icon: Icons.auto_awesome_rounded,
+            label: l10n.settingsSmartPrompts,
             isSelected: location == Routes.settingsAdminPrompts,
-            onTap: () => context.go(Routes.settingsAdminPrompts)),
+            onTap: () => context.go(Routes.settingsAdminPrompts),
+          ),
         ],
       ],
     );
@@ -2139,58 +2617,114 @@ class _AdminSidebar extends StatelessWidget {
       padding: const EdgeInsets.only(top: 4, bottom: 8),
       children: [
         // ── Overview ──
-        _SidebarItem(tokens: tokens, icon: Icons.grid_view_rounded, label: l10n.adminOverview,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.grid_view_rounded,
+          label: l10n.adminOverview,
           isSelected: location == Routes.admin,
-          onTap: () => context.go(Routes.admin)),
+          onTap: () => context.go(Routes.admin),
+        ),
         // ── People ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.adminPeople),
-        _SidebarItem(tokens: tokens, icon: Icons.people_rounded, label: l10n.adminUsers,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.people_rounded,
+          label: l10n.adminUsers,
           isSelected: location.startsWith(Routes.adminUsers),
-          onTap: () => context.go(Routes.adminUsers)),
-        _SidebarItem(tokens: tokens, icon: Icons.key_rounded, label: l10n.adminRolesPermissions,
+          onTap: () => context.go(Routes.adminUsers),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.key_rounded,
+          label: l10n.adminRolesPermissions,
           isSelected: location == Routes.adminRoles,
-          onTap: () => context.go(Routes.adminRoles)),
-        _SidebarItem(tokens: tokens, icon: Icons.business_rounded, label: l10n.adminTeams,
+          onTap: () => context.go(Routes.adminRoles),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.business_rounded,
+          label: l10n.adminTeams,
           isSelected: location.startsWith(Routes.adminTeams),
-          onTap: () => context.go(Routes.adminTeams)),
+          onTap: () => context.go(Routes.adminTeams),
+        ),
         // ── Content ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.adminContent),
-        _SidebarItem(tokens: tokens, icon: Icons.article_rounded, label: l10n.adminPosts,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.article_rounded,
+          label: l10n.adminPosts,
           isSelected: location == Routes.adminPosts,
-          onTap: () => context.go(Routes.adminPosts)),
-        _SidebarItem(tokens: tokens, icon: Icons.insert_drive_file_rounded, label: l10n.adminPages,
+          onTap: () => context.go(Routes.adminPosts),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.insert_drive_file_rounded,
+          label: l10n.adminPages,
           isSelected: location == Routes.adminPages,
-          onTap: () => context.go(Routes.adminPages)),
-        _SidebarItem(tokens: tokens, icon: Icons.menu_book_rounded, label: l10n.adminDocumentation,
+          onTap: () => context.go(Routes.adminPages),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.menu_book_rounded,
+          label: l10n.adminDocumentation,
           isSelected: location == Routes.adminDocs,
-          onTap: () => context.go(Routes.adminDocs)),
-        _SidebarItem(tokens: tokens, icon: Icons.category_rounded, label: l10n.adminCategories,
+          onTap: () => context.go(Routes.adminDocs),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.category_rounded,
+          label: l10n.adminCategories,
           isSelected: location == Routes.adminCategories,
-          onTap: () => context.go(Routes.adminCategories)),
+          onTap: () => context.go(Routes.adminCategories),
+        ),
         // ── Community ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.adminCommunity),
-        _SidebarItem(tokens: tokens, icon: Icons.forum_rounded, label: l10n.adminCommunity,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.forum_rounded,
+          label: l10n.adminCommunity,
           isSelected: location == Routes.adminCommunity,
-          onTap: () => context.go(Routes.adminCommunity)),
-        _SidebarItem(tokens: tokens, icon: Icons.mail_rounded, label: l10n.adminContactNav,
+          onTap: () => context.go(Routes.adminCommunity),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.mail_rounded,
+          label: l10n.adminContactNav,
           isSelected: location == Routes.adminContact,
-          onTap: () => context.go(Routes.adminContact)),
-        _SidebarItem(tokens: tokens, icon: Icons.bug_report_rounded, label: l10n.adminIssues,
+          onTap: () => context.go(Routes.adminContact),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.bug_report_rounded,
+          label: l10n.adminIssues,
           isSelected: location == Routes.adminIssues,
-          onTap: () => context.go(Routes.adminIssues)),
+          onTap: () => context.go(Routes.adminIssues),
+        ),
         // ── Marketplace ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.adminMarketplaceNav),
-        _SidebarItem(tokens: tokens, icon: Icons.store_rounded, label: l10n.adminMarketplaceNav,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.store_rounded,
+          label: l10n.adminMarketplaceNav,
           isSelected: location == Routes.adminMarketplace,
-          onTap: () => context.go(Routes.adminMarketplace)),
-        _SidebarItem(tokens: tokens, icon: Icons.favorite_rounded, label: l10n.adminSponsors,
+          onTap: () => context.go(Routes.adminMarketplace),
+        ),
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.favorite_rounded,
+          label: l10n.adminSponsors,
           isSelected: location == Routes.adminSponsors,
-          onTap: () => context.go(Routes.adminSponsors)),
+          onTap: () => context.go(Routes.adminSponsors),
+        ),
         // ── System ──
         _SidebarGroupLabel(tokens: tokens, label: l10n.adminSystem),
-        _SidebarItem(tokens: tokens, icon: Icons.notifications_rounded, label: l10n.adminNotifications,
+        _SidebarItem(
+          tokens: tokens,
+          icon: Icons.notifications_rounded,
+          label: l10n.adminNotifications,
           isSelected: location == Routes.adminNotifications,
-          onTap: () => context.go(Routes.adminNotifications)),
+          onTap: () => context.go(Routes.adminNotifications),
+        ),
       ],
     );
   }
@@ -2221,9 +2755,17 @@ class _TerminalAddButton extends ConsumerWidget {
       offset: const Offset(0, 32),
       itemBuilder: (_) => [
         if (isDesktop)
-          _menuItem(TerminalSessionType.terminal, Icons.terminal_rounded, 'Terminal'),
+          _menuItem(
+            TerminalSessionType.terminal,
+            Icons.terminal_rounded,
+            'Terminal',
+          ),
         _menuItem(TerminalSessionType.ssh, Icons.public_rounded, 'SSH'),
-        _menuItem(TerminalSessionType.claude, Icons.smart_toy_rounded, 'Claude'),
+        _menuItem(
+          TerminalSessionType.claude,
+          Icons.smart_toy_rounded,
+          'Claude',
+        ),
       ],
     );
   }
@@ -2239,13 +2781,24 @@ class _TerminalAddButton extends ConsumerWidget {
         children: [
           Icon(icon, size: 16, color: tokens.fgMuted),
           const SizedBox(width: 10),
-          Text(label, style: TextStyle(color: tokens.fgBright, fontSize: 13, fontWeight: FontWeight.w500)),
+          Text(
+            label,
+            style: TextStyle(
+              color: tokens.fgBright,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Future<void> _create(BuildContext context, WidgetRef ref, TerminalSessionType kind) async {
+  Future<void> _create(
+    BuildContext context,
+    WidgetRef ref,
+    TerminalSessionType kind,
+  ) async {
     final notifier = ref.read(terminalSessionsProvider.notifier);
     final TerminalSessionModel session;
     switch (kind) {
@@ -2286,7 +2839,10 @@ class _TerminalAddButton extends ConsumerWidget {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setDialogState) => AlertDialog(
           backgroundColor: tokens.bgAlt,
-          title: Text(AppLocalizations.of(context).sshConnection, style: TextStyle(color: tokens.fgBright)),
+          title: Text(
+            AppLocalizations.of(context).sshConnection,
+            style: TextStyle(color: tokens.fgBright),
+          ),
           content: SizedBox(
             width: 360,
             child: Column(
@@ -2303,8 +2859,13 @@ class _TerminalAddButton extends ConsumerWidget {
                     const SizedBox(width: 10),
                     Expanded(
                       flex: 1,
-                      child: _sshField(tokens, portCtrl, 'Port', '22',
-                          keyboardType: TextInputType.number),
+                      child: _sshField(
+                        tokens,
+                        portCtrl,
+                        'Port',
+                        '22',
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
                   ],
                 ),
@@ -2317,7 +2878,10 @@ class _TerminalAddButton extends ConsumerWidget {
                     labelText: AppLocalizations.of(context).password,
                     labelStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                     hintText: AppLocalizations.of(context).leaveEmptyForKeyAuth,
-                    hintStyle: TextStyle(color: tokens.fgDim.withValues(alpha: 0.5), fontSize: 13),
+                    hintStyle: TextStyle(
+                      color: tokens.fgDim.withValues(alpha: 0.5),
+                      fontSize: 13,
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: tokens.borderFaint),
                     ),
@@ -2326,39 +2890,60 @@ class _TerminalAddButton extends ConsumerWidget {
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         size: 16,
                         color: tokens.fgDim,
                       ),
-                      onPressed: () => setDialogState(() => obscurePassword = !obscurePassword),
+                      onPressed: () => setDialogState(
+                        () => obscurePassword = !obscurePassword,
+                      ),
                     ),
                   ),
                   cursorColor: tokens.accent,
                 ),
                 const SizedBox(height: 10),
-                _sshField(tokens, keyFileCtrl, 'Key File (optional)', '~/.ssh/id_rsa'),
+                _sshField(
+                  tokens,
+                  keyFileCtrl,
+                  'Key File (optional)',
+                  '~/.ssh/id_rsa',
+                ),
               ],
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: TextStyle(color: tokens.fgMuted),
+              ),
             ),
             TextButton(
               onPressed: () {
                 final host = hostCtrl.text.trim();
                 final user = userCtrl.text.trim();
                 if (host.isEmpty || user.isEmpty) return;
-                Navigator.of(ctx).pop(_SshParams(
-                  host: host,
-                  user: user,
-                  port: int.tryParse(portCtrl.text.trim()) ?? 22,
-                  password: passwordCtrl.text.isEmpty ? null : passwordCtrl.text,
-                  keyFile: keyFileCtrl.text.trim().isEmpty ? null : keyFileCtrl.text.trim(),
-                ));
+                Navigator.of(ctx).pop(
+                  _SshParams(
+                    host: host,
+                    user: user,
+                    port: int.tryParse(portCtrl.text.trim()) ?? 22,
+                    password: passwordCtrl.text.isEmpty
+                        ? null
+                        : passwordCtrl.text,
+                    keyFile: keyFileCtrl.text.trim().isEmpty
+                        ? null
+                        : keyFileCtrl.text.trim(),
+                  ),
+                );
               },
-              child: Text(AppLocalizations.of(context).connect, style: TextStyle(color: tokens.accent)),
+              child: Text(
+                AppLocalizations.of(context).connect,
+                style: TextStyle(color: tokens.accent),
+              ),
             ),
           ],
         ),
@@ -2381,7 +2966,10 @@ class _TerminalAddButton extends ConsumerWidget {
         labelText: label,
         labelStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
         hintText: hint,
-        hintStyle: TextStyle(color: tokens.fgDim.withValues(alpha: 0.5), fontSize: 13),
+        hintStyle: TextStyle(
+          color: tokens.fgDim.withValues(alpha: 0.5),
+          fontSize: 13,
+        ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: tokens.borderFaint),
         ),
@@ -2444,7 +3032,10 @@ class _TerminalSidebarState extends ConsumerState<_TerminalSidebar> {
     // _dependents.isEmpty assertion when the dialog accesses InheritedWidgets.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      final newName = await showRenameDialog(context, currentName: currentLabel);
+      final newName = await showRenameDialog(
+        context,
+        currentName: currentLabel,
+      );
       if (newName != null) {
         ref.read(terminalSessionsProvider.notifier).renameSession(id, newName);
       }
@@ -2476,7 +3067,10 @@ class _TerminalSidebarState extends ConsumerState<_TerminalSidebar> {
             children: [
               Icon(Icons.terminal_rounded, size: 32, color: tokens.fgDim),
               const SizedBox(height: 12),
-              Text(AppLocalizations.of(context).noSessions, style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+              Text(
+                AppLocalizations.of(context).noSessions,
+                style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+              ),
             ],
           ),
         ),
@@ -2498,10 +3092,13 @@ class _TerminalSidebarState extends ConsumerState<_TerminalSidebar> {
             tokens: tokens,
             count: selectedIds.length,
             onClear: () => ref.read(terminalSelectionProvider.notifier).clear(),
-            onSelectAll: () => ref.read(terminalSelectionProvider.notifier)
+            onSelectAll: () => ref
+                .read(terminalSelectionProvider.notifier)
                 .selectAll(sorted.map((s) => s.id).toSet()),
             onDelete: () {
-              for (final id in selectedIds) { _close(id); }
+              for (final id in selectedIds) {
+                _close(id);
+              }
               ref.read(terminalSelectionProvider.notifier).clear();
             },
           ),
@@ -2524,19 +3121,38 @@ class _TerminalSidebarState extends ConsumerState<_TerminalSidebar> {
                 isChecked: selectedIds.contains(session.id),
                 isPinned: session.pinned,
                 onTap: inSelectionMode
-                    ? () => ref.read(terminalSelectionProvider.notifier).toggle(session.id)
+                    ? () => ref
+                          .read(terminalSelectionProvider.notifier)
+                          .toggle(session.id)
                     : () {
-                        ref.read(activeTerminalIdProvider.notifier).set(session.id);
+                        ref
+                            .read(activeTerminalIdProvider.notifier)
+                            .set(session.id);
                         context.go(Routes.terminal);
                       },
-                onSelect: () => ref.read(terminalSelectionProvider.notifier).toggle(session.id),
+                onSelect: () => ref
+                    .read(terminalSelectionProvider.notifier)
+                    .toggle(session.id),
                 onPin: () => _togglePin(session.id),
                 onDelete: () => _close(session.id),
-                contextMenuActions: buildEntityContextActions(l10n: AppLocalizations.of(context),
+                contextMenuActions: buildEntityContextActions(
+                  l10n: AppLocalizations.of(context),
                   onRename: () => _rename(session.id, session.label),
-                  onChangeIcon: () => pickAndSaveIcon(context, ref, session.id, currentCodePoint: cust?.iconCodePoint),
-                  onChangeColor: () => pickAndSaveColor(context, ref, session.id, currentColor: cust?.color),
-                  onSelect: () => ref.read(terminalSelectionProvider.notifier).toggle(session.id),
+                  onChangeIcon: () => pickAndSaveIcon(
+                    context,
+                    ref,
+                    session.id,
+                    currentCodePoint: cust?.iconCodePoint,
+                  ),
+                  onChangeColor: () => pickAndSaveColor(
+                    context,
+                    ref,
+                    session.id,
+                    currentColor: cust?.color,
+                  ),
+                  onSelect: () => ref
+                      .read(terminalSelectionProvider.notifier)
+                      .toggle(session.id),
                   onPin: () => _togglePin(session.id),
                   isPinned: session.pinned,
                   onDelete: () => _close(session.id),

@@ -73,5 +73,5 @@ class StartupGateNotifier extends AsyncNotifier<StartupGate> {
 
 final startupGateProvider =
     AsyncNotifierProvider<StartupGateNotifier, StartupGate>(
-  StartupGateNotifier.new,
-);
+      StartupGateNotifier.new,
+    );

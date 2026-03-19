@@ -36,14 +36,16 @@ void main() {
     });
 
     test('Orchestra group has 6 themes', () {
-      final group =
-          OrchestraTheme.allThemes.where((t) => t.group == ThemeGroup.orchestra);
+      final group = OrchestraTheme.allThemes.where(
+        (t) => t.group == ThemeGroup.orchestra,
+      );
       expect(group.length, 6);
     });
 
     test('Popular group has 8 themes', () {
-      final group =
-          OrchestraTheme.allThemes.where((t) => t.group == ThemeGroup.popular);
+      final group = OrchestraTheme.allThemes.where(
+        (t) => t.group == ThemeGroup.popular,
+      );
       expect(group.length, 8);
     });
   });

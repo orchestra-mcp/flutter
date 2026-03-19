@@ -39,17 +39,25 @@ class _NotificationsList extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.notifications_none_outlined,
-                size: 56, color: tokens.fgDim),
+            Icon(
+              Icons.notifications_none_outlined,
+              size: 56,
+              color: tokens.fgDim,
+            ),
             const SizedBox(height: 16),
-            Text(l10n.allCaughtUp,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: tokens.fgBright)),
+            Text(
+              l10n.allCaughtUp,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: tokens.fgBright,
+              ),
+            ),
             const SizedBox(height: 4),
-            Text(l10n.noNewNotifications,
-                style: TextStyle(color: tokens.fgMuted)),
+            Text(
+              l10n.noNewNotifications,
+              style: TextStyle(color: tokens.fgMuted),
+            ),
           ],
         ),
       ),

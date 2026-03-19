@@ -87,20 +87,26 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
     }
 
     final buf = StringBuffer();
-    buf.writeln(widget.headers
-        .asMap()
-        .entries
-        .map((e) => e.value.padRight(colWidths[e.key]))
-        .join('  '));
-    buf.writeln(colWidths.map((w) => '-' * w).join('  '));
-    for (final row in widget.rows) {
-      buf.writeln(row
+    buf.writeln(
+      widget.headers
           .asMap()
           .entries
-          .map((e) => (e.key < colWidths.length
-              ? e.value.padRight(colWidths[e.key])
-              : e.value))
-          .join('  '));
+          .map((e) => e.value.padRight(colWidths[e.key]))
+          .join('  '),
+    );
+    buf.writeln(colWidths.map((w) => '-' * w).join('  '));
+    for (final row in widget.rows) {
+      buf.writeln(
+        row
+            .asMap()
+            .entries
+            .map(
+              (e) => (e.key < colWidths.length
+                  ? e.value.padRight(colWidths[e.key])
+                  : e.value),
+            )
+            .join('  '),
+      );
     }
     return buf.toString();
   }
@@ -119,9 +125,7 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
     final dir = await getTemporaryDirectory();
     final file = File('${dir.path}/${uniqueFileName(defaultName)}');
     await file.writeAsString(content);
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)]),
-    );
+    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
   }
 
   Future<void> _exportImage() async {
@@ -134,15 +138,12 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
   }
 
   Future<void> _shareText() async {
-    await SharePlus.instance.share(
-      ShareParams(text: _toText()),
-    );
+    await SharePlus.instance.share(ShareParams(text: _toText()));
   }
 
   void _showContextMenu(BuildContext context, Offset position) {
     final tokens = ThemeTokens.of(context);
-    final overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
     showMenu<String>(
       context: context,
@@ -154,33 +155,54 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
       items: [
         PopupMenuItem(
           value: 'copy',
-          child: _menuRow(Icons.copy_rounded, AppLocalizations.of(context).copyAsText),
+          child: _menuRow(
+            Icons.copy_rounded,
+            AppLocalizations.of(context).copyAsText,
+          ),
         ),
         PopupMenuItem(
           value: 'share',
-          child: _menuRow(Icons.share_rounded, AppLocalizations.of(context).share),
+          child: _menuRow(
+            Icons.share_rounded,
+            AppLocalizations.of(context).share,
+          ),
         ),
         const PopupMenuDivider(),
         PopupMenuItem(
           value: 'csv',
-          child: _menuRow(Icons.table_chart_rounded, AppLocalizations.of(context).exportAsCsv),
+          child: _menuRow(
+            Icons.table_chart_rounded,
+            AppLocalizations.of(context).exportAsCsv,
+          ),
         ),
         PopupMenuItem(
           value: 'excel',
-          child: _menuRow(Icons.grid_on_rounded, AppLocalizations.of(context).exportAsExcelTsv),
+          child: _menuRow(
+            Icons.grid_on_rounded,
+            AppLocalizations.of(context).exportAsExcelTsv,
+          ),
         ),
         PopupMenuItem(
           value: 'markdown',
-          child: _menuRow(Icons.code_rounded, AppLocalizations.of(context).exportAsMarkdown),
+          child: _menuRow(
+            Icons.code_rounded,
+            AppLocalizations.of(context).exportAsMarkdown,
+          ),
         ),
         PopupMenuItem(
           value: 'text',
-          child: _menuRow(Icons.text_snippet_rounded, AppLocalizations.of(context).exportAsText),
+          child: _menuRow(
+            Icons.text_snippet_rounded,
+            AppLocalizations.of(context).exportAsText,
+          ),
         ),
         const PopupMenuDivider(),
         PopupMenuItem(
           value: 'image',
-          child: _menuRow(Icons.image_rounded, AppLocalizations.of(context).exportAsImage),
+          child: _menuRow(
+            Icons.image_rounded,
+            AppLocalizations.of(context).exportAsImage,
+          ),
         ),
       ],
     ).then((value) {
@@ -189,7 +211,9 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
           Clipboard.setData(ClipboardData(text: _toText()));
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(AppLocalizations.of(context).tableDataCopied)),
+              SnackBar(
+                content: Text(AppLocalizations.of(context).tableDataCopied),
+              ),
             );
           }
         case 'share':
@@ -249,56 +273,56 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
                 ),
                 child: Table(
                   defaultColumnWidth: const IntrinsicColumnWidth(),
-                border: TableBorder(
-                  horizontalInside: BorderSide(
-                    color: tokens.border.withValues(alpha: 0.3),
-                  ),
-                ),
-                children: [
-                  // Header row
-                  TableRow(
-                    decoration: BoxDecoration(
-                      color: tokens.isLight
-                          ? const Color(0xFFF1F3F5)
-                          : const Color(0xFF252536),
+                  border: TableBorder(
+                    horizontalInside: BorderSide(
+                      color: tokens.border.withValues(alpha: 0.3),
                     ),
-                    children: widget.headers.asMap().entries.map((entry) {
-                      final i = entry.key;
-                      final h = entry.value;
-                      final align = i < widget.alignments.length
-                          ? widget.alignments[i]
-                          : TableAlign.left;
-                      return _headerCell(tokens, h, i, align);
-                    }).toList(),
                   ),
-                  // Data rows
-                  ...sortedRows.asMap().entries.map((entry) {
-                    final rowIdx = entry.key;
-                    final row = entry.value;
-                    return TableRow(
+                  children: [
+                    // Header row
+                    TableRow(
                       decoration: BoxDecoration(
-                        color: rowIdx.isEven
-                            ? (tokens.isLight
-                                ? Colors.white
-                                : const Color(0xFF1E1E2E))
-                            : (tokens.isLight
-                                ? const Color(0xFFF8F9FA)
-                                : const Color(0xFF22223A)),
+                        color: tokens.isLight
+                            ? const Color(0xFFF1F3F5)
+                            : const Color(0xFF252536),
                       ),
-                      children: widget.headers.asMap().entries.map((hEntry) {
-                        final ci = hEntry.key;
-                        final cellText = ci < row.length ? row[ci] : '';
-                        final align = ci < widget.alignments.length
-                            ? widget.alignments[ci]
+                      children: widget.headers.asMap().entries.map((entry) {
+                        final i = entry.key;
+                        final h = entry.value;
+                        final align = i < widget.alignments.length
+                            ? widget.alignments[i]
                             : TableAlign.left;
-                        return _dataCell(tokens, cellText, align);
+                        return _headerCell(tokens, h, i, align);
                       }).toList(),
-                    );
-                  }),
-                ],
+                    ),
+                    // Data rows
+                    ...sortedRows.asMap().entries.map((entry) {
+                      final rowIdx = entry.key;
+                      final row = entry.value;
+                      return TableRow(
+                        decoration: BoxDecoration(
+                          color: rowIdx.isEven
+                              ? (tokens.isLight
+                                    ? Colors.white
+                                    : const Color(0xFF1E1E2E))
+                              : (tokens.isLight
+                                    ? const Color(0xFFF8F9FA)
+                                    : const Color(0xFF22223A)),
+                        ),
+                        children: widget.headers.asMap().entries.map((hEntry) {
+                          final ci = hEntry.key;
+                          final cellText = ci < row.length ? row[ci] : '';
+                          final align = ci < widget.alignments.length
+                              ? widget.alignments[ci]
+                              : TableAlign.left;
+                          return _dataCell(tokens, cellText, align);
+                        }).toList(),
+                      );
+                    }),
+                  ],
+                ),
               ),
             ),
-          ),
           ),
         ),
       ),
@@ -353,8 +377,7 @@ class _MarkdownDataTableState extends State<MarkdownDataTable> {
     );
   }
 
-  Widget _dataCell(
-      OrchestraColorTokens tokens, String text, TableAlign align) {
+  Widget _dataCell(OrchestraColorTokens tokens, String text, TableAlign align) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Align(

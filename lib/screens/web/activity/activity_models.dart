@@ -121,7 +121,8 @@ class ActivityItem {
       entityId: json['entity_id'] as String? ?? '',
       entityTitle: json['entity_title'] as String? ?? '',
       description: json['description'] as String? ?? '',
-      timestamp: DateTime.tryParse(json['timestamp'] as String? ?? '') ??
+      timestamp:
+          DateTime.tryParse(json['timestamp'] as String? ?? '') ??
           DateTime.now(),
     );
   }

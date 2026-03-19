@@ -29,9 +29,8 @@ class AnalyticsPage extends ConsumerWidget {
     return ColoredBox(
       color: tokens.bg,
       child: statsAsync.when(
-        loading: () => Center(
-          child: CircularProgressIndicator(color: tokens.accent),
-        ),
+        loading: () =>
+            Center(child: CircularProgressIndicator(color: tokens.accent)),
         error: (error, _) => _ErrorState(tokens: tokens, error: error),
         data: (stats) => _StatsContent(tokens: tokens, stats: stats),
       ),
@@ -50,7 +49,10 @@ class _StatsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Build metric list from whatever keys the API returns.
-    final metrics = _extractMetricsWithLabels(stats, AppLocalizations.of(context));
+    final metrics = _extractMetricsWithLabels(
+      stats,
+      AppLocalizations.of(context),
+    );
 
     if (metrics.isEmpty) {
       return Center(
@@ -90,8 +92,8 @@ class _StatsContent extends StatelessWidget {
               final crossAxisCount = constraints.maxWidth > 900
                   ? 4
                   : constraints.maxWidth > 600
-                      ? 3
-                      : 2;
+                  ? 3
+                  : 2;
               return GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -117,50 +119,107 @@ class _StatsContent extends StatelessWidget {
   ///
   /// The API may return keys like `total_users`, `total_projects`, etc.
   /// We map known keys to friendly labels and icons.
-  List<_Metric> _extractMetricsWithLabels(Map<String, dynamic> data, AppLocalizations? l10n) {
+  List<_Metric> _extractMetricsWithLabels(
+    Map<String, dynamic> data,
+    AppLocalizations? l10n,
+  ) {
     final result = <_Metric>[];
 
     void add(String key, String label, IconData icon) {
       if (data.containsKey(key) && data[key] != null) {
-        result.add(_Metric(
-          label: label,
-          value: '${data[key]}',
-          icon: icon,
-        ));
+        result.add(_Metric(label: label, value: '${data[key]}', icon: icon));
       }
     }
 
     // Well-known stat keys — extend as the API grows.
-    add('total_users', l10n?.totalUsersLabel ?? 'Total Users', Icons.people_outlined);
-    add('active_users', l10n?.activeUsersLabel ?? 'Active Users', Icons.groups_outlined);
-    add('total_projects', l10n?.totalProjectsLabel ?? 'Total Projects', Icons.folder_outlined);
-    add('total_features', l10n?.totalFeaturesLabel ?? 'Total Features', Icons.flag_outlined);
-    add('total_teams', l10n?.totalTeamsLabel ?? 'Total Teams', Icons.workspaces_outlined);
-    add('total_notes', l10n?.totalNotesLabel ?? 'Total Notes', Icons.note_outlined);
-    add('total_pages', l10n?.totalPagesLabel ?? 'Total Pages', Icons.article_outlined);
-    add('total_sessions', l10n?.activeSessionsLabel ?? 'Active Sessions', Icons.devices_outlined);
+    add(
+      'total_users',
+      l10n?.totalUsersLabel ?? 'Total Users',
+      Icons.people_outlined,
+    );
+    add(
+      'active_users',
+      l10n?.activeUsersLabel ?? 'Active Users',
+      Icons.groups_outlined,
+    );
+    add(
+      'total_projects',
+      l10n?.totalProjectsLabel ?? 'Total Projects',
+      Icons.folder_outlined,
+    );
+    add(
+      'total_features',
+      l10n?.totalFeaturesLabel ?? 'Total Features',
+      Icons.flag_outlined,
+    );
+    add(
+      'total_teams',
+      l10n?.totalTeamsLabel ?? 'Total Teams',
+      Icons.workspaces_outlined,
+    );
+    add(
+      'total_notes',
+      l10n?.totalNotesLabel ?? 'Total Notes',
+      Icons.note_outlined,
+    );
+    add(
+      'total_pages',
+      l10n?.totalPagesLabel ?? 'Total Pages',
+      Icons.article_outlined,
+    );
+    add(
+      'total_sessions',
+      l10n?.activeSessionsLabel ?? 'Active Sessions',
+      Icons.devices_outlined,
+    );
     add('total_api_keys', l10n?.apiKeysLabel ?? 'API Keys', Icons.key_outlined);
-    add('total_sponsors', l10n?.sponsorsLabel ?? 'Sponsors', Icons.volunteer_activism_outlined);
-    add('total_issues', l10n?.openIssuesLabel ?? 'Open Issues', Icons.bug_report_outlined);
-    add('total_contacts', l10n?.contactMessagesLabel ?? 'Contact Messages', Icons.mail_outlined);
-    add('storage_used', l10n?.storageUsedLabel ?? 'Storage Used', Icons.storage_outlined);
-    add('api_calls_24h', l10n?.apiCalls24hLabel ?? 'API Calls (24h)', Icons.api_outlined);
-    add('error_rate', l10n?.errorRateLabel ?? 'Error Rate', Icons.error_outline);
+    add(
+      'total_sponsors',
+      l10n?.sponsorsLabel ?? 'Sponsors',
+      Icons.volunteer_activism_outlined,
+    );
+    add(
+      'total_issues',
+      l10n?.openIssuesLabel ?? 'Open Issues',
+      Icons.bug_report_outlined,
+    );
+    add(
+      'total_contacts',
+      l10n?.contactMessagesLabel ?? 'Contact Messages',
+      Icons.mail_outlined,
+    );
+    add(
+      'storage_used',
+      l10n?.storageUsedLabel ?? 'Storage Used',
+      Icons.storage_outlined,
+    );
+    add(
+      'api_calls_24h',
+      l10n?.apiCalls24hLabel ?? 'API Calls (24h)',
+      Icons.api_outlined,
+    );
+    add(
+      'error_rate',
+      l10n?.errorRateLabel ?? 'Error Rate',
+      Icons.error_outline,
+    );
 
     // Fallback: render any remaining numeric keys not already mapped.
     for (final entry in data.entries) {
       if (result.any((m) => m.label == entry.key)) continue;
       final value = entry.value;
       if (value is num || value is String) {
-        final alreadyMapped = result.any((m) =>
-            m.value == '$value' &&
-            m.label == _humanize(entry.key));
+        final alreadyMapped = result.any(
+          (m) => m.value == '$value' && m.label == _humanize(entry.key),
+        );
         if (!alreadyMapped) {
-          result.add(_Metric(
-            label: _humanize(entry.key),
-            value: '$value',
-            icon: Icons.info_outline,
-          ));
+          result.add(
+            _Metric(
+              label: _humanize(entry.key),
+              value: '$value',
+              icon: Icons.info_outline,
+            ),
+          );
         }
       }
     }
@@ -181,11 +240,7 @@ class _StatsContent extends StatelessWidget {
 // ── Metric model ────────────────────────────────────────────────────────────
 
 class _Metric {
-  const _Metric({
-    required this.label,
-    required this.value,
-    required this.icon,
-  });
+  const _Metric({required this.label, required this.value, required this.icon});
   final String label;
   final String value;
   final IconData icon;

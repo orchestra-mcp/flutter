@@ -85,10 +85,7 @@ class McpClient {
       'jsonrpc': '2.0',
       'id': id,
       'method': 'tools/call',
-      'params': {
-        'name': name,
-        'arguments': args,
-      },
+      'params': {'name': name, 'arguments': args},
     });
 
     _channel!.sink.add(request);
@@ -101,10 +98,7 @@ class McpClient {
   /// The initial JSON-RPC response carries a `stream_id` which is used to
   /// correlate subsequent `stream/chunk` and `stream/end` notifications.
   /// Each chunk's `data` field is base64-decoded before being emitted.
-  Stream<List<int>> callToolStreaming(
-    String name,
-    Map<String, dynamic> args,
-  ) {
+  Stream<List<int>> callToolStreaming(String name, Map<String, dynamic> args) {
     _ensureConnected();
 
     final id = _nextId++;
@@ -131,31 +125,29 @@ class McpClient {
       'jsonrpc': '2.0',
       'id': id,
       'method': 'tools/call',
-      'params': {
-        'name': name,
-        'arguments': args,
-        'streaming': true,
-      },
+      'params': {'name': name, 'arguments': args, 'streaming': true},
     });
 
     _channel!.sink.add(request);
 
     // When the initial response arrives, register the stream_id mapping.
     unawaited(
-      completer.future.then((result) {
-        final streamId = result['stream_id'] as String?;
-        if (streamId == null) {
-          controller.addError(
-            const FormatException('Streaming response missing stream_id'),
-          );
-          unawaited(controller.close());
-          return;
-        }
-        _streams[streamId] = controller;
-      }).catchError((Object error) {
-        controller.addError(error);
-        unawaited(controller.close());
-      }),
+      completer.future
+          .then((result) {
+            final streamId = result['stream_id'] as String?;
+            if (streamId == null) {
+              controller.addError(
+                const FormatException('Streaming response missing stream_id'),
+              );
+              unawaited(controller.close());
+              return;
+            }
+            _streams[streamId] = controller;
+          })
+          .catchError((Object error) {
+            controller.addError(error);
+            unawaited(controller.close());
+          }),
     );
 
     return controller.stream;
@@ -304,12 +296,9 @@ class McpError implements Exception {
   final String message;
   final dynamic data;
 
-  const McpError({
-    required this.code,
-    required this.message,
-    this.data,
-  });
+  const McpError({required this.code, required this.message, this.data});
 
   @override
-  String toString() => 'McpError($code): $message${data != null ? ' [$data]' : ''}';
+  String toString() =>
+      'McpError($code): $message${data != null ? ' [$data]' : ''}';
 }

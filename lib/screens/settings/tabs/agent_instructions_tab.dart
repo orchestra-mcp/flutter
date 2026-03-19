@@ -69,11 +69,19 @@ const _managedFiles = [
   ),
 ];
 
-String _resolveFileLabel(AppLocalizations l10n, String label) => switch (label) {
-  'Agents' => l10n.agentInstructionsAgents,
-  'Context' => l10n.agentInstructionsContext,
-  _ => label,
-};
+/// An agent definition file from .claude/agents/.
+class _AgentFile {
+  const _AgentFile({required this.name, required this.filename});
+  final String name; // Display name (derived from filename)
+  final String filename; // e.g. 'devops.md'
+}
+
+String _resolveFileLabel(AppLocalizations l10n, String label) =>
+    switch (label) {
+      'Agents' => l10n.agentInstructionsAgents,
+      'Context' => l10n.agentInstructionsContext,
+      _ => label,
+    };
 
 /// Settings tab for editing agent instruction files as structured entries.
 ///
@@ -95,6 +103,7 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
   bool _loading = true;
   String? _error;
   String? _workspacePath;
+  List<_AgentFile> _agentFiles = [];
 
   @override
   void initState() {
@@ -114,12 +123,34 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
 
     try {
       if (isDesktop && !kIsWeb) {
-        _workspacePath = Platform.environment['ORCHESTRA_WORKSPACE'] ??
+        _workspacePath =
+            Platform.environment['ORCHESTRA_WORKSPACE'] ??
             Directory.current.path;
       }
 
       for (int i = 0; i < _managedFiles.length; i++) {
         _fileSections[i] = await _loadFile(_managedFiles[i]);
+      }
+
+      // Scan .claude/agents/ directory for individual agent definition files.
+      if (isDesktop && !kIsWeb && _workspacePath != null) {
+        final agentsDir = Directory('$_workspacePath/.claude/agents');
+        if (agentsDir.existsSync()) {
+          _agentFiles =
+              agentsDir
+                  .listSync()
+                  .whereType<File>()
+                  .where((f) => f.path.endsWith('.md'))
+                  .map((f) {
+                    final basename = f.uri.pathSegments.last;
+                    final name = basename
+                        .replaceAll('.md', '')
+                        .replaceAll('-', ' ');
+                    return _AgentFile(name: name, filename: basename);
+                  })
+                  .toList()
+                ..sort((a, b) => a.name.compareTo(b.name));
+        }
       }
     } catch (e) {
       _error = e.toString();
@@ -155,10 +186,12 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
     for (final line in lines) {
       if (line.startsWith('## ')) {
         if (currentHeader.isNotEmpty || bodyLines.isNotEmpty) {
-          sections.add(_Section(
-            header: currentHeader.isEmpty ? 'Introduction' : currentHeader,
-            body: bodyLines.join('\n').trim(),
-          ));
+          sections.add(
+            _Section(
+              header: currentHeader.isEmpty ? 'Introduction' : currentHeader,
+              body: bodyLines.join('\n').trim(),
+            ),
+          );
         }
         currentHeader = line.substring(3).trim();
         bodyLines.clear();
@@ -168,10 +201,12 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
     }
 
     if (currentHeader.isNotEmpty || bodyLines.isNotEmpty) {
-      sections.add(_Section(
-        header: currentHeader.isEmpty ? 'Introduction' : currentHeader,
-        body: bodyLines.join('\n').trim(),
-      ));
+      sections.add(
+        _Section(
+          header: currentHeader.isEmpty ? 'Introduction' : currentHeader,
+          body: bodyLines.join('\n').trim(),
+        ),
+      );
     }
 
     return sections;
@@ -215,16 +250,16 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
 
       if (mounted) {
         final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.agentInstructionsSaved)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.agentInstructionsSaved)));
       }
     } catch (e) {
       if (mounted) {
         final l10n = AppLocalizations.of(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.failedToSave}: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('${l10n.failedToSave}: $e')));
       }
     }
   }
@@ -238,8 +273,10 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
 
     if (_error != null) {
       return Center(
-        child: Text(l10n.errorWithDetails(_error!),
-            style: const TextStyle(color: Colors.redAccent)),
+        child: Text(
+          l10n.errorWithDetails(_error!),
+          style: const TextStyle(color: Colors.redAccent),
+        ),
       );
     }
 
@@ -254,7 +291,12 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
             unselectedLabelColor: tokens.fgMuted,
             indicatorColor: tokens.accent,
             tabs: _managedFiles
-                .map((mf) => Tab(icon: Icon(mf.icon, size: 18), text: _resolveFileLabel(l10n, mf.label)))
+                .map(
+                  (mf) => Tab(
+                    icon: Icon(mf.icon, size: 18),
+                    text: _resolveFileLabel(l10n, mf.label),
+                  ),
+                )
                 .toList(),
           ),
         ),
@@ -280,8 +322,12 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
                   final idx = _tabController.index;
                   setState(() {
                     _fileSections[idx] ??= [];
-                    _fileSections[idx]!
-                        .add(_Section(header: l10n.agentInstructionsNewSection, body: ''));
+                    _fileSections[idx]!.add(
+                      _Section(
+                        header: l10n.agentInstructionsNewSection,
+                        body: '',
+                      ),
+                    );
                   });
                 },
               ),
@@ -291,8 +337,11 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
                 onPressed: _saveCurrentFile,
               ),
               IconButton(
-                icon: Icon(Icons.refresh_rounded,
-                    color: tokens.fgMuted, size: 20),
+                icon: Icon(
+                  Icons.refresh_rounded,
+                  color: tokens.fgMuted,
+                  size: 20,
+                ),
                 tooltip: l10n.reload,
                 onPressed: _loadAll,
               ),
@@ -330,6 +379,74 @@ class _AgentInstructionsTabState extends ConsumerState<AgentInstructionsTab>
             }),
           ),
         ),
+
+        // ── Registered agent files from .claude/agents/ ──────────────
+        if (_agentFiles.isNotEmpty) ...[
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Icon(Icons.folder_outlined, color: tokens.fgMuted, size: 16),
+                const SizedBox(width: 8),
+                Text(
+                  'Registered Agents (${_agentFiles.length})',
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 56,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: _agentFiles.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              itemBuilder: (context, i) {
+                final agent = _agentFiles[i];
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: tokens.bgAlt,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: tokens.border),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        agent.name,
+                        style: TextStyle(
+                          color: tokens.fgBright,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        '.claude/agents/${agent.filename}',
+                        style: TextStyle(
+                          color: tokens.fgDim,
+                          fontSize: 10,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
       ],
     );
   }
@@ -384,12 +501,10 @@ class _SectionCardState extends State<_SectionCard> {
         children: [
           // ── Header row (tap to expand) ───────────────────────────
           InkWell(
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(10)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
             onTap: () => setState(() => _expanded = !_expanded),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: [
                   Icon(
@@ -411,8 +526,11 @@ class _SectionCardState extends State<_SectionCard> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.delete_outline_rounded,
-                        color: Colors.redAccent, size: 18),
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      color: Colors.redAccent,
+                      size: 18,
+                    ),
                     onPressed: widget.onDelete,
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),

@@ -42,21 +42,31 @@ class _NotificationsSettingsScreenState
     await channel.ready;
 
     // Initialize.
-    channel.sink.add(jsonEncode({
-      'jsonrpc': '2.0', 'id': 1,
-      'method': 'initialize',
-      'params': {'protocolVersion': '2024-11-05', 'capabilities': {}, 'clientInfo': {'name': 'mobile-settings', 'version': '1.0.0'}},
-    }));
+    channel.sink.add(
+      jsonEncode({
+        'jsonrpc': '2.0',
+        'id': 1,
+        'method': 'initialize',
+        'params': {
+          'protocolVersion': '2024-11-05',
+          'capabilities': {},
+          'clientInfo': {'name': 'mobile-settings', 'version': '1.0.0'},
+        },
+      }),
+    );
 
     // Wait for init response.
     await channel.stream.first;
 
     // Call tool.
-    channel.sink.add(jsonEncode({
-      'jsonrpc': '2.0', 'id': 2,
-      'method': 'tools/call',
-      'params': {'name': tool, 'arguments': args},
-    }));
+    channel.sink.add(
+      jsonEncode({
+        'jsonrpc': '2.0',
+        'id': 2,
+        'method': 'tools/call',
+        'params': {'name': tool, 'arguments': args},
+      }),
+    );
 
     // Wait for response then close.
     await channel.stream.first;
@@ -71,7 +81,11 @@ class _NotificationsSettingsScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).failedToSaveError(e.toString()))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).failedToSaveError(e.toString()),
+            ),
+          ),
         );
       }
     } finally {
@@ -100,8 +114,12 @@ class _NotificationsSettingsScreenState
           _sectionHeader(l10n.aiAgentSection, tokens),
           const SizedBox(height: 8),
           aiAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
-            error: (_, __) => Text(l10n.couldNotLoadSettings, style: TextStyle(color: tokens.fgDim)),
+            loading: () =>
+                const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+            error: (_, __) => Text(
+              l10n.couldNotLoadSettings,
+              style: TextStyle(color: tokens.fgDim),
+            ),
             data: (settings) => _buildAiSection(tokens, settings),
           ),
           const SizedBox(height: 24),
@@ -130,7 +148,10 @@ class _NotificationsSettingsScreenState
     );
   }
 
-  Widget _buildAiSection(OrchestraColorTokens tokens, Map<String, dynamic> settings) {
+  Widget _buildAiSection(
+    OrchestraColorTokens tokens,
+    Map<String, dynamic> settings,
+  ) {
     final l10n = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
@@ -148,7 +169,11 @@ class _NotificationsSettingsScreenState
             value: settings['ai_push_enabled'] == true,
             onChanged: (v) => _toggleAi('ai_push_enabled', v),
           ),
-          Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+          Divider(
+            height: 1,
+            indent: 56,
+            color: tokens.border.withValues(alpha: 0.4),
+          ),
           _toggleRow(
             tokens: tokens,
             icon: Icons.record_voice_over_outlined,
@@ -157,7 +182,11 @@ class _NotificationsSettingsScreenState
             value: settings['ai_voice_enabled'] == true,
             onChanged: (v) => _toggleAi('ai_voice_enabled', v),
           ),
-          Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+          Divider(
+            height: 1,
+            indent: 56,
+            color: tokens.border.withValues(alpha: 0.4),
+          ),
           _toggleRow(
             tokens: tokens,
             icon: Icons.devices_rounded,
@@ -171,7 +200,10 @@ class _NotificationsSettingsScreenState
     );
   }
 
-  Widget _buildVoiceSection(OrchestraColorTokens tokens, Map<String, dynamic> settings) {
+  Widget _buildVoiceSection(
+    OrchestraColorTokens tokens,
+    Map<String, dynamic> settings,
+  ) {
     final l10n = AppLocalizations.of(context);
     final voiceNameVal = (settings['voice_name'] as String?) ?? '';
     final voiceSpeed = (settings['voice_speed'] as String?) ?? '';
@@ -191,17 +223,37 @@ class _NotificationsSettingsScreenState
             icon: Icons.record_voice_over_rounded,
             label: l10n.voiceLabel,
             value: voiceNameVal.isEmpty ? l10n.systemDefault : voiceNameVal,
-            onTap: () => _editField('voice_name', l10n.voiceName, voiceNameVal, 'e.g. Samantha'),
+            onTap: () => _editField(
+              'voice_name',
+              l10n.voiceName,
+              voiceNameVal,
+              'e.g. Samantha',
+            ),
           ),
-          Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+          Divider(
+            height: 1,
+            indent: 56,
+            color: tokens.border.withValues(alpha: 0.4),
+          ),
           _editableRow(
             tokens: tokens,
             icon: Icons.speed_rounded,
             label: l10n.speedLabel,
-            value: voiceSpeed.isEmpty ? l10n.defaultLabel : l10n.wpmSuffix(voiceSpeed),
-            onTap: () => _editField('voice_speed', l10n.speedWordsPerMin, voiceSpeed, 'e.g. 180'),
+            value: voiceSpeed.isEmpty
+                ? l10n.defaultLabel
+                : l10n.wpmSuffix(voiceSpeed),
+            onTap: () => _editField(
+              'voice_speed',
+              l10n.speedWordsPerMin,
+              voiceSpeed,
+              'e.g. 180',
+            ),
           ),
-          Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+          Divider(
+            height: 1,
+            indent: 56,
+            color: tokens.border.withValues(alpha: 0.4),
+          ),
           _editableRow(
             tokens: tokens,
             icon: Icons.volume_up_rounded,
@@ -209,14 +261,25 @@ class _NotificationsSettingsScreenState
             value: (settings['voice_volume'] as String? ?? '').isEmpty
                 ? l10n.defaultLabel
                 : '${settings['voice_volume']}',
-            onTap: () => _editField('voice_volume', l10n.volumeRange, (settings['voice_volume'] as String?) ?? '', 'e.g. 0.8'),
+            onTap: () => _editField(
+              'voice_volume',
+              l10n.volumeRange,
+              (settings['voice_volume'] as String?) ?? '',
+              'e.g. 0.8',
+            ),
           ),
-          Divider(height: 1, indent: 56, color: tokens.border.withValues(alpha: 0.4)),
+          Divider(
+            height: 1,
+            indent: 56,
+            color: tokens.border.withValues(alpha: 0.4),
+          ),
           _editableRow(
             tokens: tokens,
             icon: Icons.do_not_disturb_on_outlined,
             label: l10n.quietHours,
-            value: quietStart.isEmpty ? l10n.quietHoursOff : '$quietStart – $quietEnd',
+            value: quietStart.isEmpty
+                ? l10n.quietHoursOff
+                : '$quietStart – $quietEnd',
             onTap: () => _editQuietHours(quietStart, quietEnd),
           ),
         ],
@@ -224,7 +287,12 @@ class _NotificationsSettingsScreenState
     );
   }
 
-  Future<void> _editField(String key, String label, String current, String hint) async {
+  Future<void> _editField(
+    String key,
+    String label,
+    String current,
+    String hint,
+  ) async {
     final ctrl = TextEditingController(text: current);
     final tokens = ThemeTokens.of(context);
     final result = await showDialog<String>(
@@ -244,11 +312,17 @@ class _NotificationsSettingsScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: TextStyle(color: tokens.fgMuted),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, ctrl.text.trim()),
-            child: Text(AppLocalizations.of(context).save, style: TextStyle(color: tokens.accent)),
+            child: Text(
+              AppLocalizations.of(context).save,
+              style: TextStyle(color: tokens.accent),
+            ),
           ),
         ],
       ),
@@ -262,7 +336,11 @@ class _NotificationsSettingsScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).failedToSaveError(e.toString()))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).failedToSaveError(e.toString()),
+            ),
+          ),
         );
       }
     }
@@ -277,7 +355,10 @@ class _NotificationsSettingsScreenState
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text(l10n.quietHoursTitle, style: TextStyle(color: tokens.fgBright)),
+        title: Text(
+          l10n.quietHoursTitle,
+          style: TextStyle(color: tokens.fgBright),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -309,7 +390,10 @@ class _NotificationsSettingsScreenState
               endCtrl.text = '';
               Navigator.pop(ctx, true);
             },
-            child: Text(l10n.turnOff, style: TextStyle(color: Colors.red.shade300)),
+            child: Text(
+              l10n.turnOff,
+              style: TextStyle(color: Colors.red.shade300),
+            ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -337,7 +421,11 @@ class _NotificationsSettingsScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).failedToSaveError(e.toString()))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).failedToSaveError(e.toString()),
+            ),
+          ),
         );
       }
     }
@@ -358,7 +446,8 @@ class _NotificationsSettingsScreenState
       child: Row(
         children: [
           Container(
-            width: 32, height: 32,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
               color: tokens.accent.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(8),
@@ -370,8 +459,18 @@ class _NotificationsSettingsScreenState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: tokens.fgBright)),
-                Text(subtitle, style: TextStyle(fontSize: 11, color: tokens.fgDim)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: tokens.fgBright,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: TextStyle(fontSize: 11, color: tokens.fgDim),
+                ),
               ],
             ),
           ),
@@ -399,7 +498,8 @@ class _NotificationsSettingsScreenState
         child: Row(
           children: [
             Container(
-              width: 32, height: 32,
+              width: 32,
+              height: 32,
               decoration: BoxDecoration(
                 color: tokens.accent.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(8),
@@ -407,7 +507,16 @@ class _NotificationsSettingsScreenState
               child: Icon(icon, size: 16, color: tokens.accent),
             ),
             const SizedBox(width: 12),
-            Expanded(child: Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: tokens.fgBright))),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: tokens.fgBright,
+                ),
+              ),
+            ),
             Text(value, style: TextStyle(fontSize: 12, color: tokens.fgMuted)),
             const SizedBox(width: 4),
             Icon(Icons.chevron_right, size: 16, color: tokens.fgDim),
@@ -417,13 +526,19 @@ class _NotificationsSettingsScreenState
     );
   }
 
-  Widget _infoRow(OrchestraColorTokens tokens, IconData icon, String label, String value) {
+  Widget _infoRow(
+    OrchestraColorTokens tokens,
+    IconData icon,
+    String label,
+    String value,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
         children: [
           Container(
-            width: 32, height: 32,
+            width: 32,
+            height: 32,
             decoration: BoxDecoration(
               color: tokens.accent.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(8),
@@ -431,7 +546,16 @@ class _NotificationsSettingsScreenState
             child: Icon(icon, size: 16, color: tokens.accent),
           ),
           const SizedBox(width: 12),
-          Expanded(child: Text(label, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: tokens.fgBright))),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: tokens.fgBright,
+              ),
+            ),
+          ),
           Text(value, style: TextStyle(fontSize: 12, color: tokens.fgMuted)),
         ],
       ),

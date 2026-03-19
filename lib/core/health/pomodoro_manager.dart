@@ -129,25 +129,27 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
   }
 
   void _watchPomodoro() {
-    final stream = _db.watch('SELECT * FROM pomodoro_sessions ORDER BY created_at ASC');
+    final stream = _db.watch(
+      'SELECT * FROM pomodoro_sessions ORDER BY created_at ASC',
+    );
 
     StreamSubscription<dynamic>? sub;
     sub = stream.listen((results) {
       final now = DateTime.now();
       int completed = 0;
       for (final row in results) {
-        final startedStr = (row['started_at'] as String?) ??
-            (row['created_at'] as String?) ?? '';
+        final startedStr =
+            (row['started_at'] as String?) ??
+            (row['created_at'] as String?) ??
+            '';
         final ts = DateTime.tryParse(startedStr)?.toLocal();
         if (ts == null) continue;
-        if (ts.year != now.year || ts.month != now.month || ts.day != now.day) continue;
+        if (ts.year != now.year || ts.month != now.month || ts.day != now.day)
+          continue;
         if ((row['completed'] as int?) == 1) completed++;
       }
 
-      state = state.copyWith(
-        completedToday: completed,
-        isLoading: false,
-      );
+      state = state.copyWith(completedToday: completed, isLoading: false);
     });
 
     ref.onDispose(() => sub?.cancel());
@@ -298,7 +300,6 @@ class PomodoroNotifier extends Notifier<PomodoroState> {
 // Provider
 // ---------------------------------------------------------------------------
 
-final pomodoroProvider =
-    NotifierProvider<PomodoroNotifier, PomodoroState>(
+final pomodoroProvider = NotifierProvider<PomodoroNotifier, PomodoroState>(
   PomodoroNotifier.new,
 );

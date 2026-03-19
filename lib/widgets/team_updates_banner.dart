@@ -17,9 +17,9 @@ class BannerDismissedNotifier extends Notifier<bool> {
   void reset() => state = false;
 }
 
-final bannerDismissedProvider =
-    NotifierProvider<BannerDismissedNotifier, bool>(
-        BannerDismissedNotifier.new);
+final bannerDismissedProvider = NotifierProvider<BannerDismissedNotifier, bool>(
+  BannerDismissedNotifier.new,
+);
 
 // ── Pull in progress state ──────────────────────────────────────────────────
 
@@ -30,9 +30,9 @@ class PullInProgressNotifier extends Notifier<bool> {
   void set(bool value) => state = value;
 }
 
-final pullInProgressProvider =
-    NotifierProvider<PullInProgressNotifier, bool>(
-        PullInProgressNotifier.new);
+final pullInProgressProvider = NotifierProvider<PullInProgressNotifier, bool>(
+  PullInProgressNotifier.new,
+);
 
 // ── Auto-refresh timer ───────────────────────────────────────────────────────
 
@@ -123,8 +123,11 @@ class TeamUpdatesBanner extends ConsumerWidget {
                 // Title row
                 Row(
                   children: [
-                    Icon(Icons.cloud_download_rounded,
-                        size: 18, color: tokens.accent),
+                    Icon(
+                      Icons.cloud_download_rounded,
+                      size: 18,
+                      color: tokens.accent,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -140,8 +143,11 @@ class TeamUpdatesBanner extends ConsumerWidget {
                     GestureDetector(
                       onTap: () =>
                           ref.read(bannerDismissedProvider.notifier).dismiss(),
-                      child: Icon(Icons.close_rounded,
-                          size: 18, color: tokens.fgDim),
+                      child: Icon(
+                        Icons.close_rounded,
+                        size: 18,
+                        color: tokens.fgDim,
+                      ),
                     ),
                   ],
                 ),
@@ -156,7 +162,9 @@ class TeamUpdatesBanner extends ConsumerWidget {
                       final color = _colorForEntityType(entry.key);
                       return Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: color.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(6),
@@ -164,8 +172,11 @@ class TeamUpdatesBanner extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(_iconForEntityType(entry.key),
-                                size: 12, color: color),
+                            Icon(
+                              _iconForEntityType(entry.key),
+                              size: 12,
+                              color: color,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               '${entry.value} ${entry.key}${entry.value == 1 ? '' : 's'}',
@@ -195,8 +206,9 @@ class TeamUpdatesBanner extends ConsumerWidget {
                             : () => _pullUpdates(context, ref),
                         style: FilledButton.styleFrom(
                           backgroundColor: tokens.accent,
-                          foregroundColor:
-                              tokens.isLight ? Colors.white : Colors.black,
+                          foregroundColor: tokens.isLight
+                              ? Colors.white
+                              : Colors.black,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -215,7 +227,9 @@ class TeamUpdatesBanner extends ConsumerWidget {
                               )
                             : const Icon(Icons.download_rounded, size: 16),
                         label: Text(
-                          pulling ? AppLocalizations.of(context).pulling : AppLocalizations.of(context).pullUpdates,
+                          pulling
+                              ? AppLocalizations.of(context).pulling
+                              : AppLocalizations.of(context).pullUpdates,
                           style: const TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -231,7 +245,9 @@ class TeamUpdatesBanner extends ConsumerWidget {
                       style: TextButton.styleFrom(
                         foregroundColor: tokens.fgMuted,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 10),
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                       ),
                       child: Text(
                         AppLocalizations.of(context).later,

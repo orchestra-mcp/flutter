@@ -8,11 +8,11 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 final _categoriesProvider =
     FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
-  final api = ref.watch(apiClientProvider);
-  final result = await api.listAdminCategories();
-  final raw = result['categories'] as List<dynamic>? ?? <dynamic>[];
-  return raw.cast<Map<String, dynamic>>();
-});
+      final api = ref.watch(apiClientProvider);
+      final result = await api.listAdminCategories();
+      final raw = result['categories'] as List<dynamic>? ?? <dynamic>[];
+      return raw.cast<Map<String, dynamic>>();
+    });
 
 // ── Search state ─────────────────────────────────────────────────────────────
 
@@ -25,7 +25,8 @@ class _CategorySearchNotifier extends Notifier<String> {
 
 final _categorySearchProvider =
     NotifierProvider<_CategorySearchNotifier, String>(
-        _CategorySearchNotifier.new);
+      _CategorySearchNotifier.new,
+    );
 
 // ── Shared input decoration ──────────────────────────────────────────────────
 
@@ -75,13 +76,19 @@ void _showCreateCategoryDialog(BuildContext context, WidgetRef ref) {
             TextField(
               controller: nameCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).name),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).name,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: slugCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).slug),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).slug,
+              ),
             ),
           ],
         ),
@@ -89,7 +96,10 @@ void _showCreateCategoryDialog(BuildContext context, WidgetRef ref) {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
@@ -117,10 +127,12 @@ void _showEditCategoryDialog(
   WidgetRef ref,
   Map<String, dynamic> category,
 ) {
-  final nameCtrl =
-      TextEditingController(text: category['name'] as String? ?? '');
-  final slugCtrl =
-      TextEditingController(text: category['slug'] as String? ?? '');
+  final nameCtrl = TextEditingController(
+    text: category['name'] as String? ?? '',
+  );
+  final slugCtrl = TextEditingController(
+    text: category['slug'] as String? ?? '',
+  );
   final tokens = ThemeTokens.of(context);
 
   showDialog<void>(
@@ -141,13 +153,19 @@ void _showEditCategoryDialog(
             TextField(
               controller: nameCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).name),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).name,
+              ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: slugCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(ctx).slug),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(ctx).slug,
+              ),
             ),
           ],
         ),
@@ -155,18 +173,18 @@ void _showEditCategoryDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
             final api = ref.read(apiClientProvider);
-            await api.updateAdminCategory(
-              (category['id'] as num).toInt(),
-              {
-                'name': nameCtrl.text,
-                'slug': slugCtrl.text,
-              },
-            );
+            await api.updateAdminCategory((category['id'] as num).toInt(), {
+              'name': nameCtrl.text,
+              'slug': slugCtrl.text,
+            });
             ref.invalidate(_categoriesProvider);
             if (ctx.mounted) Navigator.of(ctx).pop();
           },
@@ -206,13 +224,15 @@ void _showDeleteCategoryDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(ctx).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(ctx).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () async {
             final api = ref.read(apiClientProvider);
-            await api.deleteAdminCategory(
-                (category['id'] as num).toInt());
+            await api.deleteAdminCategory((category['id'] as num).toInt());
             ref.invalidate(_categoriesProvider);
             if (ctx.mounted) Navigator.of(ctx).pop();
           },
@@ -255,143 +275,138 @@ class CategoriesPage extends ConsumerWidget {
               children: [
                 Text(
                   AppLocalizations.of(context).categories,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
+                const Spacer(),
+                FilledButton.icon(
+                  onPressed: () => _showCreateCategoryDialog(context, ref),
+                  icon: const Icon(Icons.add, size: 16),
+                  label: Text(AppLocalizations.of(context).addCategory),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: tokens.accent,
+                    foregroundColor: tokens.bg,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            categoriesAsync.when(
+              data: (categories) => Text(
+                AppLocalizations.of(context).nCategories(categories.length),
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
               ),
-              const Spacer(),
-              FilledButton.icon(
-                onPressed: () => _showCreateCategoryDialog(context, ref),
-                icon: const Icon(Icons.add, size: 16),
-                label: Text(AppLocalizations.of(context).addCategory),
-                style: FilledButton.styleFrom(
-                  backgroundColor: tokens.accent,
-                  foregroundColor: tokens.bg,
-                ),
+              loading: () => Text(
+                AppLocalizations.of(context).loading,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
               ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          categoriesAsync.when(
-            data: (categories) => Text(
-              AppLocalizations.of(context).nCategories(categories.length),
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-            loading: () => Text(
-              AppLocalizations.of(context).loading,
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-            error: (_, _) => Text(
-              AppLocalizations.of(context).failedToLoadCategories,
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-          ),
-          const SizedBox(height: 16),
-
-          // ── Search ──────────────────────────────────────────────────────
-          SizedBox(
-            width: 320,
-            child: TextField(
-              onChanged: (v) =>
-                  ref.read(_categorySearchProvider.notifier).update(v),
-              style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).searchCategories,
-                hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                prefixIcon:
-                    Icon(Icons.search, size: 18, color: tokens.fgDim),
-                filled: true,
-                fillColor: tokens.bgAlt,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: tokens.border),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: tokens.border),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: tokens.accent),
-                ),
+              error: (_, _) => Text(
+                AppLocalizations.of(context).failedToLoadCategories,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 16),
 
-          // ── Category list ───────────────────────────────────────────────
-          Expanded(
-            child: categoriesAsync.when(
-              data: (categories) {
-                final filtered = categories.where((c) {
-                  if (query.isEmpty) return true;
-                  final name =
-                      (c['name'] as String? ?? '').toLowerCase();
-                  final slug =
-                      (c['slug'] as String? ?? '').toLowerCase();
-                  return name.contains(query) || slug.contains(query);
-                }).toList();
+            // ── Search ──────────────────────────────────────────────────────
+            SizedBox(
+              width: 320,
+              child: TextField(
+                onChanged: (v) =>
+                    ref.read(_categorySearchProvider.notifier).update(v),
+                style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).searchCategories,
+                  hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
+                  prefixIcon: Icon(Icons.search, size: 18, color: tokens.fgDim),
+                  filled: true,
+                  fillColor: tokens.bgAlt,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: tokens.border),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: tokens.border),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: tokens.accent),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
 
-                if (filtered.isEmpty) {
-                  return Center(
-                    child: Text(
-                      query.isEmpty
-                          ? AppLocalizations.of(context).noCategoriesYet
-                          : AppLocalizations.of(context).noCategoriesMatch(query),
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
-                  );
-                }
+            // ── Category list ───────────────────────────────────────────────
+            Expanded(
+              child: categoriesAsync.when(
+                data: (categories) {
+                  final filtered = categories.where((c) {
+                    if (query.isEmpty) return true;
+                    final name = (c['name'] as String? ?? '').toLowerCase();
+                    final slug = (c['slug'] as String? ?? '').toLowerCase();
+                    return name.contains(query) || slug.contains(query);
+                  }).toList();
 
-                return ListView.separated(
-                  itemCount: filtered.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    return _CategoryTile(
-                      tokens: tokens,
-                      category: filtered[index],
+                  if (filtered.isEmpty) {
+                    return Center(
+                      child: Text(
+                        query.isEmpty
+                            ? AppLocalizations.of(context).noCategoriesYet
+                            : AppLocalizations.of(
+                                context,
+                              ).noCategoriesMatch(query),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
                     );
-                  },
-                );
-              },
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (error, _) => Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.error_outline,
-                        size: 32, color: tokens.fgDim),
-                    const SizedBox(height: 8),
-                    Text(
-                      AppLocalizations.of(context).failedToLoadCategories,
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$error',
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 11),
-                    ),
-                    const SizedBox(height: 12),
-                    OutlinedButton(
-                      onPressed: () =>
-                          ref.invalidate(_categoriesProvider),
-                      child: Text(AppLocalizations.of(context).retry),
-                    ),
-                  ],
+                  }
+
+                  return ListView.separated(
+                    itemCount: filtered.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      return _CategoryTile(
+                        tokens: tokens,
+                        category: filtered[index],
+                      );
+                    },
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.error_outline, size: 32, color: tokens.fgDim),
+                      const SizedBox(height: 8),
+                      Text(
+                        AppLocalizations.of(context).failedToLoadCategories,
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$error',
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: () => ref.invalidate(_categoriesProvider),
+                        child: Text(AppLocalizations.of(context).retry),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
@@ -473,18 +488,14 @@ class _CategoryTile extends ConsumerWidget {
           ),
           const SizedBox(width: 8),
           IconButton(
-            icon:
-                Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
-            onPressed: () =>
-                _showEditCategoryDialog(context, ref, category),
+            icon: Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
+            onPressed: () => _showEditCategoryDialog(context, ref, category),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).edit,
           ),
           IconButton(
-            icon:
-                Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
-            onPressed: () =>
-                _showDeleteCategoryDialog(context, ref, category),
+            icon: Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
+            onPressed: () => _showDeleteCategoryDialog(context, ref, category),
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).delete,
           ),

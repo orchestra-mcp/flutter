@@ -169,8 +169,7 @@ final _widgetMap = {for (final w in allDashWidgets) w.id: w};
 
 class _WidgetVisibility extends Notifier<Map<String, bool>> {
   @override
-  Map<String, bool> build() =>
-      {for (final w in allDashWidgets) w.id: true};
+  Map<String, bool> build() => {for (final w in allDashWidgets) w.id: true};
 
   void toggle(String id) {
     state = {...state, id: !(state[id] ?? true)};
@@ -183,7 +182,8 @@ class _WidgetVisibility extends Notifier<Map<String, bool>> {
 
 final widgetVisibilityProvider =
     NotifierProvider<_WidgetVisibility, Map<String, bool>>(
-        _WidgetVisibility.new);
+      _WidgetVisibility.new,
+    );
 
 // ── Widget order state ──────────────────────────────────────────────────────
 
@@ -200,8 +200,9 @@ class _WidgetOrder extends Notifier<List<String>> {
   }
 }
 
-final widgetOrderProvider =
-    NotifierProvider<_WidgetOrder, List<String>>(_WidgetOrder.new);
+final widgetOrderProvider = NotifierProvider<_WidgetOrder, List<String>>(
+  _WidgetOrder.new,
+);
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -294,19 +295,21 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                 final color = w.iconColor ?? tokens.accent;
                 return GestureDetector(
                   onTap: () {
-                    ref
-                        .read(widgetVisibilityProvider.notifier)
-                        .show(w.id);
+                    ref.read(widgetVisibilityProvider.notifier).show(w.id);
                     Navigator.pop(ctx);
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 6),
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: color.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                          color: color.withValues(alpha: 0.4), width: 0.5),
+                        color: color.withValues(alpha: 0.4),
+                        width: 0.5,
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -355,8 +358,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
     final visibility = ref.watch(widgetVisibilityProvider);
     final order = ref.watch(widgetOrderProvider);
     final visibleCards = order
-        .where(
-            (id) => visibility[id] == true && _widgetMap.containsKey(id))
+        .where((id) => visibility[id] == true && _widgetMap.containsKey(id))
         .map((id) => _widgetMap[id]!)
         .toList();
 
@@ -399,9 +401,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
               ),
 
               // ── Team updates banner ────────────────────────────
-              const SliverToBoxAdapter(
-                child: TeamUpdatesBanner(),
-              ),
+              const SliverToBoxAdapter(child: TeamUpdatesBanner()),
 
               // ── Edit bar (only when editing) ─────────────────────
               if (_editMode)
@@ -411,11 +411,12 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: () =>
-                              setState(() => _editMode = false),
+                          onTap: () => setState(() => _editMode = false),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: tokens.accent.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(10),
@@ -423,8 +424,11 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.check_rounded,
-                                    color: tokens.accent, size: 16),
+                                Icon(
+                                  Icons.check_rounded,
+                                  color: tokens.accent,
+                                  size: 16,
+                                ),
                                 const SizedBox(width: 6),
                                 Text(
                                   l10n.done,
@@ -444,7 +448,9 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                             onTap: _showHiddenWidgets,
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 8),
+                                horizontal: 10,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 color: tokens.accent.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(10),
@@ -452,8 +458,11 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.add_rounded,
-                                      color: tokens.accent, size: 16),
+                                  Icon(
+                                    Icons.add_rounded,
+                                    color: tokens.accent,
+                                    size: 16,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     l10n.add,
@@ -501,9 +510,7 @@ class _SummaryScreenState extends ConsumerState<SummaryScreen> {
                   }
                 },
                 onRemove: (id) {
-                  ref
-                      .read(widgetVisibilityProvider.notifier)
-                      .toggle(id);
+                  ref.read(widgetVisibilityProvider.notifier).toggle(id);
                 },
               ),
 
@@ -535,73 +542,83 @@ class _ProfileDropdown extends ConsumerWidget {
     return Material(
       color: Colors.transparent,
       child: PopupMenuButton<String>(
-      offset: const Offset(0, 48),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: tokens.bgAlt,
-      surfaceTintColor: Colors.transparent,
-      onSelected: (value) {
-        switch (value) {
-          case 'settings':
-            context.push(Routes.settings);
-          case 'logout':
-            ref.read(authProvider.notifier).logout();
-            context.go(Routes.login);
-          case 'switch_team':
-            showTeamSwitcher(context);
-          case 'switch_workspace':
-            showWorkspaceSwitcher(context);
-        }
-      },
-      itemBuilder: (_) => [
-        _buildHeader(l10n),
-        const PopupMenuDivider(),
-        _buildItem('settings', Icons.settings_outlined, l10n.settings),
-        _buildItem('switch_team', Icons.group_outlined, l10n.switchTeam),
-        _buildItem('switch_workspace', Icons.folder_outlined, l10n.switchWorkspace),
-        const PopupMenuDivider(),
-        _buildItem('logout', Icons.logout_rounded, l10n.signOut, isDestructive: true),
-      ],
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                _greeting(l10n),
-                style: TextStyle(color: tokens.fgDim, fontSize: 12),
-              ),
-              Text(
-                fullName,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.2,
-                ),
-              ),
-            ],
+        offset: const Offset(0, 48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: tokens.bgAlt,
+        surfaceTintColor: Colors.transparent,
+        onSelected: (value) {
+          switch (value) {
+            case 'settings':
+              context.push(Routes.settings);
+            case 'logout':
+              ref.read(authProvider.notifier).logout();
+              context.go(Routes.login);
+            case 'switch_team':
+              showTeamSwitcher(context);
+            case 'switch_workspace':
+              showWorkspaceSwitcher(context);
+          }
+        },
+        itemBuilder: (_) => [
+          _buildHeader(l10n),
+          const PopupMenuDivider(),
+          _buildItem('settings', Icons.settings_outlined, l10n.settings),
+          _buildItem('switch_team', Icons.group_outlined, l10n.switchTeam),
+          _buildItem(
+            'switch_workspace',
+            Icons.folder_outlined,
+            l10n.switchWorkspace,
           ),
-          const SizedBox(width: 10),
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: tokens.accent.withValues(alpha: 0.2),
-            backgroundImage:
-                avatarUrl != null ? NetworkImage(avatarUrl!) : null,
-            child: avatarUrl == null
-                ? Text(
-                    fullName.isNotEmpty ? fullName[0].toUpperCase() : 'U',
-                    style: TextStyle(
-                      color: tokens.accent,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
-                    ),
-                  )
-                : null,
+          const PopupMenuDivider(),
+          _buildItem(
+            'logout',
+            Icons.logout_rounded,
+            l10n.signOut,
+            isDestructive: true,
           ),
         ],
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  _greeting(l10n),
+                  style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                ),
+                Text(
+                  fullName,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 10),
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: tokens.accent.withValues(alpha: 0.2),
+              backgroundImage: avatarUrl != null
+                  ? NetworkImage(avatarUrl!)
+                  : null,
+              child: avatarUrl == null
+                  ? Text(
+                      fullName.isNotEmpty ? fullName[0].toUpperCase() : 'U',
+                      style: TextStyle(
+                        color: tokens.accent,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                      ),
+                    )
+                  : null,
+            ),
+          ],
+        ),
       ),
-    ),
     );
   }
 
@@ -614,8 +631,9 @@ class _ProfileDropdown extends ConsumerWidget {
           CircleAvatar(
             radius: 16,
             backgroundColor: tokens.accent.withValues(alpha: 0.2),
-            backgroundImage:
-                avatarUrl != null ? NetworkImage(avatarUrl!) : null,
+            backgroundImage: avatarUrl != null
+                ? NetworkImage(avatarUrl!)
+                : null,
             child: avatarUrl == null
                 ? Text(
                     fullName.isNotEmpty ? fullName[0].toUpperCase() : 'U',

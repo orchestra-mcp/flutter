@@ -17,12 +17,12 @@ enum TunnelMessageType {
   error;
 
   static TunnelMessageType fromString(String value) => switch (value) {
-        'action' => TunnelMessageType.action,
-        'response' => TunnelMessageType.response,
-        'status' => TunnelMessageType.status,
-        'error' => TunnelMessageType.error,
-        _ => TunnelMessageType.status,
-      };
+    'action' => TunnelMessageType.action,
+    'response' => TunnelMessageType.response,
+    'status' => TunnelMessageType.status,
+    'error' => TunnelMessageType.error,
+    _ => TunnelMessageType.status,
+  };
 }
 
 // ─── Action Types ───────────────────────────────────────────────────────────
@@ -36,13 +36,13 @@ enum TunnelActionType {
   custom;
 
   static TunnelActionType fromString(String value) => switch (value) {
-        'summarize' => TunnelActionType.summarize,
-        'explain' => TunnelActionType.explain,
-        'fix' => TunnelActionType.fix,
-        'translate' => TunnelActionType.translate,
-        'custom' => TunnelActionType.custom,
-        _ => TunnelActionType.custom,
-      };
+    'summarize' => TunnelActionType.summarize,
+    'explain' => TunnelActionType.explain,
+    'fix' => TunnelActionType.fix,
+    'translate' => TunnelActionType.translate,
+    'custom' => TunnelActionType.custom,
+    _ => TunnelActionType.custom,
+  };
 }
 
 // ─── Response Status ────────────────────────────────────────────────────────
@@ -55,12 +55,12 @@ enum TunnelResponseStatus {
   failed;
 
   static TunnelResponseStatus fromString(String value) => switch (value) {
-        'pending' => TunnelResponseStatus.pending,
-        'running' => TunnelResponseStatus.running,
-        'completed' => TunnelResponseStatus.completed,
-        'failed' => TunnelResponseStatus.failed,
-        _ => TunnelResponseStatus.pending,
-      };
+    'pending' => TunnelResponseStatus.pending,
+    'running' => TunnelResponseStatus.running,
+    'completed' => TunnelResponseStatus.completed,
+    'failed' => TunnelResponseStatus.failed,
+    _ => TunnelResponseStatus.pending,
+  };
 }
 
 // ─── Tunnel Message ─────────────────────────────────────────────────────────
@@ -100,22 +100,22 @@ class TunnelMessage {
   // ── Serialisation ───────────────────────────────────────────────────────
 
   factory TunnelMessage.fromJson(Map<String, dynamic> json) => TunnelMessage(
-        id: json['id'] as String,
-        type: TunnelMessageType.fromString(json['type'] as String? ?? ''),
-        payload: (json['payload'] as Map<String, dynamic>?) ?? {},
-        timestamp: DateTime.parse(json['timestamp'] as String),
-        sourceId: json['source_id'] as String?,
-        targetId: json['target_id'] as String?,
-      );
+    id: json['id'] as String,
+    type: TunnelMessageType.fromString(json['type'] as String? ?? ''),
+    payload: (json['payload'] as Map<String, dynamic>?) ?? {},
+    timestamp: DateTime.parse(json['timestamp'] as String),
+    sourceId: json['source_id'] as String?,
+    targetId: json['target_id'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'type': type.name,
-        'payload': payload,
-        'timestamp': timestamp.toIso8601String(),
-        if (sourceId != null) 'source_id': sourceId,
-        if (targetId != null) 'target_id': targetId,
-      };
+    'id': id,
+    'type': type.name,
+    'payload': payload,
+    'timestamp': timestamp.toIso8601String(),
+    if (sourceId != null) 'source_id': sourceId,
+    if (targetId != null) 'target_id': targetId,
+  };
 
   /// Convenience: encode as a JSON string for WebSocket send.
   String encode() => jsonEncode(toJson());
@@ -153,18 +153,18 @@ class TunnelAction {
   // ── Serialisation ───────────────────────────────────────────────────────
 
   factory TunnelAction.fromJson(Map<String, dynamic> json) => TunnelAction(
-        actionType:
-            TunnelActionType.fromString(json['action_type'] as String? ?? ''),
-        context: json['context'] as String? ?? '',
-        parameters:
-            (json['parameters'] as Map<String, dynamic>?) ?? {},
-      );
+    actionType: TunnelActionType.fromString(
+      json['action_type'] as String? ?? '',
+    ),
+    context: json['context'] as String? ?? '',
+    parameters: (json['parameters'] as Map<String, dynamic>?) ?? {},
+  );
 
   Map<String, dynamic> toJson() => {
-        'action_type': actionType.name,
-        'context': context,
-        'parameters': parameters,
-      };
+    'action_type': actionType.name,
+    'context': context,
+    'parameters': parameters,
+  };
 
   @override
   String toString() => 'TunnelAction(${actionType.name})';
@@ -206,21 +206,20 @@ class TunnelResponse {
   // ── Serialisation ───────────────────────────────────────────────────────
 
   factory TunnelResponse.fromJson(Map<String, dynamic> json) => TunnelResponse(
-        requestId: json['request_id'] as String,
-        status: TunnelResponseStatus.fromString(
-            json['status'] as String? ?? ''),
-        result: json['result'] as String?,
-        progress: (json['progress'] as num?)?.toDouble(),
-        error: json['error'] as String?,
-      );
+    requestId: json['request_id'] as String,
+    status: TunnelResponseStatus.fromString(json['status'] as String? ?? ''),
+    result: json['result'] as String?,
+    progress: (json['progress'] as num?)?.toDouble(),
+    error: json['error'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'request_id': requestId,
-        'status': status.name,
-        if (result != null) 'result': result,
-        if (progress != null) 'progress': progress,
-        if (error != null) 'error': error,
-      };
+    'request_id': requestId,
+    'status': status.name,
+    if (result != null) 'result': result,
+    if (progress != null) 'progress': progress,
+    if (error != null) 'error': error,
+  };
 
   /// Create a copy with updated fields.
   TunnelResponse copyWith({
@@ -228,14 +227,13 @@ class TunnelResponse {
     String? result,
     double? progress,
     String? error,
-  }) =>
-      TunnelResponse(
-        requestId: requestId,
-        status: status ?? this.status,
-        result: result ?? this.result,
-        progress: progress ?? this.progress,
-        error: error ?? this.error,
-      );
+  }) => TunnelResponse(
+    requestId: requestId,
+    status: status ?? this.status,
+    result: result ?? this.result,
+    progress: progress ?? this.progress,
+    error: error ?? this.error,
+  );
 
   @override
   String toString() => 'TunnelResponse($requestId, ${status.name})';

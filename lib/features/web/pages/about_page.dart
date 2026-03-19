@@ -13,7 +13,12 @@ class AboutPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: tokens.bg,
-      appBar: AppBar(title: Text(l10n.aboutOrchestra), backgroundColor: tokens.bg, foregroundColor: tokens.fgBright, elevation: 0),
+      appBar: AppBar(
+        title: Text(l10n.aboutOrchestra),
+        backgroundColor: tokens.bg,
+        foregroundColor: tokens.fgBright,
+        elevation: 0,
+      ),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
@@ -21,7 +26,14 @@ class AboutPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.ourMission, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: tokens.fgBright)),
+                Text(
+                  l10n.ourMission,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: tokens.fgBright,
+                  ),
+                ),
                 const SizedBox(height: 12),
                 Text(
                   l10n.missionStatement,

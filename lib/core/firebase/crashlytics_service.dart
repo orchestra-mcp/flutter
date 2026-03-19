@@ -63,12 +63,7 @@ abstract final class CrashlyticsService {
     String? reason,
   }) async {
     if (!Env.enableCrashlytics) return;
-    await _crashlytics?.recordError(
-      error,
-      stack,
-      reason: reason,
-      fatal: false,
-    );
+    await _crashlytics?.recordError(error, stack, reason: reason, fatal: false);
   }
 
   static Future<void> log(String message) async {

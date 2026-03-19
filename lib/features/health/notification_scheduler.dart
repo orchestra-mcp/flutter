@@ -65,7 +65,9 @@ class NotificationScheduler {
     final minute = _int(profile, 'weightAlertMinute', 0);
 
     await _service.scheduleWeightCheckIn(hour: hour, minute: minute);
-    debugPrint('[NotifScheduler] Weight alert at $hour:${minute.toString().padLeft(2, '0')}');
+    debugPrint(
+      '[NotifScheduler] Weight alert at $hour:${minute.toString().padLeft(2, '0')}',
+    );
   }
 
   /// Hygiene reminder -- fires after the configured delay in days.
@@ -119,7 +121,9 @@ class NotificationScheduler {
     final minute = _int(profile, 'coffeeAlertMinute', 0);
 
     await _service.scheduleCoffeeCutoff(hour: hour, minute: minute);
-    debugPrint('[NotifScheduler] Coffee cutoff at $hour:${minute.toString().padLeft(2, '0')}');
+    debugPrint(
+      '[NotifScheduler] Coffee cutoff at $hour:${minute.toString().padLeft(2, '0')}',
+    );
   }
 
   /// Hydration reminders -- periodic with the configured gap.

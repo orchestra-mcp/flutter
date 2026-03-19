@@ -36,16 +36,19 @@ class Note {
   /// Handles both PowerSync format (content) and MCP format (body).
   factory Note.fromRow(Map<String, dynamic> row) {
     // MCP uses 'body', PowerSync/REST uses 'content'.
-    final content = row['content']?.toString() ??
-        row['body']?.toString() ?? '';
+    final content = row['content']?.toString() ?? row['body']?.toString() ?? '';
 
     // MCP may return pinned as bool, PowerSync as int.
     final pinnedRaw = row['pinned'];
-    final pinned = pinnedRaw is bool ? pinnedRaw : (pinnedRaw as num?)?.toInt() == 1;
+    final pinned = pinnedRaw is bool
+        ? pinnedRaw
+        : (pinnedRaw as num?)?.toInt() == 1;
 
     // MCP may return tags as List, PowerSync as JSON string.
     final tagsRaw = row['tags'];
-    final tags = tagsRaw is List ? jsonEncode(tagsRaw) : tagsRaw?.toString() ?? '[]';
+    final tags = tagsRaw is List
+        ? jsonEncode(tagsRaw)
+        : tagsRaw?.toString() ?? '[]';
 
     return Note(
       id: row['id']?.toString() ?? '',
@@ -76,20 +79,20 @@ const _uuid = Uuid();
 class NoteRepository {
   /// PowerSync-backed constructor (mobile/web).
   NoteRepository({required PowerSyncDatabase db})
-      : _db = db,
-        _dao = null,
-        _client = null,
-        _localDb = null;
+    : _db = db,
+      _dao = null,
+      _client = null,
+      _localDb = null;
 
   /// Drift + MCP-backed constructor (desktop).
   NoteRepository.fromDrift({
     required NoteDao dao,
     required ApiClient client,
     required LocalDatabase db,
-  })  : _db = null,
-        _dao = dao,
-        _client = client,
-        _localDb = db;
+  }) : _db = null,
+       _dao = dao,
+       _client = client,
+       _localDb = db;
 
   final PowerSyncDatabase? _db;
   final NoteDao? _dao;
@@ -128,10 +131,9 @@ class NoteRepository {
   /// Returns a single note by [id], or `null` if not found.
   Future<Note?> getById(String id) async {
     if (_usePowerSync) {
-      final results = await _db!.getAll(
-        'SELECT * FROM notes WHERE id = ?',
-        [id],
-      );
+      final results = await _db!.getAll('SELECT * FROM notes WHERE id = ?', [
+        id,
+      ]);
       if (results.isEmpty) return null;
       return Note.fromRow(results.first);
     }
@@ -189,9 +191,13 @@ class NoteRepository {
     }
     final all = await listAll();
     final q = query.trim().toLowerCase();
-    return all.where((n) =>
-        n.title.toLowerCase().contains(q) ||
-        n.content.toLowerCase().contains(q)).toList();
+    return all
+        .where(
+          (n) =>
+              n.title.toLowerCase().contains(q) ||
+              n.content.toLowerCase().contains(q),
+        )
+        .toList();
   }
 
   // ── Write ─────────────────────────────────────────────────────────────────
@@ -241,15 +247,30 @@ class NoteRepository {
     if (_usePowerSync) {
       final sets = <String>[];
       final params = <dynamic>[];
-      if (title != null) { sets.add('title = ?'); params.add(title); }
-      if (content != null) { sets.add('content = ?'); params.add(content); }
-      if (pinned != null) { sets.add('pinned = ?'); params.add(pinned ? 1 : 0); }
-      if (tags != null) { sets.add('tags = ?'); params.add(jsonEncode(tags)); }
+      if (title != null) {
+        sets.add('title = ?');
+        params.add(title);
+      }
+      if (content != null) {
+        sets.add('content = ?');
+        params.add(content);
+      }
+      if (pinned != null) {
+        sets.add('pinned = ?');
+        params.add(pinned ? 1 : 0);
+      }
+      if (tags != null) {
+        sets.add('tags = ?');
+        params.add(jsonEncode(tags));
+      }
       if (sets.isEmpty) return;
       sets.add('updated_at = ?');
       params.add(DateTime.now().toIso8601String());
       params.add(id);
-      await _db!.execute('UPDATE notes SET ${sets.join(', ')} WHERE id = ?', params);
+      await _db!.execute(
+        'UPDATE notes SET ${sets.join(', ')} WHERE id = ?',
+        params,
+      );
       return;
     }
 

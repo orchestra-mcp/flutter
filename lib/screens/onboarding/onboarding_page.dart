@@ -35,10 +35,7 @@ class OnboardingPageData {
 /// All colours come from [ThemeTokens.of(context)]; no hex values are
 /// hard-coded here.
 class OnboardingPage extends StatelessWidget {
-  const OnboardingPage({
-    super.key,
-    required this.data,
-  });
+  const OnboardingPage({super.key, required this.data});
 
   final OnboardingPageData data;
 
@@ -102,17 +99,10 @@ class _Illustration extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
           color: tint.withValues(alpha: 0.18),
-          border: Border.all(
-            color: tint.withValues(alpha: 0.35),
-            width: 1,
-          ),
+          border: Border.all(color: tint.withValues(alpha: 0.35), width: 1),
         ),
         child: Center(
-          child: Icon(
-            data.icon,
-            size: 80,
-            color: tint.withValues(alpha: 0.9),
-          ),
+          child: Icon(data.icon, size: 80, color: tint.withValues(alpha: 0.9)),
         ),
       ),
     );

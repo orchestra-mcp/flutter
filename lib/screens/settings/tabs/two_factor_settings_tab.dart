@@ -63,7 +63,10 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
       }
     } on DioException catch (e) {
       if (mounted) {
-        setState(() => _error = e.response?.data?['error']?.toString() ?? 'Setup failed');
+        setState(
+          () =>
+              _error = e.response?.data?['error']?.toString() ?? 'Setup failed',
+        );
       }
     } catch (e) {
       if (mounted) setState(() => _error = e.toString());
@@ -100,7 +103,10 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
       }
     } on DioException catch (e) {
       if (mounted) {
-        setState(() => _error = e.response?.data?['error']?.toString() ?? 'Verification failed');
+        setState(
+          () => _error =
+              e.response?.data?['error']?.toString() ?? 'Verification failed',
+        );
       }
     } catch (e) {
       if (mounted) setState(() => _error = e.toString());
@@ -132,7 +138,10 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
       }
     } on DioException catch (e) {
       if (mounted) {
-        setState(() => _error = e.response?.data?['error']?.toString() ?? 'Failed to disable 2FA');
+        setState(
+          () => _error =
+              e.response?.data?['error']?.toString() ?? 'Failed to disable 2FA',
+        );
       }
     } catch (e) {
       if (mounted) setState(() => _error = e.toString());
@@ -198,9 +207,7 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
                       enabled ? 'Enabled' : 'Disabled',
                       style: TextStyle(
                         fontSize: 11,
-                        color: enabled
-                            ? const Color(0xFF22C55E)
-                            : tokens.fgDim,
+                        color: enabled ? const Color(0xFF22C55E) : tokens.fgDim,
                       ),
                     ),
                   ],
@@ -212,25 +219,34 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: tokens.accent,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                   ),
                   child: _setupInProgress
                       ? const SizedBox(
-                          width: 16, height: 16,
+                          width: 16,
+                          height: 16,
                           child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white),
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
                         )
                       : const Text('Enable', style: TextStyle(fontSize: 13)),
                 ),
               if (enabled)
-                const Text('Active',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF22C55E),
-                    )),
+                const Text(
+                  'Active',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF22C55E),
+                  ),
+                ),
             ],
           ),
         ),
@@ -307,8 +323,11 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.copy_rounded,
-                            size: 16, color: tokens.accent),
+                        icon: Icon(
+                          Icons.copy_rounded,
+                          size: 16,
+                          color: tokens.accent,
+                        ),
                         onPressed: () {
                           Clipboard.setData(ClipboardData(text: _secret!));
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -316,7 +335,10 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
                           );
                         },
                         tooltip: 'Copy',
-                        constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                        constraints: const BoxConstraints(
+                          minWidth: 32,
+                          minHeight: 32,
+                        ),
                       ),
                     ],
                   ),
@@ -345,13 +367,17 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 13),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: _verifying
                   ? const SizedBox(
-                      width: 18, height: 18,
+                      width: 18,
+                      height: 18,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                     )
                   : Text(AppLocalizations.of(context).verifyAndEnable),
             ),
@@ -380,8 +406,10 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
               hintStyle: TextStyle(color: tokens.fgDim),
               filled: true,
               fillColor: tokens.bgAlt,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 14,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: BorderSide(color: tokens.border),
@@ -406,16 +434,25 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 13),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: _disabling
                   ? const SizedBox(
-                      width: 18, height: 18,
+                      width: 18,
+                      height: 18,
                       child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                     )
-                  : const Text('Disable 2FA',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                  : const Text(
+                      'Disable 2FA',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
             ),
           ),
         ],
@@ -424,13 +461,13 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -459,8 +496,10 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
         ),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 14,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),
@@ -478,24 +517,29 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
   }
 
   Widget _errorBanner(OrchestraColorTokens tokens, String message) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.red.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    decoration: BoxDecoration(
+      color: Colors.red.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(8),
+      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+    ),
+    child: Row(
+      children: [
+        const Icon(
+          Icons.error_outline_rounded,
+          color: Colors.redAccent,
+          size: 18,
         ),
-        child: Row(
-          children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Colors.redAccent, size: 18),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(message,
-                  style: const TextStyle(color: Colors.redAccent, fontSize: 13)),
-            ),
-          ],
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+          ),
         ),
-      );
+      ],
+    ),
+  );
 
   Widget _successBanner(OrchestraColorTokens tokens, String message) =>
       Container(
@@ -504,17 +548,22 @@ class _TwoFactorSettingsTabState extends ConsumerState<TwoFactorSettingsTab> {
           color: const Color(0xFF22C55E).withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-              color: const Color(0xFF22C55E).withValues(alpha: 0.3)),
+            color: const Color(0xFF22C55E).withValues(alpha: 0.3),
+          ),
         ),
         child: Row(
           children: [
-            const Icon(Icons.check_circle_outline_rounded,
-                color: Color(0xFF22C55E), size: 18),
+            const Icon(
+              Icons.check_circle_outline_rounded,
+              color: Color(0xFF22C55E),
+              size: 18,
+            ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(message,
-                  style: const TextStyle(
-                      color: Color(0xFF22C55E), fontSize: 13)),
+              child: Text(
+                message,
+                style: const TextStyle(color: Color(0xFF22C55E), fontSize: 13),
+              ),
             ),
           ],
         ),

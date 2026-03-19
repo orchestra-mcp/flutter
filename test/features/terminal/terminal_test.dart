@@ -170,8 +170,9 @@ void main() {
 
     test('copyWith returns new instance with updated status', () {
       final original = makeSession(status: TerminalSessionStatus.connecting);
-      final updated =
-          original.copyWith(status: TerminalSessionStatus.connected);
+      final updated = original.copyWith(
+        status: TerminalSessionStatus.connected,
+      );
       expect(updated.status, TerminalSessionStatus.connected);
       expect(updated.id, original.id);
       expect(updated.type, original.type);
@@ -210,8 +211,9 @@ void main() {
         sshPassword: 'pass',
         sshKeyFile: '/path/to/key',
       );
-      final updated =
-          original.copyWith(status: TerminalSessionStatus.connected);
+      final updated = original.copyWith(
+        status: TerminalSessionStatus.connected,
+      );
       expect(updated.status, TerminalSessionStatus.connected);
       expect(updated.sshHost, 'host');
       expect(updated.sshUser, 'user');

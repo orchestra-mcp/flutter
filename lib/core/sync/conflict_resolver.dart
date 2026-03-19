@@ -74,10 +74,7 @@ class ConflictRecord {
   final DateTime? resolvedAt;
   final ResolutionKind? resolution;
 
-  ConflictRecord copyWith({
-    DateTime? resolvedAt,
-    ResolutionKind? resolution,
-  }) =>
+  ConflictRecord copyWith({DateTime? resolvedAt, ResolutionKind? resolution}) =>
       ConflictRecord(
         id: id,
         entityType: entityType,
@@ -90,33 +87,33 @@ class ConflictRecord {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'local_delta': localDelta.toJson(),
-        'remote_delta': remoteDelta.toJson(),
-        'detected_at': detectedAt.toUtc().toIso8601String(),
-        if (resolvedAt != null)
-          'resolved_at': resolvedAt!.toUtc().toIso8601String(),
-        if (resolution != null) 'resolution': resolution!.name,
-      };
+    'id': id,
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'local_delta': localDelta.toJson(),
+    'remote_delta': remoteDelta.toJson(),
+    'detected_at': detectedAt.toUtc().toIso8601String(),
+    if (resolvedAt != null)
+      'resolved_at': resolvedAt!.toUtc().toIso8601String(),
+    if (resolution != null) 'resolution': resolution!.name,
+  };
 
   factory ConflictRecord.fromJson(Map<String, dynamic> json) => ConflictRecord(
-        id: json['id'] as String,
-        entityType: json['entity_type'] as String,
-        entityId: json['entity_id'] as String,
-        localDelta:
-            SyncDelta.fromJson(json['local_delta'] as Map<String, dynamic>),
-        remoteDelta:
-            SyncDelta.fromJson(json['remote_delta'] as Map<String, dynamic>),
-        detectedAt: DateTime.parse(json['detected_at'] as String),
-        resolvedAt: json['resolved_at'] != null
-            ? DateTime.parse(json['resolved_at'] as String)
-            : null,
-        resolution: json['resolution'] != null
-            ? ResolutionKind.values.byName(json['resolution'] as String)
-            : null,
-      );
+    id: json['id'] as String,
+    entityType: json['entity_type'] as String,
+    entityId: json['entity_id'] as String,
+    localDelta: SyncDelta.fromJson(json['local_delta'] as Map<String, dynamic>),
+    remoteDelta: SyncDelta.fromJson(
+      json['remote_delta'] as Map<String, dynamic>,
+    ),
+    detectedAt: DateTime.parse(json['detected_at'] as String),
+    resolvedAt: json['resolved_at'] != null
+        ? DateTime.parse(json['resolved_at'] as String)
+        : null,
+    resolution: json['resolution'] != null
+        ? ResolutionKind.values.byName(json['resolution'] as String)
+        : null,
+  );
 }
 
 // ---------------------------------------------------------------------------

@@ -67,141 +67,141 @@ class _EntityMeta {
   final String? smartHint;
 
   static _EntityMeta of(McpEntityType type) => switch (type) {
-        McpEntityType.agent => _EntityMeta(
-            label: 'Agent',
-            icon: Icons.smart_toy_rounded,
-            color: const Color(0xFFA78BFA),
-            listRoute: Routes.agents,
-            hasBody: true,
-            bodyKey: 'system_prompt',
-            smartHint:
-                'e.g. Create an agent that handles code reviews for Go projects',
-            fields: [
-              const _FieldDef('name', 'Name', required: true),
-              const _FieldDef('description', 'Description'),
-              const _FieldDef('model', 'Model'),
-            ],
-          ),
-        McpEntityType.skill => _EntityMeta(
-            label: 'Skill',
-            icon: Icons.bolt_rounded,
-            color: const Color(0xFFF97316),
-            listRoute: Routes.skills,
-            hasBody: true,
-            bodyKey: 'description',
-            smartHint:
-                'e.g. Create a skill that generates API docs from OpenAPI specs',
-            fields: [
-              const _FieldDef('name', 'Name', required: true),
-              const _FieldDef('command', 'Command (e.g. /my-skill)'),
-              const _FieldDef('description', 'Description'),
-            ],
-          ),
-        McpEntityType.workflow => _EntityMeta(
-            label: 'Workflow',
-            icon: Icons.account_tree_rounded,
-            color: const Color(0xFFEC4899),
-            listRoute: Routes.workflows,
-            hasBody: false,
-            smartHint:
-                'e.g. Create a scrum workflow with backlog, sprint, review, and done states',
-            fields: [
-              const _FieldDef('name', 'Name', required: true),
-              const _FieldDef('description', 'Description'),
-              const _FieldDef('initial_state', 'Initial State'),
-            ],
-          ),
-        McpEntityType.doc => _EntityMeta(
-            label: 'Doc',
-            icon: Icons.description_rounded,
-            color: const Color(0xFF60A5FA),
-            listRoute: Routes.docs,
-            hasBody: true,
-            bodyKey: 'content',
-            smartHint:
-                'e.g. Write a getting started guide for new contributors',
-            fields: [
-              const _FieldDef('title', 'Title', required: true),
-              const _FieldDef('path', 'Path (e.g. docs/my-doc.md)'),
-            ],
-          ),
-        McpEntityType.feature => _EntityMeta(
-            label: 'Feature',
-            icon: Icons.auto_awesome_rounded,
-            color: const Color(0xFF00E5FF),
-            listRoute: Routes.projects,
-            hasBody: true,
-            bodyKey: 'description',
-            smartHint: 'e.g. Add dark mode support to the settings page',
-            fields: [
-              const _FieldDef('title', 'Title', required: true),
-              const _FieldDef('description', 'Description'),
-              const _FieldDef('kind', 'Kind',
-                  options: ['feature', 'bug', 'hotfix', 'chore']),
-              const _FieldDef('priority', 'Priority',
-                  options: ['P0', 'P1', 'P2', 'P3']),
-              const _FieldDef('project_id', 'Project ID', required: true),
-            ],
-          ),
-        McpEntityType.plan => _EntityMeta(
-            label: 'Plan',
-            icon: Icons.map_rounded,
-            color: const Color(0xFF4ADE80),
-            listRoute: Routes.projects,
-            hasBody: true,
-            bodyKey: 'description',
-            smartHint:
-                'e.g. Plan the migration from REST to GraphQL in 3 phases',
-            fields: [
-              const _FieldDef('title', 'Title', required: true),
-              const _FieldDef('description', 'Description'),
-              const _FieldDef('project_id', 'Project ID', required: true),
-            ],
-          ),
-        McpEntityType.request => _EntityMeta(
-            label: 'Request',
-            icon: Icons.inbox_rounded,
-            color: const Color(0xFFFBBF24),
-            listRoute: Routes.projects,
-            hasBody: true,
-            bodyKey: 'description',
-            smartHint:
-                'e.g. Request a bulk export feature for the admin dashboard',
-            fields: [
-              const _FieldDef('title', 'Title', required: true),
-              const _FieldDef('description', 'Description'),
-              const _FieldDef('kind', 'Kind',
-                  options: ['feature', 'bug', 'hotfix']),
-              const _FieldDef('priority', 'Priority',
-                  options: ['P0', 'P1', 'P2', 'P3']),
-            ],
-          ),
-        McpEntityType.person => _EntityMeta(
-            label: 'Person',
-            icon: Icons.person_rounded,
-            color: const Color(0xFF818CF8),
-            listRoute: Routes.projects,
-            smartHint:
-                'e.g. Add a team member named Sarah, senior engineer, Pacific timezone',
-            fields: [
-              const _FieldDef('name', 'Name', required: true),
-              const _FieldDef('role', 'Role'),
-              const _FieldDef('email', 'Email'),
-              const _FieldDef('github_email', 'GitHub Email'),
-              const _FieldDef('bio', 'Bio'),
-              const _FieldDef('timezone', 'Timezone'),
-            ],
-          ),
-      };
+    McpEntityType.agent => _EntityMeta(
+      label: 'Agent',
+      icon: Icons.smart_toy_rounded,
+      color: const Color(0xFFA78BFA),
+      listRoute: Routes.agents,
+      hasBody: true,
+      bodyKey: 'system_prompt',
+      smartHint:
+          'e.g. Create an agent that handles code reviews for Go projects',
+      fields: [
+        const _FieldDef('name', 'Name', required: true),
+        const _FieldDef('description', 'Description'),
+        const _FieldDef('model', 'Model'),
+      ],
+    ),
+    McpEntityType.skill => _EntityMeta(
+      label: 'Skill',
+      icon: Icons.bolt_rounded,
+      color: const Color(0xFFF97316),
+      listRoute: Routes.skills,
+      hasBody: true,
+      bodyKey: 'description',
+      smartHint:
+          'e.g. Create a skill that generates API docs from OpenAPI specs',
+      fields: [
+        const _FieldDef('name', 'Name', required: true),
+        const _FieldDef('command', 'Command (e.g. /my-skill)'),
+        const _FieldDef('description', 'Description'),
+      ],
+    ),
+    McpEntityType.workflow => _EntityMeta(
+      label: 'Workflow',
+      icon: Icons.account_tree_rounded,
+      color: const Color(0xFFEC4899),
+      listRoute: Routes.workflows,
+      hasBody: false,
+      smartHint:
+          'e.g. Create a scrum workflow with backlog, sprint, review, and done states',
+      fields: [
+        const _FieldDef('name', 'Name', required: true),
+        const _FieldDef('description', 'Description'),
+        const _FieldDef('initial_state', 'Initial State'),
+      ],
+    ),
+    McpEntityType.doc => _EntityMeta(
+      label: 'Doc',
+      icon: Icons.description_rounded,
+      color: const Color(0xFF60A5FA),
+      listRoute: Routes.docs,
+      hasBody: true,
+      bodyKey: 'content',
+      smartHint: 'e.g. Write a getting started guide for new contributors',
+      fields: [
+        const _FieldDef('title', 'Title', required: true),
+        const _FieldDef('path', 'Path (e.g. docs/my-doc.md)'),
+      ],
+    ),
+    McpEntityType.feature => _EntityMeta(
+      label: 'Feature',
+      icon: Icons.auto_awesome_rounded,
+      color: const Color(0xFF00E5FF),
+      listRoute: Routes.projects,
+      hasBody: true,
+      bodyKey: 'description',
+      smartHint: 'e.g. Add dark mode support to the settings page',
+      fields: [
+        const _FieldDef('title', 'Title', required: true),
+        const _FieldDef('description', 'Description'),
+        const _FieldDef(
+          'kind',
+          'Kind',
+          options: ['feature', 'bug', 'hotfix', 'chore'],
+        ),
+        const _FieldDef(
+          'priority',
+          'Priority',
+          options: ['P0', 'P1', 'P2', 'P3'],
+        ),
+        const _FieldDef('project_id', 'Project ID', required: true),
+      ],
+    ),
+    McpEntityType.plan => _EntityMeta(
+      label: 'Plan',
+      icon: Icons.map_rounded,
+      color: const Color(0xFF4ADE80),
+      listRoute: Routes.projects,
+      hasBody: true,
+      bodyKey: 'description',
+      smartHint: 'e.g. Plan the migration from REST to GraphQL in 3 phases',
+      fields: [
+        const _FieldDef('title', 'Title', required: true),
+        const _FieldDef('description', 'Description'),
+        const _FieldDef('project_id', 'Project ID', required: true),
+      ],
+    ),
+    McpEntityType.request => _EntityMeta(
+      label: 'Request',
+      icon: Icons.inbox_rounded,
+      color: const Color(0xFFFBBF24),
+      listRoute: Routes.projects,
+      hasBody: true,
+      bodyKey: 'description',
+      smartHint: 'e.g. Request a bulk export feature for the admin dashboard',
+      fields: [
+        const _FieldDef('title', 'Title', required: true),
+        const _FieldDef('description', 'Description'),
+        const _FieldDef('kind', 'Kind', options: ['feature', 'bug', 'hotfix']),
+        const _FieldDef(
+          'priority',
+          'Priority',
+          options: ['P0', 'P1', 'P2', 'P3'],
+        ),
+      ],
+    ),
+    McpEntityType.person => _EntityMeta(
+      label: 'Person',
+      icon: Icons.person_rounded,
+      color: const Color(0xFF818CF8),
+      listRoute: Routes.projects,
+      smartHint:
+          'e.g. Add a team member named Sarah, senior engineer, Pacific timezone',
+      fields: [
+        const _FieldDef('name', 'Name', required: true),
+        const _FieldDef('role', 'Role'),
+        const _FieldDef('email', 'Email'),
+        const _FieldDef('github_email', 'GitHub Email'),
+        const _FieldDef('bio', 'Bio'),
+        const _FieldDef('timezone', 'Timezone'),
+      ],
+    ),
+  };
 }
 
 class _FieldDef {
-  const _FieldDef(
-    this.key,
-    this.label, {
-    this.required = false,
-    this.options,
-  });
+  const _FieldDef(this.key, this.label, {this.required = false, this.options});
 
   final String key;
   final String label;
@@ -235,8 +235,7 @@ class McpEntityEditorScreen extends ConsumerStatefulWidget {
       _McpEntityEditorScreenState();
 }
 
-class _McpEntityEditorScreenState
-    extends ConsumerState<McpEntityEditorScreen> {
+class _McpEntityEditorScreenState extends ConsumerState<McpEntityEditorScreen> {
   late final _EntityMeta _meta;
   final Map<String, TextEditingController> _controllers = {};
   final _bodyController = TextEditingController();
@@ -293,8 +292,7 @@ class _McpEntityEditorScreenState
 
   Future<void> _loadAdminPrompt() async {
     try {
-      final data =
-          await ref.read(adminSettingProvider('smart_prompts').future);
+      final data = await ref.read(adminSettingProvider('smart_prompts').future);
       final prompts = data['prompts'];
       if (prompts is List) {
         final key = widget.entityType.name; // agent, skill, workflow, etc.
@@ -322,19 +320,21 @@ class _McpEntityEditorScreenState
         McpEntityType.workflow => client.getWorkflow(widget.entityId!),
         McpEntityType.doc => client.getDoc(widget.entityId!),
         McpEntityType.feature => client.getFeature(widget.entityId!),
-        McpEntityType.plan =>
-          client.getPlan(widget.projectId ?? '', widget.entityId!),
+        McpEntityType.plan => client.getPlan(
+          widget.projectId ?? '',
+          widget.entityId!,
+        ),
         McpEntityType.request => client.getRequest(widget.entityId!),
         McpEntityType.person => client.getPerson(widget.entityId!),
       };
       if (mounted) {
         setState(() {
           for (final field in _meta.fields) {
-            _controllers[field.key]?.text =
-                data[field.key]?.toString() ?? '';
+            _controllers[field.key]?.text = data[field.key]?.toString() ?? '';
           }
           // Load body/content
-          final body = data['body'] ??
+          final body =
+              data['body'] ??
               data['content'] ??
               data['system_prompt'] ??
               data['systemPrompt'] ??
@@ -345,15 +345,15 @@ class _McpEntityEditorScreenState
           // Load workflow-specific JSON fields
           if (widget.entityType == McpEntityType.workflow) {
             if (data['states'] is Map) {
-              _workflowStates =
-                  Map<String, dynamic>.from(data['states'] as Map);
+              _workflowStates = Map<String, dynamic>.from(
+                data['states'] as Map,
+              );
             }
             if (data['transitions'] is List) {
               _workflowTransitions = data['transitions'] as List<dynamic>;
             }
             if (data['gates'] is Map) {
-              _workflowGates =
-                  Map<String, dynamic>.from(data['gates'] as Map);
+              _workflowGates = Map<String, dynamic>.from(data['gates'] as Map);
             }
           }
 
@@ -364,7 +364,9 @@ class _McpEntityEditorScreenState
       if (mounted) {
         setState(() => _loading = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+          ),
         );
       }
     }
@@ -383,9 +385,14 @@ class _McpEntityEditorScreenState
   Future<void> _save() async {
     // Validate required fields
     for (final field in _meta.fields) {
-      if (field.required && (_controllers[field.key]?.text.trim().isEmpty ?? true)) {
+      if (field.required &&
+          (_controllers[field.key]?.text.trim().isEmpty ?? true)) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).fieldIsRequired(field.label))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).fieldIsRequired(field.label),
+            ),
+          ),
         );
         return;
       }
@@ -428,7 +435,8 @@ class _McpEntityEditorScreenState
       // Include workflow-specific JSON data
       if (widget.entityType == McpEntityType.workflow) {
         if (_workflowStates != null) body['states'] = _workflowStates;
-        if (_workflowTransitions != null) body['transitions'] = _workflowTransitions;
+        if (_workflowTransitions != null)
+          body['transitions'] = _workflowTransitions;
         if (_workflowGates != null) body['gates'] = _workflowGates;
       }
 
@@ -445,22 +453,17 @@ class _McpEntityEditorScreenState
         };
       } else {
         await switch (widget.entityType) {
-          McpEntityType.agent =>
-            client.updateAgent(widget.entityId!, body),
-          McpEntityType.skill =>
-            client.updateSkill(widget.entityId!, body),
-          McpEntityType.workflow =>
-            client.updateWorkflow(widget.entityId!, body),
-          McpEntityType.doc =>
-            client.updateDoc(widget.entityId!, body),
-          McpEntityType.feature =>
-            client.updateFeature(widget.entityId!, body),
-          McpEntityType.plan =>
-            client.updatePlan(widget.entityId!, body),
-          McpEntityType.request =>
-            client.updateRequest(widget.entityId!, body),
-          McpEntityType.person =>
-            client.updatePerson(widget.entityId!, body),
+          McpEntityType.agent => client.updateAgent(widget.entityId!, body),
+          McpEntityType.skill => client.updateSkill(widget.entityId!, body),
+          McpEntityType.workflow => client.updateWorkflow(
+            widget.entityId!,
+            body,
+          ),
+          McpEntityType.doc => client.updateDoc(widget.entityId!, body),
+          McpEntityType.feature => client.updateFeature(widget.entityId!, body),
+          McpEntityType.plan => client.updatePlan(widget.entityId!, body),
+          McpEntityType.request => client.updateRequest(widget.entityId!, body),
+          McpEntityType.person => client.updatePerson(widget.entityId!, body),
         };
       }
 
@@ -472,9 +475,12 @@ class _McpEntityEditorScreenState
         final entityLabel = _localizedEntityLabel(l10n, widget.entityType);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(widget.isNew
+            content: Text(
+              widget.isNew
                   ? l10n.entityCreated(entityLabel)
-                  : l10n.entitySaved(entityLabel))),
+                  : l10n.entitySaved(entityLabel),
+            ),
+          ),
         );
         // Navigate back
         if (Navigator.canPop(context)) {
@@ -486,7 +492,9 @@ class _McpEntityEditorScreenState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
         setState(() => _saving = false);
       }
@@ -541,7 +549,9 @@ class _McpEntityEditorScreenState
                       alignment: Alignment.centerLeft,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
                         decoration: BoxDecoration(
                           color: _meta.color.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
@@ -556,8 +566,12 @@ class _McpEntityEditorScreenState
                             const SizedBox(width: 6),
                             Text(
                               widget.isNew
-                                  ? AppLocalizations.of(context).newEntityTitle(_meta.label)
-                                  : AppLocalizations.of(context).editEntityTitle(_meta.label),
+                                  ? AppLocalizations.of(
+                                      context,
+                                    ).newEntityTitle(_meta.label)
+                                  : AppLocalizations.of(
+                                      context,
+                                    ).editEntityTitle(_meta.label),
                               style: TextStyle(
                                 color: _meta.color,
                                 fontSize: 13,
@@ -632,7 +646,9 @@ class _McpEntityEditorScreenState
               if (v != null) _controllers[field.key]?.text = v;
             },
             decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).selectFieldHint(field.label.toLowerCase()),
+              hintText: AppLocalizations.of(
+                context,
+              ).selectFieldHint(field.label.toLowerCase()),
               hintStyle: TextStyle(color: tokens.fgDim, fontSize: 14),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -646,8 +662,10 @@ class _McpEntityEditorScreenState
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: tokens.accent),
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
               isDense: true,
             ),
             dropdownColor: tokens.bgAlt,
@@ -688,8 +706,10 @@ class _McpEntityEditorScreenState
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: tokens.accent),
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ),
             isDense: true,
           ),
         ),
@@ -702,9 +722,7 @@ class _McpEntityEditorScreenState
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: tokens.border, width: 0.5),
-        ),
+        border: Border(bottom: BorderSide(color: tokens.border, width: 0.5)),
       ),
       child: Row(
         children: [
@@ -717,8 +735,11 @@ class _McpEntityEditorScreenState
                 context.go(_meta.listRoute);
               }
             },
-            icon: Icon(Icons.arrow_back_rounded,
-                size: 18, color: tokens.fgMuted),
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              size: 18,
+              color: tokens.fgMuted,
+            ),
             label: Text(
               AppLocalizations.of(context).cancel,
               style: TextStyle(color: tokens.fgMuted, fontSize: 13),
@@ -736,7 +757,9 @@ class _McpEntityEditorScreenState
                 size: 18,
                 color: tokens.fgMuted,
               ),
-              tooltip: _preview ? AppLocalizations.of(context).edit : AppLocalizations.of(context).preview,
+              tooltip: _preview
+                  ? AppLocalizations.of(context).edit
+                  : AppLocalizations.of(context).preview,
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             ),
@@ -756,14 +779,19 @@ class _McpEntityEditorScreenState
                     ),
                   )
                 : const Icon(Icons.check_rounded, size: 16),
-            label: Text(widget.isNew ? AppLocalizations.of(context).create : AppLocalizations.of(context).save),
+            label: Text(
+              widget.isNew
+                  ? AppLocalizations.of(context).create
+                  : AppLocalizations.of(context).save,
+            ),
             style: FilledButton.styleFrom(
               backgroundColor: _meta.color,
               foregroundColor: Colors.white,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              textStyle:
-                  const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              textStyle: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
               minimumSize: const Size(0, 34),
             ),
           ),
@@ -818,9 +846,7 @@ class _McpEntityEditorScreenState
       );
     }
 
-    return MarkdownRendererWidget(
-      content: text,
-    );
+    return MarkdownRendererWidget(content: text);
   }
 
   // ── Smart Action ────────────────────────────────────────────────────────
@@ -866,8 +892,11 @@ class _McpEntityEditorScreenState
             children: [
               Row(
                 children: [
-                  Icon(Icons.auto_awesome_rounded,
-                      size: 18, color: _meta.color),
+                  Icon(
+                    Icons.auto_awesome_rounded,
+                    size: 18,
+                    color: _meta.color,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     AppLocalizations.of(context).editorDescribeWhatYouWant,
@@ -887,7 +916,9 @@ class _McpEntityEditorScreenState
                 enabled: !_generating,
                 style: TextStyle(color: tokens.fgBright, fontSize: 14),
                 decoration: InputDecoration(
-                  hintText: _meta.smartHint ?? AppLocalizations.of(context).describeWhatYouWant,
+                  hintText:
+                      _meta.smartHint ??
+                      AppLocalizations.of(context).describeWhatYouWant,
                   hintStyle: TextStyle(
                     color: tokens.fgDim.withValues(alpha: 0.6),
                     fontSize: 14,
@@ -939,19 +970,28 @@ class _McpEntityEditorScreenState
                             height: 14,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color:
-                                  tokens.isLight ? Colors.white : Colors.black,
+                              color: tokens.isLight
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           )
                         : const Icon(Icons.auto_awesome_rounded, size: 16),
-                    label: Text(_generating ? AppLocalizations.of(context).generating : AppLocalizations.of(context).generate),
+                    label: Text(
+                      _generating
+                          ? AppLocalizations.of(context).generating
+                          : AppLocalizations.of(context).generate,
+                    ),
                     style: FilledButton.styleFrom(
                       backgroundColor: _meta.color,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       textStyle: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w600),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
                       minimumSize: const Size(0, 34),
                     ),
                   ),
@@ -984,14 +1024,14 @@ class _McpEntityEditorScreenState
                           event.isError
                               ? Icons.error_outline_rounded
                               : event.isDone
-                                  ? Icons.check_circle_outline_rounded
-                                  : Icons.circle_outlined,
+                              ? Icons.check_circle_outline_rounded
+                              : Icons.circle_outlined,
                           size: 14,
                           color: event.isError
                               ? const Color(0xFFEF4444)
                               : event.isDone
-                                  ? const Color(0xFF22C55E)
-                                  : tokens.fgDim,
+                              ? const Color(0xFF22C55E)
+                              : tokens.fgDim,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
@@ -1063,18 +1103,14 @@ class _McpEntityEditorScreenState
       final systemPrompt = _buildSystemPrompt();
       _addEvent(l10n.aiGeneratingEntity(entityLabel));
 
-      final result = await mcp.callTool(
-        'ai_prompt',
-        {
-          'prompt': prompt,
-          'system_prompt': systemPrompt,
-          'wait': true,
-          'model': _selectedModel,
-          'permission_mode': 'bypassPermissions',
-          'max_budget': 0.05,
-        },
-        timeout: const Duration(seconds: 300),
-      );
+      final result = await mcp.callTool('ai_prompt', {
+        'prompt': prompt,
+        'system_prompt': systemPrompt,
+        'wait': true,
+        'model': _selectedModel,
+        'permission_mode': 'bypassPermissions',
+        'max_budget': 0.05,
+      }, timeout: const Duration(seconds: 300));
 
       _addEvent(l10n.responseReceivedParsing);
 
@@ -1125,10 +1161,7 @@ class _McpEntityEditorScreenState
         }
       }
 
-      _addEvent(
-        l10n.entityGeneratedSuccessfully(entityLabel),
-        isDone: true,
-      );
+      _addEvent(l10n.entityGeneratedSuccessfully(entityLabel), isDone: true);
 
       // Switch to manual mode for review
       setState(() {
@@ -1136,8 +1169,10 @@ class _McpEntityEditorScreenState
         _smartMode = false;
       });
     } catch (e) {
-      _addEvent('Error: ${e.toString().replaceAll('Exception: ', '')}',
-          isError: true);
+      _addEvent(
+        'Error: ${e.toString().replaceAll('Exception: ', '')}',
+        isError: true,
+      );
       setState(() => _generating = false);
     }
   }
@@ -1210,7 +1245,8 @@ class _McpEntityEditorScreenState
     // The actual AI output is in the "response" field.
     try {
       final envelope = jsonDecode(text);
-      if (envelope is Map<String, dynamic> && envelope.containsKey('response')) {
+      if (envelope is Map<String, dynamic> &&
+          envelope.containsKey('response')) {
         text = envelope['response']?.toString() ?? text;
       }
     } catch (_) {
@@ -1338,9 +1374,7 @@ class _SmartModeChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon,
-                size: 14,
-                color: isActive ? activeColor : tokens.fgDim),
+            Icon(icon, size: 14, color: isActive ? activeColor : tokens.fgDim),
             const SizedBox(width: 6),
             Text(
               label,

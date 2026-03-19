@@ -37,8 +37,7 @@ class NotificationListener {
   bool _running = false;
   bool _localNotifInitialized = false;
 
-  final _notificationController =
-      StreamController<McpEvent>.broadcast();
+  final _notificationController = StreamController<McpEvent>.broadcast();
 
   /// Stream of incoming MCP notification events.
   Stream<McpEvent> get onNotification => _notificationController.stream;
@@ -103,8 +102,9 @@ class NotificationListener {
   Future<void> _initLocalNotifications() async {
     if (_localNotifInitialized) return;
 
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     const darwinSettings = DarwinInitializationSettings(
       requestAlertPermission: false, // Already requested by HealthNotifService
       requestBadgePermission: false,
@@ -122,8 +122,10 @@ class NotificationListener {
     );
 
     // Create Android channel.
-    final android = _localNotif.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
+    final android = _localNotif
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
     if (android != null) {
       await android.createNotificationChannel(
         const AndroidNotificationChannel(
@@ -181,25 +183,25 @@ class NotificationListener {
   (int, String, String) _notifContent(McpEvent event) {
     return switch (event) {
       McpToolCalledEvent(:final toolName) => (
-          _NotifIds.mcpToolCall,
-          'Tool Called',
-          'Claude used $toolName',
-        ),
+        _NotifIds.mcpToolCall,
+        'Tool Called',
+        'Claude used $toolName',
+      ),
       McpAgentSpawnedEvent(:final agentType) => (
-          _NotifIds.mcpAgentSpawn,
-          'Agent Spawned',
-          'Sub-agent "$agentType" started',
-        ),
+        _NotifIds.mcpAgentSpawn,
+        'Agent Spawned',
+        'Sub-agent "$agentType" started',
+      ),
       McpNotificationEvent(:final entityType, :final entityId) => (
-          _NotifIds.mcpNotification,
-          'Action Required',
-          '$entityType: $entityId needs your attention',
-        ),
+        _NotifIds.mcpNotification,
+        'Action Required',
+        '$entityType: $entityId needs your attention',
+      ),
       McpGenericEvent(:final action) => (
-          _NotifIds.mcpGeneric,
-          'MCP Event',
-          action.isNotEmpty ? action : 'New event received',
-        ),
+        _NotifIds.mcpGeneric,
+        'MCP Event',
+        action.isNotEmpty ? action : 'New event received',
+      ),
     };
   }
 }

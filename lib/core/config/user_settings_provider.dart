@@ -135,8 +135,8 @@ class UserSettingsNotifier extends Notifier<Map<String, String>> {
 /// Provides the user settings notifier backed by PowerSync.
 final userSettingsProvider =
     NotifierProvider<UserSettingsNotifier, Map<String, String>>(
-  UserSettingsNotifier.new,
-);
+      UserSettingsNotifier.new,
+    );
 
 /// Convenience provider for a single setting key.
 final userSettingProvider = Provider.family<String?, String>((ref, key) {

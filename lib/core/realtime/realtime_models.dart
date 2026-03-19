@@ -30,22 +30,22 @@ class RealtimeEvent {
   final String? userId;
 
   factory RealtimeEvent.fromJson(Map<String, dynamic> json) => RealtimeEvent(
-        channel: json['channel'] as String? ?? '',
-        eventType: json['event_type'] as String? ?? '',
-        data: (json['data'] as Map<String, dynamic>?) ?? {},
-        timestamp: json['timestamp'] != null
-            ? DateTime.parse(json['timestamp'] as String)
-            : DateTime.now(),
-        userId: json['user_id'] as String?,
-      );
+    channel: json['channel'] as String? ?? '',
+    eventType: json['event_type'] as String? ?? '',
+    data: (json['data'] as Map<String, dynamic>?) ?? {},
+    timestamp: json['timestamp'] != null
+        ? DateTime.parse(json['timestamp'] as String)
+        : DateTime.now(),
+    userId: json['user_id'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'channel': channel,
-        'event_type': eventType,
-        'data': data,
-        'timestamp': timestamp.toIso8601String(),
-        if (userId != null) 'user_id': userId,
-      };
+    'channel': channel,
+    'event_type': eventType,
+    'data': data,
+    'timestamp': timestamp.toIso8601String(),
+    if (userId != null) 'user_id': userId,
+  };
 
   @override
   String toString() => 'RealtimeEvent($channel/$eventType)';

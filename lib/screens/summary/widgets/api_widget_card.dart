@@ -43,7 +43,8 @@ class ApiWidgetCard extends ConsumerWidget {
   final Color color;
 
   /// Callback that watches the provider and returns AsyncValue.
-  final AsyncValue<List<Map<String, dynamic>>> Function(WidgetRef ref) asyncDataBuilder;
+  final AsyncValue<List<Map<String, dynamic>>> Function(WidgetRef ref)
+  asyncDataBuilder;
 
   final String? secondaryLabel;
   final bool Function(Map<String, dynamic>)? secondaryFilter;
@@ -53,24 +54,43 @@ class ApiWidgetCard extends ConsumerWidget {
     final tokens = ThemeTokens.of(context);
     final l10n = AppLocalizations.of(context);
     final resolvedLabel = _resolveLabel(l10n, label);
-    final resolvedSecondary =
-        secondaryLabel != null ? _resolveLabel(l10n, secondaryLabel!) : null;
+    final resolvedSecondary = secondaryLabel != null
+        ? _resolveLabel(l10n, secondaryLabel!)
+        : null;
     final async = asyncDataBuilder(ref);
 
     return GlassCard(
       onTap: () => context.go(route),
       padding: const EdgeInsets.all(14),
       child: async.when(
-        loading: () => _body(tokens, l10n, resolvedLabel, resolvedSecondary,
-            total: null, secondary: null),
-        error: (_, _) => _body(tokens, l10n, resolvedLabel, resolvedSecondary,
-            total: 0, secondary: 0),
+        loading: () => _body(
+          tokens,
+          l10n,
+          resolvedLabel,
+          resolvedSecondary,
+          total: null,
+          secondary: null,
+        ),
+        error: (_, _) => _body(
+          tokens,
+          l10n,
+          resolvedLabel,
+          resolvedSecondary,
+          total: 0,
+          secondary: 0,
+        ),
         data: (items) {
           final secondary = secondaryFilter != null
               ? items.where(secondaryFilter!).length
               : null;
-          return _body(tokens, l10n, resolvedLabel, resolvedSecondary,
-              total: items.length, secondary: secondary);
+          return _body(
+            tokens,
+            l10n,
+            resolvedLabel,
+            resolvedSecondary,
+            total: items.length,
+            secondary: secondary,
+          );
         },
       ),
     );
@@ -124,8 +144,8 @@ class ApiWidgetCard extends ConsumerWidget {
           total == null
               ? l10n.loading
               : secondary != null && displaySecondary != null
-                  ? '$secondary $displaySecondary'
-                  : '$total ${l10n.total}',
+              ? '$secondary $displaySecondary'
+              : '$total ${l10n.total}',
           style: TextStyle(color: tokens.fgDim, fontSize: 11),
         ),
       ],

@@ -25,7 +25,8 @@ abstract final class Endpoints {
   static const String adminOAuthApps = '/api/admin/oauth-apps';
   static String adminOAuthApp(int id) => '/api/admin/oauth-apps/$id';
   static const String settingsConnectedApps = '/api/settings/connected-apps';
-  static String settingsRevokeApp(String appId) => '/api/settings/connected-apps/$appId';
+  static String settingsRevokeApp(String appId) =>
+      '/api/settings/connected-apps/$appId';
 
   // ── Devices ───────────────────────────────────────────────────────────
   static const String devicesRegister = '/api/sync/devices/register';
@@ -158,7 +159,8 @@ abstract final class Endpoints {
   static String settingsSession(String id) => '/api/settings/sessions/$id';
   static const String settingsApiKeys = '/api/settings/api-keys';
   static String settingsApiKey(String id) => '/api/settings/api-keys/$id';
-  static const String settingsConnectedAccounts = '/api/settings/connected-accounts';
+  static const String settingsConnectedAccounts =
+      '/api/settings/connected-accounts';
   static String settingsUnlinkAccount(String provider) =>
       '/api/settings/connected-accounts/$provider';
   static const String settingsProfile = '/api/settings/profile';
@@ -205,7 +207,8 @@ abstract final class Endpoints {
   static const String adminSettings = '/api/admin/settings';
   static String adminSetting(String key) => '/api/admin/settings/$key';
   static const String adminTestEmail = '/api/admin/settings/test-email';
-  static const String adminGenerateSitemap = '/api/admin/settings/generate-sitemap';
+  static const String adminGenerateSitemap =
+      '/api/admin/settings/generate-sitemap';
 
   // Pages
   static const String adminPages = '/api/admin/pages';

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orchestra/core/sync/team_management_provider.dart';
-import 'package:orchestra/core/sync/team_share_models.dart' hide resolveAvatarUrl;
+import 'package:orchestra/core/sync/team_share_models.dart'
+    hide resolveAvatarUrl;
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/utils/url_utils.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
@@ -35,10 +36,7 @@ Future<TeamShareSelection?> showTeamSelectorDialog({
 }) {
   return showGlassSheet<TeamShareSelection>(
     context: context,
-    child: _TeamSelectorSheet(
-      entityType: entityType,
-      entityId: entityId,
-    ),
+    child: _TeamSelectorSheet(entityType: entityType, entityId: entityId),
   );
 }
 
@@ -47,17 +45,13 @@ Future<TeamShareSelection?> showTeamSelectorDialog({
 // ---------------------------------------------------------------------------
 
 class _TeamSelectorSheet extends ConsumerStatefulWidget {
-  const _TeamSelectorSheet({
-    required this.entityType,
-    required this.entityId,
-  });
+  const _TeamSelectorSheet({required this.entityType, required this.entityId});
 
   final String entityType;
   final String entityId;
 
   @override
-  ConsumerState<_TeamSelectorSheet> createState() =>
-      _TeamSelectorSheetState();
+  ConsumerState<_TeamSelectorSheet> createState() => _TeamSelectorSheetState();
 }
 
 class _TeamSelectorSheetState extends ConsumerState<_TeamSelectorSheet> {
@@ -127,8 +121,11 @@ class _TeamSelectorSheetState extends ConsumerState<_TeamSelectorSheet> {
                 padding: const EdgeInsets.symmetric(vertical: 24),
                 child: Column(
                   children: [
-                    Icon(Icons.group_off_rounded,
-                        size: 40, color: tokens.fgDim),
+                    Icon(
+                      Icons.group_off_rounded,
+                      size: 40,
+                      color: tokens.fgDim,
+                    ),
                     const SizedBox(height: 12),
                     Text(
                       AppLocalizations.of(context).noTeamsFound,
@@ -153,7 +150,10 @@ class _TeamSelectorSheetState extends ConsumerState<_TeamSelectorSheet> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // ── Team selector chips ────────────────────────────────
-                _SectionLabel(tokens: tokens, text: AppLocalizations.of(context).team),
+                _SectionLabel(
+                  tokens: tokens,
+                  text: AppLocalizations.of(context).team,
+                ),
                 const SizedBox(height: 8),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -200,16 +200,18 @@ class _TeamSelectorSheetState extends ConsumerState<_TeamSelectorSheet> {
                       ),
                       selectedIds: selectedMembers,
                       tokens: tokens,
-                      onToggle: (id) => ref
-                          .read(selectedMembersProvider.notifier)
-                          .toggle(id),
+                      onToggle: (id) =>
+                          ref.read(selectedMembersProvider.notifier).toggle(id),
                     ),
                   ],
 
                   const SizedBox(height: 16),
 
                   // ── Permission selector ──────────────────────────────
-                  _SectionLabel(tokens: tokens, text: AppLocalizations.of(context).permission),
+                  _SectionLabel(
+                    tokens: tokens,
+                    text: AppLocalizations.of(context).permission,
+                  ),
                   const SizedBox(height: 8),
                   _PermissionSelector(
                     permission: permission,
@@ -236,26 +238,32 @@ class _TeamSelectorSheetState extends ConsumerState<_TeamSelectorSheet> {
                       Expanded(
                         flex: 2,
                         child: FilledButton.icon(
-                          onPressed: _canConfirm(
-                                  selectedTeamId, shareWithAll, selectedMembers)
+                          onPressed:
+                              _canConfirm(
+                                selectedTeamId,
+                                shareWithAll,
+                                selectedMembers,
+                              )
                               ? () => Navigator.of(context).pop(
-                                    TeamShareSelection(
-                                      teamId: selectedTeamId!,
-                                      shareWithAll: shareWithAll,
-                                      memberIds: selectedMembers.toList(),
-                                      permission: permission,
-                                    ),
-                                  )
+                                  TeamShareSelection(
+                                    teamId: selectedTeamId!,
+                                    shareWithAll: shareWithAll,
+                                    memberIds: selectedMembers.toList(),
+                                    permission: permission,
+                                  ),
+                                )
                               : null,
                           icon: const Icon(Icons.share_rounded, size: 18),
                           label: Text(AppLocalizations.of(context).share),
                           style: FilledButton.styleFrom(
                             backgroundColor: tokens.accent,
-                            disabledBackgroundColor:
-                                tokens.accent.withValues(alpha: 0.3),
+                            disabledBackgroundColor: tokens.accent.withValues(
+                              alpha: 0.3,
+                            ),
                             foregroundColor: tokens.fgBright,
-                            disabledForegroundColor:
-                                tokens.fgBright.withValues(alpha: 0.4),
+                            disabledForegroundColor: tokens.fgBright.withValues(
+                              alpha: 0.4,
+                            ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -278,9 +286,11 @@ class _TeamSelectorSheetState extends ConsumerState<_TeamSelectorSheet> {
     if (_searchQuery.isEmpty) return members;
     final q = _searchQuery.toLowerCase();
     return members
-        .where((m) =>
-            m.name.toLowerCase().contains(q) ||
-            (m.email?.toLowerCase().contains(q) ?? false))
+        .where(
+          (m) =>
+              m.name.toLowerCase().contains(q) ||
+              (m.email?.toLowerCase().contains(q) ?? false),
+        )
         .toList();
   }
 
@@ -306,14 +316,14 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-        text,
-        style: TextStyle(
-          color: tokens.fgMuted,
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.5,
-        ),
-      );
+    text,
+    style: TextStyle(
+      color: tokens.fgMuted,
+      fontSize: 11,
+      fontWeight: FontWeight.w600,
+      letterSpacing: 0.5,
+    ),
+  );
 }
 
 class _TeamChip extends StatelessWidget {
@@ -336,9 +346,7 @@ class _TeamChip extends StatelessWidget {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? tokens.accent.withValues(alpha: 0.15)
-              : tokens.bg,
+          color: isSelected ? tokens.accent.withValues(alpha: 0.15) : tokens.bg,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
@@ -352,8 +360,9 @@ class _TeamChip extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 14,
-              backgroundColor:
-                  isSelected ? tokens.accent : tokens.fgDim.withValues(alpha: 0.3),
+              backgroundColor: isSelected
+                  ? tokens.accent
+                  : tokens.fgDim.withValues(alpha: 0.3),
               backgroundImage: resolveAvatarUrl(team.avatarUrl) != null
                   ? NetworkImage(resolveAvatarUrl(team.avatarUrl)!)
                   : null,
@@ -397,64 +406,60 @@ class _ShareModeToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: [
-          Icon(
-            shareWithAll ? Icons.group_rounded : Icons.person_rounded,
-            color: tokens.fgMuted,
-            size: 18,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              AppLocalizations.of(context).shareWithEntireTeam,
-              style: TextStyle(color: tokens.fgBright, fontSize: 14),
-            ),
-          ),
-          Switch.adaptive(
-            value: shareWithAll,
-            onChanged: onChanged,
-            activeTrackColor: tokens.accent,
-          ),
-        ],
-      );
+    children: [
+      Icon(
+        shareWithAll ? Icons.group_rounded : Icons.person_rounded,
+        color: tokens.fgMuted,
+        size: 18,
+      ),
+      const SizedBox(width: 8),
+      Expanded(
+        child: Text(
+          AppLocalizations.of(context).shareWithEntireTeam,
+          style: TextStyle(color: tokens.fgBright, fontSize: 14),
+        ),
+      ),
+      Switch.adaptive(
+        value: shareWithAll,
+        onChanged: onChanged,
+        activeTrackColor: tokens.accent,
+      ),
+    ],
+  );
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({
-    required this.tokens,
-    required this.onChanged,
-  });
+  const _SearchField({required this.tokens, required this.onChanged});
 
   final OrchestraColorTokens tokens;
   final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) => TextField(
-        onChanged: onChanged,
-        style: TextStyle(color: tokens.fgBright, fontSize: 14),
-        decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).searchMembers,
-          hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-          prefixIcon: Icon(Icons.search, color: tokens.fgDim, size: 20),
-          filled: true,
-          fillColor: tokens.bg,
-          isDense: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: tokens.border),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: tokens.border),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: tokens.accent, width: 1.5),
-          ),
-        ),
-      );
+    onChanged: onChanged,
+    style: TextStyle(color: tokens.fgBright, fontSize: 14),
+    decoration: InputDecoration(
+      hintText: AppLocalizations.of(context).searchMembers,
+      hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
+      prefixIcon: Icon(Icons.search, color: tokens.fgDim, size: 20),
+      filled: true,
+      fillColor: tokens.bg,
+      isDense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: tokens.border),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: tokens.border),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: tokens.accent, width: 1.5),
+      ),
+    ),
+  );
 }
 
 class _MemberList extends StatelessWidget {
@@ -518,108 +523,105 @@ class _MemberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-          child: Row(
-            children: [
-              // Checkbox
-              SizedBox(
-                width: 24,
-                height: 24,
-                child: Checkbox(
-                  value: isSelected,
-                  onChanged: (_) => onTap(),
-                  activeColor: tokens.accent,
-                  side: BorderSide(color: tokens.border),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(8),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+      child: Row(
+        children: [
+          // Checkbox
+          SizedBox(
+            width: 24,
+            height: 24,
+            child: Checkbox(
+              value: isSelected,
+              onChanged: (_) => onTap(),
+              activeColor: tokens.accent,
+              side: BorderSide(color: tokens.border),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4),
               ),
-              const SizedBox(width: 10),
-
-              // Avatar
-              CircleAvatar(
-                radius: 16,
-                backgroundColor: tokens.fgDim.withValues(alpha: 0.2),
-                backgroundImage: resolveAvatarUrl(member.avatarUrl) != null
-                    ? NetworkImage(resolveAvatarUrl(member.avatarUrl)!)
-                    : null,
-                child: resolveAvatarUrl(member.avatarUrl) == null
-                    ? Text(
-                        member.name.isNotEmpty
-                            ? member.name[0].toUpperCase()
-                            : '?',
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      )
-                    : null,
-              ),
-              const SizedBox(width: 10),
-
-              // Name & email
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      member.name,
-                      style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    if (member.email != null)
-                      Text(
-                        member.email!,
-                        style: TextStyle(color: tokens.fgDim, fontSize: 12),
-                      ),
-                  ],
-                ),
-              ),
-
-              // Online dot
-              if (member.isOnline)
-                Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF22C55E),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-
-              // Role badge
-              if (member.role == 'admin')
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: tokens.accentAlt.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      'ADMIN',
-                      style: TextStyle(
-                        color: tokens.accentAlt,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
-        ),
-      );
+          const SizedBox(width: 10),
+
+          // Avatar
+          CircleAvatar(
+            radius: 16,
+            backgroundColor: tokens.fgDim.withValues(alpha: 0.2),
+            backgroundImage: resolveAvatarUrl(member.avatarUrl) != null
+                ? NetworkImage(resolveAvatarUrl(member.avatarUrl)!)
+                : null,
+            child: resolveAvatarUrl(member.avatarUrl) == null
+                ? Text(
+                    member.name.isNotEmpty ? member.name[0].toUpperCase() : '?',
+                    style: TextStyle(
+                      color: tokens.fgMuted,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(width: 10),
+
+          // Name & email
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  member.name,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                if (member.email != null)
+                  Text(
+                    member.email!,
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+              ],
+            ),
+          ),
+
+          // Online dot
+          if (member.isOnline)
+            Container(
+              width: 8,
+              height: 8,
+              decoration: const BoxDecoration(
+                color: Color(0xFF22C55E),
+                shape: BoxShape.circle,
+              ),
+            ),
+
+          // Role badge
+          if (member.role == 'admin')
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: tokens.accentAlt.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  'ADMIN',
+                  style: TextStyle(
+                    color: tokens.accentAlt,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _PermissionSelector extends StatelessWidget {
@@ -635,63 +637,61 @@ class _PermissionSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        children: SharePermission.values.map((p) {
-          final isSelected = permission == p;
-          return Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                right: p != SharePermission.admin ? 8 : 0,
-              ),
-              child: GestureDetector(
-                onTap: () => onSelect(p),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? tokens.accent.withValues(alpha: 0.15)
-                        : tokens.bg,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: isSelected
-                          ? tokens.accent
-                          : tokens.border.withValues(alpha: 0.3),
-                      width: isSelected ? 1.5 : 0.5,
-                    ),
-                  ),
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-                      Icon(
-                        _iconFor(p),
-                        size: 18,
-                        color: isSelected ? tokens.accent : tokens.fgMuted,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _labelFor(p),
-                        style: TextStyle(
-                          color:
-                              isSelected ? tokens.accent : tokens.fgBright,
-                          fontSize: 12,
-                          fontWeight:
-                              isSelected ? FontWeight.w600 : FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
+    children: SharePermission.values.map((p) {
+      final isSelected = permission == p;
+      return Expanded(
+        child: Padding(
+          padding: EdgeInsets.only(right: p != SharePermission.admin ? 8 : 0),
+          child: GestureDetector(
+            onTap: () => onSelect(p),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? tokens.accent.withValues(alpha: 0.15)
+                    : tokens.bg,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isSelected
+                      ? tokens.accent
+                      : tokens.border.withValues(alpha: 0.3),
+                  width: isSelected ? 1.5 : 0.5,
                 ),
               ),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Icon(
+                    _iconFor(p),
+                    size: 18,
+                    color: isSelected ? tokens.accent : tokens.fgMuted,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _labelFor(p),
+                    style: TextStyle(
+                      color: isSelected ? tokens.accent : tokens.fgBright,
+                      fontSize: 12,
+                      fontWeight: isSelected
+                          ? FontWeight.w600
+                          : FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          );
-        }).toList(),
+          ),
+        ),
       );
+    }).toList(),
+  );
 
   IconData _iconFor(SharePermission p) => switch (p) {
-        SharePermission.read => Icons.visibility_rounded,
-        SharePermission.write => Icons.edit_rounded,
-        SharePermission.admin => Icons.admin_panel_settings_rounded,
-      };
+    SharePermission.read => Icons.visibility_rounded,
+    SharePermission.write => Icons.edit_rounded,
+    SharePermission.admin => Icons.admin_panel_settings_rounded,
+  };
 
   String _labelFor(SharePermission p) {
     // Note: this is a StatelessWidget, can't access context easily for l10n

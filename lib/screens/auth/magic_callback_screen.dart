@@ -47,7 +47,8 @@ class _MagicCallbackScreenState extends ConsumerState<MagicCallbackScreen> {
         data: {'token': token},
       );
 
-      final jwt = (res.data?['token'] ?? res.data?['access_token'] ?? '') as String;
+      final jwt =
+          (res.data?['token'] ?? res.data?['access_token'] ?? '') as String;
       if (jwt.isEmpty) {
         setState(() {
           _loading = false;
@@ -66,7 +67,8 @@ class _MagicCallbackScreenState extends ConsumerState<MagicCallbackScreen> {
       if (mounted) {
         setState(() {
           _loading = false;
-          _error = e.response?.data?['error']?.toString() ??
+          _error =
+              e.response?.data?['error']?.toString() ??
               'Magic link verification failed.';
         });
       }
@@ -106,22 +108,25 @@ class _MagicCallbackScreenState extends ConsumerState<MagicCallbackScreen> {
                 : Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.error_outline_rounded,
-                          size: 48, color: Colors.redAccent),
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        size: 48,
+                        color: Colors.redAccent,
+                      ),
                       const SizedBox(height: 16),
                       Text(
                         _error ?? 'Verification failed',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: tokens.fgBright, fontSize: 15),
+                        style: TextStyle(color: tokens.fgBright, fontSize: 15),
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton(
                         onPressed: () => context.go('/login'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: tokens.accent,
-                          foregroundColor:
-                              tokens.isLight ? Colors.white : Colors.black,
+                          foregroundColor: tokens.isLight
+                              ? Colors.white
+                              : Colors.black,
                         ),
                         child: Text(l10n.backToSignIn),
                       ),

@@ -17,9 +17,9 @@ class BridgeHandler {
     SummarizeExecutor? summarizeExecutor,
     ExplainExecutor? explainExecutor,
     FixExecutor? fixExecutor,
-  })  : _summarizeExecutor = summarizeExecutor ?? SummarizeExecutor(),
-        _explainExecutor = explainExecutor ?? ExplainExecutor(),
-        _fixExecutor = fixExecutor ?? FixExecutor();
+  }) : _summarizeExecutor = summarizeExecutor ?? SummarizeExecutor(),
+       _explainExecutor = explainExecutor ?? ExplainExecutor(),
+       _fixExecutor = fixExecutor ?? FixExecutor();
 
   final SummarizeExecutor _summarizeExecutor;
   final ExplainExecutor _explainExecutor;
@@ -66,13 +66,13 @@ class BridgeHandler {
   /// is reused with the raw context passed through (the parameters
   /// carry the custom instruction or target language).
   ActionExecutor _resolveExecutor(TunnelActionType type) => switch (type) {
-        TunnelActionType.summarize => _summarizeExecutor,
-        TunnelActionType.explain => _explainExecutor,
-        TunnelActionType.fix => _fixExecutor,
-        // Translate and custom reuse explain with different prompting.
-        TunnelActionType.translate => _explainExecutor,
-        TunnelActionType.custom => _explainExecutor,
-      };
+    TunnelActionType.summarize => _summarizeExecutor,
+    TunnelActionType.explain => _explainExecutor,
+    TunnelActionType.fix => _fixExecutor,
+    // Translate and custom reuse explain with different prompting.
+    TunnelActionType.translate => _explainExecutor,
+    TunnelActionType.custom => _explainExecutor,
+  };
 }
 
 /// Abstract interface that all action executors implement.

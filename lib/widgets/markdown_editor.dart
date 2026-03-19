@@ -91,7 +91,8 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
     if (sel.isCollapsed) {
       // No selection -- insert with placeholder
       final placeholder = '${prefix}text$suffix';
-      _controller.text = text.substring(0, sel.baseOffset) +
+      _controller.text =
+          text.substring(0, sel.baseOffset) +
           placeholder +
           text.substring(sel.baseOffset);
       _controller.selection = TextSelection(
@@ -186,18 +187,20 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
         Expanded(
           child: switch (_viewMode) {
             MarkdownEditorViewMode.editOnly => _buildEditor(tokens),
-            MarkdownEditorViewMode.previewOnly =>
-              _buildPreview(tokens, _controller.text),
+            MarkdownEditorViewMode.previewOnly => _buildPreview(
+              tokens,
+              _controller.text,
+            ),
             MarkdownEditorViewMode.sideBySide => Row(
-                children: [
-                  Expanded(child: _buildEditor(tokens)),
-                  VerticalDivider(
-                    width: 1,
-                    color: tokens.border.withValues(alpha: 0.4),
-                  ),
-                  Expanded(child: _buildPreview(tokens, _controller.text)),
-                ],
-              ),
+              children: [
+                Expanded(child: _buildEditor(tokens)),
+                VerticalDivider(
+                  width: 1,
+                  color: tokens.border.withValues(alpha: 0.4),
+                ),
+                Expanded(child: _buildPreview(tokens, _controller.text)),
+              ],
+            ),
           },
         ),
       ],
@@ -218,11 +221,19 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
         children: [
           _toolbarButton(tokens, Icons.format_bold_rounded, 'Bold', _onBold),
           _toolbarButton(
-              tokens, Icons.format_italic_rounded, 'Italic', _onItalic),
+            tokens,
+            Icons.format_italic_rounded,
+            'Italic',
+            _onItalic,
+          ),
           _toolbarDivider(tokens),
           _toolbarButton(tokens, Icons.title_rounded, 'Heading', _onHeading),
           _toolbarButton(
-              tokens, Icons.format_list_bulleted_rounded, 'List', _onBulletList),
+            tokens,
+            Icons.format_list_bulleted_rounded,
+            'List',
+            _onBulletList,
+          ),
           _toolbarButton(tokens, Icons.code_rounded, 'Code', _onCodeInline),
           _toolbarDivider(tokens),
           _toolbarButton(tokens, Icons.link_rounded, 'Link', _onLink),
@@ -360,18 +371,18 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
           border: Border.all(color: tokens.border),
         ),
         child: markdown.isEmpty
-          ? Center(
-              child: Text(
-                'Nothing to preview',
-                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ? Center(
+                child: Text(
+                  'Nothing to preview',
+                  style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                ),
+              )
+            : SingleChildScrollView(
+                child: MarkdownRendererWidget(
+                  content: markdown,
+                  padding: const EdgeInsets.all(14),
+                ),
               ),
-            )
-          : SingleChildScrollView(
-              child: MarkdownRendererWidget(
-                content: markdown,
-                padding: const EdgeInsets.all(14),
-              ),
-            ),
       ),
     );
   }

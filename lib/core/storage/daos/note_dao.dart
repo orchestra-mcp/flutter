@@ -14,36 +14,34 @@ class NoteDao {
 
   /// Returns all notes ordered by pinned first, then most recently updated.
   Future<List<LocalNote>> listAll() {
-    return (_db.select(_db.localNotes)
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.pinned),
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+    return (_db.select(_db.localNotes)..orderBy([
+          (t) => OrderingTerm.desc(t.pinned),
+          (t) => OrderingTerm.desc(t.updatedAt),
+        ]))
         .get();
   }
 
   /// Watch all notes as a reactive stream.
   Stream<List<LocalNote>> watchAll() {
-    return (_db.select(_db.localNotes)
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.pinned),
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+    return (_db.select(_db.localNotes)..orderBy([
+          (t) => OrderingTerm.desc(t.pinned),
+          (t) => OrderingTerm.desc(t.updatedAt),
+        ]))
         .watch();
   }
 
   /// Returns a single note by [id], or `null` if not found.
   Future<LocalNote?> getById(String id) {
-    return (_db.select(_db.localNotes)
-          ..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (_db.select(
+      _db.localNotes,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   /// Watch a single note by [id].
   Stream<LocalNote?> watchById(String id) {
-    return (_db.select(_db.localNotes)
-          ..where((t) => t.id.equals(id)))
-        .watchSingleOrNull();
+    return (_db.select(
+      _db.localNotes,
+    )..where((t) => t.id.equals(id))).watchSingleOrNull();
   }
 
   /// Returns all notes belonging to [projectId].
@@ -84,9 +82,7 @@ class NoteDao {
   Future<List<LocalNote>> listPinned() {
     return (_db.select(_db.localNotes)
           ..where((t) => t.pinned.equals(true))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .get();
   }
 
@@ -97,13 +93,14 @@ class NoteDao {
     final ftsResults = await _db.searchNotes(query);
     if (ftsResults.isEmpty) return [];
     final ids = ftsResults.map((r) => r.id).toList();
-    final notes = await (_db.select(_db.localNotes)
-          ..where((t) => t.id.isIn(ids)))
-        .get();
+    final notes = await (_db.select(
+      _db.localNotes,
+    )..where((t) => t.id.isIn(ids))).get();
     // Preserve FTS ranking order.
     final idOrder = {for (var i = 0; i < ids.length; i++) ids[i]: i};
-    notes
-        .sort((a, b) => (idOrder[a.id] ?? 999).compareTo(idOrder[b.id] ?? 999));
+    notes.sort(
+      (a, b) => (idOrder[a.id] ?? 999).compareTo(idOrder[b.id] ?? 999),
+    );
     return notes;
   }
 
@@ -142,8 +139,9 @@ class NoteDao {
 
   /// Updates an existing note by [id].
   Future<int> update(String id, LocalNotesCompanion companion) {
-    return (_db.update(_db.localNotes)..where((t) => t.id.equals(id)))
-        .write(companion);
+    return (_db.update(
+      _db.localNotes,
+    )..where((t) => t.id.equals(id))).write(companion);
   }
 
   /// Deletes a note by [id]. Returns the number of deleted rows.
@@ -171,9 +169,9 @@ class NoteDao {
 
   /// Returns notes that have not been synced to the server.
   Future<List<LocalNote>> listUnsynced() {
-    return (_db.select(_db.localNotes)
-          ..where((t) => t.synced.equals(false)))
-        .get();
+    return (_db.select(
+      _db.localNotes,
+    )..where((t) => t.synced.equals(false))).get();
   }
 
   /// Returns the total note count, optionally filtered by [projectId].

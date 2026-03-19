@@ -75,8 +75,11 @@ class _TunnelDetailContent extends StatelessWidget {
                           color: tokens.accent.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(tunnel.osIcon,
-                            color: tokens.accent, size: 26),
+                        child: Icon(
+                          tunnel.osIcon,
+                          color: tokens.accent,
+                          size: 26,
+                        ),
                       ),
                       const SizedBox(width: 16),
                       Expanded(
@@ -149,7 +152,9 @@ class _TunnelDetailContent extends StatelessWidget {
                         ),
                         _divider(tokens),
                         _InfoRow(
-                          label: AppLocalizations.of(context).connectedUserLabel,
+                          label: AppLocalizations.of(
+                            context,
+                          ).connectedUserLabel,
                           value: tunnel.connectedUser,
                           icon: Icons.person_outline_rounded,
                           tokens: tokens,
@@ -168,7 +173,9 @@ class _TunnelDetailContent extends StatelessWidget {
                         ),
                         _divider(tokens),
                         _InfoRow(
-                          label: AppLocalizations.of(context).toolsAvailableLabel,
+                          label: AppLocalizations.of(
+                            context,
+                          ).toolsAvailableLabel,
                           value: '${tunnel.toolsAvailable}',
                           icon: Icons.build_outlined,
                           tokens: tokens,
@@ -198,29 +205,35 @@ class _TunnelDetailContent extends StatelessWidget {
                   if (tunnel.recentActions.isEmpty)
                     Text(
                       AppLocalizations.of(context).noRecentActions,
-                      style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 13),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 13),
                     )
                   else
                     GlassCard(
                       padding: const EdgeInsets.all(12),
                       child: Column(
                         children: [
-                          for (int i = 0;
-                              i < tunnel.recentActions.length;
-                              i++) ...[
+                          for (
+                            int i = 0;
+                            i < tunnel.recentActions.length;
+                            i++
+                          ) ...[
                             if (i > 0)
                               Divider(
-                                  height: 1,
-                                  color:
-                                      tokens.border.withValues(alpha: 0.3)),
+                                height: 1,
+                                color: tokens.border.withValues(alpha: 0.3),
+                              ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 4),
+                                vertical: 8,
+                                horizontal: 4,
+                              ),
                               child: Row(
                                 children: [
-                                  Icon(Icons.terminal_rounded,
-                                      color: tokens.fgDim, size: 14),
+                                  Icon(
+                                    Icons.terminal_rounded,
+                                    color: tokens.fgDim,
+                                    size: 14,
+                                  ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
@@ -284,10 +297,9 @@ class _TunnelDetailContent extends StatelessWidget {
   }
 
   Widget _divider(OrchestraColorTokens tokens) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Divider(
-            height: 1, color: tokens.border.withValues(alpha: 0.3)),
-      );
+    padding: const EdgeInsets.symmetric(vertical: 4),
+    child: Divider(height: 1, color: tokens.border.withValues(alpha: 0.3)),
+  );
 }
 
 // ── Info row ────────────────────────────────────────────────────────────────

@@ -22,42 +22,48 @@ class TeamSettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(l10n.teams,
-              style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1)),
+          Text(
+            l10n.teams,
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
           const SizedBox(height: 8),
           // Placeholder — populated from API in full implementation.
           ListTile(
             leading: Icon(Icons.group_outlined, color: tokens.accent),
-            title:
-                Text(l10n.myTeam, style: TextStyle(color: tokens.fgBright)),
-            trailing:
-                Icon(Icons.check_rounded, color: tokens.accent, size: 18),
+            title: Text(l10n.myTeam, style: TextStyle(color: tokens.fgBright)),
+            trailing: Icon(Icons.check_rounded, color: tokens.accent, size: 18),
             tileColor: tokens.accentSurface,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
           const SizedBox(height: 16),
-          Text(l10n.workspaces,
-              style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 1.1)),
+          Text(
+            l10n.workspaces,
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1.1,
+            ),
+          ),
           const SizedBox(height: 8),
           ListTile(
-            leading:
-                Icon(Icons.folder_outlined, color: tokens.accent),
-            title: Text(l10n.defaultWorkspace,
-                style: TextStyle(color: tokens.fgBright)),
-            trailing:
-                Icon(Icons.check_rounded, color: tokens.accent, size: 18),
+            leading: Icon(Icons.folder_outlined, color: tokens.accent),
+            title: Text(
+              l10n.defaultWorkspace,
+              style: TextStyle(color: tokens.fgBright),
+            ),
+            trailing: Icon(Icons.check_rounded, color: tokens.accent, size: 18),
             tileColor: tokens.accentSurface,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ],
       ),

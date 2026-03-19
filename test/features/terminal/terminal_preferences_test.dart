@@ -24,7 +24,10 @@ void main() {
     });
 
     test('default is within valid range', () {
-      expect(kTerminalFontSizeDefault, greaterThanOrEqualTo(kTerminalFontSizeMin));
+      expect(
+        kTerminalFontSizeDefault,
+        greaterThanOrEqualTo(kTerminalFontSizeMin),
+      );
       expect(kTerminalFontSizeDefault, lessThanOrEqualTo(kTerminalFontSizeMax));
     });
 
@@ -36,12 +39,19 @@ void main() {
       expect(kTerminalFontSizeStep, greaterThan(0));
     });
 
-    test('range accommodates at least one step in each direction from default', () {
-      expect(kTerminalFontSizeDefault - kTerminalFontSizeStep,
-          greaterThanOrEqualTo(kTerminalFontSizeMin));
-      expect(kTerminalFontSizeDefault + kTerminalFontSizeStep,
-          lessThanOrEqualTo(kTerminalFontSizeMax));
-    });
+    test(
+      'range accommodates at least one step in each direction from default',
+      () {
+        expect(
+          kTerminalFontSizeDefault - kTerminalFontSizeStep,
+          greaterThanOrEqualTo(kTerminalFontSizeMin),
+        );
+        expect(
+          kTerminalFontSizeDefault + kTerminalFontSizeStep,
+          lessThanOrEqualTo(kTerminalFontSizeMax),
+        );
+      },
+    );
   });
 
   // ── Boundary math (pure logic, no providers) ──────────────────────────────
@@ -58,14 +68,18 @@ void main() {
     });
 
     test('value at min stays at min', () {
-      final clamped =
-          kTerminalFontSizeMin.clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+      final clamped = kTerminalFontSizeMin.clamp(
+        kTerminalFontSizeMin,
+        kTerminalFontSizeMax,
+      );
       expect(clamped, kTerminalFontSizeMin);
     });
 
     test('value at max stays at max', () {
-      final clamped =
-          kTerminalFontSizeMax.clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+      final clamped = kTerminalFontSizeMax.clamp(
+        kTerminalFontSizeMin,
+        kTerminalFontSizeMax,
+      );
       expect(clamped, kTerminalFontSizeMax);
     });
 
@@ -82,14 +96,18 @@ void main() {
     });
 
     test('max + step clamps back to max', () {
-      final clamped = (kTerminalFontSizeMax + kTerminalFontSizeStep)
-          .clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+      final clamped = (kTerminalFontSizeMax + kTerminalFontSizeStep).clamp(
+        kTerminalFontSizeMin,
+        kTerminalFontSizeMax,
+      );
       expect(clamped, kTerminalFontSizeMax);
     });
 
     test('min - step clamps back to min', () {
-      final clamped = (kTerminalFontSizeMin - kTerminalFontSizeStep)
-          .clamp(kTerminalFontSizeMin, kTerminalFontSizeMax);
+      final clamped = (kTerminalFontSizeMin - kTerminalFontSizeStep).clamp(
+        kTerminalFontSizeMin,
+        kTerminalFontSizeMax,
+      );
       expect(clamped, kTerminalFontSizeMin);
     });
 
@@ -123,7 +141,10 @@ void main() {
     tearDown(() => container.dispose());
 
     test('initial value is kTerminalFontSizeDefault', () {
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('increase raises font size by one step', () {
@@ -204,21 +225,30 @@ void main() {
       notifier.increase();
       notifier.increase();
       notifier.reset();
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('reset from min returns to default', () {
       final notifier = container.read(terminalFontSizeProvider.notifier);
       notifier.set(kTerminalFontSizeMin);
       notifier.reset();
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('reset from max returns to default', () {
       final notifier = container.read(terminalFontSizeProvider.notifier);
       notifier.set(kTerminalFontSizeMax);
       notifier.reset();
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('set to a valid value updates state', () {
@@ -237,12 +267,16 @@ void main() {
     });
 
     test('set to min stays at min', () {
-      container.read(terminalFontSizeProvider.notifier).set(kTerminalFontSizeMin);
+      container
+          .read(terminalFontSizeProvider.notifier)
+          .set(kTerminalFontSizeMin);
       expect(container.read(terminalFontSizeProvider), kTerminalFontSizeMin);
     });
 
     test('set to max stays at max', () {
-      container.read(terminalFontSizeProvider.notifier).set(kTerminalFontSizeMax);
+      container
+          .read(terminalFontSizeProvider.notifier)
+          .set(kTerminalFontSizeMax);
       expect(container.read(terminalFontSizeProvider), kTerminalFontSizeMax);
     });
 
@@ -265,21 +299,30 @@ void main() {
 
       containerA.read(terminalFontSizeProvider.notifier).set(20.0);
       expect(containerA.read(terminalFontSizeProvider), 20.0);
-      expect(containerB.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        containerB.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('increase then decrease returns to original', () {
       final notifier = container.read(terminalFontSizeProvider.notifier);
       notifier.increase();
       notifier.decrease();
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('set then reset returns to default', () {
       final notifier = container.read(terminalFontSizeProvider.notifier);
       notifier.set(22.0);
       notifier.reset();
-      expect(container.read(terminalFontSizeProvider), kTerminalFontSizeDefault);
+      expect(
+        container.read(terminalFontSizeProvider),
+        kTerminalFontSizeDefault,
+      );
     });
 
     test('persists to SharedPreferences after set', () async {

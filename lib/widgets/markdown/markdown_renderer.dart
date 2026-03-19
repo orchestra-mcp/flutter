@@ -64,15 +64,12 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
   }
 
   Future<void> _handleShare() async {
-    await SharePlus.instance.share(
-      ShareParams(text: widget.content),
-    );
+    await SharePlus.instance.share(ShareParams(text: widget.content));
   }
 
   void _showContextMenu(BuildContext context, Offset position) {
     final tokens = ThemeTokens.of(context);
-    final overlay =
-        Overlay.of(context).context.findRenderObject() as RenderBox;
+    final overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
 
     showMenu<String>(
       context: context,
@@ -134,7 +131,10 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
         case 'markdown':
           exportContentAsFile(widget.content, 'document.md');
         case 'plaintext':
-          exportContentAsFile(markdownToPlainText(widget.content), 'document.txt');
+          exportContentAsFile(
+            markdownToPlainText(widget.content),
+            'document.txt',
+          );
       }
     });
   }
@@ -171,11 +171,12 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
             padding: widget.padding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: blocks
-                  .map((b) => _buildBlock(b, tokens))
-                  .expand((w) => [w, const SizedBox(height: 12)])
-                  .toList()
-                ..removeLast(), // remove trailing spacer
+              children:
+                  blocks
+                      .map((b) => _buildBlock(b, tokens))
+                      .expand((w) => [w, const SizedBox(height: 12)])
+                      .toList()
+                    ..removeLast(), // remove trailing spacer
             ),
           ),
         ),
@@ -210,9 +211,7 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
       decoration: showBorder
           ? BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                  color: tokens.border.withValues(alpha: 0.4),
-                ),
+                bottom: BorderSide(color: tokens.border.withValues(alpha: 0.4)),
               ),
             )
           : null,
@@ -234,11 +233,7 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
   Widget _paragraph(ParagraphBlock block, OrchestraColorTokens tokens) {
     return buildInlineWidget(
       block.text,
-      baseStyle: TextStyle(
-        fontSize: 14,
-        color: tokens.fgMuted,
-        height: 1.6,
-      ),
+      baseStyle: TextStyle(fontSize: 14, color: tokens.fgMuted, height: 1.6),
       onLinkClick: widget.onLinkClick,
     );
   }
@@ -410,7 +405,9 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
                       fontSize: 14,
                       color: tokens.fgMuted,
                       height: 1.6,
-                      decoration: item.checked ? TextDecoration.lineThrough : null,
+                      decoration: item.checked
+                          ? TextDecoration.lineThrough
+                          : null,
                       decorationColor: tokens.fgDim,
                     ),
                     onLinkClick: widget.onLinkClick,
@@ -440,8 +437,9 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: tokens.accent.withValues(alpha: 0.1),
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(9)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(9),
+              ),
             ),
             child: Text(
               'Metadata',
@@ -454,8 +452,7 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
           ),
           ...block.data.entries.map((entry) {
             return Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: Row(
                 children: [
                   SizedBox(
@@ -473,10 +470,7 @@ class _MarkdownRendererWidgetState extends State<MarkdownRendererWidget> {
                   Expanded(
                     child: Text(
                       entry.value,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: tokens.fgMuted,
-                      ),
+                      style: TextStyle(fontSize: 12, color: tokens.fgMuted),
                     ),
                   ),
                 ],

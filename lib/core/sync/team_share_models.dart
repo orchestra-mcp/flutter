@@ -11,7 +11,9 @@ String? resolveAvatarUrl(String? url, String baseUrl) {
   if (url == null || url.isEmpty) return null;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   // Strip trailing slash from base to avoid double-slash.
-  final base = baseUrl.endsWith('/') ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
+  final base = baseUrl.endsWith('/')
+      ? baseUrl.substring(0, baseUrl.length - 1)
+      : baseUrl;
   return '$base$url';
 }
 
@@ -29,14 +31,14 @@ enum SyncEntityType {
   doc;
 
   factory SyncEntityType.fromString(String value) => switch (value) {
-        'project' => SyncEntityType.project,
-        'note' => SyncEntityType.note,
-        'skill' => SyncEntityType.skill,
-        'agent' => SyncEntityType.agent,
-        'workflow' => SyncEntityType.workflow,
-        'doc' => SyncEntityType.doc,
-        _ => throw ArgumentError('Unknown SyncEntityType: $value'),
-      };
+    'project' => SyncEntityType.project,
+    'note' => SyncEntityType.note,
+    'skill' => SyncEntityType.skill,
+    'agent' => SyncEntityType.agent,
+    'workflow' => SyncEntityType.workflow,
+    'doc' => SyncEntityType.doc,
+    _ => throw ArgumentError('Unknown SyncEntityType: $value'),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -61,21 +63,21 @@ enum EntitySyncStatus {
   conflict;
 
   factory EntitySyncStatus.fromString(String value) => switch (value) {
-        'never_synced' => EntitySyncStatus.neverSynced,
-        'synced' => EntitySyncStatus.synced,
-        'pending' => EntitySyncStatus.pending,
-        'outdated' => EntitySyncStatus.outdated,
-        'conflict' => EntitySyncStatus.conflict,
-        _ => throw ArgumentError('Unknown EntitySyncStatus: $value'),
-      };
+    'never_synced' => EntitySyncStatus.neverSynced,
+    'synced' => EntitySyncStatus.synced,
+    'pending' => EntitySyncStatus.pending,
+    'outdated' => EntitySyncStatus.outdated,
+    'conflict' => EntitySyncStatus.conflict,
+    _ => throw ArgumentError('Unknown EntitySyncStatus: $value'),
+  };
 
   String toJson() => switch (this) {
-        EntitySyncStatus.neverSynced => 'never_synced',
-        EntitySyncStatus.synced => 'synced',
-        EntitySyncStatus.pending => 'pending',
-        EntitySyncStatus.outdated => 'outdated',
-        EntitySyncStatus.conflict => 'conflict',
-      };
+    EntitySyncStatus.neverSynced => 'never_synced',
+    EntitySyncStatus.synced => 'synced',
+    EntitySyncStatus.pending => 'pending',
+    EntitySyncStatus.outdated => 'outdated',
+    EntitySyncStatus.conflict => 'conflict',
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -89,11 +91,11 @@ enum SharePermission {
   admin;
 
   factory SharePermission.fromString(String value) => switch (value) {
-        'read' => SharePermission.read,
-        'write' => SharePermission.write,
-        'admin' => SharePermission.admin,
-        _ => throw ArgumentError('Unknown SharePermission: $value'),
-      };
+    'read' => SharePermission.read,
+    'write' => SharePermission.write,
+    'admin' => SharePermission.admin,
+    _ => throw ArgumentError('Unknown SharePermission: $value'),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -132,22 +134,22 @@ class TeamMember {
   // -- JSON ------------------------------------------------------------------
 
   factory TeamMember.fromJson(Map<String, dynamic> json) => TeamMember(
-        id: json['id']?.toString() ?? '',
-        name: (json['name'] as String?) ?? '',
-        email: json['email'] as String?,
-        avatarUrl: json['avatar_url'] as String?,
-        role: json['role'] as String? ?? 'member',
-        isOnline: json['is_online'] as bool? ?? false,
-      );
+    id: json['id']?.toString() ?? '',
+    name: (json['name'] as String?) ?? '',
+    email: json['email'] as String?,
+    avatarUrl: json['avatar_url'] as String?,
+    role: json['role'] as String? ?? 'member',
+    isOnline: json['is_online'] as bool? ?? false,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        if (email != null) 'email': email,
-        if (avatarUrl != null) 'avatar_url': avatarUrl,
-        'role': role,
-        'is_online': isOnline,
-      };
+    'id': id,
+    'name': name,
+    if (email != null) 'email': email,
+    if (avatarUrl != null) 'avatar_url': avatarUrl,
+    'role': role,
+    'is_online': isOnline,
+  };
 
   TeamMember copyWith({
     String? id,
@@ -156,15 +158,14 @@ class TeamMember {
     String? avatarUrl,
     String? role,
     bool? isOnline,
-  }) =>
-      TeamMember(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        email: email ?? this.email,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-        role: role ?? this.role,
-        isOnline: isOnline ?? this.isOnline,
-      );
+  }) => TeamMember(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    email: email ?? this.email,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+    role: role ?? this.role,
+    isOnline: isOnline ?? this.isOnline,
+  );
 
   @override
   String toString() => 'TeamMember($id, $name, $role)';
@@ -206,26 +207,26 @@ class Team {
   // -- JSON ------------------------------------------------------------------
 
   factory Team.fromJson(Map<String, dynamic> json) => Team(
-        id: json['id']?.toString() ?? '',
-        name: (json['name'] as String?) ?? '',
-        description: json['description'] as String?,
-        avatarUrl: json['avatar_url'] as String?,
-        members: (json['members'] as List? ?? [])
-            .map((e) => TeamMember.fromJson(e as Map<String, dynamic>))
-            .toList(),
-        createdAt: json['created_at'] != null
-            ? DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now()
-            : DateTime.now(),
-      );
+    id: json['id']?.toString() ?? '',
+    name: (json['name'] as String?) ?? '',
+    description: json['description'] as String?,
+    avatarUrl: json['avatar_url'] as String?,
+    members: (json['members'] as List? ?? [])
+        .map((e) => TeamMember.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    createdAt: json['created_at'] != null
+        ? DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now()
+        : DateTime.now(),
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        if (description != null) 'description': description,
-        if (avatarUrl != null) 'avatar_url': avatarUrl,
-        'members': members.map((m) => m.toJson()).toList(),
-        'created_at': createdAt.toUtc().toIso8601String(),
-      };
+    'id': id,
+    'name': name,
+    if (description != null) 'description': description,
+    if (avatarUrl != null) 'avatar_url': avatarUrl,
+    'members': members.map((m) => m.toJson()).toList(),
+    'created_at': createdAt.toUtc().toIso8601String(),
+  };
 
   Team copyWith({
     String? id,
@@ -234,15 +235,14 @@ class Team {
     String? avatarUrl,
     List<TeamMember>? members,
     DateTime? createdAt,
-  }) =>
-      Team(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        description: description ?? this.description,
-        avatarUrl: avatarUrl ?? this.avatarUrl,
-        members: members ?? this.members,
-        createdAt: createdAt ?? this.createdAt,
-      );
+  }) => Team(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    description: description ?? this.description,
+    avatarUrl: avatarUrl ?? this.avatarUrl,
+    members: members ?? this.members,
+    createdAt: createdAt ?? this.createdAt,
+  );
 
   @override
   String toString() => 'Team($id, $name, ${members.length} members)';
@@ -312,38 +312,39 @@ class TeamShare {
   // -- JSON ------------------------------------------------------------------
 
   factory TeamShare.fromJson(Map<String, dynamic> json) => TeamShare(
-        id: json['id'] as String,
-        entityType: json['entity_type'] as String,
-        entityId: json['entity_id'] as String,
-        teamId: json['team_id'] as String,
-        shareWithAll: json['share_with_all'] as bool? ?? true,
-        memberIds: (json['member_ids'] as List? ?? []).cast<String>(),
-        permission:
-            SharePermission.fromString(json['permission'] as String? ?? 'read'),
-        sharedBy: json['shared_by'] as String,
-        sharedAt: DateTime.parse(json['shared_at'] as String),
-        lastSyncedAt: json['last_synced_at'] != null
-            ? DateTime.parse(json['last_synced_at'] as String)
-            : null,
-        version: json['version'] as int? ?? 1,
-        contentHash: json['content_hash'] as String?,
-      );
+    id: json['id'] as String,
+    entityType: json['entity_type'] as String,
+    entityId: json['entity_id'] as String,
+    teamId: json['team_id'] as String,
+    shareWithAll: json['share_with_all'] as bool? ?? true,
+    memberIds: (json['member_ids'] as List? ?? []).cast<String>(),
+    permission: SharePermission.fromString(
+      json['permission'] as String? ?? 'read',
+    ),
+    sharedBy: json['shared_by'] as String,
+    sharedAt: DateTime.parse(json['shared_at'] as String),
+    lastSyncedAt: json['last_synced_at'] != null
+        ? DateTime.parse(json['last_synced_at'] as String)
+        : null,
+    version: json['version'] as int? ?? 1,
+    contentHash: json['content_hash'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'team_id': teamId,
-        'share_with_all': shareWithAll,
-        'member_ids': memberIds,
-        'permission': permission.name,
-        'shared_by': sharedBy,
-        'shared_at': sharedAt.toUtc().toIso8601String(),
-        if (lastSyncedAt != null)
-          'last_synced_at': lastSyncedAt!.toUtc().toIso8601String(),
-        'version': version,
-        if (contentHash != null) 'content_hash': contentHash,
-      };
+    'id': id,
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'team_id': teamId,
+    'share_with_all': shareWithAll,
+    'member_ids': memberIds,
+    'permission': permission.name,
+    'shared_by': sharedBy,
+    'shared_at': sharedAt.toUtc().toIso8601String(),
+    if (lastSyncedAt != null)
+      'last_synced_at': lastSyncedAt!.toUtc().toIso8601String(),
+    'version': version,
+    if (contentHash != null) 'content_hash': contentHash,
+  };
 
   TeamShare copyWith({
     String? id,
@@ -358,21 +359,20 @@ class TeamShare {
     DateTime? lastSyncedAt,
     int? version,
     String? contentHash,
-  }) =>
-      TeamShare(
-        id: id ?? this.id,
-        entityType: entityType ?? this.entityType,
-        entityId: entityId ?? this.entityId,
-        teamId: teamId ?? this.teamId,
-        shareWithAll: shareWithAll ?? this.shareWithAll,
-        memberIds: memberIds ?? this.memberIds,
-        permission: permission ?? this.permission,
-        sharedBy: sharedBy ?? this.sharedBy,
-        sharedAt: sharedAt ?? this.sharedAt,
-        lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
-        version: version ?? this.version,
-        contentHash: contentHash ?? this.contentHash,
-      );
+  }) => TeamShare(
+    id: id ?? this.id,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    teamId: teamId ?? this.teamId,
+    shareWithAll: shareWithAll ?? this.shareWithAll,
+    memberIds: memberIds ?? this.memberIds,
+    permission: permission ?? this.permission,
+    sharedBy: sharedBy ?? this.sharedBy,
+    sharedAt: sharedAt ?? this.sharedAt,
+    lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+    version: version ?? this.version,
+    contentHash: contentHash ?? this.contentHash,
+  );
 
   @override
   String toString() =>
@@ -434,7 +434,8 @@ class EntitySyncMetadata {
         entityType: json['entity_type'] as String,
         entityId: json['entity_id'] as String,
         status: EntitySyncStatus.fromString(
-            json['status'] as String? ?? 'never_synced'),
+          json['status'] as String? ?? 'never_synced',
+        ),
         lastSyncedAt: json['last_synced_at'] != null
             ? DateTime.parse(json['last_synced_at'] as String)
             : null,
@@ -442,22 +443,22 @@ class EntitySyncMetadata {
         remoteVersion: json['remote_version'] as int?,
         contentHash: json['content_hash'] as String?,
         lastSyncedBy: json['last_synced_by'] as String?,
-        sharedWithTeamIds:
-            (json['shared_with_team_ids'] as List? ?? []).cast<String>(),
+        sharedWithTeamIds: (json['shared_with_team_ids'] as List? ?? [])
+            .cast<String>(),
       );
 
   Map<String, dynamic> toJson() => {
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'status': status.toJson(),
-        if (lastSyncedAt != null)
-          'last_synced_at': lastSyncedAt!.toUtc().toIso8601String(),
-        'local_version': localVersion,
-        if (remoteVersion != null) 'remote_version': remoteVersion,
-        if (contentHash != null) 'content_hash': contentHash,
-        if (lastSyncedBy != null) 'last_synced_by': lastSyncedBy,
-        'shared_with_team_ids': sharedWithTeamIds,
-      };
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'status': status.toJson(),
+    if (lastSyncedAt != null)
+      'last_synced_at': lastSyncedAt!.toUtc().toIso8601String(),
+    'local_version': localVersion,
+    if (remoteVersion != null) 'remote_version': remoteVersion,
+    if (contentHash != null) 'content_hash': contentHash,
+    if (lastSyncedBy != null) 'last_synced_by': lastSyncedBy,
+    'shared_with_team_ids': sharedWithTeamIds,
+  };
 
   EntitySyncMetadata copyWith({
     String? entityType,
@@ -469,18 +470,17 @@ class EntitySyncMetadata {
     String? contentHash,
     String? lastSyncedBy,
     List<String>? sharedWithTeamIds,
-  }) =>
-      EntitySyncMetadata(
-        entityType: entityType ?? this.entityType,
-        entityId: entityId ?? this.entityId,
-        status: status ?? this.status,
-        lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
-        localVersion: localVersion ?? this.localVersion,
-        remoteVersion: remoteVersion ?? this.remoteVersion,
-        contentHash: contentHash ?? this.contentHash,
-        lastSyncedBy: lastSyncedBy ?? this.lastSyncedBy,
-        sharedWithTeamIds: sharedWithTeamIds ?? this.sharedWithTeamIds,
-      );
+  }) => EntitySyncMetadata(
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    status: status ?? this.status,
+    lastSyncedAt: lastSyncedAt ?? this.lastSyncedAt,
+    localVersion: localVersion ?? this.localVersion,
+    remoteVersion: remoteVersion ?? this.remoteVersion,
+    contentHash: contentHash ?? this.contentHash,
+    lastSyncedBy: lastSyncedBy ?? this.lastSyncedBy,
+    sharedWithTeamIds: sharedWithTeamIds ?? this.sharedWithTeamIds,
+  );
 
   @override
   String toString() =>
@@ -549,16 +549,16 @@ class SyncVersionEntry {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'version': version,
-        'author_id': authorId,
-        'author_name': authorName,
-        if (changeSummary != null) 'change_summary': changeSummary,
-        'timestamp': timestamp.toUtc().toIso8601String(),
-        if (contentHash != null) 'content_hash': contentHash,
-      };
+    'id': id,
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'version': version,
+    'author_id': authorId,
+    'author_name': authorName,
+    if (changeSummary != null) 'change_summary': changeSummary,
+    'timestamp': timestamp.toUtc().toIso8601String(),
+    if (contentHash != null) 'content_hash': contentHash,
+  };
 
   SyncVersionEntry copyWith({
     String? id,
@@ -570,18 +570,17 @@ class SyncVersionEntry {
     String? changeSummary,
     DateTime? timestamp,
     String? contentHash,
-  }) =>
-      SyncVersionEntry(
-        id: id ?? this.id,
-        entityType: entityType ?? this.entityType,
-        entityId: entityId ?? this.entityId,
-        version: version ?? this.version,
-        authorId: authorId ?? this.authorId,
-        authorName: authorName ?? this.authorName,
-        changeSummary: changeSummary ?? this.changeSummary,
-        timestamp: timestamp ?? this.timestamp,
-        contentHash: contentHash ?? this.contentHash,
-      );
+  }) => SyncVersionEntry(
+    id: id ?? this.id,
+    entityType: entityType ?? this.entityType,
+    entityId: entityId ?? this.entityId,
+    version: version ?? this.version,
+    authorId: authorId ?? this.authorId,
+    authorName: authorName ?? this.authorName,
+    changeSummary: changeSummary ?? this.changeSummary,
+    timestamp: timestamp ?? this.timestamp,
+    contentHash: contentHash ?? this.contentHash,
+  );
 
   @override
   String toString() =>
@@ -633,27 +632,28 @@ class ShareRequest {
   final String contentHash;
 
   Map<String, dynamic> toJson() => {
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'team_id': teamId,
-        'share_with_all': shareWithAll,
-        'member_ids': memberIds,
-        'permission': permission.name,
-        'entity_data': entityData,
-        'content_hash': contentHash,
-      };
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'team_id': teamId,
+    'share_with_all': shareWithAll,
+    'member_ids': memberIds,
+    'permission': permission.name,
+    'entity_data': entityData,
+    'content_hash': contentHash,
+  };
 
   factory ShareRequest.fromJson(Map<String, dynamic> json) => ShareRequest(
-        entityType: json['entity_type'] as String,
-        entityId: json['entity_id'] as String,
-        teamId: json['team_id'] as String,
-        shareWithAll: json['share_with_all'] as bool? ?? true,
-        memberIds: (json['member_ids'] as List? ?? []).cast<String>(),
-        permission:
-            SharePermission.fromString(json['permission'] as String? ?? 'read'),
-        entityData: json['entity_data'] as Map<String, dynamic>,
-        contentHash: json['content_hash'] as String,
-      );
+    entityType: json['entity_type'] as String,
+    entityId: json['entity_id'] as String,
+    teamId: json['team_id'] as String,
+    shareWithAll: json['share_with_all'] as bool? ?? true,
+    memberIds: (json['member_ids'] as List? ?? []).cast<String>(),
+    permission: SharePermission.fromString(
+      json['permission'] as String? ?? 'read',
+    ),
+    entityData: json['entity_data'] as Map<String, dynamic>,
+    contentHash: json['content_hash'] as String,
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -686,20 +686,20 @@ class ShareResponse {
   final String? errorMessage;
 
   factory ShareResponse.fromJson(Map<String, dynamic> json) => ShareResponse(
-        shareId: json['share_id'] as String,
-        success: json['success'] as bool,
-        version: json['version'] as int,
-        serverTimestamp: DateTime.parse(json['server_timestamp'] as String),
-        errorMessage: json['error_message'] as String?,
-      );
+    shareId: json['share_id'] as String,
+    success: json['success'] as bool,
+    version: json['version'] as int,
+    serverTimestamp: DateTime.parse(json['server_timestamp'] as String),
+    errorMessage: json['error_message'] as String?,
+  );
 
   Map<String, dynamic> toJson() => {
-        'share_id': shareId,
-        'success': success,
-        'version': version,
-        'server_timestamp': serverTimestamp.toUtc().toIso8601String(),
-        if (errorMessage != null) 'error_message': errorMessage,
-      };
+    'share_id': shareId,
+    'success': success,
+    'version': version,
+    'server_timestamp': serverTimestamp.toUtc().toIso8601String(),
+    if (errorMessage != null) 'error_message': errorMessage,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -735,21 +735,20 @@ class TeamUpdateStatus {
       );
 
   Map<String, dynamic> toJson() => {
-        'available_updates': availableUpdates,
-        'updates': updates.map((u) => u.toJson()).toList(),
-        'checked_at': checkedAt.toUtc().toIso8601String(),
-      };
+    'available_updates': availableUpdates,
+    'updates': updates.map((u) => u.toJson()).toList(),
+    'checked_at': checkedAt.toUtc().toIso8601String(),
+  };
 
   TeamUpdateStatus copyWith({
     int? availableUpdates,
     List<TeamUpdateEntry>? updates,
     DateTime? checkedAt,
-  }) =>
-      TeamUpdateStatus(
-        availableUpdates: availableUpdates ?? this.availableUpdates,
-        updates: updates ?? this.updates,
-        checkedAt: checkedAt ?? this.checkedAt,
-      );
+  }) => TeamUpdateStatus(
+    availableUpdates: availableUpdates ?? this.availableUpdates,
+    updates: updates ?? this.updates,
+    checkedAt: checkedAt ?? this.checkedAt,
+  );
 
   @override
   String toString() => 'TeamUpdateStatus($availableUpdates updates)';
@@ -812,16 +811,16 @@ class TeamUpdateEntry {
       );
 
   Map<String, dynamic> toJson() => {
-        'entity_type': entityType,
-        'entity_id': entityId,
-        'entity_title': entityTitle,
-        'team_id': teamId,
-        'team_name': teamName,
-        'author_name': authorName,
-        'from_version': fromVersion,
-        'to_version': toVersion,
-        'updated_at': updatedAt.toUtc().toIso8601String(),
-      };
+    'entity_type': entityType,
+    'entity_id': entityId,
+    'entity_title': entityTitle,
+    'team_id': teamId,
+    'team_name': teamName,
+    'author_name': authorName,
+    'from_version': fromVersion,
+    'to_version': toVersion,
+    'updated_at': updatedAt.toUtc().toIso8601String(),
+  };
 
   @override
   String toString() =>

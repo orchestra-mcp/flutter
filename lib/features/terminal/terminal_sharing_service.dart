@@ -55,24 +55,32 @@ class TerminalSharingService {
       }
     });
 
-    debugPrint('[TerminalSharing] Started — listening for remote terminal commands');
+    debugPrint(
+      '[TerminalSharing] Started — listening for remote terminal commands',
+    );
   }
 
   void _handleListSessions(dynamic mcp, Map<String, dynamic> params) {
     final sessions = _ref.read(terminalSessionsProvider);
     final notifier = _ref.read(terminalSessionsProvider.notifier);
-    final sessionList = sessions.map((s) => {
-          'id': s.id,
-          'label': s.label,
-          'type': s.type.name,
-          'status': s.status.name,
-        }).toList();
+    final sessionList = sessions
+        .map(
+          (s) => {
+            'id': s.id,
+            'label': s.label,
+            'type': s.type.name,
+            'status': s.status.name,
+          },
+        )
+        .toList();
 
     // Respond via tool call.
-    mcp.callTool('_terminal_share_response', {
-      'type': 'session_list',
-      'sessions': sessionList,
-    }).catchError((_) {});
+    mcp
+        .callTool('_terminal_share_response', {
+          'type': 'session_list',
+          'sessions': sessionList,
+        })
+        .catchError((_) {});
   }
 
   void _handleAttach(dynamic mcp, Map<String, dynamic> params) {

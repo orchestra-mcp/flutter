@@ -137,10 +137,7 @@ final _mockTunnels = [
     connectedUser: 'Marcus Rivera',
     ipAddress: '172.16.0.8',
     toolsAvailable: 85,
-    recentActions: [
-      'db_query "SELECT count(*)"',
-      'list_features',
-    ],
+    recentActions: ['db_query "SELECT count(*)"', 'list_features'],
   ),
   TunnelInfo(
     id: 'tun-004',
@@ -170,18 +167,17 @@ final _mockTunnels = [
     connectedUser: 'James Wilson',
     ipAddress: '192.168.1.55',
     toolsAvailable: 0,
-    recentActions: [
-      'submit_review FEAT-UJV approved',
-    ],
+    recentActions: ['submit_review FEAT-UJV approved'],
   ),
 ];
 
 // ── Provider (StreamProvider to simulate auto-refresh) ──────────────────────
 
 final _tunnelsStreamProvider = StreamProvider<List<TunnelInfo>>((ref) {
-  return Stream.periodic(const Duration(seconds: 10), (_) => _mockTunnels)
-      .asBroadcastStream()
-    ..first; // Emit immediately on listen.
+  return Stream.periodic(
+    const Duration(seconds: 10),
+    (_) => _mockTunnels,
+  ).asBroadcastStream()..first; // Emit immediately on listen.
 });
 
 // ── Screen ──────────────────────────────────────────────────────────────────
@@ -249,12 +245,15 @@ class TunnelsDashboard extends ConsumerWidget {
     OrchestraColorTokens tokens,
     List<TunnelInfo> tunnels,
   ) {
-    final connected =
-        tunnels.where((t) => t.status == TunnelStatus.connected).length;
-    final degraded =
-        tunnels.where((t) => t.status == TunnelStatus.degraded).length;
-    final disconnected =
-        tunnels.where((t) => t.status == TunnelStatus.disconnected).length;
+    final connected = tunnels
+        .where((t) => t.status == TunnelStatus.connected)
+        .length;
+    final degraded = tunnels
+        .where((t) => t.status == TunnelStatus.degraded)
+        .length;
+    final disconnected = tunnels
+        .where((t) => t.status == TunnelStatus.disconnected)
+        .length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,8 +288,8 @@ class TunnelsDashboard extends ConsumerWidget {
             final cols = constraints.maxWidth >= 900
                 ? 3
                 : constraints.maxWidth >= 560
-                    ? 2
-                    : 1;
+                ? 2
+                : 1;
             return GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -301,10 +300,8 @@ class TunnelsDashboard extends ConsumerWidget {
                 childAspectRatio: 1.55,
               ),
               itemCount: tunnels.length,
-              itemBuilder: (ctx, i) => _TunnelCard(
-                tunnel: tunnels[i],
-                tokens: tokens,
-              ),
+              itemBuilder: (ctx, i) =>
+                  _TunnelCard(tunnel: tunnels[i], tokens: tokens),
             );
           },
         ),
@@ -358,10 +355,7 @@ class _TunnelCard extends StatelessWidget {
                     ),
                     Text(
                       tunnel.osLabel,
-                      style: TextStyle(
-                        color: tokens.fgMuted,
-                        fontSize: 11,
-                      ),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                     ),
                   ],
                 ),
@@ -375,8 +369,11 @@ class _TunnelCard extends StatelessWidget {
           // ── User ────────────────────────────────────────────────
           Row(
             children: [
-              Icon(Icons.person_outline_rounded,
-                  color: tokens.fgMuted, size: 14),
+              Icon(
+                Icons.person_outline_rounded,
+                color: tokens.fgMuted,
+                size: 14,
+              ),
               const SizedBox(width: 6),
               Text(
                 tunnel.connectedUser,
@@ -461,9 +458,10 @@ class _PulsingDotState extends State<_PulsingDot>
       vsync: this,
       duration: const Duration(milliseconds: 1400),
     )..repeat(reverse: true);
-    _anim = Tween(begin: 0.4, end: 1.0).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
-    );
+    _anim = Tween(
+      begin: 0.4,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -552,9 +550,7 @@ class _ConnectButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [tokens.accent, tokens.accentAlt],
-          ),
+          gradient: LinearGradient(colors: [tokens.accent, tokens.accentAlt]),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
@@ -652,7 +648,10 @@ class _ConnectButton extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(context).close, style: TextStyle(color: tokens.accent)),
+            child: Text(
+              AppLocalizations.of(context).close,
+              style: TextStyle(color: tokens.accent),
+            ),
           ),
         ],
       ),

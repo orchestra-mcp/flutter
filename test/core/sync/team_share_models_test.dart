@@ -145,13 +145,13 @@ void main() {
   // -------------------------------------------------------------------------
   group('TeamMember', () {
     Map<String, dynamic> fullMemberJson() => {
-          'id': 'mem-001',
-          'name': 'Alice',
-          'email': 'alice@example.com',
-          'avatar_url': 'https://img.example.com/alice.png',
-          'role': 'admin',
-          'is_online': true,
-        };
+      'id': 'mem-001',
+      'name': 'Alice',
+      'email': 'alice@example.com',
+      'avatar_url': 'https://img.example.com/alice.png',
+      'role': 'admin',
+      'is_online': true,
+    };
 
     test('fromJson parses all fields', () {
       final member = TeamMember.fromJson(fullMemberJson());
@@ -243,26 +243,16 @@ void main() {
     final createdAt = DateTime.utc(2026, 3, 15, 10, 30, 0);
 
     Map<String, dynamic> fullTeamJson() => {
-          'id': 'team-abc',
-          'name': 'Engineering',
-          'description': 'Core engineering team',
-          'avatar_url': 'https://img.example.com/eng.png',
-          'members': [
-            {
-              'id': 'mem-001',
-              'name': 'Alice',
-              'role': 'admin',
-              'is_online': true,
-            },
-            {
-              'id': 'mem-002',
-              'name': 'Bob',
-              'role': 'member',
-              'is_online': false,
-            },
-          ],
-          'created_at': createdAt.toIso8601String(),
-        };
+      'id': 'team-abc',
+      'name': 'Engineering',
+      'description': 'Core engineering team',
+      'avatar_url': 'https://img.example.com/eng.png',
+      'members': [
+        {'id': 'mem-001', 'name': 'Alice', 'role': 'admin', 'is_online': true},
+        {'id': 'mem-002', 'name': 'Bob', 'role': 'member', 'is_online': false},
+      ],
+      'created_at': createdAt.toIso8601String(),
+    };
 
     test('fromJson parses all fields including nested members', () {
       final team = Team.fromJson(fullTeamJson());
@@ -311,11 +301,7 @@ void main() {
     });
 
     test('toJson omits null description and avatarUrl', () {
-      final team = Team(
-        id: 'team-xyz',
-        name: 'Minimal',
-        createdAt: createdAt,
-      );
+      final team = Team(id: 'team-xyz', name: 'Minimal', createdAt: createdAt);
       final json = team.toJson();
       expect(json.containsKey('description'), false);
       expect(json.containsKey('avatar_url'), false);
@@ -330,10 +316,7 @@ void main() {
 
     test('copyWith overrides selected fields', () {
       final team = Team.fromJson(fullTeamJson());
-      final updated = team.copyWith(
-        name: 'Platform',
-        members: [],
-      );
+      final updated = team.copyWith(name: 'Platform', members: []);
       expect(updated.id, team.id);
       expect(updated.name, 'Platform');
       expect(updated.members, isEmpty);
@@ -352,11 +335,7 @@ void main() {
     });
 
     test('empty members list serializes to empty array', () {
-      final team = Team(
-        id: 'team-empty',
-        name: 'Ghost',
-        createdAt: createdAt,
-      );
+      final team = Team(id: 'team-empty', name: 'Ghost', createdAt: createdAt);
       final json = team.toJson();
       expect(json['members'], <Map<String, dynamic>>[]);
     });
@@ -370,19 +349,19 @@ void main() {
     final lastSyncedAt = DateTime.utc(2026, 3, 15, 13, 0, 0);
 
     Map<String, dynamic> fullShareJson() => {
-          'id': 'share-001',
-          'entity_type': 'project',
-          'entity_id': 'proj-abc',
-          'team_id': 'team-xyz',
-          'share_with_all': false,
-          'member_ids': ['mem-001', 'mem-002'],
-          'permission': 'write',
-          'shared_by': 'user-100',
-          'shared_at': sharedAt.toIso8601String(),
-          'last_synced_at': lastSyncedAt.toIso8601String(),
-          'version': 5,
-          'content_hash': 'abc123def456',
-        };
+      'id': 'share-001',
+      'entity_type': 'project',
+      'entity_id': 'proj-abc',
+      'team_id': 'team-xyz',
+      'share_with_all': false,
+      'member_ids': ['mem-001', 'mem-002'],
+      'permission': 'write',
+      'shared_by': 'user-100',
+      'shared_at': sharedAt.toIso8601String(),
+      'last_synced_at': lastSyncedAt.toIso8601String(),
+      'version': 5,
+      'content_hash': 'abc123def456',
+    };
 
     test('fromJson parses all fields', () {
       final share = TeamShare.fromJson(fullShareJson());
@@ -516,16 +495,16 @@ void main() {
     final lastSyncedAt = DateTime.utc(2026, 3, 15, 14, 0, 0);
 
     Map<String, dynamic> fullMetadataJson() => {
-          'entity_type': 'project',
-          'entity_id': 'proj-abc',
-          'status': 'synced',
-          'last_synced_at': lastSyncedAt.toIso8601String(),
-          'local_version': 7,
-          'remote_version': 7,
-          'content_hash': 'hash789',
-          'last_synced_by': 'user-300',
-          'shared_with_team_ids': ['team-a', 'team-b'],
-        };
+      'entity_type': 'project',
+      'entity_id': 'proj-abc',
+      'status': 'synced',
+      'last_synced_at': lastSyncedAt.toIso8601String(),
+      'local_version': 7,
+      'remote_version': 7,
+      'content_hash': 'hash789',
+      'last_synced_by': 'user-300',
+      'shared_with_team_ids': ['team-a', 'team-b'],
+    };
 
     test('fromJson parses all fields', () {
       final meta = EntitySyncMetadata.fromJson(fullMetadataJson());
@@ -541,10 +520,7 @@ void main() {
     });
 
     test('fromJson applies defaults when fields are absent', () {
-      final json = {
-        'entity_type': 'note',
-        'entity_id': 'note-1',
-      };
+      final json = {'entity_type': 'note', 'entity_id': 'note-1'};
       final meta = EntitySyncMetadata.fromJson(json);
       expect(meta.status, EntitySyncStatus.neverSynced);
       expect(meta.lastSyncedAt, isNull);
@@ -570,10 +546,7 @@ void main() {
     });
 
     test('toJson omits null optional fields', () {
-      const meta = EntitySyncMetadata(
-        entityType: 'note',
-        entityId: 'note-1',
-      );
+      const meta = EntitySyncMetadata(entityType: 'note', entityId: 'note-1');
       final json = meta.toJson();
       expect(json.containsKey('last_synced_at'), false);
       expect(json.containsKey('remote_version'), false);
@@ -584,10 +557,7 @@ void main() {
     });
 
     test('toJson serializes neverSynced status as "never_synced"', () {
-      const meta = EntitySyncMetadata(
-        entityType: 'doc',
-        entityId: 'doc-1',
-      );
+      const meta = EntitySyncMetadata(entityType: 'doc', entityId: 'doc-1');
       expect(meta.toJson()['status'], 'never_synced');
     });
 
@@ -624,10 +594,7 @@ void main() {
     });
 
     test('constructor default values', () {
-      const meta = EntitySyncMetadata(
-        entityType: 'skill',
-        entityId: 'skill-1',
-      );
+      const meta = EntitySyncMetadata(entityType: 'skill', entityId: 'skill-1');
       expect(meta.status, EntitySyncStatus.neverSynced);
       expect(meta.localVersion, 0);
       expect(meta.lastSyncedAt, isNull);
@@ -639,10 +606,7 @@ void main() {
 
     test('toString includes entity type, id, status, and version', () {
       final meta = EntitySyncMetadata.fromJson(fullMetadataJson());
-      expect(
-        meta.toString(),
-        'EntitySyncMetadata(project/proj-abc synced v7)',
-      );
+      expect(meta.toString(), 'EntitySyncMetadata(project/proj-abc synced v7)');
     });
   });
 
@@ -653,16 +617,16 @@ void main() {
     final timestamp = DateTime.utc(2026, 3, 15, 15, 0, 0);
 
     Map<String, dynamic> fullVersionJson() => {
-          'id': 'ver-001',
-          'entity_type': 'note',
-          'entity_id': 'note-abc',
-          'version': 3,
-          'author_id': 'user-400',
-          'author_name': 'Diana',
-          'change_summary': 'Added introduction section',
-          'timestamp': timestamp.toIso8601String(),
-          'content_hash': 'vhash456',
-        };
+      'id': 'ver-001',
+      'entity_type': 'note',
+      'entity_id': 'note-abc',
+      'version': 3,
+      'author_id': 'user-400',
+      'author_name': 'Diana',
+      'change_summary': 'Added introduction section',
+      'timestamp': timestamp.toIso8601String(),
+      'content_hash': 'vhash456',
+    };
 
     test('fromJson parses all fields', () {
       final entry = SyncVersionEntry.fromJson(fullVersionJson());
@@ -748,10 +712,7 @@ void main() {
 
     test('toString includes entity type, id, version, and author', () {
       final entry = SyncVersionEntry.fromJson(fullVersionJson());
-      expect(
-        entry.toString(),
-        'SyncVersionEntry(note/note-abc v3 by Diana)',
-      );
+      expect(entry.toString(), 'SyncVersionEntry(note/note-abc v3 by Diana)');
     });
   });
 
@@ -760,19 +721,19 @@ void main() {
   // -------------------------------------------------------------------------
   group('ShareRequest', () {
     Map<String, dynamic> fullRequestJson() => {
-          'entity_type': 'project',
-          'entity_id': 'proj-xyz',
-          'team_id': 'team-abc',
-          'share_with_all': false,
-          'member_ids': ['mem-a', 'mem-b'],
-          'permission': 'admin',
-          'entity_data': {
-            'title': 'My Project',
-            'tags': ['go', 'grpc'],
-            'nested': {'key': 42},
-          },
-          'content_hash': 'reqhash789',
-        };
+      'entity_type': 'project',
+      'entity_id': 'proj-xyz',
+      'team_id': 'team-abc',
+      'share_with_all': false,
+      'member_ids': ['mem-a', 'mem-b'],
+      'permission': 'admin',
+      'entity_data': {
+        'title': 'My Project',
+        'tags': ['go', 'grpc'],
+        'nested': {'key': 42},
+      },
+      'content_hash': 'reqhash789',
+    };
 
     test('fromJson parses all fields', () {
       final req = ShareRequest.fromJson(fullRequestJson());
@@ -863,19 +824,19 @@ void main() {
     final serverTimestamp = DateTime.utc(2026, 3, 15, 16, 0, 0);
 
     Map<String, dynamic> successResponseJson() => {
-          'share_id': 'share-resp-001',
-          'success': true,
-          'version': 3,
-          'server_timestamp': serverTimestamp.toIso8601String(),
-        };
+      'share_id': 'share-resp-001',
+      'success': true,
+      'version': 3,
+      'server_timestamp': serverTimestamp.toIso8601String(),
+    };
 
     Map<String, dynamic> errorResponseJson() => {
-          'share_id': 'share-resp-002',
-          'success': false,
-          'version': 0,
-          'server_timestamp': serverTimestamp.toIso8601String(),
-          'error_message': 'Permission denied',
-        };
+      'share_id': 'share-resp-002',
+      'success': false,
+      'version': 0,
+      'server_timestamp': serverTimestamp.toIso8601String(),
+      'error_message': 'Permission denied',
+    };
 
     test('fromJson parses successful response', () {
       final resp = ShareResponse.fromJson(successResponseJson());
@@ -938,33 +899,33 @@ void main() {
     final updatedAt = DateTime.utc(2026, 3, 15, 16, 30, 0);
 
     Map<String, dynamic> fullStatusJson() => {
-          'available_updates': 2,
-          'updates': [
-            {
-              'entity_type': 'note',
-              'entity_id': 'note-abc',
-              'entity_title': 'Design Doc',
-              'team_id': 'team-1',
-              'team_name': 'Engineering',
-              'author_name': 'Grace',
-              'from_version': 2,
-              'to_version': 4,
-              'updated_at': updatedAt.toIso8601String(),
-            },
-            {
-              'entity_type': 'project',
-              'entity_id': 'proj-xyz',
-              'entity_title': 'Backend Refactor',
-              'team_id': 'team-1',
-              'team_name': 'Engineering',
-              'author_name': 'Hank',
-              'from_version': 1,
-              'to_version': 2,
-              'updated_at': updatedAt.toIso8601String(),
-            },
-          ],
-          'checked_at': checkedAt.toIso8601String(),
-        };
+      'available_updates': 2,
+      'updates': [
+        {
+          'entity_type': 'note',
+          'entity_id': 'note-abc',
+          'entity_title': 'Design Doc',
+          'team_id': 'team-1',
+          'team_name': 'Engineering',
+          'author_name': 'Grace',
+          'from_version': 2,
+          'to_version': 4,
+          'updated_at': updatedAt.toIso8601String(),
+        },
+        {
+          'entity_type': 'project',
+          'entity_id': 'proj-xyz',
+          'entity_title': 'Backend Refactor',
+          'team_id': 'team-1',
+          'team_name': 'Engineering',
+          'author_name': 'Hank',
+          'from_version': 1,
+          'to_version': 2,
+          'updated_at': updatedAt.toIso8601String(),
+        },
+      ],
+      'checked_at': checkedAt.toIso8601String(),
+    };
 
     test('fromJson parses all fields including nested updates', () {
       final status = TeamUpdateStatus.fromJson(fullStatusJson());
@@ -985,9 +946,7 @@ void main() {
     });
 
     test('fromJson defaults availableUpdates to 0 when absent', () {
-      final json = {
-        'checked_at': checkedAt.toIso8601String(),
-      };
+      final json = {'checked_at': checkedAt.toIso8601String()};
       final status = TeamUpdateStatus.fromJson(json);
       expect(status.availableUpdates, 0);
     });
@@ -1010,10 +969,7 @@ void main() {
 
     test('copyWith overrides selected fields', () {
       final status = TeamUpdateStatus.fromJson(fullStatusJson());
-      final updated = status.copyWith(
-        availableUpdates: 0,
-        updates: [],
-      );
+      final updated = status.copyWith(availableUpdates: 0, updates: []);
       expect(updated.availableUpdates, 0);
       expect(updated.updates, isEmpty);
       expect(updated.checkedAt, status.checkedAt);
@@ -1047,16 +1003,16 @@ void main() {
     final updatedAt = DateTime.utc(2026, 3, 15, 18, 0, 0);
 
     Map<String, dynamic> fullEntryJson() => {
-          'entity_type': 'note',
-          'entity_id': 'note-entry-1',
-          'entity_title': 'API Reference',
-          'team_id': 'team-docs',
-          'team_name': 'Documentation',
-          'author_name': 'Ivan',
-          'from_version': 5,
-          'to_version': 8,
-          'updated_at': updatedAt.toIso8601String(),
-        };
+      'entity_type': 'note',
+      'entity_id': 'note-entry-1',
+      'entity_title': 'API Reference',
+      'team_id': 'team-docs',
+      'team_name': 'Documentation',
+      'author_name': 'Ivan',
+      'from_version': 5,
+      'to_version': 8,
+      'updated_at': updatedAt.toIso8601String(),
+    };
 
     test('fromJson parses all fields', () {
       final entry = TeamUpdateEntry.fromJson(fullEntryJson());

@@ -31,11 +31,36 @@ class AdminIntegrationsTab extends ConsumerStatefulWidget {
 
 class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
   static final _definitions = [
-    _IntegrationDef(key: 'github', name: 'GitHub', icon: Icons.code_rounded, callbackUrl: 'https://orchestra.dev/auth/callback/github'),
-    _IntegrationDef(key: 'slack', name: 'Slack', icon: Icons.tag_rounded, callbackUrl: 'https://orchestra.dev/auth/callback/slack'),
-    _IntegrationDef(key: 'discord', name: 'Discord', icon: Icons.discord_rounded, callbackUrl: 'https://orchestra.dev/auth/callback/discord'),
-    _IntegrationDef(key: 'figma', name: 'Figma', icon: Icons.draw_rounded, callbackUrl: 'https://orchestra.dev/auth/callback/figma'),
-    _IntegrationDef(key: 'sentry', name: 'Sentry', icon: Icons.bug_report_rounded, callbackUrl: 'https://orchestra.dev/auth/callback/sentry'),
+    _IntegrationDef(
+      key: 'github',
+      name: 'GitHub',
+      icon: Icons.code_rounded,
+      callbackUrl: 'https://orchestra.dev/auth/callback/github',
+    ),
+    _IntegrationDef(
+      key: 'slack',
+      name: 'Slack',
+      icon: Icons.tag_rounded,
+      callbackUrl: 'https://orchestra.dev/auth/callback/slack',
+    ),
+    _IntegrationDef(
+      key: 'discord',
+      name: 'Discord',
+      icon: Icons.discord_rounded,
+      callbackUrl: 'https://orchestra.dev/auth/callback/discord',
+    ),
+    _IntegrationDef(
+      key: 'figma',
+      name: 'Figma',
+      icon: Icons.draw_rounded,
+      callbackUrl: 'https://orchestra.dev/auth/callback/figma',
+    ),
+    _IntegrationDef(
+      key: 'sentry',
+      name: 'Sentry',
+      icon: Icons.bug_report_rounded,
+      callbackUrl: 'https://orchestra.dev/auth/callback/sentry',
+    ),
   ];
 
   final Map<String, bool> _enabled = {};
@@ -51,9 +76,11 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
       final section = data[def.key] as Map<String, dynamic>? ?? {};
       _enabled[def.key] = section['enabled'] as bool? ?? false;
       _clientIdCtrls[def.key] = TextEditingController(
-          text: section['client_id'] as String? ?? '');
+        text: section['client_id'] as String? ?? '',
+      );
       _clientSecretCtrls[def.key] = TextEditingController(
-          text: section['client_secret'] as String? ?? '');
+        text: section['client_secret'] as String? ?? '',
+      );
     }
   }
 
@@ -79,7 +106,9 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
           'client_secret': _clientSecretCtrls[def.key]?.text ?? '',
         };
       }
-      await ref.read(apiClientProvider).updateAdminSetting('integrations', payload);
+      await ref
+          .read(apiClientProvider)
+          .updateAdminSetting('integrations', payload);
       ref.invalidate(adminSettingProvider('integrations'));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -89,7 +118,9 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -104,7 +135,9 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -132,14 +165,17 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -192,8 +228,7 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
               Switch(
                 value: isEnabled,
                 activeThumbColor: tokens.accent,
-                onChanged: (v) =>
-                    setState(() => _enabled[def.key] = v),
+                onChanged: (v) => setState(() => _enabled[def.key] = v),
               ),
             ],
           ),
@@ -203,18 +238,22 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
           // Client ID
           _fieldLabel(tokens, l10n.adminClientId),
           const SizedBox(height: 6),
-          _inlineField(tokens,
-              ctrl: _clientIdCtrls[def.key]!,
-              hint: l10n.adminEnterClientId),
+          _inlineField(
+            tokens,
+            ctrl: _clientIdCtrls[def.key]!,
+            hint: l10n.adminEnterClientId,
+          ),
           const SizedBox(height: 12),
 
           // Client Secret
           _fieldLabel(tokens, l10n.adminClientSecret),
           const SizedBox(height: 6),
-          _inlineField(tokens,
-              ctrl: _clientSecretCtrls[def.key]!,
-              hint: l10n.adminEnterClientSecret,
-              obscure: true),
+          _inlineField(
+            tokens,
+            ctrl: _clientSecretCtrls[def.key]!,
+            hint: l10n.adminEnterClientSecret,
+            obscure: true,
+          ),
           const SizedBox(height: 12),
 
           // Callback URL (read-only)
@@ -222,8 +261,7 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
           const SizedBox(height: 6),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-                horizontal: 14, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: tokens.bg,
               borderRadius: BorderRadius.circular(10),
@@ -232,7 +270,10 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
             child: SelectableText(
               def.callbackUrl,
               style: TextStyle(
-                  fontSize: 13, color: tokens.fgDim, fontFamily: 'monospace'),
+                fontSize: 13,
+                color: tokens.fgDim,
+                fontFamily: 'monospace',
+              ),
             ),
           ),
         ],
@@ -255,8 +296,10 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),
@@ -274,21 +317,21 @@ class _AdminIntegrationsTabState extends ConsumerState<AdminIntegrationsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 }

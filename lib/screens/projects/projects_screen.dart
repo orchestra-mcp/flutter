@@ -77,8 +77,9 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
               onSelectAll: () {
                 final projects = asyncProjects.value;
                 if (projects != null) {
-                  ref.read(projectsSelectionProvider.notifier).selectAll(
-                      projects.map((p) => p.id).toSet());
+                  ref
+                      .read(projectsSelectionProvider.notifier)
+                      .selectAll(projects.map((p) => p.id).toSet());
                 }
               },
               onDelete: () async {
@@ -109,11 +110,13 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: Icon(Icons.add_rounded,
-                          color: tokens.accent, size: 22),
+                      icon: Icon(
+                        Icons.add_rounded,
+                        color: tokens.accent,
+                        size: 22,
+                      ),
                       style: IconButton.styleFrom(
-                        backgroundColor:
-                            tokens.accent.withValues(alpha: 0.12),
+                        backgroundColor: tokens.accent.withValues(alpha: 0.12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -137,8 +140,11 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.error_outline_rounded,
-                            color: tokens.fgDim, size: 48),
+                        Icon(
+                          Icons.error_outline_rounded,
+                          color: tokens.fgDim,
+                          size: 48,
+                        ),
                         const SizedBox(height: 12),
                         Text(
                           l10n.failedToLoadProjects,
@@ -173,13 +179,15 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                   final filtered = q.isEmpty
                       ? projects
                       : projects
-                          .where((p) =>
-                              p.name.toLowerCase().contains(q) ||
-                              (p.description ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              p.mode.toLowerCase().contains(q))
-                          .toList();
+                            .where(
+                              (p) =>
+                                  p.name.toLowerCase().contains(q) ||
+                                  (p.description ?? '').toLowerCase().contains(
+                                    q,
+                                  ) ||
+                                  p.mode.toLowerCase().contains(q),
+                            )
+                            .toList();
 
                   if (filtered.isEmpty) {
                     return Center(
@@ -192,36 +200,32 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
 
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: filtered.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 8),
+                    separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final project = filtered[index];
                       final id = project.id;
                       final cust = ref.watch(entityCustomizationProvider)[id];
-                      final color =
-                          cust?.color ?? _projectColor(project.id);
+                      final color = cust?.color ?? _projectColor(project.id);
                       return GlassListTile(
-                        leadingIcon:
-                            cust?.icon ?? Icons.folder_rounded,
+                        leadingIcon: cust?.icon ?? Icons.folder_rounded,
                         leadingColor: color,
                         label: project.name,
                         description: project.description ?? project.mode,
                         isSelected: selectedIds.contains(id),
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(projectsSelectionProvider.notifier)
-                                .toggle(id)
-                            : () =>
-                                context.push(Routes.project(project.id)),
+                                  .read(projectsSelectionProvider.notifier)
+                                  .toggle(id)
+                            : () => context.push(Routes.project(project.id)),
                         onSelect: () => ref
                             .read(projectsSelectionProvider.notifier)
                             .toggle(id),
                         onDelete: () async {
-                          await ref
-                              .read(projectRepositoryProvider)
-                              .delete(id);
+                          await ref.read(projectRepositoryProvider).delete(id);
                           ref.invalidate(projectsProvider);
                         },
                         contextMenuActions: buildEntityContextActions(
@@ -266,11 +270,17 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
                             content: project.description ?? '',
                           ),
                           onChangeIcon: () => pickAndSaveIcon(
-                              context, ref, id,
-                              currentCodePoint: cust?.iconCodePoint),
+                            context,
+                            ref,
+                            id,
+                            currentCodePoint: cust?.iconCodePoint,
+                          ),
                           onChangeColor: () => pickAndSaveColor(
-                              context, ref, id,
-                              currentColor: cust?.color),
+                            context,
+                            ref,
+                            id,
+                            currentColor: cust?.color,
+                          ),
                         ),
                       );
                     },
@@ -284,4 +294,3 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
     );
   }
 }
-

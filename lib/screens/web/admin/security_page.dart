@@ -7,15 +7,17 @@ import 'package:orchestra/l10n/app_localizations.dart';
 // ── Providers ────────────────────────────────────────────────────────────────
 
 /// Fetches the list of active sessions from the settings API.
-final _sessionsProvider =
-    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+final _sessionsProvider = FutureProvider<List<Map<String, dynamic>>>((
+  ref,
+) async {
   final client = ref.watch(apiClientProvider);
   return client.listSettingsSessions();
 });
 
 /// Fetches security-related admin settings (category = "security").
-final _securitySettingsProvider =
-    FutureProvider<Map<String, dynamic>>((ref) async {
+final _securitySettingsProvider = FutureProvider<Map<String, dynamic>>((
+  ref,
+) async {
   final client = ref.watch(apiClientProvider);
   return client.listAdminSettings(category: 'security');
 });
@@ -46,68 +48,79 @@ class SecurityPage extends ConsumerWidget {
             // ── Header ──────────────────────────────────────────────────────
             Text(
               AppLocalizations.of(context).securityTitle,
-            style: TextStyle(
-              color: tokens.fgBright,
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-          // ── Settings section ────────────────────────────────────────────
-          _SectionHeader(tokens: tokens, title: AppLocalizations.of(context).authentication),
-          const SizedBox(height: 12),
-          settingsAsync.when(
-            loading: () => _LoadingRow(tokens: tokens),
-            error: (e, _) => _InlineError(tokens: tokens, message: '$e'),
-            data: (data) => _SecuritySettings(tokens: tokens, data: data, ref: ref),
-          ),
-          const SizedBox(height: 32),
+            // ── Settings section ────────────────────────────────────────────
+            _SectionHeader(
+              tokens: tokens,
+              title: AppLocalizations.of(context).authentication,
+            ),
+            const SizedBox(height: 12),
+            settingsAsync.when(
+              loading: () => _LoadingRow(tokens: tokens),
+              error: (e, _) => _InlineError(tokens: tokens, message: '$e'),
+              data: (data) =>
+                  _SecuritySettings(tokens: tokens, data: data, ref: ref),
+            ),
+            const SizedBox(height: 32),
 
-          // ── Active sessions ─────────────────────────────────────────────
-          _SectionHeader(tokens: tokens, title: AppLocalizations.of(context).activeSessionsTitle),
-          const SizedBox(height: 12),
-          sessionsAsync.when(
-            loading: () => _LoadingRow(tokens: tokens),
-            error: (e, _) => _InlineError(tokens: tokens, message: '$e'),
-            data: (sessions) {
-              if (sessions.isEmpty) {
-                return _EmptyRow(
-                  tokens: tokens,
-                  message: AppLocalizations.of(context).noActiveSessionsFound,
-                );
-              }
-              return Column(
-                children: [
-                  ...sessions.map((s) => _SessionTile(
+            // ── Active sessions ─────────────────────────────────────────────
+            _SectionHeader(
+              tokens: tokens,
+              title: AppLocalizations.of(context).activeSessionsTitle,
+            ),
+            const SizedBox(height: 12),
+            sessionsAsync.when(
+              loading: () => _LoadingRow(tokens: tokens),
+              error: (e, _) => _InlineError(tokens: tokens, message: '$e'),
+              data: (sessions) {
+                if (sessions.isEmpty) {
+                  return _EmptyRow(
+                    tokens: tokens,
+                    message: AppLocalizations.of(context).noActiveSessionsFound,
+                  );
+                }
+                return Column(
+                  children: [
+                    ...sessions.map(
+                      (s) => _SessionTile(
                         tokens: tokens,
                         session: s,
                         onRevoke: () => _revokeSession(ref, s),
-                      )),
-                  const SizedBox(height: 8),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton.icon(
-                      onPressed: () => _revokeAllOtherSessions(ref, sessions),
-                      icon: Icon(Icons.logout, size: 14, color: tokens.fgDim),
-                      label: Text(
-                        AppLocalizations.of(context).revokeAllOtherSessions,
-                        style: TextStyle(color: tokens.fgDim, fontSize: 12),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: TextButton.icon(
+                        onPressed: () => _revokeAllOtherSessions(ref, sessions),
+                        icon: Icon(Icons.logout, size: 14, color: tokens.fgDim),
+                        label: Text(
+                          AppLocalizations.of(context).revokeAllOtherSessions,
+                          style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
   }
 
   Future<void> _revokeSession(
-      WidgetRef ref, Map<String, dynamic> session) async {
+    WidgetRef ref,
+    Map<String, dynamic> session,
+  ) async {
     final id = session['id']?.toString();
     if (id == null) return;
     try {
@@ -119,7 +132,9 @@ class SecurityPage extends ConsumerWidget {
   }
 
   Future<void> _revokeAllOtherSessions(
-      WidgetRef ref, List<Map<String, dynamic>> sessions) async {
+    WidgetRef ref,
+    List<Map<String, dynamic>> sessions,
+  ) async {
     final client = ref.read(apiClientProvider);
     for (final s in sessions) {
       final isCurrent = s['is_current'] == true;
@@ -152,7 +167,8 @@ class _SecuritySettings extends StatelessWidget {
   Widget build(BuildContext context) {
     // The admin settings endpoint returns { "settings": [...], ... }.
     // Each setting has "key", "value", "category".
-    final settings = (data['settings'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    final settings =
+        (data['settings'] as List?)?.cast<Map<String, dynamic>>() ?? [];
 
     bool getBool(String key, {bool fallback = false}) {
       final entry = settings.where((s) => s['key'] == key).firstOrNull;
@@ -171,8 +187,7 @@ class _SecuritySettings extends StatelessWidget {
         _SettingRow(
           tokens: tokens,
           title: AppLocalizations.of(context).enforceTwoFactor,
-          subtitle:
-              AppLocalizations.of(context).requireAll2fa,
+          subtitle: AppLocalizations.of(context).requireAll2fa,
           trailing: Switch.adaptive(
             value: enforce2fa,
             onChanged: (_) => _toggleSetting('enforce_2fa', !enforce2fa),
@@ -291,11 +306,13 @@ class _SessionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isCurrent = session['is_current'] == true;
-    final device = session['device'] as String? ??
+    final device =
+        session['device'] as String? ??
         session['user_agent'] as String? ??
         AppLocalizations.of(context).unknownDevice;
     final ip = session['ip'] as String? ?? '';
-    final lastActive = session['last_active'] as String? ??
+    final lastActive =
+        session['last_active'] as String? ??
         session['last_active_at'] as String? ??
         '';
 
@@ -336,7 +353,9 @@ class _SessionTile extends StatelessWidget {
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1),
+                          horizontal: 6,
+                          vertical: 1,
+                        ),
                         decoration: BoxDecoration(
                           color: tokens.accent.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
@@ -419,10 +438,7 @@ class _InlineError extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: tokens.border),
       ),
-      child: Text(
-        message,
-        style: TextStyle(color: tokens.fgDim, fontSize: 12),
-      ),
+      child: Text(message, style: TextStyle(color: tokens.fgDim, fontSize: 12)),
     );
   }
 }

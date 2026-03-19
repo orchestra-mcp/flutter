@@ -37,9 +37,9 @@ class PublishService {
 
   Future<bool> publishNote(String id) async {
     try {
-      final notes = await (db.select(db.localNotes)
-            ..where((n) => n.id.equals(id)))
-          .get();
+      final notes = await (db.select(
+        db.localNotes,
+      )..where((n) => n.id.equals(id))).get();
       if (notes.isEmpty) return false;
       final note = notes.first;
 
@@ -53,8 +53,9 @@ class PublishService {
       });
 
       // Mark as synced
-      await (db.update(db.localNotes)..where((n) => n.id.equals(id)))
-          .write(const LocalNotesCompanion(synced: Value(true)));
+      await (db.update(db.localNotes)..where((n) => n.id.equals(id))).write(
+        const LocalNotesCompanion(synced: Value(true)),
+      );
 
       debugPrint('[Publish] Note $id published');
       return true;
@@ -68,9 +69,9 @@ class PublishService {
 
   Future<bool> publishAgent(String id) async {
     try {
-      final agents = await (db.select(db.localAgents)
-            ..where((a) => a.id.equals(id)))
-          .get();
+      final agents = await (db.select(
+        db.localAgents,
+      )..where((a) => a.id.equals(id))).get();
       if (agents.isEmpty) return false;
       final agent = agents.first;
 
@@ -84,8 +85,9 @@ class PublishService {
         'tools': agent.tools,
       });
 
-      await (db.update(db.localAgents)..where((a) => a.id.equals(id)))
-          .write(const LocalAgentsCompanion(synced: Value(true)));
+      await (db.update(db.localAgents)..where((a) => a.id.equals(id))).write(
+        const LocalAgentsCompanion(synced: Value(true)),
+      );
 
       debugPrint('[Publish] Agent $id published');
       return true;
@@ -99,9 +101,9 @@ class PublishService {
 
   Future<bool> publishSkill(String id) async {
     try {
-      final skills = await (db.select(db.localSkills)
-            ..where((s) => s.id.equals(id)))
-          .get();
+      final skills = await (db.select(
+        db.localSkills,
+      )..where((s) => s.id.equals(id))).get();
       if (skills.isEmpty) return false;
       final skill = skills.first;
 
@@ -113,8 +115,9 @@ class PublishService {
         if (skill.source != null) 'source': skill.source,
       });
 
-      await (db.update(db.localSkills)..where((s) => s.id.equals(id)))
-          .write(const LocalSkillsCompanion(synced: Value(true)));
+      await (db.update(db.localSkills)..where((s) => s.id.equals(id))).write(
+        const LocalSkillsCompanion(synced: Value(true)),
+      );
 
       debugPrint('[Publish] Skill $id published');
       return true;
@@ -128,9 +131,9 @@ class PublishService {
 
   Future<bool> publishWorkflow(String id) async {
     try {
-      final workflows = await (db.select(db.localWorkflows)
-            ..where((w) => w.id.equals(id)))
-          .get();
+      final workflows = await (db.select(
+        db.localWorkflows,
+      )..where((w) => w.id.equals(id))).get();
       if (workflows.isEmpty) return false;
       final workflow = workflows.first;
 
@@ -142,8 +145,9 @@ class PublishService {
         'status': workflow.status,
       });
 
-      await (db.update(db.localWorkflows)..where((w) => w.id.equals(id)))
-          .write(const LocalWorkflowsCompanion(synced: Value(true)));
+      await (db.update(db.localWorkflows)..where((w) => w.id.equals(id))).write(
+        const LocalWorkflowsCompanion(synced: Value(true)),
+      );
 
       debugPrint('[Publish] Workflow $id published');
       return true;

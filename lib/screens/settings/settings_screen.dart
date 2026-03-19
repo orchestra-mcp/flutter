@@ -64,8 +64,11 @@ class SettingsScreen extends ConsumerWidget {
         backgroundColor: tokens.bg,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded,
-              color: tokens.fgMuted, size: 18),
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: tokens.fgMuted,
+            size: 18,
+          ),
           onPressed: () {
             if (context.canPop()) {
               context.pop();
@@ -83,13 +86,16 @@ class SettingsScreen extends ConsumerWidget {
           ),
         ),
       ),
-      body: showMobileMenu ? const _MobileSettingsMenu() : _tabForRoute(location),
+      body: showMobileMenu
+          ? const _MobileSettingsMenu()
+          : _tabForRoute(location),
     );
   }
 
   String _titleForRoute(String location, AppLocalizations l10n) {
     if (location == Routes.settings) return l10n.settings;
-    if (location.startsWith('/settings/admin-')) return l10n.settingsAdministration;
+    if (location.startsWith('/settings/admin-'))
+      return l10n.settingsAdministration;
     if (location == Routes.settingsProfile) return l10n.settingsProfile;
     if (location == Routes.settingsPassword) return l10n.settingsPasswordNav;
     if (location == Routes.settingsAppearance) return l10n.settingsAppearance;
@@ -98,15 +104,19 @@ class SettingsScreen extends ConsumerWidget {
     if (location == Routes.settingsSessions) return l10n.settingsSessions;
     if (location == Routes.settingsSecurity) return l10n.settingsSecurity;
     if (location == Routes.settingsApiTokens) return l10n.settingsApiTokens;
-    if (location == Routes.settingsIntegrations) return l10n.settingsIntegrations;
-    if (location == Routes.settingsNotifications) return l10n.settingsNotificationsNav;
+    if (location == Routes.settingsIntegrations)
+      return l10n.settingsIntegrations;
+    if (location == Routes.settingsNotifications)
+      return l10n.settingsNotificationsNav;
     if (location == Routes.settingsHealth) return l10n.settingsHealthNav;
     if (location == Routes.settingsDesktop) return l10n.settingsDesktop;
     if (location == Routes.settingsAbout) return l10n.settingsAbout;
     if (location == Routes.settingsTeam) return l10n.settingsTeam;
     if (location == Routes.settingsSocial) return l10n.settingsSocialNav;
-    if (location == Routes.settingsAgentInstructions) return l10n.settingsAgentInstructions;
-    if (location == Routes.settingsClaudeSettings) return l10n.settingsClaudeSettings;
+    if (location == Routes.settingsAgentInstructions)
+      return l10n.settingsAgentInstructions;
+    if (location == Routes.settingsClaudeSettings)
+      return l10n.settingsClaudeSettings;
     return l10n.settings;
   }
 
@@ -180,56 +190,139 @@ class _MobileSettingsMenu extends ConsumerWidget {
         // ── Account ──────────────────────────────────────────────
         _SectionHeader(label: l10n.settingsAccount, tokens: tokens),
         const SizedBox(height: 6),
-        _SettingsGroup(tokens: tokens, items: [
-          _SettingsItem(Icons.person_outline_rounded, l10n.settingsProfile, Routes.settingsProfile),
-          _SettingsItem(Icons.palette_outlined, l10n.settingsAppearance, Routes.settingsAppearance),
-          _SettingsItem(Icons.lock_outline_rounded, l10n.settingsPasswordNav, Routes.settingsPassword),
-          _SettingsItem(Icons.share_outlined, l10n.settingsSocialNav, Routes.settingsSocial),
-        ]),
+        _SettingsGroup(
+          tokens: tokens,
+          items: [
+            _SettingsItem(
+              Icons.person_outline_rounded,
+              l10n.settingsProfile,
+              Routes.settingsProfile,
+            ),
+            _SettingsItem(
+              Icons.palette_outlined,
+              l10n.settingsAppearance,
+              Routes.settingsAppearance,
+            ),
+            _SettingsItem(
+              Icons.lock_outline_rounded,
+              l10n.settingsPasswordNav,
+              Routes.settingsPassword,
+            ),
+            _SettingsItem(
+              Icons.share_outlined,
+              l10n.settingsSocialNav,
+              Routes.settingsSocial,
+            ),
+          ],
+        ),
 
         const SizedBox(height: 28),
 
         // ── Security ─────────────────────────────────────────────
         _SectionHeader(label: l10n.settingsSecurity, tokens: tokens),
         const SizedBox(height: 6),
-        _SettingsGroup(tokens: tokens, items: [
-          _SettingsItem(Icons.security_rounded, l10n.settingsSecurity, Routes.settingsSecurity),
-          _SettingsItem(Icons.phonelink_lock_rounded, l10n.settingsTwoFactor, Routes.settingsTwoFactor),
-          _SettingsItem(Icons.fingerprint_rounded, l10n.settingsPasskeys, Routes.settingsPasskeys),
-          _SettingsItem(Icons.devices_rounded, l10n.settingsSessions, Routes.settingsSessions),
-        ]),
+        _SettingsGroup(
+          tokens: tokens,
+          items: [
+            _SettingsItem(
+              Icons.security_rounded,
+              l10n.settingsSecurity,
+              Routes.settingsSecurity,
+            ),
+            _SettingsItem(
+              Icons.phonelink_lock_rounded,
+              l10n.settingsTwoFactor,
+              Routes.settingsTwoFactor,
+            ),
+            _SettingsItem(
+              Icons.fingerprint_rounded,
+              l10n.settingsPasskeys,
+              Routes.settingsPasskeys,
+            ),
+            _SettingsItem(
+              Icons.devices_rounded,
+              l10n.settingsSessions,
+              Routes.settingsSessions,
+            ),
+          ],
+        ),
 
         const SizedBox(height: 28),
 
         // ── Features ─────────────────────────────────────────────
         _SectionHeader(label: l10n.settingsFeatures, tokens: tokens),
         const SizedBox(height: 6),
-        _SettingsGroup(tokens: tokens, items: [
-          _SettingsItem(Icons.notifications_outlined, l10n.settingsNotificationsNav, Routes.settingsNotifications),
-          _SettingsItem(Icons.favorite_outline_rounded, l10n.settingsHealthNav, Routes.settingsHealth),
-          _SettingsItem(Icons.extension_outlined, l10n.settingsIntegrations, Routes.settingsIntegrations),
-          if (isDesktop)
-            _SettingsItem(Icons.desktop_mac_outlined, l10n.settingsDesktop, Routes.settingsDesktop),
-        ]),
+        _SettingsGroup(
+          tokens: tokens,
+          items: [
+            _SettingsItem(
+              Icons.notifications_outlined,
+              l10n.settingsNotificationsNav,
+              Routes.settingsNotifications,
+            ),
+            _SettingsItem(
+              Icons.favorite_outline_rounded,
+              l10n.settingsHealthNav,
+              Routes.settingsHealth,
+            ),
+            _SettingsItem(
+              Icons.extension_outlined,
+              l10n.settingsIntegrations,
+              Routes.settingsIntegrations,
+            ),
+            if (isDesktop)
+              _SettingsItem(
+                Icons.desktop_mac_outlined,
+                l10n.settingsDesktop,
+                Routes.settingsDesktop,
+              ),
+          ],
+        ),
 
         const SizedBox(height: 28),
 
         // ── Developer ────────────────────────────────────────────
         _SectionHeader(label: l10n.settingsDeveloper, tokens: tokens),
         const SizedBox(height: 6),
-        _SettingsGroup(tokens: tokens, items: [
-          _SettingsItem(Icons.vpn_key_outlined, l10n.settingsApiTokens, Routes.settingsApiTokens),
-          _SettingsItem(Icons.psychology_outlined, l10n.settingsAgentInstructions, Routes.settingsAgentInstructions),
-          _SettingsItem(Icons.tune_outlined, l10n.settingsClaudeSettings, Routes.settingsClaudeSettings),
-        ]),
+        _SettingsGroup(
+          tokens: tokens,
+          items: [
+            _SettingsItem(
+              Icons.vpn_key_outlined,
+              l10n.settingsApiTokens,
+              Routes.settingsApiTokens,
+            ),
+            _SettingsItem(
+              Icons.psychology_outlined,
+              l10n.settingsAgentInstructions,
+              Routes.settingsAgentInstructions,
+            ),
+            _SettingsItem(
+              Icons.tune_outlined,
+              l10n.settingsClaudeSettings,
+              Routes.settingsClaudeSettings,
+            ),
+          ],
+        ),
 
         const SizedBox(height: 28),
 
         // ── About ────────────────────────────────────────────────
-        _SettingsGroup(tokens: tokens, items: [
-          _SettingsItem(Icons.info_outline_rounded, l10n.settingsAbout, Routes.settingsAbout),
-          _SettingsItem(Icons.bug_report_outlined, l10n.settingsReportIssue, Routes.settingsReportIssue),
-        ]),
+        _SettingsGroup(
+          tokens: tokens,
+          items: [
+            _SettingsItem(
+              Icons.info_outline_rounded,
+              l10n.settingsAbout,
+              Routes.settingsAbout,
+            ),
+            _SettingsItem(
+              Icons.bug_report_outlined,
+              l10n.settingsReportIssue,
+              Routes.settingsReportIssue,
+            ),
+          ],
+        ),
 
         const SizedBox(height: 28),
 
@@ -291,7 +384,9 @@ class _ProfileCard extends StatelessWidget {
             CircleAvatar(
               radius: 40,
               backgroundColor: tokens.accent.withValues(alpha: 0.15),
-              backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : null,
+              backgroundImage: avatarUrl != null
+                  ? NetworkImage(avatarUrl!)
+                  : null,
               child: avatarUrl == null
                   ? Text(
                       name.isNotEmpty ? name[0].toUpperCase() : 'U',
@@ -416,4 +511,3 @@ class _SettingsRow extends StatelessWidget {
     );
   }
 }
-

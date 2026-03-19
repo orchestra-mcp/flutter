@@ -45,7 +45,8 @@ class InteractiveGlassCard extends StatelessWidget {
   void _showContextMenuAt(BuildContext context, Offset position) {
     if (contextMenuActions.isEmpty) return;
     final tokens = ThemeTokens.of(context);
-    final overlay = Overlay.of(context).context.findRenderObject()! as RenderBox;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
     showMenu<void>(
       context: context,
       position: RelativeRect.fromRect(
@@ -53,8 +54,9 @@ class InteractiveGlassCard extends StatelessWidget {
         Offset.zero & overlay.size,
       ),
       items: contextMenuActions.map((a) {
-        final color =
-            a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
+        final color = a.isDestructive
+            ? const Color(0xFFDC2626)
+            : tokens.fgBright;
         return PopupMenuItem<void>(
           onTap: a.onTap,
           child: Row(
@@ -68,8 +70,7 @@ class InteractiveGlassCard extends StatelessWidget {
       }).toList(),
       color: tokens.bgAlt,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 
@@ -98,8 +99,9 @@ class InteractiveGlassCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             ...contextMenuActions.map((a) {
-              final color =
-                  a.isDestructive ? const Color(0xFFDC2626) : tokens.fgBright;
+              final color = a.isDestructive
+                  ? const Color(0xFFDC2626)
+                  : tokens.fgBright;
               return ListTile(
                 leading: Icon(a.icon, color: color, size: 20),
                 title: Text(a.label, style: TextStyle(color: color)),

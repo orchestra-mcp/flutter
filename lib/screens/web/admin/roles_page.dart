@@ -8,8 +8,7 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 /// Loads all users and groups them by role to show role user counts alongside
 /// the static permission matrix.
-final _roleCounts =
-    FutureProvider.autoDispose<Map<String, int>>((ref) async {
+final _roleCounts = FutureProvider.autoDispose<Map<String, int>>((ref) async {
   final api = ref.watch(apiClientProvider);
   final result = await api.listAdminUsers();
   final raw = result['users'];
@@ -68,10 +67,7 @@ const _matrix = <String, Set<String>>{
     'manage_features',
     'manage_content',
   },
-  'user': {
-    'view_analytics',
-    'manage_features',
-  },
+  'user': {'view_analytics', 'manage_features'},
 };
 
 // -- Roles page ---------------------------------------------------------------
@@ -101,40 +97,42 @@ class RolesPage extends ConsumerWidget {
             // -- Header ---------------------------------------------------------
             Text(
               AppLocalizations.of(context).rolesAndPermissions,
-            style: TextStyle(
-              color: tokens.fgBright,
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            AppLocalizations.of(context).nRolesNPermissions(_roles.length, _permissions.length),
-            style: TextStyle(color: tokens.fgDim, fontSize: 13),
-          ),
-          const SizedBox(height: 20),
-
-          // -- Role card list -------------------------------------------------
-          Expanded(
-            child: ListView.separated(
-              itemCount: _roles.length,
-              separatorBuilder: (_, _) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final role = _roles[index];
-                final userCount = counts[role] ?? 0;
-                final granted = _matrix[role] ?? const <String>{};
-
-                return _RoleCard(
-                  role: role,
-                  userCount: userCount,
-                  grantedPermissions: granted,
-                  tokens: tokens,
-                );
-              },
+            const SizedBox(height: 8),
+            Text(
+              AppLocalizations.of(
+                context,
+              ).nRolesNPermissions(_roles.length, _permissions.length),
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
             ),
-          ),
-        ],
-      ),
+            const SizedBox(height: 20),
+
+            // -- Role card list -------------------------------------------------
+            Expanded(
+              child: ListView.separated(
+                itemCount: _roles.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final role = _roles[index];
+                  final userCount = counts[role] ?? 0;
+                  final granted = _matrix[role] ?? const <String>{};
+
+                  return _RoleCard(
+                    role: role,
+                    userCount: userCount,
+                    grantedPermissions: granted,
+                    tokens: tokens,
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -181,8 +179,7 @@ class _RoleCard extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: tokens.accent.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
@@ -247,11 +244,7 @@ class _PermissionChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            granted ? Icons.check : Icons.close,
-            size: 14,
-            color: chipColor,
-          ),
+          Icon(granted ? Icons.check : Icons.close, size: 14, color: chipColor),
           const SizedBox(width: 4),
           Text(
             name,

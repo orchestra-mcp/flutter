@@ -48,8 +48,10 @@ class MobileEmptyState extends StatelessWidget {
               if (isMobile) ...[
                 const SizedBox(height: 20),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: tokens.accent.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
@@ -61,8 +63,11 @@ class MobileEmptyState extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.desktop_mac_rounded,
-                          size: 18, color: tokens.accent),
+                      Icon(
+                        Icons.desktop_mac_rounded,
+                        size: 18,
+                        color: tokens.accent,
+                      ),
                       const SizedBox(width: 8),
                       Flexible(
                         child: Text(

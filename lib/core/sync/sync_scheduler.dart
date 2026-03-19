@@ -30,9 +30,7 @@ const Duration _kDebounceWindow = Duration(seconds: 3);
 /// Implements [WidgetsBindingObserver] so it can react to app foreground
 /// events without requiring a widget in the tree.
 class SyncScheduler with WidgetsBindingObserver {
-  SyncScheduler({
-    required this.ref,
-  });
+  SyncScheduler({required this.ref});
 
   final Ref ref;
 
@@ -62,8 +60,9 @@ class SyncScheduler with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
 
     // 3. Connectivity changes.
-    _connectivitySub =
-        Connectivity().onConnectivityChanged.listen(_onConnectivityChanged);
+    _connectivitySub = Connectivity().onConnectivityChanged.listen(
+      _onConnectivityChanged,
+    );
 
     // Do an initial sync now.
     _triggerSync();

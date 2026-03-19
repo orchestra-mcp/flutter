@@ -35,11 +35,14 @@ void main() {
 
   group('DetectResult', () {
     test('enum has expected values', () {
-      expect(DetectResult.values, containsAll([
-        DetectResult.found,
-        DetectResult.notFound,
-        DetectResult.updateAvailable,
-      ]));
+      expect(
+        DetectResult.values,
+        containsAll([
+          DetectResult.found,
+          DetectResult.notFound,
+          DetectResult.updateAvailable,
+        ]),
+      );
     });
   });
 

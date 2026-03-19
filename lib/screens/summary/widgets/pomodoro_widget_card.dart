@@ -30,8 +30,8 @@ class PomodoroWidgetCard extends ConsumerWidget {
     final phaseColor = state.phase == PomodoroPhase.work
         ? _color
         : state.phase.isActive
-            ? const Color(0xFF4CAF50)
-            : tokens.fgMuted;
+        ? const Color(0xFF4CAF50)
+        : tokens.fgMuted;
 
     return GlassCard(
       onTap: () => context.go(Routes.healthPomodoro),
@@ -49,8 +49,7 @@ class PomodoroWidgetCard extends ConsumerWidget {
                   color: _color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(7),
                 ),
-                child: const Icon(Icons.timer_rounded,
-                    color: _color, size: 16),
+                child: const Icon(Icons.timer_rounded, color: _color, size: 16),
               ),
               const SizedBox(width: 8),
               Text(
@@ -63,8 +62,7 @@ class PomodoroWidgetCard extends ConsumerWidget {
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: phaseColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(8),

@@ -7,13 +7,15 @@ import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/widgets/glass_card.dart';
 
-String _localizedHydrationStatus(AppLocalizations l10n, HydrationStatus status) =>
-    switch (status) {
-      HydrationStatus.goalReached => l10n.goalReached,
-      HydrationStatus.onTrack => l10n.onTrack,
-      HydrationStatus.slightlyBehind => l10n.slightlyBehindMsg,
-      HydrationStatus.dehydrated => l10n.dehydratedMsg,
-    };
+String _localizedHydrationStatus(
+  AppLocalizations l10n,
+  HydrationStatus status,
+) => switch (status) {
+  HydrationStatus.goalReached => l10n.goalReached,
+  HydrationStatus.onTrack => l10n.onTrack,
+  HydrationStatus.slightlyBehind => l10n.slightlyBehindMsg,
+  HydrationStatus.dehydrated => l10n.dehydratedMsg,
+};
 
 /// Hydration tab — log water intake, view today's total and progress.
 ///
@@ -141,24 +143,33 @@ class HydrationTab extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ...state.entries.reversed.take(8).map(
+                  ...state.entries.reversed
+                      .take(8)
+                      .map(
                         (e) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
                           child: Row(
                             children: [
-                              Icon(Icons.water_drop_rounded,
-                                  color: tokens.accent, size: 14),
+                              Icon(
+                                Icons.water_drop_rounded,
+                                color: tokens.accent,
+                                size: 14,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 l10n.plusMl(e.ml),
                                 style: TextStyle(
-                                    color: tokens.fgBright, fontSize: 13),
+                                  color: tokens.fgBright,
+                                  fontSize: 13,
+                                ),
                               ),
                               const Spacer(),
                               Text(
                                 _fmt(e.timestamp),
                                 style: TextStyle(
-                                    color: tokens.fgDim, fontSize: 11),
+                                  color: tokens.fgDim,
+                                  fontSize: 11,
+                                ),
                               ),
                             ],
                           ),
@@ -176,8 +187,10 @@ class HydrationTab extends ConsumerWidget {
           Center(
             child: TextButton(
               onPressed: notifier.reset,
-              child: Text(l10n.resetToday,
-                  style: TextStyle(color: tokens.fgMuted, fontSize: 12)),
+              child: Text(
+                l10n.resetToday,
+                style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+              ),
             ),
           ),
         ],
@@ -229,7 +242,8 @@ class _LoadingShimmerState extends State<_LoadingShimmer>
         animation: _controller,
         builder: (context, child) {
           final shimmerOpacity =
-              0.3 + 0.4 * (0.5 + 0.5 * math.sin(_controller.value * 2 * math.pi));
+              0.3 +
+              0.4 * (0.5 + 0.5 * math.sin(_controller.value * 2 * math.pi));
           return Container(
             height: 4,
             decoration: BoxDecoration(
@@ -272,7 +286,11 @@ class _ErrorBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(Icons.error_outline_rounded, color: errorColor, size: 18),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: errorColor,
+              size: 18,
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
@@ -288,8 +306,10 @@ class _ErrorBanner extends StatelessWidget {
               child: GestureDetector(
                 onTap: onRetry,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: errorColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
@@ -339,8 +359,11 @@ class _GoutFlushCard extends StatelessWidget {
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 1),
-              child: Icon(Icons.warning_amber_rounded,
-                  color: _warningColor, size: 18),
+              child: Icon(
+                Icons.warning_amber_rounded,
+                color: _warningColor,
+                size: 18,
+              ),
             ),
             const SizedBox(width: 10),
             Expanded(
@@ -390,11 +413,7 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 8),
-          Icon(
-            Icons.water_drop_outlined,
-            color: tokens.fgDim,
-            size: 36,
-          ),
+          Icon(Icons.water_drop_outlined, color: tokens.fgDim, size: 36),
           const SizedBox(height: 10),
           Text(
             l10n.noResults,
@@ -407,10 +426,7 @@ class _EmptyState extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             l10n.addWater,
-            style: TextStyle(
-              color: tokens.fgDim,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: tokens.fgDim, fontSize: 12),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -425,10 +441,7 @@ class _EmptyState extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _TimeSinceLastDrink extends StatelessWidget {
-  const _TimeSinceLastDrink({
-    required this.lastLoggedAt,
-    required this.tokens,
-  });
+  const _TimeSinceLastDrink({required this.lastLoggedAt, required this.tokens});
 
   final DateTime lastLoggedAt;
   final OrchestraColorTokens tokens;
@@ -500,9 +513,7 @@ class _HydrationRing extends StatelessWidget {
               strokeWidth: 10,
               backgroundColor: tokens.border.withValues(alpha: 0.3),
               valueColor: AlwaysStoppedAnimation<Color>(
-                progress >= 1.0
-                    ? const Color(0xFF4CAF50)
-                    : tokens.accent,
+                progress >= 1.0 ? const Color(0xFF4CAF50) : tokens.accent,
               ),
               strokeCap: StrokeCap.round,
             ),
@@ -571,7 +582,10 @@ class _StatusChip extends StatelessWidget {
         border: Border.all(color: _color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(_label(AppLocalizations.of(context)), style: TextStyle(color: _color, fontSize: 12)),
+      child: Text(
+        _label(AppLocalizations.of(context)),
+        style: TextStyle(color: _color, fontSize: 12),
+      ),
     );
   }
 }

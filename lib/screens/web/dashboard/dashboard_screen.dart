@@ -48,7 +48,11 @@ List<_StatCard> _buildStats(AppLocalizations l10n) => [
 // ─── Placeholder activity items ───────────────────────────────────────────────
 
 class _ActivityItem {
-  const _ActivityItem({required this.title, required this.subtitle, required this.icon});
+  const _ActivityItem({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+  });
   final String title;
   final String subtitle;
   final IconData icon;
@@ -109,20 +113,22 @@ class DashboardScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          LayoutBuilder(builder: (context, constraints) {
-            final cols = constraints.maxWidth >= 600 ? 2 : 1;
-            return GridView.count(
-              crossAxisCount: cols,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 2.4,
-              children: stats
-                  .map((s) => _StatCardWidget(stat: s, tokens: tokens))
-                  .toList(),
-            );
-          }),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final cols = constraints.maxWidth >= 600 ? 2 : 1;
+              return GridView.count(
+                crossAxisCount: cols,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+                childAspectRatio: 2.4,
+                children: stats
+                    .map((s) => _StatCardWidget(stat: s, tokens: tokens))
+                    .toList(),
+              );
+            },
+          ),
           const SizedBox(height: 32),
           Text(
             l10n.dashboardRecentActivity,
@@ -225,13 +231,18 @@ class _ActivityTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.title,
-                    style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500)),
-                Text(item.subtitle,
-                    style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
+                Text(
+                  item.title,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  item.subtitle,
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 11),
+                ),
               ],
             ),
           ),

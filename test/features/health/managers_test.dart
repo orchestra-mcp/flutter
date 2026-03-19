@@ -39,12 +39,16 @@ void main() {
 
   group('CaffeineManager', () {
     test('starts with noIntake status', () {
-      final m = CaffeineManager(wakeTime: DateTime.now().subtract(const Duration(hours: 3)));
+      final m = CaffeineManager(
+        wakeTime: DateTime.now().subtract(const Duration(hours: 3)),
+      );
       expect(m.status, CaffeineStatus.noIntake);
     });
 
     test('isSugarBased returns true for redBull only', () {
-      final m = CaffeineManager(wakeTime: DateTime.now().subtract(const Duration(hours: 3)));
+      final m = CaffeineManager(
+        wakeTime: DateTime.now().subtract(const Duration(hours: 3)),
+      );
       expect(m.isSugarBased(CaffeineType.redBull), isTrue);
       expect(m.isSugarBased(CaffeineType.espresso), isFalse);
     });
@@ -61,11 +65,16 @@ void main() {
       final m = CaffeineManager(
         wakeTime: DateTime.now().subtract(const Duration(minutes: 95)),
       );
-      expect(() => m.logCaffeine(CaffeineType.espresso), throwsA(isA<CortisolWindowException>()));
+      expect(
+        () => m.logCaffeine(CaffeineType.espresso),
+        throwsA(isA<CortisolWindowException>()),
+      );
     });
 
     test('cleanTransitionPercent is 100 for no logs', () {
-      final m = CaffeineManager(wakeTime: DateTime.now().subtract(const Duration(hours: 4)));
+      final m = CaffeineManager(
+        wakeTime: DateTime.now().subtract(const Duration(hours: 4)),
+      );
       expect(m.cleanTransitionPercent, 100.0);
     });
   });

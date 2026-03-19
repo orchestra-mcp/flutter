@@ -165,8 +165,11 @@ class _DoneState extends StatelessWidget {
             color: const Color(0xFF4ADE80).withValues(alpha: 0.15),
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.check_rounded,
-              color: Color(0xFF4ADE80), size: 40),
+          child: const Icon(
+            Icons.check_rounded,
+            color: Color(0xFF4ADE80),
+            size: 40,
+          ),
         ),
         const SizedBox(height: 24),
         Text(
@@ -231,16 +234,20 @@ class _ErrorState extends StatelessWidget {
                 color: Colors.redAccent.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.close_rounded,
-                  color: Colors.redAccent, size: 40),
+              child: const Icon(
+                Icons.close_rounded,
+                color: Colors.redAccent,
+                size: 40,
+              ),
             ),
             const SizedBox(height: 16),
             Text(
               AppLocalizations.of(context).installationFailed,
               style: TextStyle(
-                  color: tokens.fgBright,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700),
+                color: tokens.fgBright,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 8),
             Text(

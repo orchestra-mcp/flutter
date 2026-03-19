@@ -95,9 +95,11 @@ class TunnelClient {
   }
 
   Future<void> _doConnect() async {
-    _setStatus(_retryCount == 0
-        ? TunnelConnectionStatus.connecting
-        : TunnelConnectionStatus.reconnecting);
+    _setStatus(
+      _retryCount == 0
+          ? TunnelConnectionStatus.connecting
+          : TunnelConnectionStatus.reconnecting,
+    );
 
     try {
       final uri = Uri.parse('$_serverUrl?token=$_authToken');

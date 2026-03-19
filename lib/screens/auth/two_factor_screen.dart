@@ -107,7 +107,11 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                       color: tokens.accentSurface,
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.shield_outlined, size: 32, color: tokens.accent),
+                    child: Icon(
+                      Icons.shield_outlined,
+                      size: 32,
+                      color: tokens.accent,
+                    ),
                   ),
                   const SizedBox(height: 20),
 
@@ -126,7 +130,10 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       style: TextStyle(
-                          color: tokens.fgMuted, fontSize: 14, height: 1.5),
+                        color: tokens.fgMuted,
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
                       children: [
                         TextSpan(text: l10n.enterCodeSentTo),
                         TextSpan(
@@ -136,7 +143,9 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const TextSpan(text: '.'), // punctuation is language-neutral here
+                        const TextSpan(
+                          text: '.',
+                        ), // punctuation is language-neutral here
                       ],
                     ),
                   ),
@@ -146,8 +155,9 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: tokens.bg
-                          .withValues(alpha: tokens.isLight ? 0.85 : 0.72),
+                      color: tokens.bg.withValues(
+                        alpha: tokens.isLight ? 0.85 : 0.72,
+                      ),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: tokens.borderFaint),
                       boxShadow: [
@@ -193,7 +203,9 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                               ),
                               counterText: '',
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 14),
+                                horizontal: 16,
+                                vertical: 14,
+                              ),
                             ),
                             onChanged: (value) {
                               if (_error != null) {
@@ -214,10 +226,12 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                             onPressed: _isLoading ? null : _verify,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: tokens.accent,
-                              foregroundColor:
-                                  tokens.isLight ? Colors.white : Colors.black,
-                              disabledBackgroundColor:
-                                  tokens.accent.withValues(alpha: 0.4),
+                              foregroundColor: tokens.isLight
+                                  ? Colors.white
+                                  : Colors.black,
+                              disabledBackgroundColor: tokens.accent.withValues(
+                                alpha: 0.4,
+                              ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -237,8 +251,9 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                                 : Text(
                                     l10n.verify,
                                     style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                           ),
                         ),
@@ -248,8 +263,9 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                         Center(
                           child: _isResending
                               ? Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 12),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
                                   child: SizedBox(
                                     width: 16,
                                     height: 16,
@@ -266,8 +282,7 @@ class _TwoFactorScreenState extends ConsumerState<TwoFactorScreen> {
                                   style: TextButton.styleFrom(
                                     foregroundColor: tokens.accent,
                                     disabledForegroundColor: tokens.fgDim,
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.padded,
+                                    tapTargetSize: MaterialTapTargetSize.padded,
                                   ),
                                   child: Text(
                                     _resendCooldown > 0
@@ -323,7 +338,11 @@ class _ErrorBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 18),
+          const Icon(
+            Icons.error_outline_rounded,
+            color: Colors.redAccent,
+            size: 18,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

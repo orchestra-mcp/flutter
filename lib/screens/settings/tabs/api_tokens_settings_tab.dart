@@ -48,7 +48,11 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToCreateApiKey}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToCreateApiKey}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -97,13 +101,19 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.copy_rounded,
-                        size: 16, color: tokens.accent),
+                    icon: Icon(
+                      Icons.copy_rounded,
+                      size: 16,
+                      color: tokens.accent,
+                    ),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: token));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content: Text(AppLocalizations.of(context).copiedToClipboard)),
+                          content: Text(
+                            AppLocalizations.of(context).copiedToClipboard,
+                          ),
+                        ),
                       );
                     },
                     padding: EdgeInsets.zero,
@@ -117,7 +127,10 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(context).done, style: TextStyle(color: tokens.accent)),
+            child: Text(
+              AppLocalizations.of(context).done,
+              style: TextStyle(color: tokens.accent),
+            ),
           ),
         ],
       ),
@@ -136,7 +149,11 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToRevokeApiKey}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToRevokeApiKey}: $e',
+            ),
+          ),
         );
       }
     }
@@ -164,14 +181,17 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 13),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: _generating
                 ? const SizedBox(
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   )
                 : Text(AppLocalizations.of(context).generate),
           ),
@@ -203,8 +223,7 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
                 children: [
                   Text(
                     'Failed to load API keys',
-                    style:
-                        TextStyle(color: tokens.fgBright, fontSize: 13),
+                    style: TextStyle(color: tokens.fgBright, fontSize: 13),
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -227,8 +246,7 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
                 child: Center(
                   child: Text(
                     'No API keys yet.',
-                    style:
-                        TextStyle(color: tokens.fgDim, fontSize: 13),
+                    style: TextStyle(color: tokens.fgDim, fontSize: 13),
                   ),
                 ),
               );
@@ -259,12 +277,12 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
     );
   }
 
-  Widget _buildKeyRow(
-      OrchestraColorTokens tokens, Map<String, dynamic> key) {
+  Widget _buildKeyRow(OrchestraColorTokens tokens, Map<String, dynamic> key) {
     final name = (key['name'] ?? 'Unnamed').toString();
     final prefix = (key['prefix'] ?? key['key_prefix'] ?? '').toString();
     final createdAt = (key['created_at'] ?? '').toString();
-    final lastUsed = (key['last_used'] ?? key['last_used_at'] ?? 'Never').toString();
+    final lastUsed = (key['last_used'] ?? key['last_used_at'] ?? 'Never')
+        .toString();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -278,8 +296,7 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
               color: tokens.accent.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
-            child:
-                Icon(Icons.vpn_key_rounded, size: 16, color: tokens.accent),
+            child: Icon(Icons.vpn_key_rounded, size: 16, color: tokens.accent),
           ),
           const SizedBox(width: 12),
 
@@ -322,12 +339,12 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFFEF4444),
               side: const BorderSide(color: Color(0xFFEF4444)),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: const Text(
               'Revoke',
@@ -340,13 +357,13 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -361,8 +378,10 @@ class _ApiTokensSettingsTabState extends ConsumerState<ApiTokensSettingsTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

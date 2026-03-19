@@ -49,8 +49,10 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
               TextButton.icon(
                 onPressed: () => showCreateTeamSheet(context, ref),
                 icon: Icon(Icons.add_rounded, size: 18, color: tokens.accent),
-                label: Text(AppLocalizations.of(context).createTeam,
-                    style: TextStyle(color: tokens.accent)),
+                label: Text(
+                  AppLocalizations.of(context).createTeam,
+                  style: TextStyle(color: tokens.accent),
+                ),
               ),
             ],
           ),
@@ -85,8 +87,7 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
             if (team.memberCount != null) ...[
               const SizedBox(width: 8),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: tokens.fgDim.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
@@ -101,13 +102,20 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
             if (team.isAdmin)
               TextButton.icon(
                 onPressed: () => _showInviteSheet(context),
-                icon: Icon(Icons.person_add_alt_1_outlined,
-                    size: 16, color: tokens.accent),
-                label: Text(AppLocalizations.of(context).invite,
-                    style: TextStyle(fontSize: 13, color: tokens.accent)),
+                icon: Icon(
+                  Icons.person_add_alt_1_outlined,
+                  size: 16,
+                  color: tokens.accent,
+                ),
+                label: Text(
+                  AppLocalizations.of(context).invite,
+                  style: TextStyle(fontSize: 13, color: tokens.accent),
+                ),
                 style: TextButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   visualDensity: VisualDensity.compact,
                 ),
               ),
@@ -127,15 +135,19 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
             ),
             error: (_, _) => Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(AppLocalizations.of(context).failedToLoadMembers,
-                  style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+              child: Text(
+                AppLocalizations.of(context).failedToLoadMembers,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
             ),
             data: (members) {
               if (members.isEmpty) {
                 return Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Text(AppLocalizations.of(context).noMembersYet,
-                      style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+                  child: Text(
+                    AppLocalizations.of(context).noMembersYet,
+                    style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                  ),
                 );
               }
               return Column(
@@ -187,12 +199,17 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
               borderRadius: BorderRadius.circular(12),
               onTap: () => _confirmDeleteTeam(team),
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
                 child: Row(
                   children: [
-                    const Icon(Icons.delete_outline_rounded,
-                        size: 20, color: Color(0xFFEF4444)),
+                    const Icon(
+                      Icons.delete_outline_rounded,
+                      size: 20,
+                      color: Color(0xFFEF4444),
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -207,11 +224,10 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
                             ),
                           ),
                           Text(
-                            AppLocalizations.of(context).deleteTeamPermanentlyDesc,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: tokens.fgDim,
-                            ),
+                            AppLocalizations.of(
+                              context,
+                            ).deleteTeamPermanentlyDesc,
+                            style: TextStyle(fontSize: 11, color: tokens.fgDim),
                           ),
                         ],
                       ),
@@ -243,8 +259,9 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
             padding: EdgeInsets.fromLTRB(20, 16, 20, 16 + bottomInset),
             decoration: BoxDecoration(
               color: tokens.bgAlt,
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -278,8 +295,11 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context).emailAddressHint,
                     hintStyle: TextStyle(color: tokens.fgDim),
-                    prefixIcon: Icon(Icons.email_outlined,
-                        size: 20, color: tokens.fgDim),
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      size: 20,
+                      color: tokens.fgDim,
+                    ),
                     filled: true,
                     fillColor: tokens.bg,
                     border: OutlineInputBorder(
@@ -287,31 +307,38 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
                       borderSide: BorderSide.none,
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 14),
+                      horizontal: 14,
+                      vertical: 14,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    Text('${AppLocalizations.of(context).role}:',
-                        style:
-                            TextStyle(color: tokens.fgMuted, fontSize: 13)),
+                    Text(
+                      '${AppLocalizations.of(context).role}:',
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+                    ),
                     const SizedBox(width: 12),
                     DropdownButton<String>(
                       value: selectedRole,
                       dropdownColor: tokens.bgAlt,
-                      style:
-                          TextStyle(color: tokens.fgBright, fontSize: 13),
+                      style: TextStyle(color: tokens.fgBright, fontSize: 13),
                       underline: Container(
-                          height: 1, color: tokens.borderFaint),
+                        height: 1,
+                        color: tokens.borderFaint,
+                      ),
                       items: [
                         DropdownMenuItem(
-                            value: 'member', child: Text(AppLocalizations.of(context).member)),
+                          value: 'member',
+                          child: Text(AppLocalizations.of(context).member),
+                        ),
                         DropdownMenuItem(
-                            value: 'admin', child: Text(AppLocalizations.of(context).teamAdmin)),
+                          value: 'admin',
+                          child: Text(AppLocalizations.of(context).teamAdmin),
+                        ),
                       ],
-                      onChanged: (v) =>
-                          setState(() => selectedRole = v!),
+                      onChanged: (v) => setState(() => selectedRole = v!),
                     ),
                   ],
                 ),
@@ -324,7 +351,9 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
                       if (email.isEmpty) return;
                       final team = ref.read(activeTeamProvider);
                       try {
-                        await ref.read(apiClientProvider).inviteTeamMember(
+                        await ref
+                            .read(apiClientProvider)
+                            .inviteTeamMember(
                               team.id,
                               email,
                               role: selectedRole,
@@ -335,14 +364,20 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
                           Navigator.of(ctx).pop();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                content: Text('${AppLocalizations.of(context).invited} $email')),
+                              content: Text(
+                                '${AppLocalizations.of(context).invited} $email',
+                              ),
+                            ),
                           );
                         }
                       } catch (e) {
                         if (ctx.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                                content: Text('${AppLocalizations.of(context).failedToInvite}: $e')),
+                              content: Text(
+                                '${AppLocalizations.of(context).failedToInvite}: $e',
+                              ),
+                            ),
                           );
                         }
                       }
@@ -355,9 +390,13 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
                       ),
                       elevation: 0,
                     ),
-                    child: Text(AppLocalizations.of(context).sendInvite,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 15)),
+                    child: Text(
+                      AppLocalizations.of(context).sendInvite,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -375,8 +414,10 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
         final tokens = ThemeTokens.of(ctx);
         return AlertDialog(
           backgroundColor: tokens.bgAlt,
-          title: Text(AppLocalizations.of(context).removeMemberConfirm(member.name),
-              style: TextStyle(color: tokens.fgBright)),
+          title: Text(
+            AppLocalizations.of(context).removeMemberConfirm(member.name),
+            style: TextStyle(color: tokens.fgBright),
+          ),
           content: Text(
             AppLocalizations.of(context).removeThisWillRemoveFromTeam,
             style: TextStyle(color: tokens.fgMuted, fontSize: 14),
@@ -384,12 +425,17 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(false),
-              child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: TextStyle(color: tokens.fgMuted),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text(AppLocalizations.of(context).remove,
-                  style: const TextStyle(color: Color(0xFFEF4444))),
+              child: Text(
+                AppLocalizations.of(context).remove,
+                style: const TextStyle(color: Color(0xFFEF4444)),
+              ),
             ),
           ],
         );
@@ -403,13 +449,21 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
       ref.invalidate(teamsProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).memberRemoved(member.name))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).memberRemoved(member.name),
+            ),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToRemoveMember}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToRemoveMember}: $e',
+            ),
+          ),
         );
       }
     }
@@ -422,8 +476,10 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
         final tokens = ThemeTokens.of(ctx);
         return AlertDialog(
           backgroundColor: tokens.bgAlt,
-          title: Text(AppLocalizations.of(context).deleteItemTitle(team.name),
-              style: TextStyle(color: tokens.fgBright)),
+          title: Text(
+            AppLocalizations.of(context).deleteItemTitle(team.name),
+            style: TextStyle(color: tokens.fgBright),
+          ),
           content: Text(
             AppLocalizations.of(context).deleteTeamAllDataWarning,
             style: TextStyle(color: tokens.fgMuted, fontSize: 14),
@@ -431,12 +487,17 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(false),
-              child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+              child: Text(
+                AppLocalizations.of(context).cancel,
+                style: TextStyle(color: tokens.fgMuted),
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text(AppLocalizations.of(context).delete,
-                  style: const TextStyle(color: Color(0xFFEF4444))),
+              child: Text(
+                AppLocalizations.of(context).delete,
+                style: const TextStyle(color: Color(0xFFEF4444)),
+              ),
             ),
           ],
         );
@@ -450,13 +511,19 @@ class _TeamSettingsTabState extends ConsumerState<TeamSettingsTab> {
       ref.invalidate(teamsProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).deleteTeamConfirm)),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).deleteTeamConfirm),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToDeleteTeam}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToDeleteTeam}: $e',
+            ),
+          ),
         );
       }
     }
@@ -552,13 +619,19 @@ class _EditableTeamNameState extends ConsumerState<_EditableTeamName> {
       ref.invalidate(teamsProvider);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).teamRenamedTo(newName))),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).teamRenamedTo(newName)),
+          ),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToRenameTeam}: $e')),
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context).failedToRenameTeam}: $e',
+            ),
+          ),
         );
       }
     } finally {
@@ -585,8 +658,7 @@ class _EditableTeamNameState extends ConsumerState<_EditableTeamName> {
             Expanded(
               child: TextField(
                 controller: _controller,
-                style: TextStyle(
-                    color: widget.tokens.fgBright, fontSize: 15),
+                style: TextStyle(color: widget.tokens.fgBright, fontSize: 15),
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: widget.tokens.bgAlt,
@@ -595,7 +667,9 @@ class _EditableTeamNameState extends ConsumerState<_EditableTeamName> {
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 12),
+                    horizontal: 14,
+                    vertical: 12,
+                  ),
                 ),
                 onSubmitted: (_) => _save(),
               ),
@@ -619,10 +693,17 @@ class _EditableTeamNameState extends ConsumerState<_EditableTeamName> {
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white))
-                    : Text(AppLocalizations.of(context).save,
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Text(
+                        AppLocalizations.of(context).save,
                         style: const TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 14)),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
               ),
             ),
           ],
@@ -667,9 +748,7 @@ class _MemberTile extends StatelessWidget {
             backgroundImage: url != null ? NetworkImage(url) : null,
             child: url == null
                 ? Text(
-                    member.name.isNotEmpty
-                        ? member.name[0].toUpperCase()
-                        : '?',
+                    member.name.isNotEmpty ? member.name[0].toUpperCase() : '?',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -720,8 +799,11 @@ class _MemberTile extends StatelessWidget {
                 onTap: onRemove,
                 child: Padding(
                   padding: const EdgeInsets.all(6),
-                  child: Icon(Icons.close_rounded,
-                      size: 16, color: tokens.fgDim),
+                  child: Icon(
+                    Icons.close_rounded,
+                    size: 16,
+                    color: tokens.fgDim,
+                  ),
                 ),
               ),
             ),

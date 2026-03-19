@@ -16,8 +16,9 @@ final realtimeServiceProvider = Provider<RealtimeService>((ref) {
 // ─── Connection state ───────────────────────────────────────────────────────
 
 /// Stream of [RealtimeConnectionState] changes from the realtime service.
-final realtimeConnectionProvider =
-    StreamProvider<RealtimeConnectionState>((ref) {
+final realtimeConnectionProvider = StreamProvider<RealtimeConnectionState>((
+  ref,
+) {
   final service = ref.watch(realtimeServiceProvider);
   return service.stateStream;
 });

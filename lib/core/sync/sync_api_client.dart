@@ -35,7 +35,10 @@ class SyncApiClient {
   /// Fetch server-side deltas that occurred after [request.since].
   /// Supports pagination via [SyncPullRequest.limit] and the returned
   /// [SyncPullResponse.hasMore] flag.
-  Future<SyncPullResponse> pullDeltas(SyncPullRequest request, {String? deviceId}) async {
+  Future<SyncPullResponse> pullDeltas(
+    SyncPullRequest request, {
+    String? deviceId,
+  }) async {
     final response = await dio.get<Map<String, dynamic>>(
       _pullPath,
       queryParameters: {
@@ -122,9 +125,7 @@ class SyncApiClient {
   }) async {
     final response = await dio.get<Map<String, dynamic>>(
       '$_historyPath/$entityType/$entityId',
-      queryParameters: {
-        if (limit != null) 'limit': limit.toString(),
-      },
+      queryParameters: {if (limit != null) 'limit': limit.toString()},
     );
     final entries = response.data!['entries'] as List? ?? [];
     return entries
@@ -144,54 +145,42 @@ class SyncApiClient {
     if (data is List) {
       rawList = data;
     } else if (data is Map<String, dynamic>) {
-      rawList = (data['teams'] as List?) ??
-          (data['data'] as List?) ??
-          [];
+      rawList = (data['teams'] as List?) ?? (data['data'] as List?) ?? [];
     } else {
       rawList = [];
     }
 
     final baseUrl = dio.options.baseUrl;
-    return rawList
-        .whereType<Map<String, dynamic>>()
-        .map((e) {
-          final teamData = e['team'] as Map<String, dynamic>? ?? e;
-          final team = Team.fromJson(teamData);
-          return team.copyWith(
-            avatarUrl: resolveAvatarUrl(team.avatarUrl, baseUrl),
-          );
-        })
-        .toList();
+    return rawList.whereType<Map<String, dynamic>>().map((e) {
+      final teamData = e['team'] as Map<String, dynamic>? ?? e;
+      final team = Team.fromJson(teamData);
+      return team.copyWith(
+        avatarUrl: resolveAvatarUrl(team.avatarUrl, baseUrl),
+      );
+    }).toList();
   }
 
   /// Fetch members of a specific team.
   Future<List<TeamMember>> getTeamMembers(String teamId) async {
-    final response = await dio.get<dynamic>(
-      '$_teamsPath/$teamId/members',
-    );
+    final response = await dio.get<dynamic>('$_teamsPath/$teamId/members');
     final data = response.data;
 
     List<dynamic> rawList;
     if (data is List) {
       rawList = data;
     } else if (data is Map<String, dynamic>) {
-      rawList = (data['members'] as List?) ??
-          (data['data'] as List?) ??
-          [];
+      rawList = (data['members'] as List?) ?? (data['data'] as List?) ?? [];
     } else {
       rawList = [];
     }
 
     final baseUrl = dio.options.baseUrl;
-    return rawList
-        .whereType<Map<String, dynamic>>()
-        .map((e) {
-          final member = TeamMember.fromJson(e);
-          return member.copyWith(
-            avatarUrl: resolveAvatarUrl(member.avatarUrl, baseUrl),
-          );
-        })
-        .toList();
+    return rawList.whereType<Map<String, dynamic>>().map((e) {
+      final member = TeamMember.fromJson(e);
+      return member.copyWith(
+        avatarUrl: resolveAvatarUrl(member.avatarUrl, baseUrl),
+      );
+    }).toList();
   }
 
   /// Fetch shares for a specific entity (who has access).

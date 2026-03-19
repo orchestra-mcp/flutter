@@ -30,4 +30,5 @@ String formatISO(DateTime dt) => dt.toUtc().toIso8601String();
 
 /// Parses an ISO 8601 string into a [DateTime] in local time.
 /// Returns [DateTime.now()] on parse failure.
-DateTime parseISO(String s) => DateTime.tryParse(s)?.toLocal() ?? DateTime.now();
+DateTime parseISO(String s) =>
+    DateTime.tryParse(s)?.toLocal() ?? DateTime.now();

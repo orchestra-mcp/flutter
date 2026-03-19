@@ -152,10 +152,7 @@ Future<String?> showRenameDialog(
 }) async {
   final result = await showDialog<String>(
     context: context,
-    builder: (ctx) => _RenameDialog(
-      title: title,
-      currentName: currentName,
-    ),
+    builder: (ctx) => _RenameDialog(title: title, currentName: currentName),
   );
   return (result != null && result.isNotEmpty && result != currentName)
       ? result
@@ -163,10 +160,7 @@ Future<String?> showRenameDialog(
 }
 
 class _RenameDialog extends StatefulWidget {
-  const _RenameDialog({
-    required this.title,
-    required this.currentName,
-  });
+  const _RenameDialog({required this.title, required this.currentName});
 
   final String title;
   final String currentName;
@@ -219,12 +213,17 @@ class _RenameDialogState extends State<_RenameDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgMuted)),
+          child: Text(
+            AppLocalizations.of(context).cancel,
+            style: TextStyle(color: tokens.fgMuted),
+          ),
         ),
         TextButton(
-          onPressed: () =>
-              Navigator.of(context).pop(_controller.text.trim()),
-          child: Text(AppLocalizations.of(context).rename, style: TextStyle(color: tokens.accent)),
+          onPressed: () => Navigator.of(context).pop(_controller.text.trim()),
+          child: Text(
+            AppLocalizations.of(context).rename,
+            style: TextStyle(color: tokens.accent),
+          ),
         ),
       ],
     );
@@ -237,9 +236,7 @@ Future<void> exportAsMarkdown({
   required String content,
 }) async {
   final markdown = '# $title\n\n$content';
-  await SharePlus.instance.share(
-    ShareParams(text: markdown, subject: title),
-  );
+  await SharePlus.instance.share(ShareParams(text: markdown, subject: title));
 }
 
 /// Shows a "coming soon" snackbar for unimplemented actions.
@@ -294,7 +291,9 @@ Future<void> pickAndSaveColor(
     initialColor: currentColor,
   );
   if (color != null) {
-    await ref.read(entityCustomizationProvider.notifier).setColor(entityId, color);
+    await ref
+        .read(entityCustomizationProvider.notifier)
+        .setColor(entityId, color);
   }
 }
 
@@ -310,6 +309,8 @@ Future<void> pickAndSaveIcon(
     initialCodePoint: currentCodePoint,
   );
   if (codePoint != null) {
-    await ref.read(entityCustomizationProvider.notifier).setIcon(entityId, codePoint);
+    await ref
+        .read(entityCustomizationProvider.notifier)
+        .setIcon(entityId, codePoint);
   }
 }

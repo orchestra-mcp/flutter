@@ -74,10 +74,14 @@ class _TerminalSearchBarState extends ConsumerState<TerminalSearchBar> {
         pattern = RegExp(query, caseSensitive: _caseSensitive);
       } catch (_) {
         // Invalid regex — treat as literal
-        pattern = _caseSensitive ? query : RegExp(RegExp.escape(query), caseSensitive: false);
+        pattern = _caseSensitive
+            ? query
+            : RegExp(RegExp.escape(query), caseSensitive: false);
       }
     } else {
-      pattern = _caseSensitive ? query : RegExp(RegExp.escape(query), caseSensitive: false);
+      pattern = _caseSensitive
+          ? query
+          : RegExp(RegExp.escape(query), caseSensitive: false);
     }
 
     for (var y = 0; y < totalLines; y++) {
@@ -128,7 +132,8 @@ class _TerminalSearchBarState extends ConsumerState<TerminalSearchBar> {
         final viewHeight = backend.terminal.viewHeight;
         final scrollBack = backend.terminal.buffer.height - viewHeight;
         if (scrollBack > 0) {
-          final targetOffset = (match.y / scrollBack).clamp(0.0, 1.0) *
+          final targetOffset =
+              (match.y / scrollBack).clamp(0.0, 1.0) *
               scrollCtrl.position.maxScrollExtent;
           scrollCtrl.animateTo(
             targetOffset,
@@ -176,10 +181,7 @@ class _TerminalSearchBarState extends ConsumerState<TerminalSearchBar> {
                   child: TextField(
                     controller: _textController,
                     focusNode: _focusNode,
-                    style: TextStyle(
-                      color: tokens.fgBright,
-                      fontSize: 13,
-                    ),
+                    style: TextStyle(color: tokens.fgBright, fontSize: 13),
                     decoration: InputDecoration(
                       hintText: l10n.searchTerminalHint,
                       hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
@@ -205,10 +207,7 @@ class _TerminalSearchBarState extends ConsumerState<TerminalSearchBar> {
               // ── Match counter ──────────────────────────────────────────
               Text(
                 matchText,
-                style: TextStyle(
-                  color: tokens.fgMuted,
-                  fontSize: 11,
-                ),
+                style: TextStyle(color: tokens.fgMuted, fontSize: 11),
               ),
               const SizedBox(width: 4),
 
@@ -311,11 +310,10 @@ class _MiniButton extends StatelessWidget {
         splashRadius: 12,
         tooltip: tooltip,
         style: IconButton.styleFrom(
-          backgroundColor:
-              isActive ? tokens.accent.withValues(alpha: 0.15) : null,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4),
-          ),
+          backgroundColor: isActive
+              ? tokens.accent.withValues(alpha: 0.15)
+              : null,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
         ),
       ),
     );

@@ -8,11 +8,11 @@ import 'package:orchestra/l10n/app_localizations.dart';
 
 final _communityPostsProvider =
     FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
-  final api = ref.watch(apiClientProvider);
-  final result = await api.listAdminCommunityPosts();
-  final raw = result['posts'] as List<dynamic>? ?? <dynamic>[];
-  return raw.cast<Map<String, dynamic>>();
-});
+      final api = ref.watch(apiClientProvider);
+      final result = await api.listAdminCommunityPosts();
+      final raw = result['posts'] as List<dynamic>? ?? <dynamic>[];
+      return raw.cast<Map<String, dynamic>>();
+    });
 
 // ── Search state ─────────────────────────────────────────────────────────────
 
@@ -25,7 +25,8 @@ class _CommunitySearchNotifier extends Notifier<String> {
 
 final _communitySearchProvider =
     NotifierProvider<_CommunitySearchNotifier, String>(
-        _CommunitySearchNotifier.new);
+      _CommunitySearchNotifier.new,
+    );
 
 // ── Community page ───────────────────────────────────────────────────────────
 
@@ -53,138 +54,132 @@ class CommunityPage extends ConsumerWidget {
             // ── Header ──────────────────────────────────────────────────────
             Text(
               AppLocalizations.of(context).community,
-            style: TextStyle(
-              color: tokens.fgBright,
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          postsAsync.when(
-            data: (posts) => Text(
-              AppLocalizations.of(context).nCommunityPosts(posts.length),
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            const SizedBox(height: 8),
+            postsAsync.when(
+              data: (posts) => Text(
+                AppLocalizations.of(context).nCommunityPosts(posts.length),
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
+              loading: () => Text(
+                AppLocalizations.of(context).loading,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
+              error: (_, _) => Text(
+                AppLocalizations.of(context).failedToLoadCommunityPosts,
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
             ),
-            loading: () => Text(
-              AppLocalizations.of(context).loading,
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-            error: (_, _) => Text(
-              AppLocalizations.of(context).failedToLoadCommunityPosts,
-              style: TextStyle(color: tokens.fgDim, fontSize: 13),
-            ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // ── Search ──────────────────────────────────────────────────────
-          SizedBox(
-            width: 320,
-            child: TextField(
-              onChanged: (v) =>
-                  ref.read(_communitySearchProvider.notifier).update(v),
-              style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).searchCommunityPosts,
-                hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
-                prefixIcon:
-                    Icon(Icons.search, size: 18, color: tokens.fgDim),
-                filled: true,
-                fillColor: tokens.bgAlt,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: tokens.border),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: tokens.border),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: tokens.accent),
+            // ── Search ──────────────────────────────────────────────────────
+            SizedBox(
+              width: 320,
+              child: TextField(
+                onChanged: (v) =>
+                    ref.read(_communitySearchProvider.notifier).update(v),
+                style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context).searchCommunityPosts,
+                  hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
+                  prefixIcon: Icon(Icons.search, size: 18, color: tokens.fgDim),
+                  filled: true,
+                  fillColor: tokens.bgAlt,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: tokens.border),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: tokens.border),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: tokens.accent),
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-          // ── Posts list ───────────────────────────────────────────────────
-          Expanded(
-            child: postsAsync.when(
-              data: (posts) {
-                final filtered = posts.where((p) {
-                  if (query.isEmpty) return true;
-                  final title =
-                      (p['title'] as String? ?? '').toLowerCase();
-                  final content =
-                      (p['content'] as String? ?? '').toLowerCase();
-                  final author =
-                      (p['author'] as String? ?? '').toLowerCase();
-                  return title.contains(query) ||
-                      content.contains(query) ||
-                      author.contains(query);
-                }).toList();
+            // ── Posts list ───────────────────────────────────────────────────
+            Expanded(
+              child: postsAsync.when(
+                data: (posts) {
+                  final filtered = posts.where((p) {
+                    if (query.isEmpty) return true;
+                    final title = (p['title'] as String? ?? '').toLowerCase();
+                    final content = (p['content'] as String? ?? '')
+                        .toLowerCase();
+                    final author = (p['author'] as String? ?? '').toLowerCase();
+                    return title.contains(query) ||
+                        content.contains(query) ||
+                        author.contains(query);
+                  }).toList();
 
-                if (filtered.isEmpty) {
-                  return Center(
-                    child: Text(
-                      query.isEmpty
-                          ? AppLocalizations.of(context).noCommunityPostsYet
-                          : AppLocalizations.of(context).noPostsMatch(query),
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
-                  );
-                }
-
-                return ListView.separated(
-                  itemCount: filtered.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    final post = filtered[index];
-                    return _CommunityPostTile(
-                      tokens: tokens,
-                      post: post,
-                      onEdit: () => _showEditDialog(context, ref, post),
-                      onDelete: () => _showDeleteDialog(context, ref, post),
+                  if (filtered.isEmpty) {
+                    return Center(
+                      child: Text(
+                        query.isEmpty
+                            ? AppLocalizations.of(context).noCommunityPostsYet
+                            : AppLocalizations.of(context).noPostsMatch(query),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
                     );
-                  },
-                );
-              },
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
-              error: (error, _) => Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.error_outline,
-                        size: 32, color: tokens.fgDim),
-                    const SizedBox(height: 8),
-                    Text(
-                      AppLocalizations.of(context).failedToLoadCommunityPosts,
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 13),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '$error',
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 11),
-                    ),
-                    const SizedBox(height: 12),
-                    OutlinedButton(
-                      onPressed: () =>
-                          ref.invalidate(_communityPostsProvider),
-                      child: Text(AppLocalizations.of(context).retry),
-                    ),
-                  ],
+                  }
+
+                  return ListView.separated(
+                    itemCount: filtered.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      final post = filtered[index];
+                      return _CommunityPostTile(
+                        tokens: tokens,
+                        post: post,
+                        onEdit: () => _showEditDialog(context, ref, post),
+                        onDelete: () => _showDeleteDialog(context, ref, post),
+                      );
+                    },
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, _) => Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.error_outline, size: 32, color: tokens.fgDim),
+                      const SizedBox(height: 8),
+                      Text(
+                        AppLocalizations.of(context).failedToLoadCommunityPosts,
+                        style: TextStyle(color: tokens.fgDim, fontSize: 13),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '$error',
+                        style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: () =>
+                            ref.invalidate(_communityPostsProvider),
+                        child: Text(AppLocalizations.of(context).retry),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }
@@ -221,10 +216,22 @@ void _showEditDialog(
               style: TextStyle(color: tokens.fgBright, fontSize: 14),
               underline: Container(height: 1, color: tokens.border),
               items: [
-                DropdownMenuItem(value: 'published', child: Text(AppLocalizations.of(ctx).published)),
-                DropdownMenuItem(value: 'approved', child: Text(AppLocalizations.of(ctx).approved)),
-                DropdownMenuItem(value: 'rejected', child: Text(AppLocalizations.of(ctx).rejected)),
-                DropdownMenuItem(value: 'pending', child: Text(AppLocalizations.of(ctx).pending)),
+                DropdownMenuItem(
+                  value: 'published',
+                  child: Text(AppLocalizations.of(ctx).published),
+                ),
+                DropdownMenuItem(
+                  value: 'approved',
+                  child: Text(AppLocalizations.of(ctx).approved),
+                ),
+                DropdownMenuItem(
+                  value: 'rejected',
+                  child: Text(AppLocalizations.of(ctx).rejected),
+                ),
+                DropdownMenuItem(
+                  value: 'pending',
+                  child: Text(AppLocalizations.of(ctx).pending),
+                ),
               ],
               onChanged: (v) {
                 if (v != null) setState(() => selected = v);
@@ -233,8 +240,10 @@ void _showEditDialog(
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(),
-                child: Text(AppLocalizations.of(ctx).cancel,
-                    style: TextStyle(color: tokens.fgDim)),
+                child: Text(
+                  AppLocalizations.of(ctx).cancel,
+                  style: TextStyle(color: tokens.fgDim),
+                ),
               ),
               FilledButton(
                 onPressed: () async {
@@ -286,16 +295,16 @@ void _showDeleteDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(ctx).cancel,
-                style: TextStyle(color: tokens.fgDim)),
+            child: Text(
+              AppLocalizations.of(ctx).cancel,
+              style: TextStyle(color: tokens.fgDim),
+            ),
           ),
           FilledButton(
             onPressed: () async {
               Navigator.of(ctx).pop();
               final api = ref.read(apiClientProvider);
-              await api.deleteAdminCommunityPost(
-                (post['id'] as num).toInt(),
-              );
+              await api.deleteAdminCommunityPost((post['id'] as num).toInt());
               ref.invalidate(_communityPostsProvider);
             },
             style: FilledButton.styleFrom(
@@ -327,10 +336,10 @@ class _CommunityPostTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = post['title'] as String? ??
-        post['content'] as String? ??
-        'Untitled';
-    final author = post['author'] as String? ??
+    final title =
+        post['title'] as String? ?? post['content'] as String? ?? 'Untitled';
+    final author =
+        post['author'] as String? ??
         post['user_name'] as String? ??
         AppLocalizations.of(context).unknown;
     final status = post['status'] as String? ?? 'pending';
@@ -373,8 +382,7 @@ class _CommunityPostTile extends StatelessWidget {
                   children: [
                     Text(
                       author,
-                      style:
-                          TextStyle(color: tokens.fgMuted, fontSize: 12),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     ),
                     if (createdAt.isNotEmpty) ...[
                       const SizedBox(width: 12),
@@ -382,8 +390,7 @@ class _CommunityPostTile extends StatelessWidget {
                         createdAt.length >= 10
                             ? createdAt.substring(0, 10)
                             : createdAt,
-                        style:
-                            TextStyle(color: tokens.fgDim, fontSize: 12),
+                        style: TextStyle(color: tokens.fgDim, fontSize: 12),
                       ),
                     ],
                   ],
@@ -392,8 +399,7 @@ class _CommunityPostTile extends StatelessWidget {
             ),
           ),
           Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
               color: statusColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(4),
@@ -409,15 +415,13 @@ class _CommunityPostTile extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           IconButton(
-            icon:
-                Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
+            icon: Icon(Icons.edit_outlined, size: 16, color: tokens.fgMuted),
             onPressed: onEdit,
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).edit,
           ),
           IconButton(
-            icon:
-                Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
+            icon: Icon(Icons.delete_outlined, size: 16, color: tokens.fgDim),
             onPressed: onDelete,
             visualDensity: VisualDensity.compact,
             tooltip: AppLocalizations.of(context).delete,

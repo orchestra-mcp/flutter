@@ -74,10 +74,7 @@ void main() {
     });
 
     test('handles missing mcp fields gracefully', () {
-      final e = WsEvent.fromJson({
-        'type': 'mcp',
-        'action': 'tool_called',
-      });
+      final e = WsEvent.fromJson({'type': 'mcp', 'action': 'tool_called'});
       expect(e, isA<McpToolCalledEvent>());
       final mcp = e as McpToolCalledEvent;
       expect(mcp.toolName, '');

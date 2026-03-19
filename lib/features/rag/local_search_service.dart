@@ -79,24 +79,17 @@ class LocalSearchService {
     final projects = await projectDao.search(query);
     final projectMap = {for (final p in projects) p.id: p};
 
-    return ids
-        .where((id) => projectMap.containsKey(id))
-        .map((id) {
-          final p = projectMap[id]!;
-          return SearchResult(
-            id: p.id,
-            type: SearchResultType.project,
-            title: p.name,
-            subtitle: p.description ?? p.slug,
-            rank: rankMap[id] ?? 0,
-            metadata: {
-              'slug': p.slug,
-              'mode': p.mode,
-              'stacks': p.stacks,
-            },
-          );
-        })
-        .toList();
+    return ids.where((id) => projectMap.containsKey(id)).map((id) {
+      final p = projectMap[id]!;
+      return SearchResult(
+        id: p.id,
+        type: SearchResultType.project,
+        title: p.name,
+        subtitle: p.description ?? p.slug,
+        rank: rankMap[id] ?? 0,
+        metadata: {'slug': p.slug, 'mode': p.mode, 'stacks': p.stacks},
+      );
+    }).toList();
   }
 
   Future<List<SearchResult>> _searchFeatures(String query) async {
@@ -109,26 +102,23 @@ class LocalSearchService {
     final features = await featureDao.search(query);
     final featureMap = {for (final f in features) f.id: f};
 
-    return ids
-        .where((id) => featureMap.containsKey(id))
-        .map((id) {
-          final f = featureMap[id]!;
-          return SearchResult(
-            id: f.id,
-            type: SearchResultType.feature,
-            title: f.title,
-            subtitle: f.description ?? '${f.status} | ${f.kind}',
-            rank: rankMap[id] ?? 0,
-            metadata: {
-              'project_id': f.projectId,
-              'status': f.status,
-              'kind': f.kind,
-              'priority': f.priority,
-              'labels': f.labels,
-            },
-          );
-        })
-        .toList();
+    return ids.where((id) => featureMap.containsKey(id)).map((id) {
+      final f = featureMap[id]!;
+      return SearchResult(
+        id: f.id,
+        type: SearchResultType.feature,
+        title: f.title,
+        subtitle: f.description ?? '${f.status} | ${f.kind}',
+        rank: rankMap[id] ?? 0,
+        metadata: {
+          'project_id': f.projectId,
+          'status': f.status,
+          'kind': f.kind,
+          'priority': f.priority,
+          'labels': f.labels,
+        },
+      );
+    }).toList();
   }
 
   Future<List<SearchResult>> _searchNotes(String query) async {
@@ -141,28 +131,25 @@ class LocalSearchService {
     final notes = await noteDao.search(query);
     final noteMap = {for (final n in notes) n.id: n};
 
-    return ids
-        .where((id) => noteMap.containsKey(id))
-        .map((id) {
-          final n = noteMap[id]!;
-          // Use first 120 chars of content as subtitle preview.
-          final preview = n.content.length > 120
-              ? '${n.content.substring(0, 120)}...'
-              : n.content;
-          return SearchResult(
-            id: n.id,
-            type: SearchResultType.note,
-            title: n.title,
-            subtitle: preview.isNotEmpty ? preview : '(empty note)',
-            rank: rankMap[id] ?? 0,
-            metadata: {
-              if (n.projectId != null) 'project_id': n.projectId!,
-              'pinned': n.pinned.toString(),
-              'tags': n.tags,
-            },
-          );
-        })
-        .toList();
+    return ids.where((id) => noteMap.containsKey(id)).map((id) {
+      final n = noteMap[id]!;
+      // Use first 120 chars of content as subtitle preview.
+      final preview = n.content.length > 120
+          ? '${n.content.substring(0, 120)}...'
+          : n.content;
+      return SearchResult(
+        id: n.id,
+        type: SearchResultType.note,
+        title: n.title,
+        subtitle: preview.isNotEmpty ? preview : '(empty note)',
+        rank: rankMap[id] ?? 0,
+        metadata: {
+          if (n.projectId != null) 'project_id': n.projectId!,
+          'pinned': n.pinned.toString(),
+          'tags': n.tags,
+        },
+      );
+    }).toList();
   }
 }
 
@@ -200,10 +187,10 @@ class SearchResult {
 
   /// Human-readable type label.
   String get typeLabel => switch (type) {
-        SearchResultType.project => 'Project',
-        SearchResultType.feature => 'Feature',
-        SearchResultType.note => 'Note',
-      };
+    SearchResultType.project => 'Project',
+    SearchResultType.feature => 'Feature',
+    SearchResultType.note => 'Note',
+  };
 
   @override
   String toString() => 'SearchResult($typeLabel: $title, rank: $rank)';

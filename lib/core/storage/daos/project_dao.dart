@@ -14,43 +14,37 @@ class ProjectDao {
 
   /// Returns all projects ordered by most recently updated first.
   Future<List<LocalProject>> listAll() {
-    return (_db.select(_db.localProjects)
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
-        .get();
+    return (_db.select(
+      _db.localProjects,
+    )..orderBy([(t) => OrderingTerm.desc(t.updatedAt)])).get();
   }
 
   /// Watch all projects as a reactive stream.
   Stream<List<LocalProject>> watchAll() {
-    return (_db.select(_db.localProjects)
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
-        .watch();
+    return (_db.select(
+      _db.localProjects,
+    )..orderBy([(t) => OrderingTerm.desc(t.updatedAt)])).watch();
   }
 
   /// Returns a single project by [id], or `null` if not found.
   Future<LocalProject?> getById(String id) {
-    return (_db.select(_db.localProjects)
-          ..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (_db.select(
+      _db.localProjects,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   /// Watch a single project by [id].
   Stream<LocalProject?> watchById(String id) {
-    return (_db.select(_db.localProjects)
-          ..where((t) => t.id.equals(id)))
-        .watchSingleOrNull();
+    return (_db.select(
+      _db.localProjects,
+    )..where((t) => t.id.equals(id))).watchSingleOrNull();
   }
 
   /// Returns projects matching the given [mode] ('active', 'planned', 'archived').
   Future<List<LocalProject>> listByMode(String mode) {
     return (_db.select(_db.localProjects)
           ..where((t) => t.mode.equals(mode))
-          ..orderBy([
-            (t) => OrderingTerm.desc(t.updatedAt),
-          ]))
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)]))
         .get();
   }
 
@@ -61,13 +55,14 @@ class ProjectDao {
     final ftsResults = await _db.searchProjects(query);
     if (ftsResults.isEmpty) return [];
     final ids = ftsResults.map((r) => r.id).toList();
-    final projects = await (_db.select(_db.localProjects)
-          ..where((t) => t.id.isIn(ids)))
-        .get();
+    final projects = await (_db.select(
+      _db.localProjects,
+    )..where((t) => t.id.isIn(ids))).get();
     // Preserve FTS ranking order.
     final idOrder = {for (var i = 0; i < ids.length; i++) ids[i]: i};
     projects.sort(
-        (a, b) => (idOrder[a.id] ?? 999).compareTo(idOrder[b.id] ?? 999));
+      (a, b) => (idOrder[a.id] ?? 999).compareTo(idOrder[b.id] ?? 999),
+    );
     return projects;
   }
 
@@ -106,8 +101,9 @@ class ProjectDao {
 
   /// Updates an existing project by [id].
   Future<int> update(String id, LocalProjectsCompanion companion) {
-    return (_db.update(_db.localProjects)..where((t) => t.id.equals(id)))
-        .write(companion);
+    return (_db.update(
+      _db.localProjects,
+    )..where((t) => t.id.equals(id))).write(companion);
   }
 
   /// Deletes a project by [id]. Returns the number of deleted rows.
@@ -122,9 +118,9 @@ class ProjectDao {
 
   /// Returns projects that have not been synced to the server.
   Future<List<LocalProject>> listUnsynced() {
-    return (_db.select(_db.localProjects)
-          ..where((t) => t.synced.equals(false)))
-        .get();
+    return (_db.select(
+      _db.localProjects,
+    )..where((t) => t.synced.equals(false))).get();
   }
 
   /// Returns the total project count.

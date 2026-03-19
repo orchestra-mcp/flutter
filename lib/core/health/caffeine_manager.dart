@@ -95,15 +95,15 @@ class CaffeineState {
   /// Percentage of intake that is "clean" (no added sugar).
   double get cleanTransitionPercent {
     if (entries.isEmpty) return 100;
-    final clean =
-        entries.where((e) => !isSugarBased(e.type)).length;
+    final clean = entries.where((e) => !isSugarBased(e.type)).length;
     return (clean / entries.length) * 100;
   }
 
   CaffeineStatus get status {
     if (entries.isEmpty) return CaffeineStatus.noIntake;
-    final redBullCount =
-        entries.where((e) => e.type == CaffeineType.redBull).length;
+    final redBullCount = entries
+        .where((e) => e.type == CaffeineType.redBull)
+        .length;
     if (redBullCount >= 2) return CaffeineStatus.redBullDependent;
     if (cleanTransitionPercent >= 80) return CaffeineStatus.clean;
     return CaffeineStatus.transitioning;
@@ -156,26 +156,35 @@ class CaffeineNotifier extends Notifier<CaffeineState> {
   }
 
   void _watchCaffeine() {
-    final stream = _db.watch('SELECT * FROM caffeine_logs ORDER BY created_at ASC');
+    final stream = _db.watch(
+      'SELECT * FROM caffeine_logs ORDER BY created_at ASC',
+    );
 
     StreamSubscription<dynamic>? sub;
     sub = stream.listen((results) {
       final now = DateTime.now();
       final entries = <CaffeineEntry>[];
       for (final row in results) {
-        final loggedStr = (row['logged_at'] as String?) ??
-            (row['created_at'] as String?) ?? '';
+        final loggedStr =
+            (row['logged_at'] as String?) ??
+            (row['created_at'] as String?) ??
+            '';
         final ts = DateTime.tryParse(loggedStr)?.toLocal();
         if (ts == null) continue;
-        if (ts.year != now.year || ts.month != now.month || ts.day != now.day) continue;
+        if (ts.year != now.year || ts.month != now.month || ts.day != now.day)
+          continue;
 
         final typeName = row['drink_type'] as String? ?? 'other';
         final type = CaffeineState.typeFromString(typeName);
-        entries.add(CaffeineEntry(
-          type: type,
-          mg: (row['caffeine_mg'] as num?)?.toInt() ?? CaffeineState.mgFor(type),
-          timestamp: ts,
-        ));
+        entries.add(
+          CaffeineEntry(
+            type: type,
+            mg:
+                (row['caffeine_mg'] as num?)?.toInt() ??
+                CaffeineState.mgFor(type),
+            timestamp: ts,
+          ),
+        );
       }
 
       final totalMg = entries.fold<int>(0, (sum, e) => sum + e.mg);
@@ -198,8 +207,10 @@ class CaffeineNotifier extends Notifier<CaffeineState> {
   ///
   /// Writes to local PowerSync SQLite — auto-syncs to PostgreSQL and
   /// propagates to all connected devices.
-  Future<void> addCaffeine(CaffeineType type,
-      {bool ignoreCortisolWindow = false}) async {
+  Future<void> addCaffeine(
+    CaffeineType type, {
+    bool ignoreCortisolWindow = false,
+  }) async {
     if (!ignoreCortisolWindow && isCortisolWindow()) {
       throw const CortisolWindowException();
     }
@@ -229,7 +240,9 @@ class CaffeineNotifier extends Notifier<CaffeineState> {
         now.toIso8601String(),
       ],
     );
-    debugPrint('[Caffeine] +${mg}mg (${type.name}) → total ${state.totalMg}mg → PowerSync auto-sync');
+    debugPrint(
+      '[Caffeine] +${mg}mg (${type.name}) → total ${state.totalMg}mg → PowerSync auto-sync',
+    );
   }
 
   Future<void> refresh() async => ref.invalidateSelf();
@@ -241,7 +254,6 @@ class CaffeineNotifier extends Notifier<CaffeineState> {
 // Provider
 // ---------------------------------------------------------------------------
 
-final caffeineProvider =
-    NotifierProvider<CaffeineNotifier, CaffeineState>(
+final caffeineProvider = NotifierProvider<CaffeineNotifier, CaffeineState>(
   CaffeineNotifier.new,
 );

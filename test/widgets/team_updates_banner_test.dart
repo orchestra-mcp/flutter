@@ -89,18 +89,12 @@ final _statusNoUpdates = TeamUpdateStatus(
 
 Widget _buildApp({required TeamUpdateStatus status}) {
   return ProviderScope(
-    overrides: [
-      teamUpdatesProvider.overrideWith((ref) async => status),
-    ],
+    overrides: [teamUpdatesProvider.overrideWith((ref) async => status)],
     child: MaterialApp(
-      builder: (context, navigator) => ThemeTokens(
-        tokens: _testTokens,
-        child: navigator!,
-      ),
+      builder: (context, navigator) =>
+          ThemeTokens(tokens: _testTokens, child: navigator!),
       home: const Scaffold(
-        body: SingleChildScrollView(
-          child: TeamUpdatesBanner(),
-        ),
+        body: SingleChildScrollView(child: TeamUpdatesBanner()),
       ),
     ),
   );

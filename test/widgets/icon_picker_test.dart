@@ -22,9 +22,7 @@ void main() {
   group('IconPicker widget', () {
     test('is const-constructible', () {
       // Verify the widget can be constructed without errors.
-      final picker = IconPicker(
-        onIconSelected: (_) {},
-      );
+      final picker = IconPicker(onIconSelected: (_) {});
       expect(picker, isA<IconPicker>());
     });
 

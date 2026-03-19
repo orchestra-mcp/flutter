@@ -20,11 +20,7 @@ void main() {
     test('hasTeams is true when teams exist', () {
       final data = TeamSelectorData(
         teams: [
-          Team(
-            id: 't1',
-            name: 'Engineering',
-            createdAt: DateTime.utc(2026),
-          ),
+          Team(id: 't1', name: 'Engineering', createdAt: DateTime.utc(2026)),
         ],
         membersByTeamId: const {},
       );
@@ -343,10 +339,7 @@ void main() {
     });
 
     test('fromString throws on unknown value', () {
-      expect(
-        () => SyncEntityType.fromString('unknown'),
-        throwsArgumentError,
-      );
+      expect(() => SyncEntityType.fromString('unknown'), throwsArgumentError);
     });
   });
 
@@ -363,10 +356,7 @@ void main() {
     });
 
     test('fromString throws on unknown value', () {
-      expect(
-        () => EntitySyncStatus.fromString('invalid'),
-        throwsArgumentError,
-      );
+      expect(() => EntitySyncStatus.fromString('invalid'), throwsArgumentError);
     });
   });
 
@@ -419,10 +409,7 @@ void main() {
     });
 
     test('defaults: neverSynced, version 0, empty team list', () {
-      final json = {
-        'entity_type': 'skill',
-        'entity_id': 's1',
-      };
+      final json = {'entity_type': 'skill', 'entity_id': 's1'};
       final meta = EntitySyncMetadata.fromJson(json);
       expect(meta.status, EntitySyncStatus.neverSynced);
       expect(meta.localVersion, 0);

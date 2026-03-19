@@ -10,8 +10,7 @@ class DelegationBadgeState {
   bool get hasUnread => unreadCount > 0;
 
   /// Display string — "9+" for counts above 9.
-  String get displayText =>
-      unreadCount > 9 ? '9+' : unreadCount.toString();
+  String get displayText => unreadCount > 9 ? '9+' : unreadCount.toString();
 
   DelegationBadgeState copyWith({int? unreadCount}) =>
       DelegationBadgeState(unreadCount: unreadCount ?? this.unreadCount);
@@ -49,8 +48,8 @@ class DelegationBadgeNotifier extends Notifier<DelegationBadgeState> {
 
 final delegationBadgeProvider =
     NotifierProvider<DelegationBadgeNotifier, DelegationBadgeState>(
-  DelegationBadgeNotifier.new,
-);
+      DelegationBadgeNotifier.new,
+    );
 
 /// Convenience — whether the badge should show.
 final hasDelegationBadgeProvider = Provider<bool>((ref) {

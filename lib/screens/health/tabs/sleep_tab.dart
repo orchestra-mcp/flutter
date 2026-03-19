@@ -35,8 +35,9 @@ class SleepEntry {
   double get durationHours {
     final bedMinutes = bedtime.hour * 60 + bedtime.minute;
     final rawWakeMinutes = wakeTime.hour * 60 + wakeTime.minute;
-    final wakeMinutes =
-        rawWakeMinutes <= bedMinutes ? rawWakeMinutes + 24 * 60 : rawWakeMinutes;
+    final wakeMinutes = rawWakeMinutes <= bedMinutes
+        ? rawWakeMinutes + 24 * 60
+        : rawWakeMinutes;
     return (wakeMinutes - bedMinutes) / 60.0;
   }
 
@@ -74,8 +75,9 @@ class SleepState {
   double get currentDurationHours {
     final bedMinutes = bedtime.hour * 60 + bedtime.minute;
     final rawWakeMinutes = wakeTime.hour * 60 + wakeTime.minute;
-    final wakeMinutes =
-        rawWakeMinutes <= bedMinutes ? rawWakeMinutes + 24 * 60 : rawWakeMinutes;
+    final wakeMinutes = rawWakeMinutes <= bedMinutes
+        ? rawWakeMinutes + 24 * 60
+        : rawWakeMinutes;
     return (wakeMinutes - bedMinutes) / 60.0;
   }
 
@@ -122,7 +124,10 @@ class SleepState {
 
     // Combined deviation in minutes. Perfect = 0, terrible >= 120 min.
     final combinedMinutes = (bedStd + wakeStd) * 60.0;
-    final score = ((1.0 - (combinedMinutes / 120.0)) * 100).round().clamp(0, 100);
+    final score = ((1.0 - (combinedMinutes / 120.0)) * 100).round().clamp(
+      0,
+      100,
+    );
     return score;
   }
 
@@ -167,25 +172,27 @@ class SleepNotifier extends Notifier<SleepState> {
       for (final row in results) {
         final bedStr = row['bed_time'] as String? ?? '';
         final wakeStr = row['wake_time'] as String? ?? '';
-        final loggedStr = row['logged_at'] as String? ??
-            row['created_at'] as String? ?? '';
+        final loggedStr =
+            row['logged_at'] as String? ?? row['created_at'] as String? ?? '';
 
         final bedParts = bedStr.split(':');
         final wakeParts = wakeStr.split(':');
         if (bedParts.length < 2 || wakeParts.length < 2) continue;
 
-        entries.add(SleepEntry(
-          bedtime: TimeOfDay(
-            hour: int.tryParse(bedParts[0]) ?? 23,
-            minute: int.tryParse(bedParts[1]) ?? 0,
+        entries.add(
+          SleepEntry(
+            bedtime: TimeOfDay(
+              hour: int.tryParse(bedParts[0]) ?? 23,
+              minute: int.tryParse(bedParts[1]) ?? 0,
+            ),
+            wakeTime: TimeOfDay(
+              hour: int.tryParse(wakeParts[0]) ?? 7,
+              minute: int.tryParse(wakeParts[1]) ?? 0,
+            ),
+            qualityRating: (row['quality_rating'] as int?) ?? 3,
+            loggedAt: DateTime.tryParse(loggedStr) ?? DateTime.now(),
           ),
-          wakeTime: TimeOfDay(
-            hour: int.tryParse(wakeParts[0]) ?? 7,
-            minute: int.tryParse(wakeParts[1]) ?? 0,
-          ),
-          qualityRating: (row['quality_rating'] as int?) ?? 3,
-          loggedAt: DateTime.tryParse(loggedStr) ?? DateTime.now(),
-        ));
+        );
       }
 
       state = state.copyWith(entries: entries);
@@ -225,12 +232,19 @@ class SleepNotifier extends Notifier<SleepState> {
     await _db.execute(
       'INSERT INTO sleep_logs (id, user_id, bed_time, wake_time, quality_rating, duration_hours, logged_at, created_at, updated_at) '
       'VALUES (?, 0, ?, ?, ?, ?, ?, ?, ?)',
-      [_uuid.v4(), bedStr, wakeStr, state.qualityRating, entry.durationHours, now, now, now],
+      [
+        _uuid.v4(),
+        bedStr,
+        wakeStr,
+        state.qualityRating,
+        entry.durationHours,
+        now,
+        now,
+        now,
+      ],
     );
 
-    state = state.copyWith(
-      entries: [entry, ...state.entries],
-    );
+    state = state.copyWith(entries: [entry, ...state.entries]);
   }
 
   void reset() => state = const SleepState();
@@ -292,265 +306,271 @@ class _SleepTabState extends ConsumerState<SleepTab> {
       color: tokens.accent,
       backgroundColor: tokens.bgAlt,
       child: ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-      children: [
-        // HealthKit sleep data card
-        _HealthKitSleepCard(
-          sleepHours: _healthKitSleepHours,
-          isLoading: _healthKitLoading,
-          tokens: tokens,
-        ),
-        const SizedBox(height: 16),
-
-        // Duration display card
-        GlassCard(
-          child: Column(
-            children: [
-              _DurationDisplay(
-                duration: state.currentDurationHours,
-                durationText: state.currentDurationDisplay,
-                tokens: tokens,
-              ),
-              const SizedBox(height: 8),
-              _DurationQualityLabel(
-                hours: state.currentDurationHours,
-                tokens: tokens,
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Time pickers
-        GlassCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.sleep,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _TimePicker(
-                      label: l10n.bedtime,
-                      icon: Icons.bedtime_rounded,
-                      time: state.bedtime,
-                      tokens: tokens,
-                      onTap: () async {
-                        final picked = await showTimePicker(
-                          context: context,
-                          initialTime: state.bedtime,
-                        );
-                        if (picked != null) notifier.setBedtime(picked);
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Icon(
-                      Icons.arrow_forward_rounded,
-                      color: tokens.fgDim,
-                      size: 20,
-                    ),
-                  ),
-                  Expanded(
-                    child: _TimePicker(
-                      label: l10n.ready,
-                      icon: Icons.wb_sunny_rounded,
-                      time: state.wakeTime,
-                      tokens: tokens,
-                      onTap: () async {
-                        final picked = await showTimePicker(
-                          context: context,
-                          initialTime: state.wakeTime,
-                        );
-                        if (picked != null) notifier.setWakeTime(picked);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Quality rating
-        GlassCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.sleep,
-                style: TextStyle(
-                  color: tokens.fgBright,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 12),
-              _StarRating(
-                rating: state.qualityRating,
-                tokens: tokens,
-                onChanged: notifier.setQuality,
-              ),
-              const SizedBox(height: 8),
-              Center(
-                child: Text(
-                  _qualityLabel(state.qualityRating),
-                  style: TextStyle(color: tokens.fgMuted, fontSize: 12),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Log button
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton.icon(
-            onPressed: () {
-              notifier.logSleep();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l10n.sleepLogged),
-                  backgroundColor: tokens.bgAlt,
-                  behavior: SnackBarBehavior.floating,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.check_rounded, size: 18),
-            label: Text(l10n.logSleep),
-            style: FilledButton.styleFrom(
-              backgroundColor: tokens.accent,
-              foregroundColor: tokens.bg,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Empty state -- shown when no entries yet
-        if (state.entries.isEmpty)
-          _SleepEmptyState(tokens: tokens),
-
-        // Sleep debt indicator
-        if (state.entries.isNotEmpty && state.sleepDebt != null && state.sleepDebt! > 0)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: _SleepDebtIndicator(
-              debtHours: state.sleepDebt!,
-              averageDuration: state.averageDuration!,
-              tokens: tokens,
-            ),
-          ),
-
-        // Consistency score
-        if (state.consistencyScore != null)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: _ConsistencyScoreCard(
-              score: state.consistencyScore!,
-              tokens: tokens,
-            ),
-          ),
-
-        // Averages card with visual quality gauge
-        if (state.entries.isNotEmpty)
-          _AveragesCard(
-            averageDuration: state.averageDuration,
-            averageQuality: state.averageQuality,
-            entryCount: state.entries.length,
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
+        children: [
+          // HealthKit sleep data card
+          _HealthKitSleepCard(
+            sleepHours: _healthKitSleepHours,
+            isLoading: _healthKitLoading,
             tokens: tokens,
           ),
-        if (state.entries.isNotEmpty) const SizedBox(height: 16),
+          const SizedBox(height: 16),
 
-        // Recent log
-        if (state.entries.isNotEmpty)
+          // Duration display card
+          GlassCard(
+            child: Column(
+              children: [
+                _DurationDisplay(
+                  duration: state.currentDurationHours,
+                  durationText: state.currentDurationDisplay,
+                  tokens: tokens,
+                ),
+                const SizedBox(height: 8),
+                _DurationQualityLabel(
+                  hours: state.currentDurationHours,
+                  tokens: tokens,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Time pickers
           GlassCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  l10n.recent,
+                  l10n.sleep,
                   style: TextStyle(
                     color: tokens.fgBright,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
                 ),
-                const SizedBox(height: 8),
-                ...state.entries.reversed.take(7).map(
-                      (e) => Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4),
-                        child: Row(
-                          children: [
-                            Icon(Icons.bedtime_rounded,
-                                color: tokens.accent, size: 14),
-                            const SizedBox(width: 6),
-                            Text(
-                              e.durationDisplay,
-                              style: TextStyle(
-                                color: tokens.fgBright,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            ...List.generate(5, (i) {
-                              return Icon(
-                                i < e.qualityRating
-                                    ? Icons.star_rounded
-                                    : Icons.star_outline_rounded,
-                                color: i < e.qualityRating
-                                    ? const Color(0xFFFFB74D)
-                                    : tokens.fgDim,
-                                size: 14,
-                              );
-                            }),
-                            const Spacer(),
-                            Text(
-                              _formatDate(e.loggedAt),
-                              style: TextStyle(
-                                color: tokens.fgDim,
-                                fontSize: 11,
-                              ),
-                            ),
-                          ],
-                        ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _TimePicker(
+                        label: l10n.bedtime,
+                        icon: Icons.bedtime_rounded,
+                        time: state.bedtime,
+                        tokens: tokens,
+                        onTap: () async {
+                          final picked = await showTimePicker(
+                            context: context,
+                            initialTime: state.bedtime,
+                          );
+                          if (picked != null) notifier.setBedtime(picked);
+                        },
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Icon(
+                        Icons.arrow_forward_rounded,
+                        color: tokens.fgDim,
+                        size: 20,
+                      ),
+                    ),
+                    Expanded(
+                      child: _TimePicker(
+                        label: l10n.ready,
+                        icon: Icons.wb_sunny_rounded,
+                        time: state.wakeTime,
+                        tokens: tokens,
+                        onTap: () async {
+                          final picked = await showTimePicker(
+                            context: context,
+                            initialTime: state.wakeTime,
+                          );
+                          if (picked != null) notifier.setWakeTime(picked);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
+          const SizedBox(height: 16),
 
-        const SizedBox(height: 16),
-        Center(
-          child: TextButton(
-            onPressed: ref.read(sleepProvider.notifier).reset,
-            child: Text(
-              l10n.resetToDefaults,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+          // Quality rating
+          GlassCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.sleep,
+                  style: TextStyle(
+                    color: tokens.fgBright,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                _StarRating(
+                  rating: state.qualityRating,
+                  tokens: tokens,
+                  onChanged: notifier.setQuality,
+                ),
+                const SizedBox(height: 8),
+                Center(
+                  child: Text(
+                    _qualityLabel(state.qualityRating),
+                    style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ],
-    ),
+          const SizedBox(height: 16),
+
+          // Log button
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: () {
+                notifier.logSleep();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(l10n.sleepLogged),
+                    backgroundColor: tokens.bgAlt,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.check_rounded, size: 18),
+              label: Text(l10n.logSleep),
+              style: FilledButton.styleFrom(
+                backgroundColor: tokens.accent,
+                foregroundColor: tokens.bg,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Empty state -- shown when no entries yet
+          if (state.entries.isEmpty) _SleepEmptyState(tokens: tokens),
+
+          // Sleep debt indicator
+          if (state.entries.isNotEmpty &&
+              state.sleepDebt != null &&
+              state.sleepDebt! > 0)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _SleepDebtIndicator(
+                debtHours: state.sleepDebt!,
+                averageDuration: state.averageDuration!,
+                tokens: tokens,
+              ),
+            ),
+
+          // Consistency score
+          if (state.consistencyScore != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _ConsistencyScoreCard(
+                score: state.consistencyScore!,
+                tokens: tokens,
+              ),
+            ),
+
+          // Averages card with visual quality gauge
+          if (state.entries.isNotEmpty)
+            _AveragesCard(
+              averageDuration: state.averageDuration,
+              averageQuality: state.averageQuality,
+              entryCount: state.entries.length,
+              tokens: tokens,
+            ),
+          if (state.entries.isNotEmpty) const SizedBox(height: 16),
+
+          // Recent log
+          if (state.entries.isNotEmpty)
+            GlassCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.recent,
+                    style: TextStyle(
+                      color: tokens.fgBright,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ...state.entries.reversed
+                      .take(7)
+                      .map(
+                        (e) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.bedtime_rounded,
+                                color: tokens.accent,
+                                size: 14,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                e.durationDisplay,
+                                style: TextStyle(
+                                  color: tokens.fgBright,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              ...List.generate(5, (i) {
+                                return Icon(
+                                  i < e.qualityRating
+                                      ? Icons.star_rounded
+                                      : Icons.star_outline_rounded,
+                                  color: i < e.qualityRating
+                                      ? const Color(0xFFFFB74D)
+                                      : tokens.fgDim,
+                                  size: 14,
+                                );
+                              }),
+                              const Spacer(),
+                              Text(
+                                _formatDate(e.loggedAt),
+                                style: TextStyle(
+                                  color: tokens.fgDim,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                ],
+              ),
+            ),
+
+          const SizedBox(height: 16),
+          Center(
+            child: TextButton(
+              onPressed: ref.read(sleepProvider.notifier).reset,
+              child: Text(
+                l10n.resetToDefaults,
+                style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -615,8 +635,11 @@ class _HealthKitSleepCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.health_and_safety_rounded,
-                  color: const Color(0xFF7C4DFF), size: 18),
+              Icon(
+                Icons.health_and_safety_rounded,
+                color: const Color(0xFF7C4DFF),
+                size: 18,
+              ),
               const SizedBox(width: 6),
               Text(
                 AppLocalizations.of(context).sleep,
@@ -666,8 +689,10 @@ class _HealthKitSleepCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: _sleepColor(sleepHours!).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
@@ -690,7 +715,8 @@ class _HealthKitSleepCard extends StatelessWidget {
                 value: (sleepHours! / 8.0).clamp(0.0, 1.0),
                 backgroundColor: tokens.border.withValues(alpha: 0.3),
                 valueColor: AlwaysStoppedAnimation<Color>(
-                    _sleepColor(sleepHours!)),
+                  _sleepColor(sleepHours!),
+                ),
                 minHeight: 6,
               ),
             ),
@@ -750,11 +776,7 @@ class _SleepEmptyState extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             AppLocalizations.of(context).sleepEmptyState,
-            style: TextStyle(
-              color: tokens.fgDim,
-              fontSize: 12,
-              height: 1.5,
-            ),
+            style: TextStyle(color: tokens.fgDim, fontSize: 12, height: 1.5),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
@@ -877,10 +899,7 @@ enum _DebtSeverity { mild, moderate, severe }
 // ---------------------------------------------------------------------------
 
 class _ConsistencyScoreCard extends StatelessWidget {
-  const _ConsistencyScoreCard({
-    required this.score,
-    required this.tokens,
-  });
+  const _ConsistencyScoreCard({required this.score, required this.tokens});
 
   final int score;
   final OrchestraColorTokens tokens;
@@ -973,11 +992,7 @@ class _ConsistencyScoreCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             _description(context),
-            style: TextStyle(
-              color: tokens.fgDim,
-              fontSize: 12,
-              height: 1.4,
-            ),
+            style: TextStyle(color: tokens.fgDim, fontSize: 12, height: 1.4),
           ),
         ],
       ),
@@ -1046,10 +1061,7 @@ class _AveragesCard extends StatelessWidget {
               children: [
                 Text(
                   AppLocalizations.of(context).avgQuality,
-                  style: TextStyle(
-                    color: tokens.fgMuted,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                 ),
                 const Spacer(),
                 Text(
@@ -1064,10 +1076,7 @@ class _AveragesCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            _QualityGauge(
-              quality: averageQuality!,
-              tokens: tokens,
-            ),
+            _QualityGauge(quality: averageQuality!, tokens: tokens),
           ],
         ],
       ),
@@ -1080,10 +1089,7 @@ class _AveragesCard extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _QualityGauge extends StatelessWidget {
-  const _QualityGauge({
-    required this.quality,
-    required this.tokens,
-  });
+  const _QualityGauge({required this.quality, required this.tokens});
 
   /// Average quality value from 1.0 to 5.0.
   final double quality;
@@ -1127,11 +1133,7 @@ class _QualityGauge extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.star_rounded,
-                      color: _gaugeColor,
-                      size: 18,
-                    ),
+                    Icon(Icons.star_rounded, color: _gaugeColor, size: 18),
                     const SizedBox(height: 2),
                     Text(
                       _qualityWord(context),
@@ -1293,10 +1295,7 @@ class _DurationDisplay extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _DurationQualityLabel extends StatelessWidget {
-  const _DurationQualityLabel({
-    required this.hours,
-    required this.tokens,
-  });
+  const _DurationQualityLabel({required this.hours, required this.tokens});
 
   final double hours;
   final OrchestraColorTokens tokens;
@@ -1324,7 +1323,10 @@ class _DurationQualityLabel extends StatelessWidget {
         border: Border.all(color: _color.withValues(alpha: 0.4)),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(_label(context), style: TextStyle(color: _color, fontSize: 12)),
+      child: Text(
+        _label(context),
+        style: TextStyle(color: _color, fontSize: 12),
+      ),
     );
   }
 }
@@ -1379,10 +1381,7 @@ class _TimePicker extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 2),
-            Text(
-              label,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 11),
-            ),
+            Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
           ],
         ),
       ),
@@ -1456,10 +1455,7 @@ class _StatColumn extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 2),
-        Text(
-          label,
-          style: TextStyle(color: tokens.fgMuted, fontSize: 11),
-        ),
+        Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
       ],
     );
   }

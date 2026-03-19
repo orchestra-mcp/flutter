@@ -172,7 +172,11 @@ class _RingPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const stroke = 8.0;
     final rect = Rect.fromLTWH(
-        stroke / 2, stroke / 2, size.width - stroke, size.height - stroke);
+      stroke / 2,
+      stroke / 2,
+      size.width - stroke,
+      size.height - stroke,
+    );
 
     final trackPaint = Paint()
       ..color = trackColor
@@ -188,7 +192,12 @@ class _RingPainter extends CustomPainter {
 
     canvas.drawArc(rect, -math.pi / 2, math.pi * 2, false, trackPaint);
     canvas.drawArc(
-        rect, -math.pi / 2, math.pi * 2 * (score / 100), false, ringPaint);
+      rect,
+      -math.pi / 2,
+      math.pi * 2 * (score / 100),
+      false,
+      ringPaint,
+    );
   }
 
   @override

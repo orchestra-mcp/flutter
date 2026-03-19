@@ -26,15 +26,14 @@ class _PublicProjectState {
     bool? isLoading,
     int? selectedTab,
     String? Function()? expandedItemId,
-  }) =>
-      _PublicProjectState(
-        project: project ?? this.project,
-        isLoading: isLoading ?? this.isLoading,
-        selectedTab: selectedTab ?? this.selectedTab,
-        expandedItemId: expandedItemId != null
-            ? expandedItemId()
-            : this.expandedItemId,
-      );
+  }) => _PublicProjectState(
+    project: project ?? this.project,
+    isLoading: isLoading ?? this.isLoading,
+    selectedTab: selectedTab ?? this.selectedTab,
+    expandedItemId: expandedItemId != null
+        ? expandedItemId()
+        : this.expandedItemId,
+  );
 }
 
 class _PublicProjectNotifier extends Notifier<_PublicProjectState> {
@@ -64,8 +63,8 @@ class _PublicProjectNotifier extends Notifier<_PublicProjectState> {
 
 final _publicProjectProvider =
     NotifierProvider<_PublicProjectNotifier, _PublicProjectState>(
-  _PublicProjectNotifier.new,
-);
+      _PublicProjectNotifier.new,
+    );
 
 // ── Status helpers ──────────────────────────────────────────────────────────
 
@@ -103,9 +102,7 @@ class PublicProjectScreen extends ConsumerWidget {
     if (pState.isLoading) {
       return Scaffold(
         backgroundColor: tokens.bg,
-        body: Center(
-          child: CircularProgressIndicator(color: tokens.accent),
-        ),
+        body: Center(child: CircularProgressIndicator(color: tokens.accent)),
       );
     }
 
@@ -114,8 +111,10 @@ class PublicProjectScreen extends ConsumerWidget {
       return Scaffold(
         backgroundColor: tokens.bg,
         body: Center(
-          child: Text(AppLocalizations.of(context).projectNotFound,
-              style: TextStyle(color: tokens.fgMuted, fontSize: 16)),
+          child: Text(
+            AppLocalizations.of(context).projectNotFound,
+            style: TextStyle(color: tokens.fgMuted, fontSize: 16),
+          ),
         ),
       );
     }
@@ -137,13 +136,14 @@ class PublicProjectScreen extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: GestureDetector(
-                        onTap: () => ref
-                            .read(_publicProjectProvider.notifier)
-                            .setTab(i),
+                        onTap: () =>
+                            ref.read(_publicProjectProvider.notifier).setTab(i),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 180),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
                           decoration: BoxDecoration(
                             color: pState.selectedTab == i
                                 ? tokens.accent.withValues(alpha: 0.18)
@@ -178,13 +178,7 @@ class PublicProjectScreen extends ConsumerWidget {
             // ── Tab content ────────────────────────────────────────
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: _buildTabContent(
-                context,
-                ref,
-                pState,
-                project,
-                tokens,
-              ),
+              child: _buildTabContent(context, ref, pState, project, tokens),
             ),
 
             // ── Footer ────────────────────────────────────────────
@@ -257,9 +251,7 @@ class _ProjectHeader extends StatelessWidget {
             tokens.accentAlt.withValues(alpha: 0.05),
           ],
         ),
-        border: Border(
-          bottom: BorderSide(color: tokens.border),
-        ),
+        border: Border(bottom: BorderSide(color: tokens.border)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,10 +295,7 @@ class _ProjectHeader extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       project.description,
-                      style: TextStyle(
-                        color: tokens.fgMuted,
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 14),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -441,8 +430,7 @@ class _StatusColumn extends StatelessWidget {
               Container(
                 width: 8,
                 height: 8,
-                decoration:
-                    BoxDecoration(color: color, shape: BoxShape.circle),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
               ),
               const SizedBox(width: 8),
               Text(
@@ -456,8 +444,7 @@ class _StatusColumn extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 6, vertical: 1),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 decoration: BoxDecoration(
                   color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(10),
@@ -489,7 +476,9 @@ class _StatusColumn extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 2),
+                            horizontal: 5,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: tokens.accent.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(4),
@@ -507,17 +496,16 @@ class _StatusColumn extends StatelessWidget {
                         const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 2),
+                            horizontal: 5,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: tokens.fgDim.withValues(alpha: 0.10),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
                             f.kind,
-                            style: TextStyle(
-                              color: tokens.fgDim,
-                              fontSize: 10,
-                            ),
+                            style: TextStyle(color: tokens.fgDim, fontSize: 10),
                           ),
                         ),
                       ],
@@ -535,10 +523,7 @@ class _StatusColumn extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         f.description,
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                       ),
                     ],
                   ],
@@ -570,7 +555,10 @@ class _NotesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (notes.isEmpty) {
-      return _EmptyTab(label: AppLocalizations.of(context).noNotesShared, tokens: tokens);
+      return _EmptyTab(
+        label: AppLocalizations.of(context).noNotesShared,
+        tokens: tokens,
+      );
     }
     return Column(
       children: notes.map((note) {
@@ -585,8 +573,11 @@ class _NotesTab extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.description_outlined,
-                        color: tokens.accent, size: 18),
+                    Icon(
+                      Icons.description_outlined,
+                      color: tokens.accent,
+                      size: 18,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
@@ -645,7 +636,10 @@ class _DocsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (docs.isEmpty) {
-      return _EmptyTab(label: AppLocalizations.of(context).noDocsShared, tokens: tokens);
+      return _EmptyTab(
+        label: AppLocalizations.of(context).noDocsShared,
+        tokens: tokens,
+      );
     }
     return Column(
       children: docs.map((doc) {
@@ -660,8 +654,11 @@ class _DocsTab extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.menu_book_outlined,
-                        color: tokens.accent, size: 18),
+                    Icon(
+                      Icons.menu_book_outlined,
+                      color: tokens.accent,
+                      size: 18,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
@@ -732,8 +729,7 @@ class _EmptyTab extends StatelessWidget {
           children: [
             Icon(Icons.inbox_outlined, color: tokens.fgDim, size: 40),
             const SizedBox(height: 12),
-            Text(label,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 14)),
+            Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 14)),
           ],
         ),
       ),
@@ -753,23 +749,26 @@ class _ShareButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Clipboard.setData(const ClipboardData(
-            text: 'https://orchestra.dev/p/pub_orchestra-agents'));
+        Clipboard.setData(
+          const ClipboardData(
+            text: 'https://orchestra.dev/p/pub_orchestra-agents',
+          ),
+        );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).publicLinkCopiedToClipboard),
+            content: Text(
+              AppLocalizations.of(context).publicLinkCopiedToClipboard,
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
       },
       child: Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: tokens.accent.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(8),
-          border:
-              Border.all(color: tokens.accent.withValues(alpha: 0.3)),
+          border: Border.all(color: tokens.accent.withValues(alpha: 0.3)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -818,10 +817,7 @@ class _StatPill extends StatelessWidget {
         children: [
           Icon(icon, color: tokens.fgDim, size: 13),
           const SizedBox(width: 5),
-          Text(
-            label,
-            style: TextStyle(color: tokens.fgMuted, fontSize: 11),
-          ),
+          Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 11)),
         ],
       ),
     );
@@ -844,8 +840,7 @@ class _Footer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.auto_awesome_rounded,
-                  color: tokens.accent, size: 16),
+              Icon(Icons.auto_awesome_rounded, color: tokens.accent, size: 16),
               const SizedBox(width: 6),
               Text(
                 AppLocalizations.of(context).poweredByOrchestra,

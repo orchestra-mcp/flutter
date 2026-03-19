@@ -34,24 +34,96 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
   bool _initialized = false;
 
   static List<Map<String, String>> _flagDefinitions(AppLocalizations l10n) => [
-    {'key': 'registrations', 'name': l10n.adminFlagRegistrations, 'description': l10n.adminFlagRegistrationsDesc},
-    {'key': 'api_access', 'name': l10n.adminFlagApiAccess, 'description': l10n.adminFlagApiAccessDesc},
-    {'key': 'delegations', 'name': l10n.adminFlagDelegations, 'description': l10n.adminFlagDelegationsDesc},
-    {'key': 'ai_sessions', 'name': l10n.adminFlagAiSessions, 'description': l10n.adminFlagAiSessionsDesc},
-    {'key': 'health', 'name': l10n.adminFlagHealth, 'description': l10n.adminFlagHealthDesc},
-    {'key': 'rag', 'name': l10n.adminFlagRag, 'description': l10n.adminFlagRagDesc},
-    {'key': 'multi_agent', 'name': l10n.adminFlagMultiAgent, 'description': l10n.adminFlagMultiAgentDesc},
-    {'key': 'marketplace', 'name': l10n.adminFlagMarketplace, 'description': l10n.adminFlagMarketplaceDesc},
-    {'key': 'quic_bridge', 'name': l10n.adminFlagQuicBridge, 'description': l10n.adminFlagQuicBridgeDesc},
-    {'key': 'web_gateway', 'name': l10n.adminFlagWebGateway, 'description': l10n.adminFlagWebGatewayDesc},
-    {'key': 'packs', 'name': l10n.adminFlagPacks, 'description': l10n.adminFlagPacksDesc},
-    {'key': 'projects', 'name': l10n.adminFlagProjects, 'description': l10n.adminFlagProjectsDesc},
-    {'key': 'notes', 'name': l10n.adminFlagNotes, 'description': l10n.adminFlagNotesDesc},
-    {'key': 'wiki', 'name': l10n.adminFlagWiki, 'description': l10n.adminFlagWikiDesc},
-    {'key': 'devtools', 'name': l10n.adminFlagDevTools, 'description': l10n.adminFlagDevToolsDesc},
-    {'key': 'sponsors', 'name': l10n.adminFlagSponsors, 'description': l10n.adminFlagSponsorsDesc},
-    {'key': 'community', 'name': l10n.adminFlagCommunity, 'description': l10n.adminFlagCommunityDesc},
-    {'key': 'issues', 'name': l10n.adminFlagIssues, 'description': l10n.adminFlagIssuesDesc},
+    {
+      'key': 'registrations',
+      'name': l10n.adminFlagRegistrations,
+      'description': l10n.adminFlagRegistrationsDesc,
+    },
+    {
+      'key': 'api_access',
+      'name': l10n.adminFlagApiAccess,
+      'description': l10n.adminFlagApiAccessDesc,
+    },
+    {
+      'key': 'delegations',
+      'name': l10n.adminFlagDelegations,
+      'description': l10n.adminFlagDelegationsDesc,
+    },
+    {
+      'key': 'ai_sessions',
+      'name': l10n.adminFlagAiSessions,
+      'description': l10n.adminFlagAiSessionsDesc,
+    },
+    {
+      'key': 'health',
+      'name': l10n.adminFlagHealth,
+      'description': l10n.adminFlagHealthDesc,
+    },
+    {
+      'key': 'rag',
+      'name': l10n.adminFlagRag,
+      'description': l10n.adminFlagRagDesc,
+    },
+    {
+      'key': 'multi_agent',
+      'name': l10n.adminFlagMultiAgent,
+      'description': l10n.adminFlagMultiAgentDesc,
+    },
+    {
+      'key': 'marketplace',
+      'name': l10n.adminFlagMarketplace,
+      'description': l10n.adminFlagMarketplaceDesc,
+    },
+    {
+      'key': 'quic_bridge',
+      'name': l10n.adminFlagQuicBridge,
+      'description': l10n.adminFlagQuicBridgeDesc,
+    },
+    {
+      'key': 'web_gateway',
+      'name': l10n.adminFlagWebGateway,
+      'description': l10n.adminFlagWebGatewayDesc,
+    },
+    {
+      'key': 'packs',
+      'name': l10n.adminFlagPacks,
+      'description': l10n.adminFlagPacksDesc,
+    },
+    {
+      'key': 'projects',
+      'name': l10n.adminFlagProjects,
+      'description': l10n.adminFlagProjectsDesc,
+    },
+    {
+      'key': 'notes',
+      'name': l10n.adminFlagNotes,
+      'description': l10n.adminFlagNotesDesc,
+    },
+    {
+      'key': 'wiki',
+      'name': l10n.adminFlagWiki,
+      'description': l10n.adminFlagWikiDesc,
+    },
+    {
+      'key': 'devtools',
+      'name': l10n.adminFlagDevTools,
+      'description': l10n.adminFlagDevToolsDesc,
+    },
+    {
+      'key': 'sponsors',
+      'name': l10n.adminFlagSponsors,
+      'description': l10n.adminFlagSponsorsDesc,
+    },
+    {
+      'key': 'community',
+      'name': l10n.adminFlagCommunity,
+      'description': l10n.adminFlagCommunityDesc,
+    },
+    {
+      'key': 'issues',
+      'name': l10n.adminFlagIssues,
+      'description': l10n.adminFlagIssuesDesc,
+    },
   ];
 
   void _populateFlags(Map<String, dynamic> data, AppLocalizations l10n) {
@@ -84,7 +156,9 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -99,7 +173,9 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFlags(data, l10n);
@@ -130,7 +206,9 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
                       ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 14, vertical: 10),
+                        horizontal: 14,
+                        vertical: 10,
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -149,7 +227,9 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
                                 Text(
                                   _flags[i].description,
                                   style: TextStyle(
-                                      fontSize: 11, color: tokens.fgDim),
+                                    fontSize: 11,
+                                    color: tokens.fgDim,
+                                  ),
                                 ),
                               ],
                             ),
@@ -177,14 +257,17 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -196,11 +279,11 @@ class _AdminFeaturesTabState extends ConsumerState<AdminFeaturesTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 }

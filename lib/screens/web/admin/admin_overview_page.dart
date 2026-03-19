@@ -24,8 +24,9 @@ class _OverviewData {
 
 // ── Data provider ────────────────────────────────────────────────────────────
 
-final _overviewProvider =
-    FutureProvider.autoDispose<_OverviewData>((ref) async {
+final _overviewProvider = FutureProvider.autoDispose<_OverviewData>((
+  ref,
+) async {
   final api = ref.watch(apiClientProvider);
 
   // Try the dedicated stats endpoint first.
@@ -37,8 +38,7 @@ final _overviewProvider =
     final suspended = stats['suspended_users'] as int? ?? 0;
 
     // Load recent users separately.
-    final usersResult =
-        await api.listAdminUsers(limit: 5, status: 'active');
+    final usersResult = await api.listAdminUsers(limit: 5, status: 'active');
     final rawUsers = usersResult['users'];
     final recent = rawUsers is List
         ? rawUsers.cast<Map<String, dynamic>>()
@@ -115,28 +115,28 @@ class AdminOverviewPage extends ConsumerWidget {
     return ColoredBox(
       color: tokens.bg,
       child: overviewAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
-            const SizedBox(height: 12),
-            Text(
-              AppLocalizations.of(context).failedToLoadOverview,
-              style: TextStyle(color: tokens.fgBright, fontSize: 16),
-            ),
-            const SizedBox(height: 4),
-            Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => ref.invalidate(_overviewProvider),
-              child: Text(AppLocalizations.of(context).retry),
-            ),
-          ],
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error_outline, size: 48, color: tokens.fgDim),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context).failedToLoadOverview,
+                style: TextStyle(color: tokens.fgBright, fontSize: 16),
+              ),
+              const SizedBox(height: 4),
+              Text('$e', style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.invalidate(_overviewProvider),
+                child: Text(AppLocalizations.of(context).retry),
+              ),
+            ],
+          ),
         ),
-      ),
-      data: (data) => _OverviewContent(data: data),
+        data: (data) => _OverviewContent(data: data),
       ),
     );
   }
@@ -286,8 +286,7 @@ class _OverviewContent extends StatelessWidget {
               child: Column(
                 children: [
                   for (var i = 0; i < data.recentUsers.length; i++) ...[
-                    _RecentUserTile(
-                        tokens: tokens, user: data.recentUsers[i]),
+                    _RecentUserTile(tokens: tokens, user: data.recentUsers[i]),
                     if (i < data.recentUsers.length - 1)
                       Divider(height: 1, color: tokens.border),
                   ],

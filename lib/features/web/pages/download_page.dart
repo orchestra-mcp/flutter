@@ -31,21 +31,29 @@ class _DownloadPageState extends State<DownloadPage> {
     final tokens = ThemeTokens.of(context);
     return Scaffold(
       backgroundColor: tokens.bg,
-      appBar: AppBar(title: Text(AppLocalizations.of(context).downloadLabel), backgroundColor: tokens.bg, foregroundColor: tokens.fgBright, elevation: 0),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).downloadLabel),
+        backgroundColor: tokens.bg,
+        foregroundColor: tokens.fgBright,
+        elevation: 0,
+      ),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: List.generate(_platforms.length, (i) => Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: ChoiceChip(
-                  label: Text(_platforms[i]),
-                  selected: _selected == i,
-                  onSelected: (_) => setState(() => _selected = i),
+              children: List.generate(
+                _platforms.length,
+                (i) => Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ChoiceChip(
+                    label: Text(_platforms[i]),
+                    selected: _selected == i,
+                    onSelected: (_) => setState(() => _selected = i),
+                  ),
                 ),
-              )),
+              ),
             ),
           ),
           const SizedBox(height: 24),
@@ -53,13 +61,24 @@ class _DownloadPageState extends State<DownloadPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_platforms[_selected], style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: tokens.fgBright)),
+                Text(
+                  _platforms[_selected],
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: tokens.fgBright,
+                  ),
+                ),
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton.icon(
                     icon: const Icon(Icons.download_rounded),
-                    label: Text(AppLocalizations.of(context).downloadItem(_assets[_selected])),
+                    label: Text(
+                      AppLocalizations.of(
+                        context,
+                      ).downloadItem(_assets[_selected]),
+                    ),
                     onPressed: () => launchUrl(Uri.parse(_baseUrl)),
                   ),
                 ),

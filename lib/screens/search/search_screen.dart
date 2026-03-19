@@ -31,23 +31,142 @@ class _EntityCategory {
 }
 
 const _entityCategories = <_EntityCategory>[
-  _EntityCategory(labelKey: 'projects', icon: Icons.folder_rounded, color: Color(0xFF38BDF8), route: Routes.projects, scope: 'projects', subtitleKey: 'subtitleProjects'),
-  _EntityCategory(labelKey: 'notes', icon: Icons.sticky_note_2_rounded, color: Color(0xFFFBBF24), route: Routes.notes, scope: 'notes', subtitleKey: 'subtitleNotes'),
-  _EntityCategory(labelKey: 'agents', icon: Icons.smart_toy_rounded, color: Color(0xFF4ADE80), route: Routes.agents, scope: 'agents', subtitleKey: 'subtitleAgents'),
-  _EntityCategory(labelKey: 'skills', icon: Icons.bolt_rounded, color: Color(0xFFF97316), route: Routes.skills, scope: 'skills', subtitleKey: 'subtitleSkills'),
-  _EntityCategory(labelKey: 'workflows', icon: Icons.account_tree_rounded, color: Color(0xFF818CF8), route: Routes.workflows, scope: 'workflows', subtitleKey: 'subtitleWorkflows'),
-  _EntityCategory(labelKey: 'docs', icon: Icons.menu_book_rounded, color: Color(0xFF06B6D4), route: Routes.docs, scope: 'docs', subtitleKey: 'subtitleDocs'),
-  _EntityCategory(labelKey: 'delegations', icon: Icons.sync_alt_rounded, color: Color(0xFFA78BFA), route: Routes.delegations, scope: 'delegations', subtitleKey: 'subtitleDelegations'),
-  _EntityCategory(labelKey: 'healthScore', icon: Icons.favorite_rounded, color: Color(0xFFEF4444), route: Routes.healthScore, scope: 'health', subtitleKey: 'subtitleHealthScore'),
-  _EntityCategory(labelKey: 'vitals', icon: Icons.monitor_heart_rounded, color: Color(0xFFF43F5E), route: Routes.healthVitals, scope: 'health', subtitleKey: 'subtitleVitals'),
-  _EntityCategory(labelKey: 'dailyFlow', icon: Icons.auto_graph_rounded, color: Color(0xFF818CF8), route: Routes.healthFlow, scope: 'health', subtitleKey: 'subtitleDailyFlow'),
-  _EntityCategory(labelKey: 'hydration', icon: Icons.water_drop_rounded, color: Color(0xFF38BDF8), route: Routes.healthHydration, scope: 'health', subtitleKey: 'subtitleHydration'),
-  _EntityCategory(labelKey: 'caffeine', icon: Icons.coffee_rounded, color: Color(0xFFF97316), route: Routes.healthCaffeine, scope: 'health', subtitleKey: 'subtitleCaffeine'),
-  _EntityCategory(labelKey: 'nutrition', icon: Icons.restaurant_rounded, color: Color(0xFF4ADE80), route: Routes.healthNutrition, scope: 'health', subtitleKey: 'subtitleNutrition'),
-  _EntityCategory(labelKey: 'pomodoro', icon: Icons.timer_rounded, color: Color(0xFFF97316), route: Routes.healthPomodoro, scope: 'health', subtitleKey: 'subtitlePomodoro'),
-  _EntityCategory(labelKey: 'shutdown', icon: Icons.nightlight_rounded, color: Color(0xFF6366F1), route: Routes.healthShutdown, scope: 'health', subtitleKey: 'subtitleShutdown'),
-  _EntityCategory(labelKey: 'weight', icon: Icons.monitor_weight_rounded, color: Color(0xFF14B8A6), route: Routes.healthWeight, scope: 'health', subtitleKey: 'subtitleWeight'),
-  _EntityCategory(labelKey: 'sleep', icon: Icons.bedtime_rounded, color: Color(0xFF8B5CF6), route: Routes.healthSleep, scope: 'health', subtitleKey: 'subtitleSleep'),
+  _EntityCategory(
+    labelKey: 'projects',
+    icon: Icons.folder_rounded,
+    color: Color(0xFF38BDF8),
+    route: Routes.projects,
+    scope: 'projects',
+    subtitleKey: 'subtitleProjects',
+  ),
+  _EntityCategory(
+    labelKey: 'notes',
+    icon: Icons.sticky_note_2_rounded,
+    color: Color(0xFFFBBF24),
+    route: Routes.notes,
+    scope: 'notes',
+    subtitleKey: 'subtitleNotes',
+  ),
+  _EntityCategory(
+    labelKey: 'agents',
+    icon: Icons.smart_toy_rounded,
+    color: Color(0xFF4ADE80),
+    route: Routes.agents,
+    scope: 'agents',
+    subtitleKey: 'subtitleAgents',
+  ),
+  _EntityCategory(
+    labelKey: 'skills',
+    icon: Icons.bolt_rounded,
+    color: Color(0xFFF97316),
+    route: Routes.skills,
+    scope: 'skills',
+    subtitleKey: 'subtitleSkills',
+  ),
+  _EntityCategory(
+    labelKey: 'workflows',
+    icon: Icons.account_tree_rounded,
+    color: Color(0xFF818CF8),
+    route: Routes.workflows,
+    scope: 'workflows',
+    subtitleKey: 'subtitleWorkflows',
+  ),
+  _EntityCategory(
+    labelKey: 'docs',
+    icon: Icons.menu_book_rounded,
+    color: Color(0xFF06B6D4),
+    route: Routes.docs,
+    scope: 'docs',
+    subtitleKey: 'subtitleDocs',
+  ),
+  _EntityCategory(
+    labelKey: 'delegations',
+    icon: Icons.sync_alt_rounded,
+    color: Color(0xFFA78BFA),
+    route: Routes.delegations,
+    scope: 'delegations',
+    subtitleKey: 'subtitleDelegations',
+  ),
+  _EntityCategory(
+    labelKey: 'healthScore',
+    icon: Icons.favorite_rounded,
+    color: Color(0xFFEF4444),
+    route: Routes.healthScore,
+    scope: 'health',
+    subtitleKey: 'subtitleHealthScore',
+  ),
+  _EntityCategory(
+    labelKey: 'vitals',
+    icon: Icons.monitor_heart_rounded,
+    color: Color(0xFFF43F5E),
+    route: Routes.healthVitals,
+    scope: 'health',
+    subtitleKey: 'subtitleVitals',
+  ),
+  _EntityCategory(
+    labelKey: 'dailyFlow',
+    icon: Icons.auto_graph_rounded,
+    color: Color(0xFF818CF8),
+    route: Routes.healthFlow,
+    scope: 'health',
+    subtitleKey: 'subtitleDailyFlow',
+  ),
+  _EntityCategory(
+    labelKey: 'hydration',
+    icon: Icons.water_drop_rounded,
+    color: Color(0xFF38BDF8),
+    route: Routes.healthHydration,
+    scope: 'health',
+    subtitleKey: 'subtitleHydration',
+  ),
+  _EntityCategory(
+    labelKey: 'caffeine',
+    icon: Icons.coffee_rounded,
+    color: Color(0xFFF97316),
+    route: Routes.healthCaffeine,
+    scope: 'health',
+    subtitleKey: 'subtitleCaffeine',
+  ),
+  _EntityCategory(
+    labelKey: 'nutrition',
+    icon: Icons.restaurant_rounded,
+    color: Color(0xFF4ADE80),
+    route: Routes.healthNutrition,
+    scope: 'health',
+    subtitleKey: 'subtitleNutrition',
+  ),
+  _EntityCategory(
+    labelKey: 'pomodoro',
+    icon: Icons.timer_rounded,
+    color: Color(0xFFF97316),
+    route: Routes.healthPomodoro,
+    scope: 'health',
+    subtitleKey: 'subtitlePomodoro',
+  ),
+  _EntityCategory(
+    labelKey: 'shutdown',
+    icon: Icons.nightlight_rounded,
+    color: Color(0xFF6366F1),
+    route: Routes.healthShutdown,
+    scope: 'health',
+    subtitleKey: 'subtitleShutdown',
+  ),
+  _EntityCategory(
+    labelKey: 'weight',
+    icon: Icons.monitor_weight_rounded,
+    color: Color(0xFF14B8A6),
+    route: Routes.healthWeight,
+    scope: 'health',
+    subtitleKey: 'subtitleWeight',
+  ),
+  _EntityCategory(
+    labelKey: 'sleep',
+    icon: Icons.bedtime_rounded,
+    color: Color(0xFF8B5CF6),
+    route: Routes.healthSleep,
+    scope: 'health',
+    subtitleKey: 'subtitleSleep',
+  ),
 ];
 
 String _resolveLabel(AppLocalizations l10n, String key) => switch (key) {
@@ -136,28 +255,28 @@ class _SearchResultItem {
   final String? id;
 
   IconData get icon => switch (type) {
-        'project' => Icons.folder_rounded,
-        'feature' => Icons.auto_awesome_rounded,
-        'note' => Icons.sticky_note_2_rounded,
-        'agent' => Icons.smart_toy_rounded,
-        'skill' => Icons.bolt_rounded,
-        'workflow' => Icons.account_tree_rounded,
-        'doc' => Icons.description_rounded,
-        'session' => Icons.terminal_rounded,
-        _ => Icons.search_rounded,
-      };
+    'project' => Icons.folder_rounded,
+    'feature' => Icons.auto_awesome_rounded,
+    'note' => Icons.sticky_note_2_rounded,
+    'agent' => Icons.smart_toy_rounded,
+    'skill' => Icons.bolt_rounded,
+    'workflow' => Icons.account_tree_rounded,
+    'doc' => Icons.description_rounded,
+    'session' => Icons.terminal_rounded,
+    _ => Icons.search_rounded,
+  };
 
   Color get iconColor => switch (type) {
-        'project' => const Color(0xFF38BDF8),
-        'feature' => const Color(0xFFA78BFA),
-        'note' => const Color(0xFFFBBF24),
-        'agent' => const Color(0xFF4ADE80),
-        'skill' => const Color(0xFFF97316),
-        'workflow' => const Color(0xFFEC4899),
-        'doc' => const Color(0xFF60A5FA),
-        'session' => const Color(0xFF94A3B8),
-        _ => const Color(0xFF94A3B8),
-      };
+    'project' => const Color(0xFF38BDF8),
+    'feature' => const Color(0xFFA78BFA),
+    'note' => const Color(0xFFFBBF24),
+    'agent' => const Color(0xFF4ADE80),
+    'skill' => const Color(0xFFF97316),
+    'workflow' => const Color(0xFFEC4899),
+    'doc' => const Color(0xFF60A5FA),
+    'session' => const Color(0xFF94A3B8),
+    _ => const Color(0xFF94A3B8),
+  };
 }
 
 // -- Screen ------------------------------------------------------------------
@@ -181,16 +300,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Timer? _debounce;
 
   String? _scopeFromCategory(SearchCategory cat) => switch (cat) {
-        SearchCategory.all => null,
-        SearchCategory.projects => 'projects',
-        SearchCategory.features => 'features',
-        SearchCategory.notes => 'notes',
-        SearchCategory.agents => 'agents',
-        SearchCategory.skills => 'skills',
-        SearchCategory.workflows => 'workflows',
-        SearchCategory.docs => 'docs',
-        SearchCategory.sessions => 'sessions',
-      };
+    SearchCategory.all => null,
+    SearchCategory.projects => 'projects',
+    SearchCategory.features => 'features',
+    SearchCategory.notes => 'notes',
+    SearchCategory.agents => 'agents',
+    SearchCategory.skills => 'skills',
+    SearchCategory.workflows => 'workflows',
+    SearchCategory.docs => 'docs',
+    SearchCategory.sessions => 'sessions',
+  };
 
   bool get _hasQuery => _controller.text.trim().isNotEmpty;
 
@@ -217,24 +336,29 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     });
     try {
       final scope = _scopeFromCategory(_selectedCategory);
-      final response =
-          await ref.read(apiClientProvider).search(query, scope: scope);
+      final response = await ref
+          .read(apiClientProvider)
+          .search(query, scope: scope);
 
       final rawResults = response['results'];
       final List<_SearchResultItem> items = [];
       if (rawResults is List) {
         for (final entry in rawResults) {
           if (entry is Map<String, dynamic>) {
-            items.add(_SearchResultItem(
-              type: (entry['type'] as String?) ?? '',
-              title: (entry['title'] as String?) ??
-                  (entry['name'] as String?) ??
-                  '',
-              subtitle: (entry['subtitle'] as String?) ??
-                  (entry['description'] as String?) ??
-                  '',
-              id: entry['id']?.toString(),
-            ));
+            items.add(
+              _SearchResultItem(
+                type: (entry['type'] as String?) ?? '',
+                title:
+                    (entry['title'] as String?) ??
+                    (entry['name'] as String?) ??
+                    '',
+                subtitle:
+                    (entry['subtitle'] as String?) ??
+                    (entry['description'] as String?) ??
+                    '',
+                id: entry['id']?.toString(),
+              ),
+            );
           }
         }
       }
@@ -347,7 +471,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
             // -- Content: browse or search results ---------------------------
             Expanded(
-              child: _hasQuery ? _buildSearchResults(tokens, l10n) : _buildBrowse(tokens, l10n),
+              child: _hasQuery
+                  ? _buildSearchResults(tokens, l10n)
+                  : _buildBrowse(tokens, l10n),
             ),
           ],
         ),
@@ -384,9 +510,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   }
 
   /// Search results list (search mode — has query).
-  Widget _buildSearchResults(OrchestraColorTokens tokens, AppLocalizations l10n) {
+  Widget _buildSearchResults(
+    OrchestraColorTokens tokens,
+    AppLocalizations l10n,
+  ) {
     if (_isLoading) return _LoadingState(tokens: tokens);
-    if (_error != null) return _ErrorState(tokens: tokens, message: _error!, l10n: l10n);
+    if (_error != null)
+      return _ErrorState(tokens: tokens, message: _error!, l10n: l10n);
     if (_results.isEmpty) {
       return _EmptyState(tokens: tokens, hasQuery: true, l10n: l10n);
     }
@@ -497,10 +627,7 @@ class _GlassSearchField extends StatelessWidget {
         decoration: BoxDecoration(
           color: tokens.bgAlt.withValues(alpha: 0.50),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: tokens.borderFaint,
-            width: 0.5,
-          ),
+          border: Border.all(color: tokens.borderFaint, width: 0.5),
         ),
         child: TextField(
           controller: controller,
@@ -511,8 +638,11 @@ class _GlassSearchField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: placeholder,
             hintStyle: TextStyle(color: tokens.fgDim, fontSize: 15),
-            prefixIcon: Icon(Icons.search_rounded,
-                color: tokens.fgMuted, size: 20),
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              color: tokens.fgMuted,
+              size: 20,
+            ),
             border: InputBorder.none,
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
@@ -589,10 +719,7 @@ class _LoadingState extends StatelessWidget {
       child: SizedBox(
         width: 24,
         height: 24,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: tokens.accent,
-        ),
+        child: CircularProgressIndicator(strokeWidth: 2, color: tokens.accent),
       ),
     );
   }
@@ -601,7 +728,11 @@ class _LoadingState extends StatelessWidget {
 // -- Error state -------------------------------------------------------------
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.tokens, required this.message, required this.l10n});
+  const _ErrorState({
+    required this.tokens,
+    required this.message,
+    required this.l10n,
+  });
   final OrchestraColorTokens tokens;
   final String message;
   final AppLocalizations l10n;
@@ -615,8 +746,7 @@ class _ErrorState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline_rounded,
-                  size: 48, color: tokens.fgDim),
+              Icon(Icons.error_outline_rounded, size: 48, color: tokens.fgDim),
               const SizedBox(height: 16),
               Text(
                 l10n.searchFailed,
@@ -665,9 +795,7 @@ class _EmptyState extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                hasQuery
-                    ? Icons.search_off_rounded
-                    : Icons.search_rounded,
+                hasQuery ? Icons.search_off_rounded : Icons.search_rounded,
                 size: 48,
                 color: tokens.fgDim,
               ),
@@ -682,9 +810,7 @@ class _EmptyState extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                hasQuery
-                    ? l10n.tryAdjustingQuery
-                    : l10n.tapCategoryToExplore,
+                hasQuery ? l10n.tryAdjustingQuery : l10n.tapCategoryToExplore,
                 style: TextStyle(color: tokens.fgMuted, fontSize: 14),
                 textAlign: TextAlign.center,
               ),

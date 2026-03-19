@@ -116,9 +116,8 @@ void main() {
         ProviderScope(
           overrides: [
             hydrationProvider.overrideWith(
-              () => _TestHydrationNotifier(
-                const HydrationState(isLoading: true),
-              ),
+              () =>
+                  _TestHydrationNotifier(const HydrationState(isLoading: true)),
             ),
           ],
           child: _wrap(const HydrationTab()),
@@ -207,8 +206,9 @@ void main() {
       expect(find.text('500ml'), findsOneWidget);
     });
 
-    testWidgets('empty state shows when no entries and not loading',
-        (tester) async {
+    testWidgets('empty state shows when no entries and not loading', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -235,9 +235,7 @@ void main() {
         ProviderScope(
           overrides: [
             caffeineProvider.overrideWith(
-              () => _TestCaffeineNotifier(
-                const CaffeineState(isLoading: true),
-              ),
+              () => _TestCaffeineNotifier(const CaffeineState(isLoading: true)),
             ),
           ],
           child: _wrap(const CaffeineTab()),
@@ -256,9 +254,7 @@ void main() {
         ProviderScope(
           overrides: [
             caffeineProvider.overrideWith(
-              () => _TestCaffeineNotifier(
-                const CaffeineState(totalMg: 200),
-              ),
+              () => _TestCaffeineNotifier(const CaffeineState(totalMg: 200)),
             ),
           ],
           child: _wrap(const CaffeineTab()),
@@ -274,8 +270,9 @@ void main() {
       expect(find.byType(LinearProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('cortisol banner shows when in cortisol window',
-        (tester) async {
+    testWidgets('cortisol banner shows when in cortisol window', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -299,8 +296,9 @@ void main() {
       );
     });
 
-    testWidgets('cortisol banner hidden when outside cortisol window',
-        (tester) async {
+    testWidgets('cortisol banner hidden when outside cortisol window', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -335,9 +333,8 @@ void main() {
         ProviderScope(
           overrides: [
             nutritionProvider.overrideWith(
-              () => _TestNutritionNotifier(
-                const NutritionState(isLoading: true),
-              ),
+              () =>
+                  _TestNutritionNotifier(const NutritionState(isLoading: true)),
             ),
           ],
           child: _wrap(const NutritionTab()),
@@ -363,10 +360,7 @@ void main() {
         ),
         NutritionEntry(
           id: '2',
-          food: const FoodItem(
-            name: 'Rice',
-            category: FoodCategory.carb,
-          ),
+          food: const FoodItem(name: 'Rice', category: FoodCategory.carb),
           portionSpoons: 3.0,
           timestamp: now,
         ),
@@ -376,9 +370,7 @@ void main() {
         ProviderScope(
           overrides: [
             nutritionProvider.overrideWith(
-              () => _TestNutritionNotifier(
-                NutritionState(entries: entries),
-              ),
+              () => _TestNutritionNotifier(NutritionState(entries: entries)),
             ),
           ],
           child: _wrap(const NutritionTab()),
@@ -420,9 +412,7 @@ void main() {
         ProviderScope(
           overrides: [
             pomodoroProvider.overrideWith(
-              () => _TestPomodoroNotifier(
-                const PomodoroState(isLoading: true),
-              ),
+              () => _TestPomodoroNotifier(const PomodoroState(isLoading: true)),
             ),
           ],
           child: _wrap(const PomodoroTab()),
@@ -459,46 +449,49 @@ void main() {
       expect(find.text('Target'), findsOneWidget);
     });
 
-    testWidgets('insight card shows Ready to Focus when idle with 0 completed',
-        (tester) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            pomodoroProvider.overrideWith(
-              () => _TestPomodoroNotifier(const PomodoroState()),
-            ),
-          ],
-          child: _wrap(const PomodoroTab()),
-        ),
-      );
-      await tester.pump();
+    testWidgets(
+      'insight card shows Ready to Focus when idle with 0 completed',
+      (tester) async {
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              pomodoroProvider.overrideWith(
+                () => _TestPomodoroNotifier(const PomodoroState()),
+              ),
+            ],
+            child: _wrap(const PomodoroTab()),
+          ),
+        );
+        await tester.pump();
 
-      expect(find.text('Ready to Focus'), findsOneWidget);
-      expect(
-        find.text('Start your first session to build momentum today.'),
-        findsOneWidget,
-      );
-    });
+        expect(find.text('Ready to Focus'), findsOneWidget);
+        expect(
+          find.text('Start your first session to build momentum today.'),
+          findsOneWidget,
+        );
+      },
+    );
 
     testWidgets(
-        'insight card shows Target Reached when completed >= dailyTarget',
-        (tester) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            pomodoroProvider.overrideWith(
-              () => _TestPomodoroNotifier(
-                const PomodoroState(completedToday: 8, dailyTarget: 8),
+      'insight card shows Target Reached when completed >= dailyTarget',
+      (tester) async {
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              pomodoroProvider.overrideWith(
+                () => _TestPomodoroNotifier(
+                  const PomodoroState(completedToday: 8, dailyTarget: 8),
+                ),
               ),
-            ),
-          ],
-          child: _wrap(const PomodoroTab()),
-        ),
-      );
-      await tester.pump();
+            ],
+            child: _wrap(const PomodoroTab()),
+          ),
+        );
+        await tester.pump();
 
-      expect(find.text('Target Reached!'), findsOneWidget);
-    });
+        expect(find.text('Target Reached!'), findsOneWidget);
+      },
+    );
   });
 
   // ===========================================================================
@@ -511,9 +504,7 @@ void main() {
         ProviderScope(
           overrides: [
             shutdownProvider.overrideWith(
-              () => _TestShutdownNotifier(
-                const ShutdownState(isLoading: true),
-              ),
+              () => _TestShutdownNotifier(const ShutdownState(isLoading: true)),
             ),
           ],
           child: _wrap(const ShutdownTab()),
@@ -544,8 +535,9 @@ void main() {
       expect(find.text('Not Active'), findsOneWidget);
     });
 
-    testWidgets('active phase shows countdown card and checklist',
-        (tester) async {
+    testWidgets('active phase shows countdown card and checklist', (
+      tester,
+    ) async {
       final sleepTime = DateTime.now().add(const Duration(hours: 2));
       await tester.pumpWidget(
         ProviderScope(

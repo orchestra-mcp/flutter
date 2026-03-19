@@ -12,10 +12,7 @@ void main() {
         version: 1,
         serverTimestamp: DateTime.utc(2026, 3, 17),
       );
-      final result = PushSyncResult(
-        success: true,
-        shareResponse: response,
-      );
+      final result = PushSyncResult(success: true, shareResponse: response);
       expect(result.success, true);
       expect(result.shareResponse, isNotNull);
       expect(result.shareResponse!.shareId, 'note_n1_team-1');
@@ -209,9 +206,12 @@ void main() {
     test('workflow entity data from Map.from', () {
       final raw = <String, dynamic>{
         'name': 'default',
-        'states': <String, dynamic>{'todo': <String, dynamic>{}, 'done': <String, dynamic>{}},
+        'states': <String, dynamic>{
+          'todo': <String, dynamic>{},
+          'done': <String, dynamic>{},
+        },
         'transitions': <Map<String, dynamic>>[
-          <String, dynamic>{'from': 'todo', 'to': 'done'}
+          <String, dynamic>{'from': 'todo', 'to': 'done'},
         ],
         'gates': <String, dynamic>{'gate1': <String, dynamic>{}},
         'initial_state': 'todo',
@@ -249,19 +249,14 @@ void main() {
 
   group('PushSyncResult edge cases', () {
     test('success with null shareResponse', () {
-      const result = PushSyncResult(
-        success: true,
-      );
+      const result = PushSyncResult(success: true);
       expect(result.success, true);
       expect(result.shareResponse, isNull);
       expect(result.errorMessage, isNull);
     });
 
     test('failure with empty error message', () {
-      const result = PushSyncResult(
-        success: false,
-        errorMessage: '',
-      );
+      const result = PushSyncResult(success: false, errorMessage: '');
       expect(result.success, false);
       expect(result.errorMessage, isEmpty);
     });

@@ -65,10 +65,7 @@ class HookInstaller {
         });
 
         if (!alreadyRegistered) {
-          eventHooks.add({
-            'command': _hookScriptPath,
-            'timeout': 5000,
-          });
+          eventHooks.add({'command': _hookScriptPath, 'timeout': 5000});
         }
 
         hooks[event] = eventHooks;
@@ -135,7 +132,9 @@ class HookInstaller {
         final eventHooks = (hooks[event] as List<dynamic>?) ?? [];
         eventHooks.removeWhere((h) {
           if (h is Map<String, dynamic>) {
-            return (h['command'] as String? ?? '').contains('orchestra-mcp-hook');
+            return (h['command'] as String? ?? '').contains(
+              'orchestra-mcp-hook',
+            );
           }
           return false;
         });

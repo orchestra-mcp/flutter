@@ -18,12 +18,13 @@ import 'package:xterm/xterm.dart';
 /// Manages the list of active terminal sessions (local, SSH, Claude).
 final terminalSessionsProvider =
     NotifierProvider<TerminalSessionsNotifier, List<TerminalSessionModel>>(
-  TerminalSessionsNotifier.new,
-);
+      TerminalSessionsNotifier.new,
+    );
 
 /// The ID of the currently visible / active terminal tab.
-final activeTerminalIdProvider =
-    NotifierProvider<_ActiveTerminalId, String?>(_ActiveTerminalId.new);
+final activeTerminalIdProvider = NotifierProvider<_ActiveTerminalId, String?>(
+  _ActiveTerminalId.new,
+);
 
 class _ActiveTerminalId extends Notifier<String?> {
   @override
@@ -308,10 +309,7 @@ class TerminalSessionsNotifier extends Notifier<List<TerminalSessionModel>> {
     _createControllers(id);
     try {
       // baseUrl is now the full WebSocket URL.
-      final backend = RemoteTerminalBackend(
-        wsUrl: baseUrl,
-        shell: shell,
-      );
+      final backend = RemoteTerminalBackend(wsUrl: baseUrl, shell: shell);
       _backends[id] = backend;
       await backend.start();
       _wireTerminalEvents(id, backend.terminal);
@@ -347,9 +345,9 @@ class TerminalSessionsNotifier extends Notifier<List<TerminalSessionModel>> {
 
     final activeId = ref.read(activeTerminalIdProvider);
     if (activeId == id) {
-      ref.read(activeTerminalIdProvider.notifier).set(
-            state.isNotEmpty ? state.last.id : null,
-          );
+      ref
+          .read(activeTerminalIdProvider.notifier)
+          .set(state.isNotEmpty ? state.last.id : null);
     }
   }
 
@@ -392,5 +390,4 @@ class TerminalSessionsNotifier extends Notifier<List<TerminalSessionModel>> {
     }
     state = updated;
   }
-
 }

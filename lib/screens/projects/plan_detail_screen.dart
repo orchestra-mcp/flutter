@@ -65,12 +65,12 @@ class _PlanDetailScreenState extends ConsumerState<PlanDetailScreen> {
         child: _loading
             ? Center(child: CircularProgressIndicator(color: tokens.accent))
             : _error != null
-                ? _ErrorBody(tokens: tokens, message: _error!)
-                : _PlanContent(
-                    plan: _plan!,
-                    projectId: widget.projectId,
-                    tokens: tokens,
-                  ),
+            ? _ErrorBody(tokens: tokens, message: _error!)
+            : _PlanContent(
+                plan: _plan!,
+                projectId: widget.projectId,
+                tokens: tokens,
+              ),
       ),
     );
   }
@@ -113,8 +113,11 @@ class _PlanContent extends StatelessWidget {
                           context.go(Routes.project(projectId));
                         }
                       },
-                      child: Icon(Icons.arrow_back_rounded,
-                          color: tokens.fgBright, size: 22),
+                      child: Icon(
+                        Icons.arrow_back_rounded,
+                        color: tokens.fgBright,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Text(
@@ -151,9 +154,7 @@ class _PlanContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: GlassCard(
               child: content.isNotEmpty
-                  ? MarkdownRendererWidget(
-                      content: content,
-                    )
+                  ? MarkdownRendererWidget(content: content)
                   : _EmptyContent(
                       icon: Icons.map_rounded,
                       label: AppLocalizations.of(context).noContent,
@@ -173,12 +174,12 @@ class _StatusBadge extends StatelessWidget {
   final String status;
 
   Color _color() => switch (status) {
-        'approved' => const Color(0xFF4ADE80),
-        'in-progress' => const Color(0xFF00E5FF),
-        'completed' => const Color(0xFF4ADE80),
-        'draft' => const Color(0xFF6B7280),
-        _ => const Color(0xFF6B7280),
-      };
+    'approved' => const Color(0xFF4ADE80),
+    'in-progress' => const Color(0xFF00E5FF),
+    'completed' => const Color(0xFF4ADE80),
+    'draft' => const Color(0xFF6B7280),
+    _ => const Color(0xFF6B7280),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -217,8 +218,7 @@ class _EmptyContent extends StatelessWidget {
           children: [
             Icon(icon, color: tokens.fgDim, size: 36),
             const SizedBox(height: 8),
-            Text(label,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 14)),
+            Text(label, style: TextStyle(color: tokens.fgMuted, fontSize: 14)),
           ],
         ),
       ),
@@ -239,18 +239,26 @@ class _ErrorBody extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.error_outline_rounded,
-                color: Color(0xFFEF4444), size: 48),
+            const Icon(
+              Icons.error_outline_rounded,
+              color: Color(0xFFEF4444),
+              size: 48,
+            ),
             const SizedBox(height: 16),
-            Text(AppLocalizations.of(context).failedToLoad,
-                style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              AppLocalizations.of(context).failedToLoad,
+              style: TextStyle(
+                color: tokens.fgBright,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 8),
-            Text(message,
-                style: TextStyle(color: tokens.fgMuted, fontSize: 14),
-                textAlign: TextAlign.center),
+            Text(
+              message,
+              style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

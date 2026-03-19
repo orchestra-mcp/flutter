@@ -25,12 +25,14 @@ List<FieldDiff> computeFieldDiffs(
     final localVal = local[key];
     final remoteVal = remote[key];
     if (localVal?.toString() != remoteVal?.toString()) {
-      diffs.add(FieldDiff(
-        field: key,
-        localValue: localVal,
-        remoteValue: remoteVal,
-        isTextContent: _isTextField(key),
-      ));
+      diffs.add(
+        FieldDiff(
+          field: key,
+          localValue: localVal,
+          remoteValue: remoteVal,
+          isTextContent: _isTextField(key),
+        ),
+      );
     }
   }
   return diffs;
@@ -141,8 +143,7 @@ class SyncConflictNotifier extends Notifier<Map<String, SyncConflict>> {
   Map<String, SyncConflict> build() => {};
 
   /// Key for the conflict map.
-  String _key(String entityType, String entityId) =>
-      '$entityType:$entityId';
+  String _key(String entityType, String entityId) => '$entityType:$entityId';
 
   /// Adds or replaces a conflict for an entity.
   void addConflict(SyncConflict conflict) {
@@ -151,8 +152,11 @@ class SyncConflictNotifier extends Notifier<Map<String, SyncConflict>> {
   }
 
   /// Resolves a conflict and removes it from the active map.
-  void resolveConflict(String entityType, String entityId,
-      SyncConflict resolved) {
+  void resolveConflict(
+    String entityType,
+    String entityId,
+    SyncConflict resolved,
+  ) {
     final key = _key(entityType, entityId);
     state = Map.from(state)..remove(key);
   }
@@ -170,5 +174,5 @@ class SyncConflictNotifier extends Notifier<Map<String, SyncConflict>> {
 
 final syncConflictsProvider =
     NotifierProvider<SyncConflictNotifier, Map<String, SyncConflict>>(
-  SyncConflictNotifier.new,
-);
+      SyncConflictNotifier.new,
+    );

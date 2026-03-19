@@ -49,8 +49,7 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
       appBar: inSelectionMode
           ? SelectionAppBar(
               selectedCount: selectedIds.length,
-              onClear: () =>
-                  ref.read(docsSelectionProvider.notifier).clear(),
+              onClear: () => ref.read(docsSelectionProvider.notifier).clear(),
               onDelete: () {
                 showComingSoon(context, 'Delete Docs');
                 ref.read(docsSelectionProvider.notifier).clear();
@@ -76,11 +75,13 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                     ),
                     const SizedBox(width: 8),
                     IconButton(
-                      icon: Icon(Icons.add_rounded,
-                          color: tokens.accent, size: 22),
+                      icon: Icon(
+                        Icons.add_rounded,
+                        color: tokens.accent,
+                        size: 22,
+                      ),
                       style: IconButton.styleFrom(
-                        backgroundColor:
-                            tokens.accent.withValues(alpha: 0.12),
+                        backgroundColor: tokens.accent.withValues(alpha: 0.12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -93,11 +94,14 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
             Expanded(
               child: asyncDocs.when(
                 loading: () => Center(
-                    child:
-                        CircularProgressIndicator(color: tokens.accent)),
+                  child: CircularProgressIndicator(color: tokens.accent),
+                ),
                 error: (e, _) => Center(
-                    child: Text(l10n.failedToLoadDocs,
-                        style: TextStyle(color: tokens.fgMuted))),
+                  child: Text(
+                    l10n.failedToLoadDocs,
+                    style: TextStyle(color: tokens.fgMuted),
+                  ),
+                ),
                 data: (docs) {
                   if (docs.isEmpty) {
                     return MobileEmptyState(
@@ -110,17 +114,21 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                   final filtered = q.isEmpty
                       ? docs
                       : docs
-                          .where((d) =>
-                              ((d['title'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((d['path'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q) ||
-                              ((d['content'] as String?) ?? (d['body'] as String?) ?? '')
-                                  .toLowerCase()
-                                  .contains(q))
-                          .toList();
+                            .where(
+                              (d) =>
+                                  ((d['title'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((d['path'] as String?) ?? '')
+                                      .toLowerCase()
+                                      .contains(q) ||
+                                  ((d['content'] as String?) ??
+                                          (d['body'] as String?) ??
+                                          '')
+                                      .toLowerCase()
+                                      .contains(q),
+                            )
+                            .toList();
                   if (filtered.isEmpty) {
                     return Center(
                       child: Text(
@@ -131,10 +139,12 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                   }
                   final sorted = List<Map<String, dynamic>>.from(filtered)
                     ..sort((a, b) {
-                      final aId = (a['id'] as String?) ??
+                      final aId =
+                          (a['id'] as String?) ??
                           (a['slug'] as String?) ??
                           (a['title'] ?? '');
-                      final bId = (b['id'] as String?) ??
+                      final bId =
+                          (b['id'] as String?) ??
                           (b['slug'] as String?) ??
                           (b['title'] ?? '');
                       final bool aPin = pinnedIds.contains(aId);
@@ -145,20 +155,19 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                     });
                   return ListView.separated(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 4),
+                      horizontal: 16,
+                      vertical: 4,
+                    ),
                     itemCount: sorted.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 6),
+                    separatorBuilder: (_, __) => const SizedBox(height: 6),
                     itemBuilder: (context, index) {
                       final doc = sorted[index];
-                      final title =
-                          (doc['title'] as String?) ?? 'Untitled';
+                      final title = (doc['title'] as String?) ?? 'Untitled';
                       final path = (doc['path'] as String?) ?? '';
-                      final updatedAt =
-                          (doc['updated_at'] as String?) ?? '';
-                      final content =
-                          (doc['content'] as String?) ?? '';
-                      final id = (doc['id'] as String?) ??
+                      final updatedAt = (doc['updated_at'] as String?) ?? '';
+                      final content = (doc['content'] as String?) ?? '';
+                      final id =
+                          (doc['id'] as String?) ??
                           (doc['slug'] as String?) ??
                           title;
                       final bool isPinned = pinnedIds.contains(id);
@@ -172,12 +181,11 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                         isSelected: selectedIds.contains(id),
                         onTap: inSelectionMode
                             ? () => ref
-                                .read(docsSelectionProvider.notifier)
-                                .toggle(id)
+                                  .read(docsSelectionProvider.notifier)
+                                  .toggle(id)
                             : () => context.push(Routes.doc(id)),
-                        onSelect: () => ref
-                            .read(docsSelectionProvider.notifier)
-                            .toggle(id),
+                        onSelect: () =>
+                            ref.read(docsSelectionProvider.notifier).toggle(id),
                         onPin: () =>
                             ref.read(docsPinProvider.notifier).toggle(id),
                         contextMenuActions: buildEntityContextActions(
@@ -185,9 +193,8 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                           onSelect: () => ref
                               .read(docsSelectionProvider.notifier)
                               .toggle(id),
-                          onPin: () => ref
-                              .read(docsPinProvider.notifier)
-                              .toggle(id),
+                          onPin: () =>
+                              ref.read(docsPinProvider.notifier).toggle(id),
                           isPinned: isPinned,
                           onSync: () => openSyncDialog(
                             context,
@@ -203,11 +210,17 @@ class _DocsScreenState extends ConsumerState<DocsScreen> {
                                 : 'Path: $path',
                           ),
                           onChangeIcon: () => pickAndSaveIcon(
-                              context, ref, id,
-                              currentCodePoint: cust?.iconCodePoint),
+                            context,
+                            ref,
+                            id,
+                            currentCodePoint: cust?.iconCodePoint,
+                          ),
                           onChangeColor: () => pickAndSaveColor(
-                              context, ref, id,
-                              currentColor: cust?.color),
+                            context,
+                            ref,
+                            id,
+                            currentColor: cust?.color,
+                          ),
                         ),
                       );
                     },

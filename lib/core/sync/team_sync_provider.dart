@@ -32,11 +32,13 @@ final teamSyncServiceProvider = Provider<TeamSyncService>((ref) {
 /// a `(entityType, entityId)` tuple. Returns `null` if the entity has
 /// never been tracked.
 final entitySyncStatusProvider =
-    FutureProvider.family<EntitySyncMetadata?, (String, String)>(
-        (ref, params) async {
-  final repo = ref.watch(teamSyncRepositoryProvider);
-  return repo.getMetadata(params.$1, params.$2);
-});
+    FutureProvider.family<EntitySyncMetadata?, (String, String)>((
+      ref,
+      params,
+    ) async {
+      final repo = ref.watch(teamSyncRepositoryProvider);
+      return repo.getMetadata(params.$1, params.$2);
+    });
 
 // ── Team update status (for banner) ─────────────────────────────────────────
 
@@ -59,16 +61,17 @@ final teamUpdatesProvider = FutureProvider<TeamUpdateStatus>((ref) async {
 /// stream. The entity is identified by a `(entityType, entityId)` tuple.
 final entitySharesProvider =
     StreamProvider.family<List<TeamShare>, (String, String)>((ref, params) {
-  final repo = ref.watch(teamSyncRepositoryProvider);
-  return repo.watchSharesForEntity(params.$1, params.$2);
-});
+      final repo = ref.watch(teamSyncRepositoryProvider);
+      return repo.watchSharesForEntity(params.$1, params.$2);
+    });
 
 // ── Pending entities ────────────────────────────────────────────────────────
 
 /// Returns all entities with `pending` sync status — local changes that
 /// have not yet been pushed to the server.
-final pendingEntitiesProvider =
-    FutureProvider<List<EntitySyncMetadata>>((ref) async {
+final pendingEntitiesProvider = FutureProvider<List<EntitySyncMetadata>>((
+  ref,
+) async {
   final repo = ref.watch(teamSyncRepositoryProvider);
   return repo.getPendingEntities();
 });
@@ -77,8 +80,9 @@ final pendingEntitiesProvider =
 
 /// Returns all entities with `outdated` sync status — the server has
 /// newer versions that haven't been pulled yet.
-final outdatedEntitiesProvider =
-    FutureProvider<List<EntitySyncMetadata>>((ref) async {
+final outdatedEntitiesProvider = FutureProvider<List<EntitySyncMetadata>>((
+  ref,
+) async {
   final repo = ref.watch(teamSyncRepositoryProvider);
   return repo.getOutdatedEntities();
 });
@@ -87,8 +91,7 @@ final outdatedEntitiesProvider =
 
 /// Watches all entity sync metadata entries as a reactive stream.
 /// Useful for a sync status dashboard or debug view.
-final allSyncMetadataProvider =
-    StreamProvider<List<EntitySyncMetadata>>((ref) {
+final allSyncMetadataProvider = StreamProvider<List<EntitySyncMetadata>>((ref) {
   final repo = ref.watch(teamSyncRepositoryProvider);
   return repo.watchAll();
 });

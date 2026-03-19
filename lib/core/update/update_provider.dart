@@ -73,10 +73,7 @@ class UpdateNotifier extends Notifier<UpdateState> {
       final info = await _service.checkForUpdate();
 
       if (!info.hasUpdate) {
-        state = state.copyWith(
-          status: UpdateStatus.upToDate,
-          info: info,
-        );
+        state = state.copyWith(status: UpdateStatus.upToDate, info: info);
         return;
       }
 
@@ -84,22 +81,13 @@ class UpdateNotifier extends Notifier<UpdateState> {
       final prefs = await SharedPreferences.getInstance();
       final dismissed = prefs.getString(_dismissedKey);
       if (dismissed == info.latestVersion) {
-        state = state.copyWith(
-          status: UpdateStatus.upToDate,
-          info: info,
-        );
+        state = state.copyWith(status: UpdateStatus.upToDate, info: info);
         return;
       }
 
-      state = state.copyWith(
-        status: UpdateStatus.available,
-        info: info,
-      );
+      state = state.copyWith(status: UpdateStatus.available, info: info);
     } catch (e) {
-      state = state.copyWith(
-        status: UpdateStatus.error,
-        error: e.toString(),
-      );
+      state = state.copyWith(status: UpdateStatus.error, error: e.toString());
     }
   }
 

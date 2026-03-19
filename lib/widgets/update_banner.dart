@@ -39,11 +39,7 @@ class UpdateBanner extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.system_update_rounded,
-            size: 18,
-            color: tokens.fgBright,
-          ),
+          Icon(Icons.system_update_rounded, size: 18, color: tokens.fgBright),
           const SizedBox(width: 10),
 
           // Status text
@@ -148,9 +144,7 @@ class _ActionButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 14),
           textStyle: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         ),
         child: Text(label),
       ),
@@ -159,10 +153,7 @@ class _ActionButton extends StatelessWidget {
 }
 
 class _DismissButton extends StatelessWidget {
-  const _DismissButton({
-    required this.onPressed,
-    required this.tokens,
-  });
+  const _DismissButton({required this.onPressed, required this.tokens});
 
   final VoidCallback onPressed;
   final OrchestraColorTokens tokens;

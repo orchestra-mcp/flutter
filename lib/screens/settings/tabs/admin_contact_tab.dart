@@ -59,7 +59,9 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${AppLocalizations.of(context).failedToSave}: $e')),
+          SnackBar(
+            content: Text('${AppLocalizations.of(context).failedToSave}: $e'),
+          ),
         );
       }
     } finally {
@@ -74,7 +76,9 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
 
     return settingAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('${AppLocalizations.of(context).failedToLoad}: $e')),
+      error: (e, _) => Center(
+        child: Text('${AppLocalizations.of(context).failedToLoad}: $e'),
+      ),
       data: (data) {
         final l10n = AppLocalizations.of(context);
         _populateFields(data);
@@ -99,8 +103,12 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
             // Address
             _fieldLabel(tokens, l10n.adminAddress),
             const SizedBox(height: 6),
-            _field(tokens, _addressCtrl,
-                hint: l10n.adminAddressHint, maxLines: 3),
+            _field(
+              tokens,
+              _addressCtrl,
+              hint: l10n.adminAddressHint,
+              maxLines: 3,
+            ),
 
             const SizedBox(height: 24),
             Divider(color: tokens.border.withValues(alpha: 0.4)),
@@ -110,8 +118,7 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
             _sectionHeader(tokens, l10n.adminDisplayOptions),
             const SizedBox(height: 12),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
                 color: tokens.bgAlt,
                 borderRadius: BorderRadius.circular(10),
@@ -119,8 +126,11 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.dynamic_form_rounded,
-                      color: tokens.fgMuted, size: 20),
+                  Icon(
+                    Icons.dynamic_form_rounded,
+                    color: tokens.fgMuted,
+                    size: 20,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -138,8 +148,7 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
             ),
             const SizedBox(height: 8),
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
                 color: tokens.bgAlt,
                 borderRadius: BorderRadius.circular(10),
@@ -147,8 +156,7 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.map_outlined,
-                      color: tokens.fgMuted, size: 20),
+                  Icon(Icons.map_outlined, color: tokens.fgMuted, size: 20),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -175,14 +183,17 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: _saving
                     ? const SizedBox(
                         width: 18,
                         height: 18,
                         child: CircularProgressIndicator(
-                            strokeWidth: 2, color: Colors.white),
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(AppLocalizations.of(context).save),
               ),
@@ -194,23 +205,23 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
   }
 
   Widget _sectionHeader(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgBright,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgBright,
+    ),
+  );
 
   Widget _fieldLabel(OrchestraColorTokens tokens, String text) => Text(
-        text,
-        style: TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: tokens.fgDim,
-          letterSpacing: 0.4,
-        ),
-      );
+    text,
+    style: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w600,
+      color: tokens.fgDim,
+      letterSpacing: 0.4,
+    ),
+  );
 
   Widget _field(
     OrchestraColorTokens tokens,
@@ -227,8 +238,10 @@ class _AdminContactTabState extends ConsumerState<AdminContactTab> {
         hintStyle: TextStyle(color: tokens.fgDim),
         filled: true,
         fillColor: tokens.bgAlt,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: tokens.border),

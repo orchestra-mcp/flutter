@@ -84,10 +84,7 @@ class SyncStatusNotifier extends Notifier<SyncStatusInfo> {
 
   /// Mark sync as just completed with [serverTimestamp].
   void markSynced(DateTime serverTimestamp) {
-    state = state.copyWith(
-      lastSync: serverTimestamp,
-      pendingCount: 0,
-    );
+    state = state.copyWith(lastSync: serverTimestamp, pendingCount: 0);
   }
 }
 
@@ -96,8 +93,7 @@ class SyncStatusNotifier extends Notifier<SyncStatusInfo> {
 // ---------------------------------------------------------------------------
 
 /// Exposes the reactive [SyncStatusInfo] to the widget tree.
-final syncStatusProvider =
-    NotifierProvider<SyncStatusNotifier, SyncStatusInfo>(
+final syncStatusProvider = NotifierProvider<SyncStatusNotifier, SyncStatusInfo>(
   SyncStatusNotifier.new,
 );
 

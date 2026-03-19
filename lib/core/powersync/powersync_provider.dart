@@ -45,7 +45,9 @@ Future<void> initPowerSync() async {
     if (storedVersion < _schemaVersion) {
       final dbFile = File(dbPath);
       if (dbFile.existsSync()) {
-        debugPrint('[PowerSync] Schema version changed ($storedVersion → $_schemaVersion), deleting stale DB');
+        debugPrint(
+          '[PowerSync] Schema version changed ($storedVersion → $_schemaVersion), deleting stale DB',
+        );
         dbFile.deleteSync();
         // Also delete WAL/SHM files if they exist.
         final wal = File('$dbPath-wal');
@@ -59,7 +61,9 @@ Future<void> initPowerSync() async {
 
   _db = PowerSyncDatabase(schema: powersyncSchema, path: dbPath);
   await _db!.initialize();
-  debugPrint('[PowerSync] Database initialized at $dbPath (schema v$_schemaVersion)');
+  debugPrint(
+    '[PowerSync] Database initialized at $dbPath (schema v$_schemaVersion)',
+  );
 
   // One-time cleanup: remove duplicate workflows (keep latest updated_at per name+project_slug).
   await _deduplicateWorkflows(_db!);
@@ -79,7 +83,9 @@ Future<void> _deduplicateWorkflows(PowerSyncDatabase db) async {
       '  ) ranked WHERE rn = 1'
       ')',
     );
-    debugPrint('[PowerSync] Workflow dedup cleanup: removed $deleted duplicate rows');
+    debugPrint(
+      '[PowerSync] Workflow dedup cleanup: removed $deleted duplicate rows',
+    );
   } catch (e) {
     debugPrint('[PowerSync] Workflow dedup cleanup failed (non-fatal): $e');
   }

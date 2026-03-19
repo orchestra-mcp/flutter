@@ -72,16 +72,9 @@ class DailyFlowTab extends ConsumerWidget {
     required double shutdown,
     required AppLocalizations l10n,
   }) {
-    final scores = {
-      0: pomodoro,
-      1: hydration,
-      2: nutrition,
-      3: shutdown,
-    };
+    final scores = {0: pomodoro, 1: hydration, 2: nutrition, 3: shutdown};
 
-    final lowest = scores.entries.reduce(
-      (a, b) => a.value <= b.value ? a : b,
-    );
+    final lowest = scores.entries.reduce((a, b) => a.value <= b.value ? a : b);
 
     return switch (lowest.key) {
       0 => l10n.insightLowFocus,
@@ -141,7 +134,9 @@ class DailyFlowTab extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
         children: [
           // Overall score ring
-          Center(child: _FlowRing(score: score, tokens: tokens)),
+          Center(
+            child: _FlowRing(score: score, tokens: tokens),
+          ),
           const SizedBox(height: 24),
 
           // Insight text
@@ -232,19 +227,31 @@ class DailyFlowTab extends ConsumerWidget {
                 const SizedBox(height: 16),
                 SizedBox(
                   height: 120,
-                  child: _WeeklyBarChart(
-                    scores: weekScores,
-                    tokens: tokens,
-                  ),
+                  child: _WeeklyBarChart(scores: weekScores, tokens: tokens),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [l10n.mon, l10n.tue, l10n.wed, l10n.thu, l10n.fri, l10n.sat, l10n.sun]
-                      .map((d) => Text(d,
-                          style: TextStyle(
-                              color: tokens.fgDim, fontSize: 10)))
-                      .toList(),
+                  children:
+                      [
+                            l10n.mon,
+                            l10n.tue,
+                            l10n.wed,
+                            l10n.thu,
+                            l10n.fri,
+                            l10n.sat,
+                            l10n.sun,
+                          ]
+                          .map(
+                            (d) => Text(
+                              d,
+                              style: TextStyle(
+                                color: tokens.fgDim,
+                                fontSize: 10,
+                              ),
+                            ),
+                          )
+                          .toList(),
                 ),
               ],
             ),

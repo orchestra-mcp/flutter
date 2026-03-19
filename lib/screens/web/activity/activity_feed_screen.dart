@@ -149,10 +149,8 @@ class _ActivityFilterState {
     int? newActivityCount,
   }) {
     return _ActivityFilterState(
-      selectedType:
-          selectedType != null ? selectedType() : this.selectedType,
-      selectedUser:
-          selectedUser != null ? selectedUser() : this.selectedUser,
+      selectedType: selectedType != null ? selectedType() : this.selectedType,
+      selectedUser: selectedUser != null ? selectedUser() : this.selectedUser,
       newActivityCount: newActivityCount ?? this.newActivityCount,
     );
   }
@@ -169,17 +167,15 @@ class _ActivityFilterNotifier extends Notifier<_ActivityFilterState> {
       state = state.copyWith(selectedUser: () => user);
 
   void addNewActivities(int count) =>
-      state = state.copyWith(
-          newActivityCount: state.newActivityCount + count);
+      state = state.copyWith(newActivityCount: state.newActivityCount + count);
 
-  void clearNewActivities() =>
-      state = state.copyWith(newActivityCount: 0);
+  void clearNewActivities() => state = state.copyWith(newActivityCount: 0);
 }
 
 final _activityFilterProvider =
     NotifierProvider<_ActivityFilterNotifier, _ActivityFilterState>(
-  _ActivityFilterNotifier.new,
-);
+      _ActivityFilterNotifier.new,
+    );
 
 // ── Screen ──────────────────────────────────────────────────────────────────
 
@@ -207,8 +203,8 @@ class ActivityFeedScreen extends ConsumerWidget {
     }
 
     // Unique users for the user filter.
-    final users =
-        _mockActivities.map((a) => a.userName).toSet().toList()..sort();
+    final users = _mockActivities.map((a) => a.userName).toSet().toList()
+      ..sort();
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
@@ -243,17 +239,23 @@ class ActivityFeedScreen extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: GlassCard(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
                 onTap: () {
-                  ref.read(_activityFilterProvider.notifier)
+                  ref
+                      .read(_activityFilterProvider.notifier)
                       .clearNewActivities();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.arrow_upward_rounded,
-                        color: tokens.accent, size: 16),
+                    Icon(
+                      Icons.arrow_upward_rounded,
+                      color: tokens.accent,
+                      size: 16,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       l10n.activityNewCount(filterState.newActivityCount),
@@ -277,9 +279,8 @@ class ActivityFeedScreen extends ConsumerWidget {
                 label: l10n.activityAllTypes,
                 isSelected: filterState.selectedType == null,
                 tokens: tokens,
-                onTap: () => ref
-                    .read(_activityFilterProvider.notifier)
-                    .setType(null),
+                onTap: () =>
+                    ref.read(_activityFilterProvider.notifier).setType(null),
               ),
               for (final type in ActivityType.values)
                 _FilterChip(
@@ -287,9 +288,8 @@ class ActivityFeedScreen extends ConsumerWidget {
                   isSelected: filterState.selectedType == type,
                   color: type.color,
                   tokens: tokens,
-                  onTap: () => ref
-                      .read(_activityFilterProvider.notifier)
-                      .setType(type),
+                  onTap: () =>
+                      ref.read(_activityFilterProvider.notifier).setType(type),
                 ),
             ],
           ),
@@ -304,18 +304,16 @@ class ActivityFeedScreen extends ConsumerWidget {
                 label: l10n.activityAllMembers,
                 isSelected: filterState.selectedUser == null,
                 tokens: tokens,
-                onTap: () => ref
-                    .read(_activityFilterProvider.notifier)
-                    .setUser(null),
+                onTap: () =>
+                    ref.read(_activityFilterProvider.notifier).setUser(null),
               ),
               for (final user in users)
                 _FilterChip(
                   label: user,
                   isSelected: filterState.selectedUser == user,
                   tokens: tokens,
-                  onTap: () => ref
-                      .read(_activityFilterProvider.notifier)
-                      .setUser(user),
+                  onTap: () =>
+                      ref.read(_activityFilterProvider.notifier).setUser(user),
                 ),
             ],
           ),
@@ -328,13 +326,11 @@ class ActivityFeedScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(vertical: 64),
                 child: Column(
                   children: [
-                    Icon(Icons.inbox_outlined,
-                        color: tokens.fgDim, size: 48),
+                    Icon(Icons.inbox_outlined, color: tokens.fgDim, size: 48),
                     const SizedBox(height: 12),
                     Text(
                       l10n.activityNoMatchingFilters,
-                      style:
-                          TextStyle(color: tokens.fgMuted, fontSize: 14),
+                      style: TextStyle(color: tokens.fgMuted, fontSize: 14),
                     ),
                   ],
                 ),
@@ -344,8 +340,7 @@ class ActivityFeedScreen extends ConsumerWidget {
             ...filtered.map(
               (activity) => Padding(
                 padding: const EdgeInsets.only(bottom: 12),
-                child:
-                    _ActivityCard(activity: activity, tokens: tokens),
+                child: _ActivityCard(activity: activity, tokens: tokens),
               ),
             ),
         ],
@@ -415,19 +410,13 @@ class _ActivityCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         activity.actionType.label.toLowerCase(),
-                        style: TextStyle(
-                          color: tokens.fgMuted,
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       activity.relativeTime,
-                      style: TextStyle(
-                        color: tokens.fgDim,
-                        fontSize: 11,
-                      ),
+                      style: TextStyle(color: tokens.fgDim, fontSize: 11),
                     ),
                   ],
                 ),
@@ -437,7 +426,9 @@ class _ActivityCard extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: tokens.accent.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(4),
@@ -470,10 +461,7 @@ class _ActivityCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     activity.description,
-                    style: TextStyle(
-                      color: tokens.fgMuted,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

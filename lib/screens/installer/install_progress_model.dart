@@ -35,11 +35,10 @@ class InstallProgress {
     int? percent,
     String? message,
     String? error,
-  }) =>
-      InstallProgress(
-        stage: stage ?? this.stage,
-        percent: percent ?? this.percent,
-        message: message ?? this.message,
-        error: error ?? this.error,
-      );
+  }) => InstallProgress(
+    stage: stage ?? this.stage,
+    percent: percent ?? this.percent,
+    message: message ?? this.message,
+    error: error ?? this.error,
+  );
 }
