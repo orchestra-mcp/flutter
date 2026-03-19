@@ -1,0 +1,65 @@
+# Orchestra Flutter Web — Caddy reverse proxy configuration
+#
+# Serves the Flutter web build at *.orchestra-mcp.dev, proxies API and
+# WebSocket traffic to the backend service.
+#
+# Usage:
+#   caddy run --config deploy/Caddyfile
+#   caddy reload --config deploy/Caddyfile
+
+*.orchestra-mcp.dev {
+	# ── TLS ──────────────────────────────────────────────────────────────
+	# Caddy auto-provisions TLS certificates via Let's Encrypt by default.
+	# For local dev, use `tls internal` to generate self-signed certs.
+
+	# ── Logging ──────────────────────────────────────────────────────────
+	log {
+		output file /var/log/caddy/orchestra-web.log
+		format json
+		level INFO
+	}
+
+	# ── Compression ──────────────────────────────────────────────────────
+	encode gzip zstd
+
+	# ── WebSocket upgrade for /ws/* ──────────────────────────────────────
+	handle /ws/* {
+		reverse_proxy backend:8080 {
+			header_up Connection {>Connection}
+			header_up Upgrade {>Upgrade}
+		}
+	}
+
+	# ── API reverse proxy ────────────────────────────────────────────────
+	handle /api/* {
+		reverse_proxy backend:8080 {
+			header_up Host {upstream_hostport}
+			header_up X-Real-IP {remote_host}
+			header_up X-Forwarded-For {remote_host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+
+	# ── Static Flutter web assets ────────────────────────────────────────
+	handle {
+		root * /srv/www/orchestra-web
+
+		# Cache content-hashed Flutter assets aggressively
+		@flutter_assets path /flutter_assets/* /canvaskit/* /assets/*
+		header @flutter_assets Cache-Control "public, max-age=31536000, immutable"
+
+		# Cache JS and WASM bundles
+		@bundles path *.js *.wasm
+		header @bundles Cache-Control "public, max-age=31536000, immutable"
+
+		# Security headers
+		header X-Frame-Options "SAMEORIGIN"
+		header X-Content-Type-Options "nosniff"
+		header Referrer-Policy "strict-origin-when-cross-origin"
+		header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' wss: https:;"
+
+		# SPA fallback — all routes resolve to index.html
+		try_files {path} /index.html
+		file_server
+	}
+}

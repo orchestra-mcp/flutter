@@ -1,0 +1,46 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build release AAB"
+  lane :build do
+    Dir.chdir("../..") do
+      sh("flutter", "build", "appbundle", "--release")
+    end
+  end
+
+  desc "Deploy to Google Play internal track"
+  lane :deploy_internal do
+    build
+    supply(
+      track: "internal",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      json_key_data: ENV["PLAY_STORE_SERVICE_ACCOUNT"],
+      package_name: "com.orchestramcp.orchestra",
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+
+  desc "Promote internal to beta"
+  lane :promote_beta do
+    supply(
+      track: "internal",
+      track_promote_to: "beta",
+      json_key_data: ENV["PLAY_STORE_SERVICE_ACCOUNT"],
+      package_name: "com.orchestramcp.orchestra",
+      skip_upload_changelogs: true
+    )
+  end
+
+  desc "Promote beta to production"
+  lane :promote_production do
+    supply(
+      track: "beta",
+      track_promote_to: "production",
+      json_key_data: ENV["PLAY_STORE_SERVICE_ACCOUNT"],
+      package_name: "com.orchestramcp.orchestra",
+      skip_upload_changelogs: true
+    )
+  end
+end

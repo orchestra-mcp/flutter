@@ -1,0 +1,58 @@
+PODS:
+  - adaptive_platform_ui (0.1.0):
+    - Flutter
+  - cupertino_native (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_pty (0.0.1):
+    - Flutter
+  - health (13.3.1):
+    - Flutter
+  - pasteboard (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.3.0):
+    - Flutter
+  - sign_in_with_apple (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - adaptive_platform_ui (from `.symlinks/plugins/adaptive_platform_ui/ios`)
+  - cupertino_native (from `.symlinks/plugins/cupertino_native/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_pty (from `.symlinks/plugins/flutter_pty/ios`)
+  - health (from `.symlinks/plugins/health/ios`)
+  - pasteboard (from `.symlinks/plugins/pasteboard/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
+
+EXTERNAL SOURCES:
+  adaptive_platform_ui:
+    :path: ".symlinks/plugins/adaptive_platform_ui/ios"
+  cupertino_native:
+    :path: ".symlinks/plugins/cupertino_native/ios"
+  Flutter:
+    :path: Flutter
+  flutter_pty:
+    :path: ".symlinks/plugins/flutter_pty/ios"
+  health:
+    :path: ".symlinks/plugins/health/ios"
+  pasteboard:
+    :path: ".symlinks/plugins/pasteboard/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  sign_in_with_apple:
+    :path: ".symlinks/plugins/sign_in_with_apple/ios"
+
+SPEC CHECKSUMS:
+  adaptive_platform_ui: f54f620666d1797636f9ef06f49137ef2cc13611
+  cupertino_native: 1db0611c94f9a9ea28433ed16a344dcb996370b5
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  flutter_pty: 206742da6092b413cb683de17436c16d1f3c7997
+  health: 4decf5d74e8f54c58a8c07a385fc72f629a831d9
+  pasteboard: 49088aeb6119d51f976a421db60d8e1ab079b63c
+  permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
+  sign_in_with_apple: c5dcc141574c8c54d5ac99dd2163c0c72ad22418
+
+PODFILE CHECKSUM: 1857a7cdb7dfafe45f2b0e9a9af44644190f7506
+
+COCOAPODS: 1.16.2

@@ -1,0 +1,5080 @@
+{
+  "@@locale": "en",
+  "appName": "Orchestra",
+  "@appName": {
+    "description": "The name of the application"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Confirmation button"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel action button"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save action button"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete action button"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit action button"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close action button"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back navigation button"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next navigation button"
+  },
+  "done": "Done",
+  "@done": {
+    "description": "Done action button"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Generic loading indicator text"
+  },
+  "error": "Something went wrong",
+  "@error": {
+    "description": "Generic error message"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry action button"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Search label"
+  },
+  "pin": "Pin",
+  "@pin": {
+    "description": "Pin item action"
+  },
+  "unpin": "Unpin",
+  "@unpin": {
+    "description": "Unpin item action"
+  },
+  "copy": "Copy",
+  "@copy": {
+    "description": "Copy action button"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Share action button"
+  },
+  "rename": "Rename",
+  "@rename": {
+    "description": "Rename action button"
+  },
+  "select": "Select",
+  "@select": {
+    "description": "Select action button"
+  },
+  "export": "Export",
+  "@export": {
+    "description": "Export action button"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm action button"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Affirmative response"
+  },
+  "no": "No",
+  "@no": {
+    "description": "Negative response"
+  },
+  "optional": "Optional",
+  "@optional": {
+    "description": "Marks a field as optional"
+  },
+  "login": "Log In",
+  "@login": {
+    "description": "Log in action label"
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Register action label"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "description": "Forgot password link label"
+  },
+  "resetPassword": "Reset Password",
+  "@resetPassword": {
+    "description": "Reset password action label"
+  },
+  "orContinueWith": "or continue with",
+  "@orContinueWith": {
+    "description": "Divider text between login form and OAuth buttons"
+  },
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button label"
+  },
+  "createAccount": "Create Account",
+  "@createAccount": {
+    "description": "Create account action label"
+  },
+  "magicLogin": "Magic Link Login",
+  "@magicLogin": {
+    "description": "Magic link login option label"
+  },
+  "passkey": "Passkey",
+  "@passkey": {
+    "description": "Passkey authentication option label"
+  },
+  "twoFactor": "Two-Factor Authentication",
+  "@twoFactor": {
+    "description": "Two-factor authentication label"
+  },
+  "socialSignIn": "Sign in with Social Account",
+  "@socialSignIn": {
+    "description": "Social sign-in option label"
+  },
+  "continueBtn": "Continue",
+  "@continueBtn": {
+    "description": "Continue button label"
+  },
+  "dontHaveAccount": "Don''t have an account?",
+  "@dontHaveAccount": {
+    "description": "Prompt for users without an account"
+  },
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Prompt for users who already have an account"
+  },
+  "signInWithoutPassword": "Sign in without password",
+  "@signInWithoutPassword": {
+    "description": "Option to sign in without a password"
+  },
+  "signInWithPasskey": "Sign in with Passkey",
+  "@signInWithPasskey": {
+    "description": "Option to sign in using a passkey"
+  },
+  "sendMagicLink": "Send Magic Link",
+  "@sendMagicLink": {
+    "description": "Button to send a magic login link"
+  },
+  "sendResetLink": "Send Reset Link",
+  "@sendResetLink": {
+    "description": "Button to send a password reset link"
+  },
+  "checkEmail": "Check your email",
+  "@checkEmail": {
+    "description": "Instruction to check email after sending a link"
+  },
+  "resend": "Resend",
+  "@resend": {
+    "description": "Resend action button"
+  },
+  "otpCode": "OTP Code",
+  "@otpCode": {
+    "description": "One-time password code field label"
+  },
+  "invalidCredentials": "Invalid email or password",
+  "@invalidCredentials": {
+    "description": "Error message for invalid login credentials"
+  },
+  "emailRequired": "Email is required",
+  "@emailRequired": {
+    "description": "Validation error for missing email"
+  },
+  "passwordRequired": "Password is required",
+  "@passwordRequired": {
+    "description": "Validation error for missing password"
+  },
+  "passwordMismatch": "Passwords do not match",
+  "@passwordMismatch": {
+    "description": "Validation error when passwords do not match"
+  },
+  "passwordTooShort": "Password must be at least 8 characters",
+  "@passwordTooShort": {
+    "description": "Validation error for password that is too short"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "profileSettings": "Profile Settings",
+  "@profileSettings": {
+    "description": "Profile settings section title"
+  },
+  "teamSettings": "Team Settings",
+  "@teamSettings": {
+    "description": "Team settings section title"
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Appearance settings section title"
+  },
+  "security": "Security",
+  "@security": {
+    "description": "Security settings section title"
+  },
+  "notificationsSettings": "Notifications",
+  "@notificationsSettings": {
+    "description": "Notification settings section title"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About section label"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting label"
+  },
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Change password action label"
+  },
+  "twoFactorAuth": "Two-Factor Authentication",
+  "@twoFactorAuth": {
+    "description": "Two-factor authentication settings label"
+  },
+  "passkeys": "Passkeys",
+  "@passkeys": {
+    "description": "Passkeys settings label"
+  },
+  "addPasskey": "Add Passkey",
+  "@addPasskey": {
+    "description": "Add passkey action label"
+  },
+  "removePasskey": "Remove Passkey",
+  "@removePasskey": {
+    "description": "Remove passkey action label"
+  },
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "Sign out action label"
+  },
+  "signOutConfirm": "Are you sure you want to sign out?",
+  "@signOutConfirm": {
+    "description": "Sign out confirmation message"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "App version label"
+  },
+  "help": "Help",
+  "@help": {
+    "description": "Help section label"
+  },
+  "privacy": "Privacy Policy",
+  "@privacy": {
+    "description": "Privacy policy label"
+  },
+  "reportIssue": "Report an Issue",
+  "@reportIssue": {
+    "description": "Report issue action label"
+  },
+  "issueHistory": "Issue History",
+  "@issueHistory": {
+    "description": "Issue history section label"
+  },
+  "orchestrator": "Orchestrator",
+  "@orchestrator": {
+    "description": "Orchestrator settings section label"
+  },
+  "terminal": "Terminal",
+  "@terminal": {
+    "description": "Terminal settings label"
+  },
+  "workspaces": "Workspaces",
+  "@workspaces": {
+    "description": "Workspaces settings label"
+  },
+  "autoStart": "Auto Start",
+  "@autoStart": {
+    "description": "Auto-start on login setting label"
+  },
+  "defaultShell": "Default Shell",
+  "@defaultShell": {
+    "description": "Default shell setting label"
+  },
+  "orchestratorPath": "Orchestrator Path",
+  "@orchestratorPath": {
+    "description": "Orchestrator binary path setting label"
+  },
+  "mcpPort": "MCP Port",
+  "@mcpPort": {
+    "description": "MCP server port setting label"
+  },
+  "logLevel": "Log Level",
+  "@logLevel": {
+    "description": "Log level setting label"
+  },
+  "resetToDefaults": "Reset to Defaults",
+  "@resetToDefaults": {
+    "description": "Reset all settings to defaults action"
+  },
+  "projects": "Projects",
+  "@projects": {
+    "description": "Projects section title"
+  },
+  "newProject": "New Project",
+  "@newProject": {
+    "description": "Create new project action label"
+  },
+  "projectName": "Project Name",
+  "@projectName": {
+    "description": "Project name field label"
+  },
+  "projectDescription": "Project Description",
+  "@projectDescription": {
+    "description": "Project description field label"
+  },
+  "projectStatus": "Status",
+  "@projectStatus": {
+    "description": "Project status field label"
+  },
+  "features": "Features",
+  "@features": {
+    "description": "Features section label"
+  },
+  "plans": "Plans",
+  "@plans": {
+    "description": "Plans section label"
+  },
+  "requests": "Requests",
+  "@requests": {
+    "description": "Requests section label"
+  },
+  "persons": "Persons",
+  "@persons": {
+    "description": "Persons / team members section label"
+  },
+  "projectTree": "Project Tree",
+  "@projectTree": {
+    "description": "Project file tree label"
+  },
+  "activeProjects": "Active Projects",
+  "@activeProjects": {
+    "description": "Active projects list label"
+  },
+  "archivedProjects": "Archived Projects",
+  "@archivedProjects": {
+    "description": "Archived projects list label"
+  },
+  "notes": "Notes",
+  "@notes": {
+    "description": "Notes section title"
+  },
+  "agents": "Agents",
+  "@agents": {
+    "description": "Agents section title"
+  },
+  "skills": "Skills",
+  "@skills": {
+    "description": "Skills section title"
+  },
+  "workflows": "Workflows",
+  "@workflows": {
+    "description": "Workflows section title"
+  },
+  "docs": "Docs",
+  "@docs": {
+    "description": "Documentation section title"
+  },
+  "delegations": "Delegations",
+  "@delegations": {
+    "description": "Delegations section title"
+  },
+  "sessions": "Sessions",
+  "@sessions": {
+    "description": "Sessions section title"
+  },
+  "newNote": "New Note",
+  "@newNote": {
+    "description": "Create new note action label"
+  },
+  "newAgent": "New Agent",
+  "@newAgent": {
+    "description": "Create new agent action label"
+  },
+  "newWorkflow": "New Workflow",
+  "@newWorkflow": {
+    "description": "Create new workflow action label"
+  },
+  "pinned": "Pinned",
+  "@pinned": {
+    "description": "Pinned items section label"
+  },
+  "recent": "Recent",
+  "@recent": {
+    "description": "Recent items section label"
+  },
+  "health": "Health",
+  "@health": {
+    "description": "Health section title"
+  },
+  "healthScore": "Health Score",
+  "@healthScore": {
+    "description": "Overall health score label"
+  },
+  "vitals": "Vitals",
+  "@vitals": {
+    "description": "Vitals section label"
+  },
+  "dailyFlow": "Daily Flow",
+  "@dailyFlow": {
+    "description": "Daily flow / schedule label"
+  },
+  "hydration": "Hydration",
+  "@hydration": {
+    "description": "Hydration tracking label"
+  },
+  "caffeine": "Caffeine",
+  "@caffeine": {
+    "description": "Caffeine tracking label"
+  },
+  "nutrition": "Nutrition",
+  "@nutrition": {
+    "description": "Nutrition tracking label"
+  },
+  "pomodoro": "Pomodoro",
+  "@pomodoro": {
+    "description": "Pomodoro timer label"
+  },
+  "shutdown": "Shutdown Routine",
+  "@shutdown": {
+    "description": "Daily shutdown routine label"
+  },
+  "weight": "Weight",
+  "@weight": {
+    "description": "Weight tracking label"
+  },
+  "sleep": "Sleep",
+  "@sleep": {
+    "description": "Sleep tracking label"
+  },
+  "addWater": "Add Water",
+  "@addWater": {
+    "description": "Add water intake action label"
+  },
+  "addMeal": "Add Meal",
+  "@addMeal": {
+    "description": "Add meal action label"
+  },
+  "addCaffeine": "Add Caffeine",
+  "@addCaffeine": {
+    "description": "Add caffeine intake action label"
+  },
+  "logWeight": "Log Weight",
+  "@logWeight": {
+    "description": "Log weight action label"
+  },
+  "goal": "Goal",
+  "@goal": {
+    "description": "Goal label for health tracking"
+  },
+  "consumed": "Consumed",
+  "@consumed": {
+    "description": "Amount consumed label"
+  },
+  "remaining": "Remaining",
+  "@remaining": {
+    "description": "Amount remaining label"
+  },
+  "cortisol": "Cortisol",
+  "@cortisol": {
+    "description": "Cortisol level label"
+  },
+  "cortisolWindow": "Cortisol Window",
+  "@cortisolWindow": {
+    "description": "Cortisol safe window label"
+  },
+  "safetyScore": "Safety Score",
+  "@safetyScore": {
+    "description": "Health safety score label"
+  },
+  "flareRisk": "Flare Risk",
+  "@flareRisk": {
+    "description": "Health flare risk indicator label"
+  },
+  "shutdownWindow": "Shutdown Window",
+  "@shutdownWindow": {
+    "description": "Recommended shutdown time window label"
+  },
+  "bedtime": "Bedtime",
+  "@bedtime": {
+    "description": "Bedtime label"
+  },
+  "workWindow": "Work Window",
+  "@workWindow": {
+    "description": "Recommended work time window label"
+  },
+  "steps": "Steps",
+  "@steps": {
+    "description": "Step count label"
+  },
+  "energy": "Energy",
+  "@energy": {
+    "description": "Energy level label"
+  },
+  "heartRate": "Heart Rate",
+  "@heartRate": {
+    "description": "Heart rate label"
+  },
+  "metabolicAge": "Metabolic Age",
+  "@metabolicAge": {
+    "description": "Metabolic age label"
+  },
+  "bodyFat": "Body Fat",
+  "@bodyFat": {
+    "description": "Body fat percentage label"
+  },
+  "visceralFat": "Visceral Fat",
+  "@visceralFat": {
+    "description": "Visceral fat level label"
+  },
+  "bodyWater": "Body Water",
+  "@bodyWater": {
+    "description": "Body water percentage label"
+  },
+  "waterGoal": "Water Goal",
+  "@waterGoal": {
+    "description": "Daily water intake goal label"
+  },
+  "caffeineGoal": "Caffeine Goal",
+  "@caffeineGoal": {
+    "description": "Daily caffeine limit label"
+  },
+  "calorieGoal": "Calorie Goal",
+  "@calorieGoal": {
+    "description": "Daily calorie goal label"
+  },
+  "proteinGoal": "Protein Goal",
+  "@proteinGoal": {
+    "description": "Daily protein goal label"
+  },
+  "carbGoal": "Carb Goal",
+  "@carbGoal": {
+    "description": "Daily carbohydrate goal label"
+  },
+  "fatGoal": "Fat Goal",
+  "@fatGoal": {
+    "description": "Daily fat goal label"
+  },
+  "hydrationUnit": "Hydration Unit",
+  "@hydrationUnit": {
+    "description": "Unit for hydration measurement (ml/oz)"
+  },
+  "weightUnit": "Weight Unit",
+  "@weightUnit": {
+    "description": "Unit for weight measurement (kg/lb)"
+  },
+  "searchPlaceholder": "Search anything...",
+  "@searchPlaceholder": {
+    "description": "Placeholder text for the global search field"
+  },
+  "searchResults": "Search Results",
+  "@searchResults": {
+    "description": "Search results section title"
+  },
+  "noResults": "No results found",
+  "@noResults": {
+    "description": "Message shown when search returns no results"
+  },
+  "recentSearches": "Recent Searches",
+  "@recentSearches": {
+    "description": "Recent searches section title"
+  },
+  "clearRecent": "Clear Recent",
+  "@clearRecent": {
+    "description": "Clear recent searches action label"
+  },
+  "searchIn": "Search in",
+  "@searchIn": {
+    "description": "Search scope selector prefix label"
+  },
+  "searchProjects": "Search Projects",
+  "@searchProjects": {
+    "description": "Search within projects action label"
+  },
+  "searchNotes": "Search Notes",
+  "@searchNotes": {
+    "description": "Search within notes action label"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications section title"
+  },
+  "markAllRead": "Mark All as Read",
+  "@markAllRead": {
+    "description": "Mark all notifications as read action label"
+  },
+  "clearAll": "Clear All",
+  "@clearAll": {
+    "description": "Clear all notifications action label"
+  },
+  "noNotifications": "No notifications",
+  "@noNotifications": {
+    "description": "Empty state message for notifications"
+  },
+  "notificationSettings": "Notification Settings",
+  "@notificationSettings": {
+    "description": "Notification settings section title"
+  },
+  "pushNotifications": "Push Notifications",
+  "@pushNotifications": {
+    "description": "Push notifications toggle label"
+  },
+  "emailNotifications": "Email Notifications",
+  "@emailNotifications": {
+    "description": "Email notifications toggle label"
+  },
+  "reminderNotifications": "Reminders",
+  "@reminderNotifications": {
+    "description": "Reminder notifications toggle label"
+  },
+  "mentionNotifications": "Mentions",
+  "@mentionNotifications": {
+    "description": "Mention notifications toggle label"
+  },
+  "updateNotifications": "Updates",
+  "@updateNotifications": {
+    "description": "Update notifications toggle label"
+  },
+  "summary": "Summary",
+  "@summary": {
+    "description": "Summary section title"
+  },
+  "todaySummary": "Today''s Summary",
+  "@todaySummary": {
+    "description": "Today's summary section title"
+  },
+  "weekSummary": "This Week",
+  "@weekSummary": {
+    "description": "Weekly summary section title"
+  },
+  "insights": "Insights",
+  "@insights": {
+    "description": "Insights section title"
+  },
+  "aiInsights": "AI Insights",
+  "@aiInsights": {
+    "description": "AI-generated insights section title"
+  },
+  "generateInsight": "Generate Insight",
+  "@generateInsight": {
+    "description": "Generate AI insight action label"
+  },
+  "insightLoading": "Generating insight...",
+  "@insightLoading": {
+    "description": "Loading message while generating AI insight"
+  },
+  "noInsights": "No insights yet",
+  "@noInsights": {
+    "description": "Empty state message for insights"
+  },
+  "newAgentTitle": "New Agent",
+  "@newAgentTitle": {
+    "description": "Create new agent screen title"
+  },
+  "agentName": "Agent Name",
+  "@agentName": {
+    "description": "Agent name field label"
+  },
+  "agentDescription": "Agent Description",
+  "@agentDescription": {
+    "description": "Agent description field label"
+  },
+  "agentProvider": "Provider",
+  "@agentProvider": {
+    "description": "Agent AI provider field label"
+  },
+  "agentModel": "Model",
+  "@agentModel": {
+    "description": "Agent AI model field label"
+  },
+  "agentSystemPrompt": "System Prompt",
+  "@agentSystemPrompt": {
+    "description": "Agent system prompt field label"
+  },
+  "runAgent": "Run Agent",
+  "@runAgent": {
+    "description": "Run agent action label"
+  },
+  "agentStatus": "Agent Status",
+  "@agentStatus": {
+    "description": "Agent status label"
+  },
+  "agentRunning": "Running",
+  "@agentRunning": {
+    "description": "Agent running status label"
+  },
+  "agentDone": "Done",
+  "@agentDone": {
+    "description": "Agent completed status label"
+  },
+  "agentError": "Agent Error",
+  "@agentError": {
+    "description": "Agent error status label"
+  },
+  "newSkill": "New Skill",
+  "@newSkill": {
+    "description": "Create new skill action label"
+  },
+  "skillName": "Skill Name",
+  "@skillName": {
+    "description": "Skill name field label"
+  },
+  "skillDescription": "Skill Description",
+  "@skillDescription": {
+    "description": "Skill description field label"
+  },
+  "installSkill": "Install Skill",
+  "@installSkill": {
+    "description": "Install skill action label"
+  },
+  "removeSkill": "Remove Skill",
+  "@removeSkill": {
+    "description": "Remove skill action label"
+  },
+  "enableSkill": "Enable",
+  "@enableSkill": {
+    "description": "Enable skill action label"
+  },
+  "disableSkill": "Disable",
+  "@disableSkill": {
+    "description": "Disable skill action label"
+  },
+  "noteTitle": "Title",
+  "@noteTitle": {
+    "description": "Note title field label"
+  },
+  "noteContent": "Content",
+  "@noteContent": {
+    "description": "Note content field label"
+  },
+  "saveNote": "Save Note",
+  "@saveNote": {
+    "description": "Save note action label"
+  },
+  "deleteNote": "Delete Note",
+  "@deleteNote": {
+    "description": "Delete note action label"
+  },
+  "pinNote": "Pin Note",
+  "@pinNote": {
+    "description": "Pin note action label"
+  },
+  "unpinNote": "Unpin Note",
+  "@unpinNote": {
+    "description": "Unpin note action label"
+  },
+  "noteUpdated": "Note updated",
+  "@noteUpdated": {
+    "description": "Confirmation message after note is updated"
+  },
+  "noteDeleted": "Note deleted",
+  "@noteDeleted": {
+    "description": "Confirmation message after note is deleted"
+  },
+  "newDoc": "New Document",
+  "@newDoc": {
+    "description": "Create new document action label"
+  },
+  "docTitle": "Document Title",
+  "@docTitle": {
+    "description": "Document title field label"
+  },
+  "docContent": "Content",
+  "@docContent": {
+    "description": "Document content field label"
+  },
+  "publishDoc": "Publish",
+  "@publishDoc": {
+    "description": "Publish document action label"
+  },
+  "unpublishDoc": "Unpublish",
+  "@unpublishDoc": {
+    "description": "Unpublish document action label"
+  },
+  "docPublished": "Document published",
+  "@docPublished": {
+    "description": "Confirmation message after document is published"
+  },
+  "docDraft": "Draft",
+  "@docDraft": {
+    "description": "Document draft status label"
+  },
+  "newWorkflowTitle": "New Workflow",
+  "@newWorkflowTitle": {
+    "description": "Create new workflow screen title"
+  },
+  "workflowName": "Workflow Name",
+  "@workflowName": {
+    "description": "Workflow name field label"
+  },
+  "workflowDescription": "Workflow Description",
+  "@workflowDescription": {
+    "description": "Workflow description field label"
+  },
+  "runWorkflow": "Run Workflow",
+  "@runWorkflow": {
+    "description": "Run workflow action label"
+  },
+  "stopWorkflow": "Stop Workflow",
+  "@stopWorkflow": {
+    "description": "Stop workflow action label"
+  },
+  "workflowRunning": "Workflow running...",
+  "@workflowRunning": {
+    "description": "Workflow running status message"
+  },
+  "workflowDone": "Workflow completed",
+  "@workflowDone": {
+    "description": "Workflow completed status message"
+  },
+  "workflowSteps": "Steps",
+  "@workflowSteps": {
+    "description": "Workflow steps section label"
+  },
+  "addStep": "Add Step",
+  "@addStep": {
+    "description": "Add workflow step action label"
+  },
+  "newDelegation": "New Delegation",
+  "@newDelegation": {
+    "description": "Create new delegation action label"
+  },
+  "delegateTo": "Delegate To",
+  "@delegateTo": {
+    "description": "Delegate to field label"
+  },
+  "delegationTask": "Task",
+  "@delegationTask": {
+    "description": "Delegation task field label"
+  },
+  "delegationStatus": "Status",
+  "@delegationStatus": {
+    "description": "Delegation status field label"
+  },
+  "acceptDelegation": "Accept",
+  "@acceptDelegation": {
+    "description": "Accept delegation action label"
+  },
+  "rejectDelegation": "Reject",
+  "@rejectDelegation": {
+    "description": "Reject delegation action label"
+  },
+  "delegationDone": "Delegation completed",
+  "@delegationDone": {
+    "description": "Delegation completed status message"
+  },
+  "newSession": "New Session",
+  "@newSession": {
+    "description": "Create new session action label"
+  },
+  "sessionName": "Session Name",
+  "@sessionName": {
+    "description": "Session name field label"
+  },
+  "sessionStatus": "Session Status",
+  "@sessionStatus": {
+    "description": "Session status field label"
+  },
+  "sessionActive": "Active",
+  "@sessionActive": {
+    "description": "Session active status label"
+  },
+  "sessionPaused": "Paused",
+  "@sessionPaused": {
+    "description": "Session paused status label"
+  },
+  "sessionEnded": "Ended",
+  "@sessionEnded": {
+    "description": "Session ended status label"
+  },
+  "endSession": "End Session",
+  "@endSession": {
+    "description": "End session action label"
+  },
+  "pauseSession": "Pause Session",
+  "@pauseSession": {
+    "description": "Pause session action label"
+  },
+  "resumeSession": "Resume Session",
+  "@resumeSession": {
+    "description": "Resume session action label"
+  },
+  "teams": "Teams",
+  "@teams": {
+    "description": "Teams section title"
+  },
+  "teamName": "Team Name",
+  "@teamName": {
+    "description": "Team name field label"
+  },
+  "teamMembers": "Team Members",
+  "@teamMembers": {
+    "description": "Team members section label"
+  },
+  "inviteMember": "Invite Member",
+  "@inviteMember": {
+    "description": "Invite team member action label"
+  },
+  "removeMember": "Remove Member",
+  "@removeMember": {
+    "description": "Remove team member action label"
+  },
+  "teamRole": "Role",
+  "@teamRole": {
+    "description": "Team member role field label"
+  },
+  "teamAdmin": "Admin",
+  "@teamAdmin": {
+    "description": "Team admin role label"
+  },
+  "teamMember": "Member",
+  "@teamMember": {
+    "description": "Team member role label"
+  },
+  "leaveTeam": "Leave Team",
+  "@leaveTeam": {
+    "description": "Leave team action label"
+  },
+  "deleteTeam": "Delete Team",
+  "@deleteTeam": {
+    "description": "Delete team action label"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile section title"
+  },
+  "displayName": "Display Name",
+  "@displayName": {
+    "description": "Display name field label"
+  },
+  "username": "Username",
+  "@username": {
+    "description": "Username field label"
+  },
+  "bio": "Bio",
+  "@bio": {
+    "description": "Bio / about me field label"
+  },
+  "timezone": "Timezone",
+  "@timezone": {
+    "description": "Timezone field label"
+  },
+  "githubUsername": "GitHub Username",
+  "@githubUsername": {
+    "description": "GitHub username field label"
+  },
+  "avatarUrl": "Avatar URL",
+  "@avatarUrl": {
+    "description": "Avatar URL field label"
+  },
+  "updateProfile": "Update Profile",
+  "@updateProfile": {
+    "description": "Update profile action label"
+  },
+  "profileUpdated": "Profile updated",
+  "@profileUpdated": {
+    "description": "Confirmation message after profile is updated"
+  },
+  "profileError": "Failed to update profile",
+  "@profileError": {
+    "description": "Error message when profile update fails"
+  },
+  "networkError": "Network error. Please check your connection.",
+  "@networkError": {
+    "description": "Error message for network connectivity issues"
+  },
+  "serverError": "Server error. Please try again later.",
+  "@serverError": {
+    "description": "Error message for server-side errors"
+  },
+  "unauthorizedError": "You are not authorized to perform this action.",
+  "@unauthorizedError": {
+    "description": "Error message for unauthorized actions"
+  },
+  "notFoundError": "The requested resource was not found.",
+  "@notFoundError": {
+    "description": "Error message for 404 not found"
+  },
+  "validationError": "Please check your input and try again.",
+  "@validationError": {
+    "description": "Error message for validation failures"
+  },
+  "timeoutError": "The request timed out. Please try again.",
+  "@timeoutError": {
+    "description": "Error message for request timeouts"
+  },
+  "unknownError": "An unknown error occurred.",
+  "@unknownError": {
+    "description": "Generic unknown error message"
+  },
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Try again action label"
+  },
+  "contactSupport": "Contact Support",
+  "@contactSupport": {
+    "description": "Contact support action label"
+  },
+  "errorCode": "Error Code",
+  "@errorCode": {
+    "description": "Error code label"
+  },
+  "connectionError": "Connection failed",
+  "@connectionError": {
+    "description": "Error message for connection failures"
+  },
+  "syncError": "Sync failed",
+  "@syncError": {
+    "description": "Error message when sync fails"
+  },
+  "authError": "Authentication failed",
+  "@authError": {
+    "description": "Error message for authentication failures"
+  },
+  "permissionError": "Permission denied",
+  "@permissionError": {
+    "description": "Error message for permission denied"
+  },
+  "storageError": "Storage error",
+  "@storageError": {
+    "description": "Error message for storage failures"
+  },
+  "library": "Library",
+  "@library": {
+    "description": "Library tab label"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home tab label"
+  },
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Dark mode toggle label"
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button label"
+  },
+  "teamAndWorkspace": "Team & Workspace",
+  "@teamAndWorkspace": {
+    "description": "Team and workspace settings label"
+  },
+  "currentPassword": "Current password",
+  "@currentPassword": {
+    "description": "Current password field label"
+  },
+  "newPassword": "New password",
+  "@newPassword": {
+    "description": "New password field label"
+  },
+  "confirmNewPassword": "Confirm new password",
+  "@confirmNewPassword": {
+    "description": "Confirm new password field label"
+  },
+  "updatePassword": "Update Password",
+  "@updatePassword": {
+    "description": "Update password button label"
+  },
+  "enable2FA": "Enable 2FA",
+  "@enable2FA": {
+    "description": "Enable two-factor authentication toggle label"
+  },
+  "projectUpdates": "Project updates",
+  "@projectUpdates": {
+    "description": "Project updates notification category"
+  },
+  "featureChanges": "Feature changes",
+  "@featureChanges": {
+    "description": "Feature changes notification category"
+  },
+  "healthAlerts": "Health alerts",
+  "@healthAlerts": {
+    "description": "Health alerts notification category"
+  },
+  "system": "System",
+  "@system": {
+    "description": "System notification category"
+  },
+  "allCaughtUp": "All caught up",
+  "@allCaughtUp": {
+    "description": "Empty state title for notifications"
+  },
+  "noNewNotifications": "No new notifications",
+  "@noNewNotifications": {
+    "description": "Empty state subtitle for notifications"
+  },
+  "themes": "Themes",
+  "@themes": {
+    "description": "Themes settings label"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language name"
+  },
+  "arabic": "العربية",
+  "@arabic": {
+    "description": "Arabic language name"
+  },
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Language picker dialog title"
+  },
+  "recommendations": "Recommendations",
+  "@recommendations": {
+    "description": "Recommendations section label"
+  },
+  "account": "Account",
+  "@account": {
+    "description": "Account settings section header"
+  },
+  "admin": "Admin",
+  "@admin": {
+    "description": "Admin section label"
+  },
+  "mentions": "Mentions",
+  "@mentions": {
+    "description": "Mentions notification category"
+  },
+  "all": "All",
+  "@all": {
+    "description": "All category filter label"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name field label"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Phone field label"
+  },
+  "gender": "Gender",
+  "@gender": {
+    "description": "Gender field label"
+  },
+  "position": "Position",
+  "@position": {
+    "description": "Position / job title field label"
+  },
+  "male": "Male",
+  "@male": {
+    "description": "Male gender option"
+  },
+  "female": "Female",
+  "@female": {
+    "description": "Female gender option"
+  },
+  "genderOther": "Other",
+  "@genderOther": {
+    "description": "Other gender option"
+  },
+  "preferNotToSay": "Prefer not to say",
+  "@preferNotToSay": {
+    "description": "Prefer not to say gender option"
+  },
+  "avatarUpdated": "Avatar updated",
+  "@avatarUpdated": {
+    "description": "Avatar upload success message"
+  },
+  "failedToUploadAvatar": "Failed to upload avatar",
+  "@failedToUploadAvatar": {
+    "description": "Avatar upload error message"
+  },
+  "failedToSave": "Failed to save",
+  "@failedToSave": {
+    "description": "Save error message"
+  },
+  "myTeam": "My Team",
+  "@myTeam": {
+    "description": "Default team name placeholder"
+  },
+  "defaultWorkspace": "Default",
+  "@defaultWorkspace": {
+    "description": "Default workspace name placeholder"
+  },
+  "wins": "Wins",
+  "@wins": {
+    "description": "Health score wins label"
+  },
+  "concerns": "Concerns",
+  "@concerns": {
+    "description": "Health score concerns label"
+  },
+  "generateAiInsights": "Generate AI Insights",
+  "@generateAiInsights": {
+    "description": "AI insights generation button label"
+  },
+  "dailyScore": "Daily Score",
+  "@dailyScore": {
+    "description": "Daily flow score label"
+  },
+  "componentBreakdown": "Component Breakdown",
+  "@componentBreakdown": {
+    "description": "Daily flow component breakdown header"
+  },
+  "pomodoros": "Pomodoros",
+  "@pomodoros": {
+    "description": "Pomodoros component label"
+  },
+  "zeppScale": "Zepp Scale",
+  "@zeppScale": {
+    "description": "Zepp Scale section header in vitals"
+  },
+  "weightKg": "Weight (kg)",
+  "@weightKg": {
+    "description": "Weight input label with kg unit"
+  },
+  "bodyFatPercent": "Body Fat (%)",
+  "@bodyFatPercent": {
+    "description": "Body fat percentage input label"
+  },
+  "visceralFatRange": "Visceral Fat (1–12)",
+  "@visceralFatRange": {
+    "description": "Visceral fat input label with range"
+  },
+  "bodyWaterPercent": "Body Water (%)",
+  "@bodyWaterPercent": {
+    "description": "Body water percentage input label"
+  },
+  "searchEverything": "Search everything...",
+  "@searchEverything": {
+    "description": "Search field placeholder text"
+  },
+  "browseResources": "Browse resources",
+  "@browseResources": {
+    "description": "Browse mode empty state title"
+  },
+  "tapCategoryToExplore": "Tap a category to explore",
+  "@tapCategoryToExplore": {
+    "description": "Browse mode empty state subtitle"
+  },
+  "searchFailed": "Search failed",
+  "@searchFailed": {
+    "description": "Search error state title"
+  },
+  "tryAdjustingQuery": "Try adjusting your query or category filter",
+  "@tryAdjustingQuery": {
+    "description": "Search no-results hint text"
+  },
+  "closeSearch": "Close search",
+  "@closeSearch": {
+    "description": "Close search accessibility label"
+  },
+  "subtitleProjects": "Manage workspaces and codebases",
+  "@subtitleProjects": {
+    "description": "Projects category subtitle"
+  },
+  "subtitleNotes": "Quick notes and observations",
+  "@subtitleNotes": {
+    "description": "Notes category subtitle"
+  },
+  "subtitleAgents": "AI agents and assistants",
+  "@subtitleAgents": {
+    "description": "Agents category subtitle"
+  },
+  "subtitleSkills": "Slash commands and automations",
+  "@subtitleSkills": {
+    "description": "Skills category subtitle"
+  },
+  "subtitleWorkflows": "Multi-step execution pipelines",
+  "@subtitleWorkflows": {
+    "description": "Workflows category subtitle"
+  },
+  "subtitleDocs": "Documentation and references",
+  "@subtitleDocs": {
+    "description": "Docs category subtitle"
+  },
+  "subtitleDelegations": "Cross-agent task delegation",
+  "@subtitleDelegations": {
+    "description": "Delegations category subtitle"
+  },
+  "subtitleHealthScore": "Overall health metrics",
+  "@subtitleHealthScore": {
+    "description": "Health Score category subtitle"
+  },
+  "subtitleVitals": "Heart rate, steps, and body stats",
+  "@subtitleVitals": {
+    "description": "Vitals category subtitle"
+  },
+  "subtitleDailyFlow": "Daily routines and habits",
+  "@subtitleDailyFlow": {
+    "description": "Daily Flow category subtitle"
+  },
+  "subtitleHydration": "Water intake tracking",
+  "@subtitleHydration": {
+    "description": "Hydration category subtitle"
+  },
+  "subtitleCaffeine": "Caffeine intake and clean transition",
+  "@subtitleCaffeine": {
+    "description": "Caffeine category subtitle"
+  },
+  "subtitleNutrition": "Meal logging and food safety",
+  "@subtitleNutrition": {
+    "description": "Nutrition category subtitle"
+  },
+  "subtitlePomodoro": "Focus timer and work sessions",
+  "@subtitlePomodoro": {
+    "description": "Pomodoro category subtitle"
+  },
+  "subtitleShutdown": "Evening shutdown ritual",
+  "@subtitleShutdown": {
+    "description": "Shutdown category subtitle"
+  },
+  "subtitleWeight": "Body weight tracking",
+  "@subtitleWeight": {
+    "description": "Weight category subtitle"
+  },
+  "subtitleSleep": "Sleep quality and duration",
+  "@subtitleSleep": {
+    "description": "Sleep category subtitle"
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Dashboard screen title"
+  },
+  "goodMorning": "Good morning,",
+  "@goodMorning": {
+    "description": "Morning greeting"
+  },
+  "goodAfternoon": "Good afternoon,",
+  "@goodAfternoon": {
+    "description": "Afternoon greeting"
+  },
+  "goodEvening": "Good evening,",
+  "@goodEvening": {
+    "description": "Evening greeting"
+  },
+  "hiddenWidgets": "Hidden Widgets",
+  "@hiddenWidgets": {
+    "description": "Hidden widgets bottom sheet title"
+  },
+  "add": "Add",
+  "@add": {
+    "description": "Add action label"
+  },
+  "switchTeam": "Switch Team",
+  "@switchTeam": {
+    "description": "Switch team menu item"
+  },
+  "switchWorkspace": "Switch Workspace",
+  "@switchWorkspace": {
+    "description": "Switch workspace menu item"
+  },
+  "personalWorkspace": "Personal Workspace",
+  "@personalWorkspace": {
+    "description": "Personal workspace label"
+  },
+  "active": "active",
+  "@active": {
+    "description": "Active count label"
+  },
+  "pending": "pending",
+  "@pending": {
+    "description": "Pending count label"
+  },
+  "total": "total",
+  "@total": {
+    "description": "Total count label"
+  },
+  "pinnedCount": "pinned",
+  "@pinnedCount": {
+    "description": "Pinned count label"
+  },
+  "overLimit": "Over limit",
+  "@overLimit": {
+    "description": "Caffeine over limit warning"
+  },
+  "mgToday": "mg today",
+  "@mgToday": {
+    "description": "Milligrams today caffeine label"
+  },
+  "cleanLabel": "clean",
+  "@cleanLabel": {
+    "description": "Clean caffeine state label"
+  },
+  "meals": "meals",
+  "@meals": {
+    "description": "Meals count label"
+  },
+  "safe": "Safe",
+  "@safe": {
+    "description": "Nutrition safe status"
+  },
+  "warning": "Warning",
+  "@warning": {
+    "description": "Nutrition warning status"
+  },
+  "critical": "Critical",
+  "@critical": {
+    "description": "Nutrition critical status"
+  },
+  "focus": "Focus",
+  "@focus": {
+    "description": "Focus health dimension label"
+  },
+  "addWaterMl": "+250 ml",
+  "@addWaterMl": {
+    "description": "Add 250ml water button label"
+  },
+  "ready": "Ready",
+  "@ready": {
+    "description": "Pomodoro ready status label"
+  },
+  "backToSignIn": "Back to sign in",
+  "useDifferentMethod": "Use a different sign-in method",
+  "registerPasskey": "Register Passkey",
+  "verifyAndEnable": "Verify & Enable",
+  "newPasswordsDoNotMatch": "New passwords do not match",
+  "passwordUpdatedSuccessfully": "Password updated successfully",
+  "pleaseAllPasswordFields": "Please fill in all password fields",
+  "profileUpdatedSuccessfully": "Profile updated successfully",
+  "generateRecoveryCodes": "Generate Recovery Codes",
+  "details": "Details",
+  "contextLabel": "Context",
+  "response": "Response",
+  "noDescription": "No description",
+  "failedToLoad": "Failed to load",
+  "failedToDelete": "Failed to delete",
+  "deleteConfirm": "This action cannot be undone.",
+  "deleteNoteConfirm": "Delete Note?",
+  "titleRequired": "Title is required",
+  "failedToLoadAgents": "Failed to load agents",
+  "failedToLoadNotes": "Failed to load notes",
+  "failedToLoadSkills": "Failed to load skills",
+  "failedToLoadWorkflows": "Failed to load workflows",
+  "failedToLoadDocs": "Failed to load docs",
+  "failedToLoadDelegations": "Failed to load delegations",
+  "failedToLoadProjects": "Failed to load projects",
+  "failedToLoadSessions": "Failed to load sessions",
+  "noNotes": "No notes",
+  "noProjects": "No projects",
+  "noSessions": "No sessions",
+  "codeCopied": "Code copied to clipboard",
+  "markdownCopied": "Markdown copied to clipboard",
+  "copiedToClipboard": "Copied to clipboard",
+  "resetToday": "Reset Today",
+  "triggerAnalysis": "Trigger Analysis",
+  "refreshInsights": "Refresh Insights",
+  "connectHealth": "Connect Health",
+  "saveMeasurements": "Save Measurements",
+  "logSleep": "Log Sleep",
+  "sleepLogged": "Sleep logged",
+  "logMeal": "Log Meal",
+  "today": "Today",
+  "settingsSaved": "Settings saved",
+  "testSuccessful": "Test successful",
+  "testFailed": "Test failed",
+  "testConnection": "Test Connection",
+  "testEmailSent": "Test email sent successfully",
+  "submitIssue": "Submit Issue",
+  "issueReported": "Issue reported successfully",
+  "update": "Update",
+  "check": "Check",
+  "test": "Test",
+  "apiKeyCreated": "API key created",
+  "apiKeyRevoked": "API key revoked",
+  "sessionRevoked": "Session revoked",
+  "allSessionsRevoked": "All other sessions revoked",
+  "socialLinksUpdated": "Social links updated",
+  "promptsSaved": "Prompts saved",
+  "downloadOrchestra": "Download Orchestra",
+  "extractAndInstall": "Extract and Install",
+  "getStarted": "Get Started",
+  "initializingWorkspace": "Initializing workspace...",
+  "failedToInitWorkspace": "Failed to initialize workspace",
+  "fileAccessRequired": "File access is required to continue",
+  "retryConnection": "Retry Connection",
+  "newPost": "New Post",
+  "editPost": "Edit Post",
+  "deletePost": "Delete Post",
+  "newPage": "New Page",
+  "editPage": "Edit Page",
+  "deletePage": "Delete Page",
+  "addCategory": "Add Category",
+  "editCategory": "Edit Category",
+  "deleteCategory": "Delete Category",
+  "editSponsor": "Edit Sponsor",
+  "removeSponsor": "Remove Sponsor",
+  "addSponsor": "Add Sponsor",
+  "deleteSubmission": "Delete Submission",
+  "updateIssue": "Update Issue",
+  "updatePostStatus": "Update Post Status",
+  "newFeatureFlag": "New Feature Flag",
+  "sendNotification": "Send Notification",
+  "editTeam": "Edit Team",
+  "createTeam": "Create Team",
+  "deleteTeamConfirm": "Delete Team",
+  "addMember": "Add Member",
+  "sendInvite": "Send Invite",
+  "impersonate": "Impersonate",
+  "operational": "Operational",
+  "published": "Published",
+  "draft": "Draft",
+  "approved": "Approved",
+  "rejected": "Rejected",
+  "blocked": "Blocked",
+  "closed": "Closed",
+  "open": "Open",
+  "inReview": "In Review",
+  "owner": "Owner",
+  "viewer": "Viewer",
+  "teamManager": "Team Manager",
+  "teamOwner": "Team Owner",
+  "noMembersYet": "No members yet",
+  "mostPopular": "Most popular",
+  "gold": "Gold",
+  "silver": "Silver",
+  "bronze": "Bronze",
+  "high": "High",
+  "medium": "Medium",
+  "low": "Low",
+  "priority": "Priority",
+  "status": "Status",
+  "user": "User",
+  "role": "Role",
+  "allStatuses": "All statuses",
+  "allUsers": "All Users",
+  "syncConflicts": "Sync Conflicts",
+  "mergeEditor": "Merge Editor",
+  "sshConnection": "SSH Connection",
+  "createSession": "Create Session",
+  "connect": "Connect",
+  "disconnect": "Disconnect",
+  "send": "Send",
+  "install": "Install",
+  "remove": "Remove",
+  "create": "Create",
+  "generate": "Generate",
+  "run": "Run",
+  "summarize": "Summarize",
+  "explain": "Explain",
+  "fix": "Fix",
+  "translate": "Translate",
+  "customPrompt": "Custom prompt",
+  "aiSmartActions": "AI smart actions",
+  "noRecentWorkspaces": "No recent workspaces",
+  "publicLinkCopied": "Public link copied to clipboard",
+  "viewDemo": "View Demo",
+  "cloneAndOpen": "Clone & Open",
+  "aboutOrchestra": "About",
+  "downloadLabel": "Download",
+  "pricing": "Pricing",
+  "comingSoon": "Coming Soon",
+  "ourMission": "Our Mission",
+  "orchestraAi": "Orchestra AI",
+  "aiDescription": "AI-powered project management for developers",
+  "pngJpgLimit": "PNG, JPG up to 2MB",
+  "markAllReadAction": "Mark all read",
+  "newFlag": "New Flag",
+  "newIssue": "New Issue",
+  "invite": "Invite",
+  "invited": "Invited",
+  "tableDataCopied": "Table copied to clipboard",
+  "claudeMdCopied": "CLAUDE.md copied to clipboard",
+  "projectNotFound": "Project not found",
+  "downloadDesktopApp": "Download Desktop App",
+  "failedToUpdatePassword": "Failed to update password",
+  "failedToUpdateProfile": "Failed to update profile",
+  "addPrompt": "Add Prompt",
+  "submissionClosed": "Submission closed",
+  "markedAsReplied": "Marked as replied",
+  "failedToLoadMembers": "Failed to load members",
+  "failedToLoadTeams": "Failed to load teams",
+  "failedToLoadWorkspaces": "Failed to load workspaces",
+  "failedToLoadIssues": "Failed to load issues",
+  "connectionTestSuccessful": "Connection test successful",
+  "welcomeScreen": "Welcome",
+  "failedToCreateTeam": "Failed to create team",
+  "failedToRenameTeam": "Failed to rename team",
+  "failedToDeleteTeam": "Failed to delete team",
+  "failedToInvite": "Failed to invite",
+  "failedToRemoveMember": "Failed to remove member",
+  "failedToRevokeApiKey": "Failed to revoke API key",
+  "failedToCreateApiKey": "Failed to create API key",
+  "failedToRevokeSession": "Failed to revoke session",
+  "failedToRevokeSessions": "Failed to revoke sessions",
+  "failedToSavePreference": "Failed to save preference",
+  "failedToSaveSetting": "Failed to save setting",
+  "failedToSaveSocialLinks": "Failed to save social links",
+  "failedToSaveAiSetting": "Failed to save AI setting",
+  "failedToDisconnect": "Failed to disconnect",
+  "pullFailed": "Pull failed",
+  "member": "Member",
+  "signInToAccount": "Sign in to your account",
+  "emailHint": "you@example.com",
+  "yourPassword": "Your password",
+  "joinSubtitle": "Join Orchestra and start building",
+  "fullName": "Full name",
+  "yourName": "Your name",
+  "minEightCharacters": "Min. 8 characters",
+  "enterValidEmail": "Enter a valid email address",
+  "nameRequired": "Name is required",
+  "nameTooShort": "Name must be at least 2 characters",
+  "passwordTooShortSix": "Password must be at least 6 characters",
+  "pleaseConfirmPassword": "Please confirm your password",
+  "forgotPasswordTitle": "Forgot your password?",
+  "forgotPasswordSubtitle": "Enter your email and we will send you a magic link to sign in.",
+  "emailAddress": "Email address",
+  "magicLinkSentTo": "We sent a magic link to",
+  "magicLinkExpiry": "Click the link in the email to sign in. The link expires in 15 minutes.",
+  "setNewPassword": "Set new password",
+  "newPasswordHint": "Your new password must be at least 8 characters.",
+  "repeatPassword": "Repeat your password",
+  "passwordResetSuccess": "Password reset!",
+  "passwordResetSuccessSubtitle": "Your password has been updated. You can now sign in with your new password.",
+  "magicLinkSubtitle": "We''ll send a one-time link to your email.",
+  "tapMagicLinkExpiry": "Tap the link in the email to sign in. The link expires in 15 minutes.",
+  "passkeySubtitle": "Use Face ID, Touch ID, or your device PIN to authenticate.",
+  "authenticated": "Authenticated",
+  "authenticateWithPasskey": "Authenticate with Passkey",
+  "signInToOrchestra": "Sign in to Orchestra",
+  "authCancelled": "Authentication was cancelled or not recognised.",
+  "twoStepVerification": "Two-step verification",
+  "enterCodeSentTo": "Enter the 6-digit code sent to ",
+  "otpInputLabel": "One-time password input",
+  "enterFullCode": "Please enter the full 6-digit code",
+  "verify": "Verify",
+  "resendCodeIn": "Resend code in {seconds}s",
+  "@resendCodeIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "resendCode": "Resend code",
+  "enterYourEmail": "Enter your email address.",
+  "signInWithMagicLink": "Sign in with magic link",
+  "agentsCount": "{count} agents",
+  "@agentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notesCount": "{count} notes",
+  "@notesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "skillsCount": "{count} skills",
+  "@skillsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "workflowsCount": "{count} workflows",
+  "@workflowsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "documentsCount": "{count} documents",
+  "@documentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delegationsCount": "{count} delegations",
+  "@delegationsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noAgentsFound": "No agents found",
+  "agentsWillAppear": "Agents will appear here once configured",
+  "noSkillsFound": "No skills found",
+  "skillsWillAppear": "Skills will appear here once configured",
+  "noWorkflowsFound": "No workflows found",
+  "workflowsWillAppear": "Workflows will appear here once defined",
+  "noDocsFound": "No docs found",
+  "docsWillAppear": "Documentation files will appear here",
+  "noDelegationsFound": "No delegations found",
+  "delegatedTasksWillAppear": "Delegated tasks will appear here",
+  "noNotesYet": "No notes yet",
+  "notesWillAppear": "Notes you create will appear here",
+  "agentPublished": "Agent published",
+  "notePublished": "Note published",
+  "skillPublished": "Skill published",
+  "workflowPublished": "Workflow published",
+  "publishFailed": "Publish failed",
+  "delegationNotFound": "Delegation not found",
+  "failedToLoadDelegation": "Failed to load delegation",
+  "failedToLoadNote": "Failed to load note",
+  "noContent": "No content",
+  "noteNotFound": "Note not found",
+  "goBack": "Go back",
+  "checkConnection": "Check your connection and try again",
+  "itemMayHaveBeenRemoved": "This item may have been removed or renamed",
+  "systemPromptLabel": "System Prompt",
+  "contentLabel": "Content",
+  "descriptionLabel": "Description",
+  "noteHintTitle": "Note title",
+  "addTagHint": "Add tag...",
+  "writeMarkdownHint": "Write your note in Markdown...",
+  "nothingToPreview": "Nothing to preview",
+  "describeYourNote": "Describe your note",
+  "smartAction": "Smart Action",
+  "manual": "Manual",
+  "generating": "Generating...",
+  "notePromptHint": "e.g. Meeting notes template for weekly standup",
+  "sendingPrompt": "Sending prompt to AI...",
+  "aiGenerating": "AI is generating your note...",
+  "responseReceived": "Response received, parsing...",
+  "failedToParse": "Failed to parse AI response as JSON",
+  "noteGenerated": "Note generated successfully",
+  "mcpNotAvailable": "MCP client not available (desktop only)",
+  "defaultBadge": "DEFAULT",
+  "assignedTo": "Assigned to {assignee} -- {status}",
+  "@assignedTo": {
+    "placeholders": {
+      "assignee": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "fromLabel": "From",
+  "toLabel": "To",
+  "featureLabel": "Feature",
+  "providerLabel": "Provider",
+  "modelLabel": "Model",
+  "commandLabel": "Command",
+  "sourceLabel": "Source",
+  "projectLabel": "Project",
+  "initialStateLabel": "Initial State",
+  "statesLabel": "States",
+  "transitionsLabel": "Transitions",
+  "gatesLabel": "Gates",
+  "pathLabel": "Path",
+  "unknown": "Unknown",
+  "untitled": "Untitled",
+  "itemNotFound": "{itemType} not found",
+  "@itemNotFound": {
+    "placeholders": {
+      "itemType": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToLoadItem": "Failed to load {itemType}",
+  "@failedToLoadItem": {
+    "placeholders": {
+      "itemType": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteItemTitle": "Delete {itemType}?",
+  "@deleteItemTitle": {
+    "placeholders": {
+      "itemType": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteItemMessage": "Are you sure you want to delete \"{name}\"? This cannot be undone.",
+  "@deleteItemMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "note": "Note",
+  "project": "Project",
+  "feature": "Feature",
+  "agent": "Agent",
+  "skill": "Skill",
+  "workflow": "Workflow",
+  "doc": "Doc",
+  "session": "Session",
+  "delegation": "Delegation",
+  "preview": "Preview",
+  "overview": "Overview",
+  "tracking": "Tracking",
+  "wellness": "Wellness",
+  "noHealthData": "No Health Data",
+  "connectHealthDescription": "Connect to Apple Health or Health Connect to see your steps, heart rate, and other vitals here.",
+  "learnMorePermissions": "Learn more about permissions",
+  "installOrchestra": "Install Orchestra",
+  "orchestraBinaryNotFound": "The Orchestra binary was not found on your system.",
+  "downloadLatestBinary": "Download the latest Orchestra binary for your platform.",
+  "extractFiles": "Extract Files",
+  "extractInstallBinary": "Extract and install the Orchestra binary to ~/.orchestra/bin/",
+  "setupComplete": "Setup Complete",
+  "orchestraInstalledSuccessfully": "Orchestra has been installed successfully. Restart the app to continue.",
+  "desktopRequired": "Desktop Required",
+  "desktopRequiredDescription": "Orchestra needs the desktop app running to sync your data. Install and launch the desktop app first.",
+  "fileAccessRequiredTitle": "File Access Required",
+  "fileAccessDescription": "Orchestra needs access to your home directory to read workspace files and configuration.\n\nSelect your home folder in the next dialog to grant access.",
+  "grantFileAccess": "Grant File Access",
+  "fileAccessRequiredToContinue": "File access is required to continue",
+  "failedToLoadConflicts": "Failed to load conflicts",
+  "noConflicts": "No conflicts",
+  "allDataInSync": "All your data is in sync.",
+  "localThisDevice": "LOCAL (this device)",
+  "remoteServer": "REMOTE (server)",
+  "noDataToCompare": "No data to compare (both sides empty).",
+  "keepLocal": "Keep Local",
+  "keepRemote": "Keep Remote",
+  "mergeEditManually": "Merge (edit manually)",
+  "useLocal": "Use Local",
+  "useRemote": "Use Remote",
+  "syncStatus": "Sync Status",
+  "connected": "Connected",
+  "disconnected": "Disconnected",
+  "synced": "Synced",
+  "outdated": "Outdated",
+  "conflicts": "Conflicts",
+  "notSynced": "Not synced",
+  "noSyncedEntities": "No synced entities yet",
+  "noFilteredEntities": "No {status} entities",
+  "@noFilteredEntities": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "noTerminalSessions": "No terminal sessions",
+  "createSessionFromSidebar": "Create a session from the sidebar.",
+  "newClaudeSession": "New Claude Session",
+  "authentication": "Authentication",
+  "host": "Host",
+  "hostHint": "example.com or 192.168.1.1",
+  "hostRequired": "Host is required",
+  "userRequired": "User is required",
+  "portRequired": "Port is required",
+  "invalidPort": "Invalid port (1-65535)",
+  "keyFile": "Key file",
+  "keyFileHint": "~/.ssh/id_rsa",
+  "enterPassword": "Enter password",
+  "searchTerminalHint": "Search terminal...",
+  "caseSensitive": "Case sensitive",
+  "openFolderAction": "Open Folder...",
+  "closeWorkspace": "Close Workspace",
+  "chooseWorkspaceFolder": "Choose a workspace folder",
+  "teamCreatedMessage": "Team \"{name}\" created",
+  "@teamCreatedMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createNewTeam": "Create New Team",
+  "teamNameHint": "Team name",
+  "chooseYourWorkspace": "Choose Your Workspace",
+  "selectProjectFolder": "Select a project folder to get started with Orchestra.",
+  "openExistingFolder": "Open Existing Folder",
+  "chooseProjectFolder": "Choose a project folder on your machine",
+  "cloneFromGitHub": "Clone from GitHub",
+  "cloneSetWorkspace": "Clone a repository and set it as workspace",
+  "recentWorkspaces": "Recent Workspaces",
+  "pleaseEnterRepoUrl": "Please enter a repository URL",
+  "selectFolderToClone": "Select folder to clone into",
+  "updates": "Updates",
+  "person": "Person",
+  "github": "GitHub",
+  "personNotFound": "Person not found",
+  "planNotFound": "Plan not found",
+  "requestNotFound": "Request not found",
+  "smartActions": "Smart Actions",
+  "customPromptTitle": "Custom Prompt",
+  "enterYourInstruction": "Enter your instruction...",
+  "workflowEditor": "Workflow Editor",
+  "configureWorkflowDesc": "Configure skills, agents, and hooks. Toggle items on/off and reorder by dragging.",
+  "hooks": "Hooks",
+  "generatedPreview": "Generated Preview",
+  "settingUpWorkspace": "Setting up your workspace...",
+  "orchestraIsReady": "Orchestra is ready!",
+  "installationFailed": "Installation failed",
+  "changeIcon": "Change Icon",
+  "changeColor": "Change Color",
+  "syncWithTeam": "Sync with Team",
+  "publish": "Publish",
+  "exportToWorkspace": "Export to Workspace",
+  "exportAsPdf": "Export as PDF",
+  "exportAsDocument": "Export as Document",
+  "exportAsHtml": "Export as HTML",
+  "exportAsMarkdown": "Export as Markdown",
+  "exportAsPlainText": "Export as Plain Text",
+  "enterNewName": "Enter new name",
+  "shareEntityTitle": "Share {entityType}",
+  "@shareEntityTitle": {
+    "placeholders": {
+      "entityType": {
+        "type": "String"
+      }
+    }
+  },
+  "selectTeamAndShare": "Select a team and choose who to share with",
+  "noTeamsFound": "No teams found",
+  "joinOrCreateTeam": "Join or create a team to start sharing",
+  "team": "Team",
+  "shareWithEntireTeam": "Share with entire team",
+  "searchMembers": "Search members...",
+  "noMembersFound": "No members found",
+  "permission": "Permission",
+  "readPermission": "Read",
+  "writePermission": "Write",
+  "syncConflict": "Sync Conflict",
+  "merge": "Merge",
+  "later": "Later",
+  "pulling": "Pulling...",
+  "pullUpdates": "Pull Updates",
+  "alreadyUpToDate": "Already up to date",
+  "pulledUpdatesCount": "Pulled {count} update(s) successfully",
+  "@pulledUpdatesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "copyCode": "Copy code",
+  "disableWordWrap": "Disable word wrap",
+  "enableWordWrap": "Enable word wrap",
+  "saveAsFile": "Save as file",
+  "saveAsImage": "Save as image",
+  "convertToMermaid": "Convert to Mermaid",
+  "copyAsText": "Copy as text",
+  "exportAsCsv": "Export as CSV",
+  "exportAsExcelTsv": "Export as Excel (TSV)",
+  "exportAsText": "Export as Text",
+  "exportAsImage": "Export as Image",
+  "smartCreateType": "Smart Create {type}",
+  "@smartCreateType": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "describeWhatToCreate": "Describe what you want to create...",
+  "createManually": "Create Manually",
+  "writeMarkdownDirectly": "Write markdown content directly",
+  "smartCreateAi": "Smart Create (AI)",
+  "describeNeedAiGenerates": "Describe what you need, AI generates it",
+  "noResultsFound": "No results found",
+  "local": "Local",
+  "remote": "Remote",
+  "refresh": "Refresh",
+  "teamUpdatesAvailable": "Your team has {count} update(s) available",
+  "@teamUpdatesAvailable": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "conflict": "Conflict",
+  "exportMarkdownLabel": "Export Markdown",
+  "selectWorkspaceFolder": "Select workspace folder",
+  "justNow": "just now",
+  "minutesAgo": "{count}m ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{count}h ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{count}d ago",
+  "@daysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "port": "Port",
+  "model": "Model",
+  "regex": "Regex",
+  "browse": "Browse",
+  "totalUsers": "Total Users",
+  "suspended": "Suspended",
+  "quickLinks": "Quick Links",
+  "recentUsers": "Recent Users",
+  "noRecentUsers": "No recent users",
+  "failedToLoadOverview": "Failed to load overview",
+  "users": "Users",
+  "roles": "Roles",
+  "categories": "Categories",
+  "nCategories": "{count} categories",
+  "@nCategories": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchCategories": "Search categories...",
+  "noCategoriesYet": "No categories yet",
+  "noCategoriesMatch": "No categories match \"{query}\"",
+  "@noCategoriesMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToLoadCategories": "Failed to load categories",
+  "nItems": "{count} items",
+  "@nItems": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "community": "Community",
+  "nCommunityPosts": "{count} community posts",
+  "@nCommunityPosts": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchCommunityPosts": "Search community posts...",
+  "noCommunityPostsYet": "No community posts yet",
+  "noPostsMatch": "No posts match \"{query}\"",
+  "@noPostsMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToLoadCommunityPosts": "Failed to load community posts",
+  "contactSubmissions": "Contact Submissions",
+  "nNew": "{count} new",
+  "@nNew": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nSubmissionsTotal": "{count} submissions total",
+  "@nSubmissionsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchSubmissions": "Search submissions...",
+  "noSubmissionsYet": "No submissions yet",
+  "noSubmissionsMatch": "No submissions match \"{query}\"",
+  "@noSubmissionsMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToLoadSubmissions": "Failed to load submissions",
+  "reply": "Reply",
+  "noSubject": "No subject",
+  "documentation": "Documentation",
+  "newDocLabel": "New Doc",
+  "nSectionsNArticles": "{sections} sections, {articles} articles",
+  "@nSectionsNArticles": {
+    "placeholders": {
+      "sections": {
+        "type": "int"
+      },
+      "articles": {
+        "type": "int"
+      }
+    }
+  },
+  "noDocumentationYet": "No documentation yet",
+  "updatedDate": "Updated {date}",
+  "@updatedDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "nArticles": "{count, plural, =1{1 article} other{{count} articles}}",
+  "@nArticles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "viewSection": "View section",
+  "featureFlags": "Feature Flags",
+  "failedToLoadFeatureFlags": "Failed to load feature flags",
+  "noFeatureFlagsConfigured": "No feature flags configured",
+  "createFlagToGetStarted": "Create a new flag to get started.",
+  "nOfNFlagsEnabled": "{enabled} of {total} flags enabled",
+  "@nOfNFlagsEnabled": {
+    "placeholders": {
+      "enabled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "keySnakeCase": "Key (snake_case)",
+  "issues": "Issues",
+  "nOpen": "{count} open",
+  "@nOpen": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nIssuesTotal": "{count} issues total",
+  "@nIssuesTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchIssues": "Search issues...",
+  "noIssuesFound": "No issues found",
+  "noIssuesMatch": "No issues match \"{query}\"",
+  "@noIssuesMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "userN": "User #{id}",
+  "@userN": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "editStatusPriority": "Edit status / priority",
+  "pages": "Pages",
+  "nStaticPages": "{count} static pages",
+  "@nStaticPages": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noPagesYet": "No pages yet",
+  "failedToLoadPages": "Failed to load pages",
+  "title": "Title",
+  "slug": "Slug",
+  "editPageTooltip": "Edit page",
+  "deletePageTooltip": "Delete page",
+  "postsLabel": "Posts",
+  "nPostsTotal": "{count} posts total",
+  "@nPostsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchPosts": "Search posts...",
+  "noPostsYet": "No posts yet",
+  "failedToLoadPosts": "Failed to load posts",
+  "sponsors": "Sponsors",
+  "nSponsors": "{count} sponsors",
+  "@nSponsors": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToLoadSponsors": "Failed to load sponsors",
+  "searchSponsors": "Search sponsors...",
+  "noSponsorsFound": "No sponsors found",
+  "noSponsorsMatch": "No sponsors match \"{query}\"",
+  "@noSponsorsMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "websiteUrl": "Website URL",
+  "logoUrl": "Logo URL",
+  "tierLabel": "Tier",
+  "failedToLoadTeam": "Failed to load team",
+  "teamIdLabel": "Team ID: {id}",
+  "@teamIdLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "backToTeams": "Back to teams",
+  "failedToLoadMembersError": "Failed to load members: {error}",
+  "@failedToLoadMembersError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "teamSettingsLabel": "Team Settings",
+  "defaultRole": "Default Role",
+  "newMembersJoinAsMember": "New members join as Member",
+  "visibilityLabel": "Visibility",
+  "teamVisibleToAll": "Team is visible to all organization members",
+  "nTeamsTotal": "{count} teams total",
+  "@nTeamsTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchTeams": "Search teams...",
+  "nMembers": "{count} members",
+  "@nMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nUsersTotal": "{count} users total",
+  "@nUsersTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToLoadUsers": "Failed to load users",
+  "searchNameOrEmail": "Search name or email...",
+  "allRoles": "All roles",
+  "noUsersFound": "No users found",
+  "noMatchingUsers": "No matching users",
+  "viewProfile": "View Profile",
+  "changeRole": "Change Role",
+  "newRole": "New Role",
+  "updateRole": "Update Role",
+  "confirmPasswordLabel": "Confirm Password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordCannotBeEmpty": "Password cannot be empty",
+  "notificationTitleHint": "Notification title",
+  "messageLabel": "Message",
+  "writeYourMessage": "Write your message...",
+  "blockLabel": "Block",
+  "unblockLabel": "Unblock",
+  "blockUserConfirm": "Are you sure you want to block {name}? They will lose access until unblocked.",
+  "@blockUserConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "unblockUserConfirm": "Are you sure you want to unblock {name}? They will regain access immediately.",
+  "@unblockUserConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteUserConfirm": "This action cannot be undone. The user will be permanently removed.",
+  "deleteUserTitle": "Delete {name}?",
+  "@deleteUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "blockUserTitle": "{action} {name}?",
+  "@blockUserTitle": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "simplePricing": "Simple, transparent pricing",
+  "startFreeUpgrade": "Start free. Upgrade when you need more.",
+  "freeLabel": "Free",
+  "proLabel": "Pro",
+  "teamLabel": "Team",
+  "getStartedFree": "Get started free",
+  "startFreeTrial": "Start free trial",
+  "contactSales": "Contact sales",
+  "forIndividuals": "For individuals getting started.",
+  "forProfessionals": "For professional developers.",
+  "forTeams": "For teams that ship together.",
+  "upToNProjects": "Up to 3 projects",
+  "nAiSessions": "5 AI agent sessions / mo",
+  "basicHealthTracking": "Basic health tracking",
+  "communitySupport": "Community support",
+  "unlimitedProjects": "Unlimited projects",
+  "nAiSessionsPro": "100 AI agent sessions / mo",
+  "fullHealthTracking": "Full health & sleep tracking",
+  "prioritySupport": "Priority support",
+  "syncAcrossDevices": "Sync across all devices",
+  "everythingInPro": "Everything in Pro",
+  "unlimitedTeamMembers": "Unlimited team members",
+  "sharedWorkspaces": "Shared workspaces",
+  "teamAnalytics": "Team analytics",
+  "ssoSaml": "SSO / SAML",
+  "dedicatedSupport": "Dedicated support",
+  "connectedTunnels": "Connected Tunnels",
+  "desktopClientsConnected": "Desktop clients connected via QUIC mTLS tunnel",
+  "connectNew": "Connect New",
+  "connectDesktopClient": "Connect a Desktop Client",
+  "installOrchestraDesktop": "1. Install Orchestra on your desktop:",
+  "runTunnelCommand": "2. Run the tunnel command:",
+  "clientAppearsAutomatically": "The client will appear in the dashboard automatically once connected.",
+  "failedToLoadTunnels": "Failed to load tunnels",
+  "offlineLabel": "Offline",
+  "degradedLabel": "Degraded",
+  "machineInformation": "Machine Information",
+  "operatingSystem": "Operating System",
+  "ipAddress": "IP Address",
+  "connectedUserLabel": "Connected User",
+  "latencyLabel": "Latency",
+  "toolsAvailableLabel": "Tools Available",
+  "lastActiveLabel": "Last Active",
+  "activeNow": "Active now",
+  "recentActionsLabel": "Recent Actions",
+  "noRecentActions": "No recent actions",
+  "disconnectedMachine": "Disconnected {name}",
+  "@disconnectedMachine": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowMarketplace": "Workflow Marketplace",
+  "discoverWorkflows": "Discover and install workflow configurations shared by the community",
+  "searchWorkflows": "Search workflows...",
+  "contentsLabel": "Contents",
+  "nRatings": "{count} ratings",
+  "@nRatings": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nDownloads": "{count} downloads",
+  "@nDownloads": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "installingWorkflow": "Installing \"{name}\"...",
+  "@installingWorkflow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "projectManagerLabel": "Project Manager",
+  "publicLinkCopiedToClipboard": "Public link copied to clipboard",
+  "nFeaturesDone": "{done}/{total} features done",
+  "@nFeaturesDone": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "nNotes": "{count} notes",
+  "@nNotes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "nDocs": "{count} docs",
+  "@nDocs": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noNotesShared": "No notes shared",
+  "noDocsShared": "No docs shared",
+  "poweredByOrchestra": "Powered by Orchestra",
+  "enterCustomInstruction": "Enter custom instruction...",
+  "sentNotifications": "Sent Notifications",
+  "newNotification": "New Notification",
+  "notificationTitlePlaceholder": "Notification title...",
+  "messagePlaceholder": "Message...",
+  "targetLabel": "Target:",
+  "nNotificationsSent": "{count} notifications sent",
+  "@nNotificationsSent": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "failedToLoadCount": "Failed to load count",
+  "failedToLoadNotifications": "Failed to load notifications",
+  "noNotificationsSentYet": "No notifications sent yet",
+  "noNotificationsMatch": "No notifications match \"{query}\"",
+  "@noNotificationsMatch": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchNotifications": "Search notifications...",
+  "chats": "Chats",
+  "failedToLoadUser": "Failed to load user",
+  "areYouSureDelete": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+  "@areYouSureDelete": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "areYouSureRemove": "Are you sure you want to remove \"{name}\"? This action cannot be undone.",
+  "@areYouSureRemove": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "removeMemberConfirm": "Remove {name}?",
+  "@removeMemberConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberRemoved": "Removed {name}",
+  "@memberRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "teamRenamedTo": "Team renamed to \"{name}\"",
+  "@teamRenamedTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "sharedSuccessfully": "Shared {entityType} successfully",
+  "@sharedSuccessfully": {
+    "placeholders": {
+      "entityType": {
+        "type": "String"
+      }
+    }
+  },
+  "errorWithDetails": "Error: {details}",
+  "@errorWithDetails": {
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "shortBreak": "Short Break",
+  "longBreak": "Long Break",
+  "standUp": "Stand Up!",
+  "goalReached": "Great job! Daily goal reached.",
+  "onTrack": "On track — keep it up.",
+  "slightlyBehindMsg": "Slightly behind — have a glass now.",
+  "dehydratedMsg": "Drink water soon — you''re dehydrated.",
+  "getItem": "Get {name}",
+  "@getItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "downloadItem": "Download {name}",
+  "@downloadItem": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "adminPanel": "Admin Panel",
+  "usersNav": "Users",
+  "billingNav": "Billing",
+  "analyticsNav": "Analytics",
+  "logsNav": "Logs",
+  "pluginsNav": "Plugins",
+  "securityNav": "Security",
+  "rolesAndPermissions": "Roles & Permissions",
+  "nRolesNPermissions": "{roleCount} roles, {permCount} permissions",
+  "@nRolesNPermissions": {
+    "placeholders": {
+      "roleCount": {
+        "type": "int"
+      },
+      "permCount": {
+        "type": "int"
+      }
+    }
+  },
+  "nUsersLabel": "{count} {count, plural, =1{user} other{users}}",
+  "@nUsersLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "extensionMarketplace": "Extension Marketplace",
+  "browseInstallManage": "Browse, install, and manage extensions.\nComing soon.",
+  "billingTitle": "Billing",
+  "subscriptionManagement": "Subscription management, usage meters, and payment\nhistory will appear here once the billing API is available.",
+  "logsTitle": "Logs",
+  "systemLogsDesc": "System logs, audit trails, and error tracking\nwill appear here once the logging API is available.",
+  "pluginsTitle": "Plugins",
+  "pluginsDesc": "Plugin installation, configuration, and lifecycle\nmanagement will appear here once the plugin API is available.",
+  "noAnalyticsData": "No analytics data available",
+  "analyticsTitle": "Analytics",
+  "failedToLoadAnalytics": "Failed to load analytics",
+  "totalUsersLabel": "Total Users",
+  "activeUsersLabel": "Active Users",
+  "totalProjectsLabel": "Total Projects",
+  "totalFeaturesLabel": "Total Features",
+  "totalTeamsLabel": "Total Teams",
+  "totalNotesLabel": "Total Notes",
+  "totalPagesLabel": "Total Pages",
+  "activeSessionsLabel": "Active Sessions",
+  "apiKeysLabel": "API Keys",
+  "sponsorsLabel": "Sponsors",
+  "openIssuesLabel": "Open Issues",
+  "contactMessagesLabel": "Contact Messages",
+  "storageUsedLabel": "Storage Used",
+  "apiCalls24hLabel": "API Calls (24h)",
+  "errorRateLabel": "Error Rate",
+  "securityTitle": "Security",
+  "activeSessionsTitle": "Active Sessions",
+  "noActiveSessionsFound": "No active sessions found",
+  "revokeAllOtherSessions": "Revoke all other sessions",
+  "enforceTwoFactor": "Enforce Two-Factor Authentication",
+  "requireAll2fa": "Require all users to set up 2FA before accessing the workspace",
+  "singleSignOnSso": "Single Sign-On (SSO)",
+  "enableSamlSso": "Enable SAML-based SSO with your identity provider",
+  "currentLabel": "Current",
+  "unknownDevice": "Unknown device",
+  "revokeSessionTooltip": "Revoke session",
+  "actionsTooltip": "Actions",
+  "allUsersTarget": "All Users",
+  "adminTarget": "Admin",
+  "teamOwnerTarget": "Team Owner",
+  "teamManagerTarget": "Team Manager",
+  "updatePassword": "Update Password",
+  "failedToLoadProjects": "Failed to load projects",
+  "failedToLoadNotes": "Failed to load notes",
+  "failedToLoadSessions": "Failed to load sessions",
+  "memberRole": "Member",
+  "adminRole": "Admin",
+  "ownerRole": "Owner",
+  "viewerRole": "Viewer",
+  "removeFromTeam": "Remove from team",
+  "selectATeam": "Select a team...",
+  "addingEllipsis": "Adding...",
+  "manageTeams": "Manage Teams",
+  "impersonate": "Impersonate",
+  "removeVerification": "Remove Verification",
+  "verifyUser": "Verify User",
+  "blockUser": "Block User",
+  "unblockUser": "Unblock User",
+  "deleteUser": "Delete User",
+  "notificationTitleRequired": "Title and message are required",
+  "notificationMessage": "Notification message",
+
+  "insightConsistentHydration": "Consistent hydration this week",
+  "insightPomodoroStreaks": "Pomodoro streaks improving focus",
+  "insightCleanCaffeine": "Clean caffeine transition in progress",
+  "insightCortisolCaffeine": "Cortisol window caffeine intake detected",
+  "insightSleepBelow7h": "Sleep duration below 7h target",
+  "insightShutdownViolatedNights": "Shutdown violated 2 nights this week",
+  "insightDrinkWaterPomodoro": "Drink 250 ml water before each pomodoro",
+  "insightMoveCaffeine": "Move caffeine intake to after 9:30 AM",
+  "insightStartShutdownRitual": "Start shutdown ritual 4h before target sleep",
+  "insightNoTriggersDetected": "No high-risk GERD triggers detected in the last 24h. Continue avoiding raw onion and deep-fried foods.",
+
+  "insightDailyHydrationGoalReached": "Daily hydration goal reached",
+  "insightHydrationAtPercent": "Hydration at {percent}% of goal",
+  "@insightHydrationAtPercent": {
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "insightDrinkMoreMl": "Drink {ml} ml more today",
+  "@insightDrinkMoreMl": {
+    "placeholders": {
+      "ml": { "type": "int" }
+    }
+  },
+  "insightPomodorosCompleted": "{count} pomodoros completed today",
+  "@insightPomodorosCompleted": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "insightOnlyFocusSessions": "Only {count} focus sessions today",
+  "@insightOnlyFocusSessions": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "insightAimForPomodoros": "Aim for at least 4 pomodoros to reach flow state",
+  "insightNutritionSafetyScore": "Nutrition safety score: {score}%",
+  "@insightNutritionSafetyScore": {
+    "placeholders": {
+      "score": { "type": "int" }
+    }
+  },
+  "insightNutritionBelowThreshold": "Nutrition safety score below threshold: {score}%",
+  "@insightNutritionBelowThreshold": {
+    "placeholders": {
+      "score": { "type": "int" }
+    }
+  },
+  "insightShutdownCompleted": "Shutdown ritual completed on time",
+  "insightShutdownViolatedLastNight": "Shutdown ritual was violated last night",
+  "insightStartShutdownHours": "Start shutdown {hours}h before target sleep",
+  "@insightStartShutdownHours": {
+    "placeholders": {
+      "hours": { "type": "String" }
+    }
+  },
+  "insightNoTriggerFoods72h": "No trigger foods detected in the last 72h.",
+  "insightTriggerFoodsDetected": "Trigger foods detected: {foods}. Monitor for GERD symptoms over the next 24h.",
+  "@insightTriggerFoodsDetected": {
+    "placeholders": {
+      "foods": { "type": "String" }
+    }
+  },
+  "shutdownViolated": "Shutdown violated",
+  "shutdownViolatedDescription": "You''ve stayed up past your shutdown time. Late nights reduce sleep quality and increase next-day fatigue. Try to get to bed as soon as possible.",
+
+  "overall": "Overall",
+  "heartAndBody": "Heart & Body",
+  "routines": "Routines",
+  "trackLabel": "Track",
+  "restLabel": "Rest",
+  "caffeineNoIntake": "No intake",
+  "caffeineClean": "Clean",
+  "caffeineTransitioning": "Transitioning",
+  "caffeineRedBullDep": "Red Bull dep.",
+  "shutdownInactive": "Inactive",
+  "shutdownActive": "Active",
+  "shutdownPhaseViolated": "Violated",
+  "mealsCount": "{count} meals · {score}% safe",
+  "@mealsCount": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "score": { "type": "String" }
+    }
+  },
+  "caffeineMgStatus": "{mg} mg · {status}",
+  "@caffeineMgStatus": {
+    "placeholders": {
+      "mg": { "type": "int" },
+      "status": { "type": "String" }
+    }
+  },
+
+  "bloodOxygen": "Blood O\u2082",
+  "breathing": "Breathing",
+  "unitBpm": "bpm",
+  "unitKcal": "kcal",
+  "unitHours": "hours",
+  "unitKg": "kg",
+  "unitBreathsPerMin": "br/min",
+  "unitPercent": "%",
+  "unitYears": "yrs",
+  "noRangeData": "No range data",
+  "heartRateRange": "Min {min}  Max {max}",
+  "@heartRateRange": {
+    "placeholders": {
+      "min": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "connectHealthService": "Connect to health service",
+
+  "componentBreakdown": "Component Breakdown",
+  "thisWeek": "This Week",
+  "mon": "Mon",
+  "tue": "Tue",
+  "wed": "Wed",
+  "thu": "Thu",
+  "fri": "Fri",
+  "sat": "Sat",
+  "sun": "Sun",
+  "insightLowFocus": "Your focus sessions are low today. Try starting a pomodoro to build momentum.",
+  "insightLowHydration": "You are behind on hydration. Have a glass of water now to catch up.",
+  "insightTriggerFoods": "Some of today''s meals included trigger foods. Consider safer alternatives.",
+  "insightShutdownNotActive": "Shutdown routine is not active yet. Set a target sleep time to stay on track.",
+  "insightKeepGoing": "Keep going — every component adds up.",
+
+  "mlUnit": "{total} / {goal} ml",
+  "@mlUnit": {
+    "placeholders": {
+      "total": { "type": "int" },
+      "goal": { "type": "int" }
+    }
+  },
+  "plusMl": "+{ml} ml",
+  "@plusMl": {
+    "placeholders": {
+      "ml": { "type": "int" }
+    }
+  },
+  "mlLabel": "{ml}ml",
+  "@mlLabel": {
+    "placeholders": {
+      "ml": { "type": "int" }
+    }
+  },
+  "retryLoadingHydration": "Retry loading hydration data",
+  "goutFlushDescription": "Drink at least 1500 ml daily to help flush uric acid and reduce gout flare risk.",
+  "justNow": "Just now",
+  "minutesAgo": "{count} min ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "hoursAgo": "{count} hr ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "hoursMinutesAgo": "{h}h {m}m ago",
+  "@hoursMinutesAgo": {
+    "placeholders": {
+      "h": { "type": "int" },
+      "m": { "type": "int" }
+    }
+  },
+  "lastDrink": "Last drink: {time}",
+  "@lastDrink": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "addMlWater": "Add {ml} millilitres of water",
+  "@addMlWater": {
+    "placeholders": {
+      "ml": { "type": "int" }
+    }
+  },
+  "goalReachedChip": "Goal Reached",
+  "onTrackChip": "On Track",
+  "slightlyBehindChip": "Slightly Behind",
+  "dehydratedChip": "Dehydrated",
+
+  "caffeineEspresso": "Espresso",
+  "caffeineBlackCoffee": "Black Coffee",
+  "caffeineBlack": "Black",
+  "caffeineColdBrew": "Cold Brew",
+  "caffeineMatcha": "Matcha",
+  "caffeineGreenTea": "Green Tea",
+  "caffeineRedBull": "Red Bull",
+  "caffeineOther": "Other",
+  "mgLimit": "{limit} mg limit",
+  "@mgLimit": {
+    "placeholders": {
+      "limit": { "type": "int" }
+    }
+  },
+  "drinksCount": "{count, plural, =1{1 drink} other{{count} drinks}}",
+  "@drinksCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "plusMg": "+{mg} mg",
+  "@plusMg": {
+    "placeholders": {
+      "mg": { "type": "int" }
+    }
+  },
+  "moreEntries": "+{count} more",
+  "@moreEntries": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "logDrinkSemantic": "Log {name}, {mg} milligrams",
+  "@logDrinkSemantic": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "mg": { "type": "int" }
+    }
+  },
+  "mgValue": "{mg} mg",
+  "@mgValue": {
+    "placeholders": {
+      "mg": { "type": "int" }
+    }
+  },
+  "noRedBullToday": "No Red Bull today",
+  "noRedBullSubtitle": "Great job staying clean. Keep it going.",
+  "switchToMatchaRedBull": "Consider switching to matcha",
+  "switchToMatchaRedBullSub": "Matcha offers sustained energy without the sugar crash.",
+  "switchToMatcha": "Switch to matcha",
+  "switchToMatchaSub": "L-theanine in matcha pairs with caffeine for calm focus.",
+  "overDailyLimit": "Over the daily limit",
+  "overDailyLimitSub": "Consider stopping for today. Your body needs a break.",
+  "pomodoroCompleted": "Completed",
+  "pomodoroTarget": "Target",
+  "pomodoroCycle": "Cycle",
+  "standAlertInstruction": "Stretch, walk around, and rest your eyes for a moment.",
+  "phaseReady": "Ready",
+  "phaseFocus": "Focus",
+  "phaseStandUp": "Stand Up!",
+  "phaseShortBreak": "Short Break",
+  "phaseLongBreak": "Long Break",
+  "resetTooltip": "Reset",
+  "skipToBreak": "Skip to break",
+  "targetReached": "Target Reached!",
+  "targetReachedMsg": "You completed {count} sessions today. Outstanding focus!",
+  "@targetReachedMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "readyToFocus": "Ready to Focus",
+  "readyToFocusMsg": "Start your first session to build momentum today.",
+  "almostThere": "Almost There!",
+  "almostThereMsg": "Just 1 more session to hit your daily target.",
+  "strongProgress": "Strong Progress",
+  "strongProgressMsg": "{count} more to reach your target. Keep going!",
+  "@strongProgressMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deepFocus": "Deep Focus",
+  "deepFocusMsg": "Stay in the zone. {count} sessions left for today.",
+  "@deepFocusMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recharging": "Recharging",
+  "rechargingMsg": "Good rest makes better focus. {count} sessions remain.",
+  "@rechargingMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stayConsistent": "Stay Consistent",
+  "stayConsistentMsg": "{count} more sessions to reach your daily target.",
+  "@stayConsistentMsg": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "maxRiceRuleTriggered": "Max rice rule triggered (>5 spoons)",
+  "@maxRiceRuleTriggered": {
+    "description": "Warning shown when rice portion exceeds 5 spoons"
+  },
+  "itemsLoggedToday": "{count, plural, =1{1 item logged today} other{{count} items logged today}}",
+  "@itemsLoggedToday": {
+    "description": "Number of nutrition items logged today",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "outOf100": "/100",
+  "@outOf100": {
+    "description": "Denominator label for the safety score gauge"
+  },
+  "nutritionAllSafe": "All Safe",
+  "@nutritionAllSafe": {
+    "description": "Status label when nutrition safety score is high"
+  },
+  "nutritionWarning": "Warning",
+  "@nutritionWarning": {
+    "description": "Status label when nutrition safety score is medium"
+  },
+  "nutritionCritical": "Critical",
+  "@nutritionCritical": {
+    "description": "Status label when nutrition safety score is low"
+  },
+  "conditionIbs": "IBS",
+  "@conditionIbs": {
+    "description": "Label for irritable bowel syndrome trigger condition"
+  },
+  "conditionGerd": "GERD",
+  "@conditionGerd": {
+    "description": "Label for gastroesophageal reflux disease trigger condition"
+  },
+  "conditionGout": "Gout",
+  "@conditionGout": {
+    "description": "Label for gout trigger condition"
+  },
+  "conditionFattyLiver": "Fatty Liver",
+  "@conditionFattyLiver": {
+    "description": "Label for fatty liver trigger condition"
+  },
+  "categoryProtein": "Protein",
+  "@categoryProtein": {
+    "description": "Nutrition category label for protein"
+  },
+  "categoryCarbs": "Carbs",
+  "@categoryCarbs": {
+    "description": "Nutrition category label for carbohydrates"
+  },
+  "categoryFats": "Fats",
+  "@categoryFats": {
+    "description": "Nutrition category label for fats"
+  },
+  "categoryDrinks": "Drinks",
+  "@categoryDrinks": {
+    "description": "Nutrition category label for drinks"
+  },
+  "categorySnacks": "Snacks",
+  "@categorySnacks": {
+    "description": "Nutrition category label for snacks"
+  },
+  "portionSpoons": "Portion: {spoons} spoons",
+  "@portionSpoons": {
+    "description": "Portion size in spoons for meal logging",
+    "placeholders": {
+      "spoons": {
+        "type": "String"
+      }
+    }
+  },
+  "nItemsPlural": "{count, plural, =1{1 item} other{{count} items}}",
+  "@nItemsPlural": {
+    "description": "Pluralized item count used in nutrition category breakdown",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "routineStopScreens": "Stop screens",
+  "routineStopScreensSub": "Put away phone, close laptop",
+  "routineJournal": "Journal",
+  "routineJournalSub": "Write down 3 things you are grateful for",
+  "routineStretch": "Stretch",
+  "routinePrepareClothes": "Prepare clothes",
+  "routinePrepareClotheseSub": "Set out tomorrow''s outfit",
+  "routineDimLights": "Dim lights",
+  "routineDimLightsSub": "Switch to warm, low lighting",
+  "routineBrushTeeth": "Brush teeth",
+  "routineBrushTeethSub": "Oral hygiene before bed",
+  "routineHerbalTea": "Herbal tea",
+  "routineHerbalTeaSub": "Chamomile or anise tea",
+  "routineRead": "Read",
+  "highFlareRisk": "High flare risk -- avoid lying down for 3 hours after eating.",
+  "moderateFlareRisk": "Moderate flare risk -- monitor symptoms.",
+  "shutdownEmptyState": "Start your shutdown routine to prepare for restful sleep. The checklist below will guide you through each step.",
+  "shutdownNotActive": "Not Active",
+  "shutdownActiveLabel": "Shutdown Active",
+  "shutdownViolatedLabel": "Violated",
+
+  "bmiUnderweight": "Underweight",
+  "@bmiUnderweight": {
+    "description": "BMI category for underweight"
+  },
+  "bmiNormal": "Normal",
+  "@bmiNormal": {
+    "description": "BMI category for normal weight"
+  },
+  "bmiOverweight": "Overweight",
+  "@bmiOverweight": {
+    "description": "BMI category for overweight"
+  },
+  "bmiObese": "Obese",
+  "@bmiObese": {
+    "description": "BMI category for obese"
+  },
+  "bmiLabel": "BMI",
+  "@bmiLabel": {
+    "description": "Body Mass Index label"
+  },
+  "weightKg": "Weight (kg)",
+  "@weightKg": {
+    "description": "Weight input label in kilograms"
+  },
+  "heightCm": "Height (cm)",
+  "@heightCm": {
+    "description": "Height input label in centimeters"
+  },
+  "logWeightManually": "You can still log weight manually below.",
+  "@logWeightManually": {
+    "description": "Hint when HealthKit is not connected"
+  },
+  "latestFromAppleHealth": "Latest reading from Apple Health",
+  "@latestFromAppleHealth": {
+    "description": "Caption under HealthKit weight value"
+  },
+  "trends": "Trends",
+  "@trends": {
+    "description": "Trends feature pill label"
+  },
+  "insights": "Insights",
+  "@insights": {
+    "description": "Insights feature pill label"
+  },
+  "trendStable": "Stable",
+  "@trendStable": {
+    "description": "Weight trend label when weight is stable"
+  },
+  "statMin": "Min",
+  "@statMin": {
+    "description": "Minimum statistic label"
+  },
+  "statMax": "Max",
+  "@statMax": {
+    "description": "Maximum statistic label"
+  },
+  "statAvg": "Avg",
+  "@statAvg": {
+    "description": "Average statistic label"
+  },
+  "statEntries": "Entries",
+  "@statEntries": {
+    "description": "Entry count statistic label"
+  },
+
+  "sleepVeryPoor": "Very Poor",
+  "@sleepVeryPoor": {
+    "description": "Sleep quality rating 1"
+  },
+  "sleepPoor": "Poor",
+  "@sleepPoor": {
+    "description": "Sleep quality rating 2"
+  },
+  "sleepFair": "Fair",
+  "@sleepFair": {
+    "description": "Sleep quality rating 3"
+  },
+  "sleepGood": "Good",
+  "@sleepGood": {
+    "description": "Sleep quality rating 4"
+  },
+  "sleepExcellent": "Excellent",
+  "@sleepExcellent": {
+    "description": "Sleep quality rating 5"
+  },
+  "goodRest": "Good rest",
+  "@goodRest": {
+    "description": "HealthKit sleep label for 7-9 hours"
+  },
+  "couldBeBetter": "Could be better",
+  "@couldBeBetter": {
+    "description": "HealthKit sleep label for 6-7 hours"
+  },
+  "sleepDeficit": "Sleep deficit",
+  "@sleepDeficit": {
+    "description": "HealthKit sleep label for under 6 hours"
+  },
+  "sleepEmptyState": "Set your bedtime and wake time above, then tap\n\"Log Sleep\" to start tracking your rest patterns.",
+  "@sleepEmptyState": {
+    "description": "Empty state instruction for sleep tab"
+  },
+  "scheduleConsistent": "Consistent",
+  "@scheduleConsistent": {
+    "description": "Sleep schedule consistency label for high score"
+  },
+  "scheduleVariable": "Variable",
+  "@scheduleVariable": {
+    "description": "Sleep schedule consistency label for medium score"
+  },
+  "scheduleIrregular": "Irregular",
+  "@scheduleIrregular": {
+    "description": "Sleep schedule consistency label for low score"
+  },
+  "scheduleConsistentMsg": "Your sleep and wake times are very consistent. This supports a strong circadian rhythm.",
+  "@scheduleConsistentMsg": {
+    "description": "Insight text for consistent sleep schedule"
+  },
+  "scheduleVariableMsg": "Your schedule varies moderately. Try to go to bed and wake up at the same time each day.",
+  "@scheduleVariableMsg": {
+    "description": "Insight text for variable sleep schedule"
+  },
+  "scheduleIrregularMsg": "Your sleep schedule is quite irregular. Inconsistent timing can reduce sleep quality.",
+  "@scheduleIrregularMsg": {
+    "description": "Insight text for irregular sleep schedule"
+  },
+  "avgDuration": "Avg Duration",
+  "@avgDuration": {
+    "description": "Average duration statistic label"
+  },
+  "avgQuality": "Avg Quality",
+  "@avgQuality": {
+    "description": "Average quality statistic label"
+  },
+  "optimalSleep": "Optimal sleep duration",
+  "@optimalSleep": {
+    "description": "Duration quality label for 7-9 hours"
+  },
+  "belowRecommended": "Slightly below recommended",
+  "@belowRecommended": {
+    "description": "Duration quality label for 6-7 hours"
+  },
+  "tooLittleSleep": "Too little sleep",
+  "@tooLittleSleep": {
+    "description": "Duration quality label for under 6 hours"
+  },
+  "moreThanNeeded": "More than needed",
+  "@moreThanNeeded": {
+    "description": "Duration quality label for over 9 hours"
+  },
+  "routineStretchSub": "5-minute gentle stretching routine",
+  "routineReadSub": "10-15 minutes of light reading",
+  "drinkWater": "Water",
+  "drinkChamomileTea": "Chamomile Tea",
+  "drinkAniseTea": "Anise Tea",
+  "logAtLeast2Entries": "Log at least 2 entries to see trends",
+  "weightEmptyDescription": "Track your weight over time to see trends, BMI changes, and weekly insights.",
+  "sleepTarget": "target: {hours}h",
+  "@sleepTarget": {
+    "placeholders": {
+      "hours": { "type": "int" }
+    }
+  },
+  "planned": "planned",
+  "archived": "archived",
+  "projectsCount": "{count} projects",
+  "@projectsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "noFeatures": "No features",
+  "noPlans": "No plans",
+  "noRequests": "No requests",
+  "noPersons": "No persons",
+
+  "actionRename": "Rename",
+  "actionChangeIcon": "Change Icon",
+  "actionChangeColor": "Change Color",
+  "actionSelect": "Select",
+  "actionEdit": "Edit",
+  "actionPublish": "Publish",
+  "actionExportToWorkspace": "Export to Workspace",
+  "actionExportPdf": "Export as PDF",
+  "actionExportDocument": "Export as Document",
+  "actionExportHtml": "Export as HTML",
+  "actionExportMarkdown": "Export Markdown",
+  "actionExportPlainText": "Export as Plain Text",
+  "actionSyncWithTeam": "Sync with Team",
+  "selectedCount": "{count} selected",
+  "@selectedCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "chooseIcon": "Choose Icon",
+  "chooseColour": "Choose Colour",
+  "searchAgents": "Search agents...",
+  "@searchAgents": {
+    "description": "Hint text for searching agents"
+  },
+  "searchSkills": "Search skills...",
+  "@searchSkills": {
+    "description": "Hint text for searching skills"
+  },
+  "searchDocs": "Search docs...",
+  "@searchDocs": {
+    "description": "Hint text for searching documents"
+  },
+  "searchDelegations": "Search delegations...",
+  "@searchDelegations": {
+    "description": "Hint text for searching delegations"
+  },
+  "noSearchResults": "No results for \"{query}\"",
+  "@noSearchResults": {
+    "description": "Message shown when search yields no results",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+
+  "adminProfileName": "Name",
+  "adminProfileNameHint": "Your name",
+  "adminProfileEmail": "Email",
+  "adminProfileBio": "Bio",
+  "adminProfileBioHint": "A short bio...",
+
+  "adminGeneral": "General",
+  "adminSiteName": "Site Name",
+  "adminSiteNameHint": "Your site name",
+  "adminDescription": "Description",
+  "adminDescriptionHint": "A short description of your site...",
+  "adminSiteUrl": "Site URL",
+  "adminSiteUrlHint": "https://example.com",
+  "adminSupportEmail": "Support Email",
+  "adminSupportEmailHint": "support@example.com",
+  "adminTimezone": "Timezone",
+  "adminLanguage": "Language",
+  "adminBranding": "Branding",
+  "adminLogo": "Logo",
+  "adminUploadLogo": "Upload Logo",
+  "adminFavicon": "Favicon",
+  "adminUploadFavicon": "Upload Favicon",
+  "adminUploadHint": "PNG, JPG up to 2MB",
+
+  "adminAiConfig": "AI Configuration",
+  "adminDefaultModel": "Default AI Model",
+  "adminSystemPrompt": "System Prompt",
+  "adminSystemPromptHint": "Default system prompt for agents...",
+  "adminMaxTokens": "Max Tokens",
+  "adminTemperature": "Temperature",
+
+  "adminContactSettings": "Contact Settings",
+  "adminContactEmail": "Contact Email",
+  "adminPhone": "Phone",
+  "adminPhoneHint": "+1 234 567 890",
+  "adminAddress": "Address",
+  "adminAddressHint": "123 Main St, City, Country",
+  "adminDisplayOptions": "Display Options",
+  "adminShowContactForm": "Show Contact Form",
+  "adminShowMap": "Show Map",
+
+  "adminDiscordIntegration": "Discord Integration",
+  "adminEnableDiscordBot": "Enable Discord Bot",
+  "adminBotToken": "Bot Token",
+  "adminDiscordBotTokenHint": "Discord bot token",
+  "adminServerGuildId": "Server / Guild ID",
+  "adminDefaultChannelId": "Default Channel ID",
+  "adminWebhookUrl": "Webhook URL",
+  "adminDiscordWebhookHint": "https://discord.com/api/webhooks/...",
+
+  "adminDownloadUrls": "Download URLs",
+  "adminPlatformMacos": "macOS",
+  "adminPlatformWindows": "Windows",
+  "adminPlatformLinux": "Linux",
+  "adminReleaseInfo": "Release Info",
+  "adminVersion": "Version",
+  "adminReleaseNotes": "Release Notes",
+  "adminReleaseNotesHint": "What changed in this release...",
+
+  "adminSmtpConfig": "SMTP Configuration",
+  "adminSmtpHost": "SMTP Host",
+  "adminSmtpHostHint": "smtp.example.com",
+  "adminPort": "Port",
+  "adminUsername": "Username",
+  "adminUsernameHint": "SMTP username",
+  "adminPasswordLabel": "Password",
+  "adminPasswordHint": "SMTP password",
+  "adminSender": "Sender",
+  "adminFromName": "From Name",
+  "adminFromEmail": "From Email",
+  "adminFromEmailHint": "noreply@example.com",
+  "adminEnableTls": "Enable TLS",
+
+  "adminFeatureFlags": "Feature Flags",
+  "adminFeatureFlagsDesc": "Enable or disable platform features globally.",
+  "adminFlagRegistrations": "Registrations",
+  "adminFlagRegistrationsDesc": "Allow new user registrations",
+  "adminFlagApiAccess": "API Access",
+  "adminFlagApiAccessDesc": "Enable public API access",
+  "adminFlagDelegations": "Delegations",
+  "adminFlagDelegationsDesc": "Multi-agent delegation workflows",
+  "adminFlagAiSessions": "AI Sessions",
+  "adminFlagAiSessionsDesc": "AI-powered chat sessions",
+  "adminFlagHealth": "Health",
+  "adminFlagHealthDesc": "System health monitoring",
+  "adminFlagRag": "RAG",
+  "adminFlagRagDesc": "Retrieval-augmented generation engine",
+  "adminFlagMultiAgent": "Multi-Agent",
+  "adminFlagMultiAgentDesc": "Multi-agent orchestration workflows",
+  "adminFlagMarketplace": "Marketplace",
+  "adminFlagMarketplaceDesc": "Pack and plugin marketplace",
+  "adminFlagQuicBridge": "QUIC Bridge",
+  "adminFlagQuicBridgeDesc": "QUIC transport for remote plugins",
+  "adminFlagWebGateway": "Web Gateway",
+  "adminFlagWebGatewayDesc": "Public web gateway for external access",
+  "adminFlagPacks": "Packs",
+  "adminFlagPacksDesc": "Installable skill and agent packs",
+  "adminFlagProjects": "Projects",
+  "adminFlagProjectsDesc": "Project management with feature workflow",
+  "adminFlagNotes": "Notes",
+  "adminFlagNotesDesc": "Markdown notes and quick capture",
+  "adminFlagWiki": "Wiki",
+  "adminFlagWikiDesc": "Collaborative wiki pages",
+  "adminFlagDevTools": "DevTools",
+  "adminFlagDevToolsDesc": "Developer tools and terminal integration",
+  "adminFlagSponsors": "Sponsors",
+  "adminFlagSponsorsDesc": "Sponsorship and funding display",
+  "adminFlagCommunity": "Community",
+  "adminFlagCommunityDesc": "Community forum and discussions",
+  "adminFlagIssues": "Issues",
+  "adminFlagIssuesDesc": "Issue tracking and bug reports",
+
+  "adminGithubIntegration": "GitHub Integration",
+  "adminEnableGithub": "Enable GitHub Integration",
+  "adminAppId": "App ID",
+  "adminAppIdHint": "GitHub App ID",
+  "adminClientId": "Client ID",
+  "adminClientSecret": "Client Secret",
+  "adminClientSecretHint": "Client secret",
+  "adminWebhookSecret": "Webhook Secret",
+  "adminWebhookSecretHint": "Webhook signing secret",
+
+  "adminOauthProviders": "OAuth Providers",
+  "adminOauthProvidersDesc": "Configure OAuth integrations for user authentication.",
+  "adminEnterClientId": "Enter client ID",
+  "adminEnterClientSecret": "Enter client secret",
+  "adminCallbackUrl": "Callback URL",
+
+  "adminPricingPlans": "Pricing Plans",
+  "adminPricingPlansDesc": "Configure the pricing plans displayed on the website.",
+  "adminFreePlanName": "Free Plan Name",
+  "adminProPlanName": "Pro Plan Name",
+  "adminProPrice": "Pro Price",
+  "adminEnterprisePriceLabel": "Enterprise Price",
+  "adminBilling": "Billing",
+  "adminBillingUrl": "Billing URL",
+  "adminBillingUrlHint": "https://billing.example.com",
+
+  "adminSmartActionPrompts": "Smart Action Prompts",
+  "adminPromptsDesc": "Configure the system prompts used by the AI Smart Action when generating entities. Each entity type can have a custom prompt that controls the AI output format.",
+  "adminNewPrompt": "New Prompt",
+  "adminPromptKey": "Key",
+  "adminPromptKeyHint": "e.g. agent",
+  "adminPromptLabel": "Label",
+  "adminPromptLabelHint": "e.g. Agent",
+  "adminPromptDescription": "Description",
+  "adminPromptDescHint": "What this prompt does...",
+  "adminPromptSystemPrompt": "System Prompt",
+  "adminPromptSystemPromptHint": "The system prompt sent to the AI...",
+
+  "adminMetaTags": "Meta Tags",
+  "adminMetaTitle": "Meta Title",
+  "adminMetaTitleHint": "Page title for search engines",
+  "adminMetaDescription": "Meta Description",
+  "adminMetaDescHint": "Page description for search engines...",
+  "adminOgImageUrl": "Open Graph Image URL",
+  "adminSitemap": "Sitemap",
+  "adminAutoGenerateSitemap": "Auto-generate Sitemap",
+  "adminRobotsTxt": "robots.txt",
+
+  "adminSlackIntegration": "Slack Integration",
+  "adminEnableSlackBot": "Enable Slack Bot",
+  "adminSlackBotTokenHint": "xoxb-...",
+  "adminSigningSecret": "Signing Secret",
+  "adminSigningSecretHint": "Slack signing secret",
+  "adminSlackWebhookHint": "https://hooks.slack.com/services/...",
+
+  "adminSocialLinks": "Social Links",
+  "adminSocialLinksDesc": "Manage social platform links displayed on the website.",
+
+  "adminHeroSection": "Hero Section",
+  "adminHeroTitle": "Hero Title",
+  "adminHeroTitleHint": "Main headline",
+  "adminHeroSubtitle": "Hero Subtitle",
+  "adminHeroSubtitleHint": "Supporting text...",
+  "adminCallToAction": "Call to Action",
+  "adminButtonText": "Button Text",
+  "adminButtonTextHint": "Get Started",
+  "adminButtonUrl": "Button URL",
+  "adminSections": "Sections",
+  "adminShowFeaturesSection": "Show Features Section",
+  "adminShowTestimonialsSection": "Show Testimonials Section",
+  "adminHeroImage": "Hero Image",
+  "adminUploadHeroImage": "Upload Hero Image",
+
+  "settingsAccount": "Account",
+  "settingsProfile": "Profile",
+  "settingsAppearance": "Appearance",
+  "settingsPasswordNav": "Password",
+  "settingsSocialNav": "Social",
+  "settingsSecurity": "Security",
+  "settingsTwoFactor": "Two-Factor Auth",
+  "settingsPasskeys": "Passkeys",
+  "settingsSessions": "Sessions",
+  "settingsFeatures": "Features",
+  "settingsNotificationsNav": "Notifications",
+  "settingsHealthNav": "Health",
+  "settingsIntegrations": "Integrations",
+  "settingsDesktop": "Desktop",
+  "settingsDeveloper": "Developer",
+  "settingsApiTokens": "API Tokens",
+  "settingsAbout": "About",
+  "settingsReportIssue": "Report Issue",
+  "settingsAgentInstructions": "Agent Instructions",
+  "settingsAgentInstructionsDesc": "Manage CLAUDE.md sections for AI agent behavior",
+  "settingsClaudeSettings": "Claude Settings",
+  "settingsClaudeSettingsDesc": "Configure .claude/settings.json for Claude Code",
+  "agentInstructionsTitle": "Agent Instructions",
+  "agentInstructionsEmpty": "No CLAUDE.md found. Add a section to get started.",
+  "agentInstructionsSaved": "Agent instructions saved",
+  "agentInstructionsAddSection": "Add section",
+  "agentInstructionsSectionTitle": "Section title",
+  "agentInstructionsContentLabel": "Content (markdown)",
+  "claudeSettingsTitle": "Claude Settings",
+  "claudeSettingsSaved": "Claude settings saved",
+  "claudeSettingsModel": "Model",
+  "claudeSettingsMaxTurns": "Max turns",
+  "claudeSettingsPermissions": "Tool Permissions",
+  "claudeSettingsAllowedTools": "Allowed Tools",
+  "claudeSettingsNoRestrictions": "No tool restrictions (all tools allowed)",
+  "claudeSettingsAddTool": "Add tool",
+  "claudeSettingsAddToolTitle": "Add Allowed Tool",
+  "claudeSettingsAddToolHint": "e.g. mcp__orchestra__*",
+  "userSettingsSyncTitle": "Settings Sync",
+  "userSettingsSyncDesc": "Your settings sync across all devices via PowerSync",
+  "settingsAdministration": "Administration",
+  "settingsGeneral": "General",
+  "settingsHomepage": "Homepage",
+  "settingsAiAgents": "AI Agents",
+  "settingsEmail": "Email",
+  "settingsContact": "Contact",
+  "settingsPricing": "Pricing",
+  "settingsDownloads": "Downloads",
+  "settingsSeo": "SEO",
+  "settingsSmartPrompts": "Smart Prompts",
+  "settingsOther": "Other",
+
+  "adminOverview": "Overview",
+  "adminPeople": "People",
+  "adminUsers": "Users",
+  "adminRolesPermissions": "Roles & Permissions",
+  "adminTeams": "Teams",
+  "adminContent": "Content",
+  "adminPosts": "Posts",
+  "adminPages": "Pages",
+  "adminDocumentation": "Documentation",
+  "adminCategories": "Categories",
+  "adminCommunity": "Community",
+  "adminContactNav": "Contact",
+  "adminIssues": "Issues",
+  "adminMarketplaceNav": "Marketplace",
+  "adminSponsors": "Sponsors",
+  "adminSystem": "System",
+  "adminNotifications": "Notifications",
+
+  "healthSettingsNotifications": "Notifications",
+  "healthSettingsSleep": "Sleep",
+  "healthSettingsFailedToLoadProfile": "Failed to load health profile",
+  "healthSettingsWeightCheckin": "Weight Check-in",
+  "healthSettingsWeightCheckinSub": "Daily weight reminder",
+  "healthSettingsAlertTime": "Alert Time",
+  "healthSettingsAlertTimeSub": "When to remind you",
+  "healthSettingsDelayDays": "Delay Days",
+  "healthSettingsDelayDaysSub": "Days between reminders",
+  "healthSettingsDaysUnit": "days",
+  "healthSettingsHygieneReminder": "Hygiene Reminder",
+  "healthSettingsHygieneReminderSub": "Personal hygiene check-in",
+  "healthSettingsPomodoroStartAlert": "Pomodoro Start Alert",
+  "healthSettingsPomodoroStartAlertSub": "Heads-up before focus session",
+  "healthSettingsLeadTime": "Lead Time",
+  "healthSettingsLeadTimeStartSub": "Minutes before session starts",
+  "healthSettingsMinUnit": "min",
+  "healthSettingsPomodoroEndAlert": "Pomodoro End Alert",
+  "healthSettingsPomodoroEndAlertSub": "Heads-up before session ends",
+  "healthSettingsLeadTimeEndSub": "Minutes before session ends",
+  "healthSettingsHeartRateHigh": "Heart Rate High",
+  "healthSettingsHeartRateHighSub": "Upper threshold alert",
+  "healthSettingsBpmUnit": "bpm",
+  "healthSettingsHeartRateLow": "Heart Rate Low",
+  "healthSettingsHeartRateLowSub": "Lower threshold alert",
+  "healthSettingsMealReminder": "Meal Reminder",
+  "healthSettingsMealReminderSub": "Remember to log your meals",
+  "healthSettingsCoffeeTime": "Coffee Time",
+  "healthSettingsCoffeeTimeSub": "Caffeine cutoff alert",
+  "healthSettingsCutoffTime": "Cutoff Time",
+  "healthSettingsCutoffTimeSub": "Last coffee of the day",
+  "healthSettingsHydrationAlert": "Hydration Alert",
+  "healthSettingsHydrationAlertSub": "Periodic water reminders",
+  "healthSettingsAlertGap": "Alert Gap",
+  "healthSettingsAlertGapSub": "Minutes between reminders",
+  "healthSettingsMovementAlert": "Movement Alert",
+  "healthSettingsMovementAlertSub": "Stand up and stretch",
+  "healthSettingsInterval": "Interval",
+  "healthSettingsIntervalSub": "Minutes between movement prompts",
+  "healthSettingsGerdWarning": "GERD Warning",
+  "healthSettingsGerdWarningSub": "Minutes before shutdown to warn",
+  "healthSettingsBedtime": "Bedtime",
+  "healthSettingsBedtimeSub": "Target sleep time",
+  "healthSettingsShutdownWindow": "Shutdown Window",
+  "healthSettingsShutdownWindowSub": "Hours before bedtime to start winding down",
+  "healthSettingsHrsUnit": "hrs",
+
+  "notifSettingsPushNotifications": "Push notifications",
+  "notifSettingsPushNotificationsSub": "Receive alerts on this device",
+  "notifSettingsSyncNotifications": "Sync notifications",
+  "notifSettingsSyncNotificationsSub": "Alerts when team members update shared entities",
+  "notifSettingsEmailDigests": "Email digests",
+  "notifSettingsEmailDigestsSub": "Weekly summary of activity",
+  "notifSettingsHealthReminders": "Health reminders",
+  "notifSettingsHealthRemindersSub": "Water, posture and movement prompts",
+  "notifSettingsPomodoroAlerts": "Pomodoro alerts",
+  "notifSettingsPomodoroAlertsSub": "Session start, break and end sounds",
+  "notifSettingsNotifications": "Notifications",
+  "notifSettingsAiAgent": "AI Agent",
+  "notifSettingsFailedToLoadPreferences": "Failed to load preferences",
+  "notifSettingsAiPushNotifications": "AI push notifications",
+  "notifSettingsAiPushNotificationsSub": "Desktop alerts when agent needs attention",
+  "notifSettingsAiVoiceAlerts": "AI voice alerts",
+  "notifSettingsAiVoiceAlertsSub": "Speak notifications aloud via TTS",
+  "notifSettingsPushToConnectedApps": "Push to connected apps",
+  "notifSettingsPushToConnectedAppsSub": "Send notifications to mobile & web via tunnel",
+  "notifSettingsCouldNotLoadAiSettings": "Could not load AI settings",
+  "notifSettingsVoiceAndSchedule": "Voice & Schedule",
+  "notifSettingsVoice": "Voice",
+  "notifSettingsSystemDefault": "System default",
+  "notifSettingsSpeed": "Speed",
+  "notifSettingsSpeedDefault": "Default",
+  "notifSettingsSpeedWpm": "{speed} wpm",
+  "@notifSettingsSpeedWpm": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "notifSettingsQuietHours": "Quiet hours",
+  "notifSettingsQuietHoursOff": "Off",
+  "notifSettingsQuietHoursRange": "{start} – {end}",
+  "@notifSettingsQuietHoursRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+
+  "aboutSettingsAppInfo": "App Info",
+  "aboutSettingsOrchestra": "Orchestra",
+  "aboutSettingsAiAgenticFirstIde": "AI Agentic First IDE",
+  "aboutSettingsVersion": "Version",
+  "aboutSettingsBuild": "Build",
+  "aboutSettingsSupport": "Support",
+  "aboutSettingsIssueHistory": "Issue History",
+  "aboutSettingsLegal": "Legal",
+  "aboutSettingsOpenSourceLicenses": "Open Source Licenses",
+  "aboutSettingsPrivacyPolicy": "Privacy Policy",
+  "aboutSettingsTermsOfService": "Terms of Service",
+  "aboutSettingsNoIssuesReported": "No issues reported yet.",
+  "aboutSettingsUpToDate": "Up to date",
+  "aboutSettingsCheckingForUpdates": "Checking for updates...",
+  "aboutSettingsVersionAvailable": "v{version} available",
+  "@aboutSettingsVersionAvailable": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutSettingsDownloadingVersion": "Downloading v{version}...",
+  "@aboutSettingsDownloadingVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutSettingsReadyToInstall": "v{version} ready — restart to apply",
+  "@aboutSettingsReadyToInstall": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutSettingsUpdateCheckFailed": "Update check failed",
+
+  "appearanceSettingsEnglish": "English",
+  "appearanceSettingsArabicRtl": "Arabic (RTL)",
+
+  "summaryUser": "User",
+  "@summaryUser": {
+    "description": "Default username fallback on summary screen"
+  },
+
+  "onboardingWelcomeTitle": "Welcome to Orchestra",
+  "@onboardingWelcomeTitle": {
+    "description": "Onboarding page 1 title"
+  },
+  "onboardingWelcomeSubtitle": "Your intelligent workspace for managing projects, agents, and\nworkflows — all in one place.",
+  "@onboardingWelcomeSubtitle": {
+    "description": "Onboarding page 1 subtitle"
+  },
+  "onboardingFeaturesTitle": "Powerful Features",
+  "@onboardingFeaturesTitle": {
+    "description": "Onboarding page 2 title"
+  },
+  "onboardingFeaturesSubtitle": "Create features, track progress through gated phases, and let\nAI agents handle the heavy lifting.",
+  "@onboardingFeaturesSubtitle": {
+    "description": "Onboarding page 2 subtitle"
+  },
+  "onboardingHealthTitle": "Stay Healthy",
+  "@onboardingHealthTitle": {
+    "description": "Onboarding page 3 title"
+  },
+  "onboardingHealthSubtitle": "Orchestra monitors your focus sessions and reminds you to\ntake breaks, hydrate, and move.",
+  "@onboardingHealthSubtitle": {
+    "description": "Onboarding page 3 subtitle"
+  },
+  "onboardingGetStartedTitle": "Get Started",
+  "@onboardingGetStartedTitle": {
+    "description": "Onboarding page 4 title"
+  },
+  "onboardingGetStartedSubtitle": "Sign in or create an account to begin. Your data stays\nsecure and synced across all your devices.",
+  "@onboardingGetStartedSubtitle": {
+    "description": "Onboarding page 4 subtitle"
+  },
+  "onboardingSkip": "Skip",
+  "@onboardingSkip": {
+    "description": "Skip button on onboarding screen"
+  },
+  "onboardingSkipAccessibility": "Skip onboarding",
+  "@onboardingSkipAccessibility": {
+    "description": "Accessibility label for skip onboarding button"
+  },
+  "onboardingPreviousPageAccessibility": "Go to previous page",
+  "@onboardingPreviousPageAccessibility": {
+    "description": "Accessibility label for back button on onboarding"
+  },
+  "onboardingNextPageAccessibility": "Next page",
+  "@onboardingNextPageAccessibility": {
+    "description": "Accessibility label for next button on onboarding"
+  },
+  "onboardingGetStartedAccessibility": "Get started",
+  "@onboardingGetStartedAccessibility": {
+    "description": "Accessibility label for get started button on onboarding"
+  },
+  "onboardingPageIndicator": "Page {current} of {total}",
+  "@onboardingPageIndicator": {
+    "description": "Accessibility label for page indicator dots",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "terminalNoMatchingSessions": "No matching sessions",
+  "@terminalNoMatchingSessions": {
+    "description": "Empty state when terminal search yields no results"
+  },
+  "terminalTypeLocal": "Local",
+  "@terminalTypeLocal": {
+    "description": "Terminal session type label for local shell"
+  },
+  "terminalTypeSsh": "SSH",
+  "@terminalTypeSsh": {
+    "description": "Terminal session type label for SSH"
+  },
+  "terminalTypeClaude": "Claude",
+  "@terminalTypeClaude": {
+    "description": "Terminal session type label for Claude AI"
+  },
+  "terminalTypeRemote": "Remote",
+  "@terminalTypeRemote": {
+    "description": "Terminal session type label for remote connection"
+  },
+  "terminalCreateToStart": "Create a session to get started",
+  "@terminalCreateToStart": {
+    "description": "Empty state subtitle on terminal screen"
+  },
+  "terminalNoMachinesOnline": "No machines online. Start Orchestra on your desktop.",
+  "@terminalNoMachinesOnline": {
+    "description": "Snackbar message when no remote machines are available"
+  },
+  "terminalConnectionFailed": "Connection failed: {error}",
+  "@terminalConnectionFailed": {
+    "description": "Snackbar message when remote terminal connection fails",
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "timeout"
+      }
+    }
+  },
+  "terminalLocalTitle": "Local Terminal",
+  "@terminalLocalTitle": {
+    "description": "Title for local terminal option in create sheet"
+  },
+  "terminalLocalSubtitle": "Shell on this machine",
+  "@terminalLocalSubtitle": {
+    "description": "Subtitle for local terminal option in create sheet"
+  },
+  "terminalSshSubtitle": "Connect to a remote host",
+  "@terminalSshSubtitle": {
+    "description": "Subtitle for SSH option in create sheet"
+  },
+  "terminalClaudeTitle": "Claude Code",
+  "@terminalClaudeTitle": {
+    "description": "Title for Claude Code option in create sheet"
+  },
+  "terminalClaudeSubtitle": "AI coding assistant",
+  "@terminalClaudeSubtitle": {
+    "description": "Subtitle for Claude Code option in create sheet"
+  },
+  "terminalRemoteTitle": "Remote Terminal",
+  "@terminalRemoteTitle": {
+    "description": "Title for remote terminal option in create sheet"
+  },
+  "terminalRemoteSubtitle": "Auto-detect: local WiFi or cloud tunnel",
+  "@terminalRemoteSubtitle": {
+    "description": "Subtitle for remote terminal option in create sheet"
+  },
+
+  "syncConflictLocalVersion": "Local v{version}",
+  "@syncConflictLocalVersion": {
+    "placeholders": {
+      "version": { "type": "int" }
+    }
+  },
+  "syncConflictRemoteVersion": "Remote v{version}",
+  "@syncConflictRemoteVersion": {
+    "placeholders": {
+      "version": { "type": "int" }
+    }
+  },
+  "syncConflictEmpty": "(empty)",
+  "syncConflictText": "text",
+
+  "updateBannerAvailable": "Orchestra v{version} is available",
+  "@updateBannerAvailable": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+  "updateBannerDownloading": "Downloading v{version}...",
+  "@updateBannerDownloading": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+  "updateBannerReady": "v{version} downloaded — restart to apply",
+  "@updateBannerReady": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
+  "updateBannerRestart": "Restart",
+  "updateBannerDismiss": "Dismiss",
+
+  "iconPickerSemantics": "Icon picker",
+  "iconPickerOptionSemantics": "Icon option",
+  "colorPickerSemantics": "Colour picker",
+  "colorPickerSwatchSemantics": "Colour swatch",
+
+  "terminalSessionSubtitle": "Terminal session",
+
+  "markAllNotificationsReadSemantics": "Mark all notifications as read",
+  "notificationRead": "read",
+  "notificationUnread": "unread",
+
+  "activityTitle": "Activity",
+  "activityNoActivityYet": "No activity yet",
+  "activityMcpToolCalls": "MCP tool calls will appear here",
+  "activityActionsCount": "{count} actions",
+  "@activityActionsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "activityFilterAll": "All",
+  "activityJustNow": "just now",
+  "activityMinutesAgo": "{minutes}m ago",
+  "@activityMinutesAgo": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "activityHoursAgo": "{hours}h ago",
+  "@activityHoursAgo": {
+    "placeholders": {
+      "hours": { "type": "int" }
+    }
+  },
+
+  "emailAddressHint": "Email address",
+  "noTeamSelected": "No team selected",
+  "createOrJoinTeamHint": "Create or join a team to manage settings here.",
+  "membersSection": "Members",
+  "dangerZoneTitle": "Danger Zone",
+  "deleteTeamPermanentlyDesc": "Permanently delete this team and all its data",
+  "removeThisWillRemoveFromTeam": "This will remove them from the team.",
+  "deleteTeamAllDataWarning": "This will permanently delete the team and all its data. This action cannot be undone.",
+
+  "orchestraLogoSemantics": "Orchestra logo",
+
+  "newSessionTooltip": "New session",
+  "newSessionTerminal": "Terminal",
+  "newSessionSsh": "SSH",
+  "newSessionClaude": "Claude",
+
+  "editorDescribeWhatYouWant": "Describe what you want",
+  "entityPlan": "Plan",
+  "entityRequest": "Request",
+
+  "goBackSemantics": "Go back",
+
+  "featureDetailsTitle": "Details",
+  "featureAssigneeLabel": "Assignee",
+  "featureEstimateLabel": "Estimate",
+  "featureProjectLabel": "Project",
+  "featureLabelsLabel": "Labels",
+  "featureUnassigned": "Unassigned",
+  "failedToLoadFeature": "Failed to load feature",
+  "featureNoDescription": "No description",
+
+  "managedByOrchestra": "Managed by Orchestra MCP",
+
+  "dashboardTitle": "Dashboard",
+  "@dashboardTitle": {
+    "description": "Dashboard page title"
+  },
+  "dashboardActiveProjects": "Active Projects",
+  "@dashboardActiveProjects": {
+    "description": "Dashboard stat card label for active projects"
+  },
+  "dashboardInProgressFeatures": "In-Progress Features",
+  "@dashboardInProgressFeatures": {
+    "description": "Dashboard stat card label for in-progress features"
+  },
+  "dashboardOpenBugs": "Open Bugs",
+  "@dashboardOpenBugs": {
+    "description": "Dashboard stat card label for open bugs"
+  },
+  "dashboardInReview": "In Review",
+  "@dashboardInReview": {
+    "description": "Dashboard stat card label for items in review"
+  },
+  "dashboardRecentActivity": "Recent Activity",
+  "@dashboardRecentActivity": {
+    "description": "Dashboard section header for recent activity"
+  },
+  "dashboardFeatCompleted": "FEAT-WVS completed",
+  "@dashboardFeatCompleted": {
+    "description": "Placeholder activity: feature completed"
+  },
+  "dashboardFeatCompletedSub": "AI insight engine — 2 min ago",
+  "@dashboardFeatCompletedSub": {
+    "description": "Placeholder activity subtitle: feature completed"
+  },
+  "dashboardFeatAdvanced": "FEAT-BHF advanced to in-review",
+  "@dashboardFeatAdvanced": {
+    "description": "Placeholder activity: feature advanced"
+  },
+  "dashboardFeatAdvancedSub": "Nutrition manager — 15 min ago",
+  "@dashboardFeatAdvancedSub": {
+    "description": "Placeholder activity subtitle: feature advanced"
+  },
+  "dashboardBugReported": "Bug reported on FEAT-UJV",
+  "@dashboardBugReported": {
+    "description": "Placeholder activity: bug reported"
+  },
+  "dashboardBugReportedSub": "Web auth storage — 1 h ago",
+  "@dashboardBugReportedSub": {
+    "description": "Placeholder activity subtitle: bug reported"
+  },
+  "dashboardNewSession": "New session started",
+  "@dashboardNewSession": {
+    "description": "Placeholder activity: new session"
+  },
+  "dashboardNewSessionSub": "claude-sonnet-4-6 — 2 h ago",
+  "@dashboardNewSessionSub": {
+    "description": "Placeholder activity subtitle: new session"
+  },
+  "dashboardHydrationGoal": "Hydration goal reached",
+  "@dashboardHydrationGoal": {
+    "description": "Placeholder activity: hydration goal"
+  },
+  "dashboardHydrationGoalSub": "2500 ml — 3 h ago",
+  "@dashboardHydrationGoalSub": {
+    "description": "Placeholder activity subtitle: hydration goal"
+  },
+
+  "userDetailMinCharacters": "Min 8 characters",
+  "@userDetailMinCharacters": {
+    "description": "Password hint for minimum character count"
+  },
+  "userDetailNoProjects": "No Projects",
+  "@userDetailNoProjects": {
+    "description": "Empty state label when user has no projects"
+  },
+  "userDetailNoProjectsDesc": "This user has no projects yet",
+  "@userDetailNoProjectsDesc": {
+    "description": "Empty state description when user has no projects"
+  },
+  "userDetailNoNotes": "No Notes",
+  "@userDetailNoNotes": {
+    "description": "Empty state label when user has no notes"
+  },
+  "userDetailNoNotesDesc": "This user has no notes yet",
+  "@userDetailNoNotesDesc": {
+    "description": "Empty state description when user has no notes"
+  },
+  "userDetailNoChats": "No Chats",
+  "@userDetailNoChats": {
+    "description": "Empty state label when user has no chats"
+  },
+  "userDetailNoChatsDesc": "This user has no chat sessions yet",
+  "@userDetailNoChatsDesc": {
+    "description": "Empty state description when user has no chats"
+  },
+  "userDetailNoTeams": "No Teams",
+  "@userDetailNoTeams": {
+    "description": "Empty state label when user has no teams"
+  },
+  "userDetailNoTeamsDesc": "This user is not a member of any team",
+  "@userDetailNoTeamsDesc": {
+    "description": "Empty state description when user has no teams"
+  },
+  "userDetailNoIssues": "No Issues",
+  "@userDetailNoIssues": {
+    "description": "Empty state label when user has no issues"
+  },
+  "userDetailNoIssuesDesc": "This user has no reported issues",
+  "@userDetailNoIssuesDesc": {
+    "description": "Empty state description when user has no issues"
+  },
+
+  "workflowTeamBadge": "TEAM",
+  "@workflowTeamBadge": {
+    "description": "Badge label for team-scoped workflows"
+  },
+  "workflowInstalling": "Installing \"{name}\"...",
+  "@workflowInstalling": {
+    "description": "Snackbar message when installing a workflow",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowByAuthor": "by {author}",
+  "@workflowByAuthor": {
+    "description": "Workflow author attribution",
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "workflowRatingsCount": "{rating} ({count} ratings)",
+  "@workflowRatingsCount": {
+    "description": "Rating display with count",
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "workflowDownloadsCount": "{count} downloads",
+  "@workflowDownloadsCount": {
+    "description": "Download count display",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "workflowSkills": "Skills",
+  "@workflowSkills": {
+    "description": "Workflow content type: skills"
+  },
+  "workflowAgents": "Agents",
+  "@workflowAgents": {
+    "description": "Workflow content type: agents"
+  },
+  "workflowHooks": "Hooks",
+  "@workflowHooks": {
+    "description": "Workflow content type: hooks"
+  },
+
+  "columnId": "ID",
+  "@columnId": {
+    "description": "Table column header for ID"
+  },
+  "columnTitle": "TITLE",
+  "@columnTitle": {
+    "description": "Table column header for title"
+  },
+  "columnProject": "PROJECT",
+  "@columnProject": {
+    "description": "Table column header for project"
+  },
+  "columnStatus": "STATUS",
+  "@columnStatus": {
+    "description": "Table column header for status"
+  },
+  "columnPriority": "PRIORITY",
+  "@columnPriority": {
+    "description": "Table column header for priority"
+  },
+  "columnKind": "KIND",
+  "@columnKind": {
+    "description": "Table column header for kind"
+  },
+
+  "smartActionSummarize": "Summarize",
+  "@smartActionSummarize": {
+    "description": "Smart action bar label: summarize"
+  },
+  "smartActionExplain": "Explain",
+  "@smartActionExplain": {
+    "description": "Smart action bar label: explain"
+  },
+  "smartActionFix": "Fix",
+  "@smartActionFix": {
+    "description": "Smart action bar label: fix"
+  },
+  "smartActionTranslate": "Translate",
+  "@smartActionTranslate": {
+    "description": "Smart action bar label: translate"
+  },
+  "smartActionCustom": "Custom",
+  "@smartActionCustom": {
+    "description": "Smart action bar label: custom"
+  },
+
+  "activityFeedTitle": "Activity Feed",
+  "@activityFeedTitle": {
+    "description": "Activity feed page title"
+  },
+  "activityCount": "{count} activities",
+  "@activityCount": {
+    "description": "Count of activities displayed",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activityNewCount": "{count} new activities",
+  "@activityNewCount": {
+    "description": "Count of new unread activities",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activityAllTypes": "All Types",
+  "@activityAllTypes": {
+    "description": "Filter chip to show all activity types"
+  },
+  "activityAllMembers": "All Members",
+  "@activityAllMembers": {
+    "description": "Filter chip to show all team members"
+  },
+  "activityNoMatchingFilters": "No activities match your filters",
+  "@activityNoMatchingFilters": {
+    "description": "Empty state when no activities match filters"
+  },
+
+  "smartActionSummarizeDesc": "Create a concise summary",
+  "@smartActionSummarizeDesc": {
+    "description": "Description for summarize smart action"
+  },
+  "smartActionExplainDesc": "Explain in simple terms",
+  "@smartActionExplainDesc": {
+    "description": "Description for explain smart action"
+  },
+  "smartActionFixDesc": "Fix errors and issues",
+  "@smartActionFixDesc": {
+    "description": "Description for fix smart action"
+  },
+  "smartActionTranslateDesc": "Translate to another language",
+  "@smartActionTranslateDesc": {
+    "description": "Description for translate smart action"
+  },
+  "smartActionCustomPrompt": "Custom prompt",
+  "@smartActionCustomPrompt": {
+    "description": "Label for custom prompt smart action"
+  },
+  "smartActionCustomPromptDesc": "Write your own instruction",
+  "@smartActionCustomPromptDesc": {
+    "description": "Description for custom prompt smart action"
+  },
+
+  "terminalLabelDefault": "Terminal",
+  "@terminalLabelDefault": {
+    "description": "Default label for a terminal session"
+  },
+  "terminalClaudeCode": "Claude Code",
+  "@terminalClaudeCode": {
+    "description": "Label for Claude Code terminal sessions"
+  },
+  "terminalRemoteLabel": "Remote Terminal",
+  "@terminalRemoteLabel": {
+    "description": "Label for remote terminal sessions"
+  },
+  "terminalDesktopOnly": "Local terminal is only available on desktop",
+  "@terminalDesktopOnly": {
+    "description": "Error message when trying to open local terminal on non-desktop"
+  },
+  "terminalClaudeDesktopOnly": "Claude Code terminal is only available on desktop",
+  "@terminalClaudeDesktopOnly": {
+    "description": "Error message when trying to open Claude terminal on non-desktop"
+  },
+
+  "delegationSnackbarView": "View",
+  "@delegationSnackbarView": {
+    "description": "Snackbar action to view delegation details"
+  },
+
+  "agentNotifDelegationRequest": "Delegation Request",
+  "@agentNotifDelegationRequest": {
+    "description": "Notification title for delegation requests"
+  },
+  "agentNotifPermissionRequired": "Permission Required",
+  "@agentNotifPermissionRequired": {
+    "description": "Notification title for permission requests"
+  },
+  "agentNotifReviewRequested": "Review Requested",
+  "@agentNotifReviewRequested": {
+    "description": "Notification title for review requests"
+  },
+  "agentNotifAttentionNeeded": "Agent Attention Needed",
+  "@agentNotifAttentionNeeded": {
+    "description": "Default notification title when agent needs attention"
+  },
+  "agentNotifNeedsAttention": "Agent needs your attention — {entityType}",
+  "@agentNotifNeedsAttention": {
+    "description": "Notification body when agent needs attention",
+    "placeholders": {
+      "entityType": {
+        "type": "String"
+      }
+    }
+  },
+  "agentNotifSpawned": "Agent Spawned",
+  "@agentNotifSpawned": {
+    "description": "Notification title when an agent is spawned"
+  },
+  "agentNotifSpawnedBody": "A {agentType} agent started working",
+  "@agentNotifSpawnedBody": {
+    "description": "Notification body when an agent is spawned",
+    "placeholders": {
+      "agentType": {
+        "type": "String"
+      }
+    }
+  },
+
+  "healthNotifHydrationTitle": "Time to hydrate",
+  "@healthNotifHydrationTitle": {
+    "description": "Hydration reminder notification title"
+  },
+  "healthNotifHydrationBody": "Drink a glass of water to stay on track.",
+  "@healthNotifHydrationBody": {
+    "description": "Hydration reminder notification body"
+  },
+  "healthNotifShortBreak": "Short break time",
+  "@healthNotifShortBreak": {
+    "description": "Pomodoro short break notification title"
+  },
+  "healthNotifLongBreak": "Long break time",
+  "@healthNotifLongBreak": {
+    "description": "Pomodoro long break notification title"
+  },
+  "healthNotifPomodoroBody": "Stand up, stretch, and rest your eyes.",
+  "@healthNotifPomodoroBody": {
+    "description": "Pomodoro break notification body"
+  },
+  "healthNotifBreakOver": "Break is over",
+  "@healthNotifBreakOver": {
+    "description": "Pomodoro work start notification title"
+  },
+  "healthNotifBreakOverBody": "Time to focus! Start your next pomodoro.",
+  "@healthNotifBreakOverBody": {
+    "description": "Pomodoro work start notification body"
+  },
+  "healthNotifShutdownApproaching": "Shutdown approaching",
+  "@healthNotifShutdownApproaching": {
+    "description": "Shutdown lead reminder notification title"
+  },
+  "healthNotifShutdownApproachingBody": "Your shutdown routine starts in {minutes} minutes.",
+  "@healthNotifShutdownApproachingBody": {
+    "description": "Shutdown lead reminder notification body",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "healthNotifShutdownNow": "Time to shut down",
+  "@healthNotifShutdownNow": {
+    "description": "Shutdown main reminder notification title"
+  },
+  "healthNotifShutdownNowBody": "Begin your evening wind-down routine now.",
+  "@healthNotifShutdownNowBody": {
+    "description": "Shutdown main reminder notification body"
+  },
+  "healthNotifWeightTitle": "Weight check-in",
+  "@healthNotifWeightTitle": {
+    "description": "Weight check-in reminder notification title"
+  },
+  "healthNotifWeightBody": "Step on the scale and log your weight.",
+  "@healthNotifWeightBody": {
+    "description": "Weight check-in reminder notification body"
+  },
+  "healthNotifMealTitle": "Log your meal",
+  "@healthNotifMealTitle": {
+    "description": "Meal logging reminder notification title"
+  },
+  "healthNotifMealBody": "Record what you ate to keep your nutrition on track.",
+  "@healthNotifMealBody": {
+    "description": "Meal logging reminder notification body"
+  },
+  "healthNotifCoffeeTitle": "Coffee cutoff",
+  "@healthNotifCoffeeTitle": {
+    "description": "Coffee cutoff alert notification title"
+  },
+  "healthNotifCoffeeBody": "No more caffeine after this point for better sleep.",
+  "@healthNotifCoffeeBody": {
+    "description": "Coffee cutoff alert notification body"
+  },
+  "healthNotifMovementTitle": "Time to move",
+  "@healthNotifMovementTitle": {
+    "description": "Movement reminder notification title"
+  },
+  "healthNotifMovementBody": "Stand up, stretch, and take a short walk.",
+  "@healthNotifMovementBody": {
+    "description": "Movement reminder notification body"
+  },
+  "healthNotifHeartHigh": "High heart rate detected",
+  "@healthNotifHeartHigh": {
+    "description": "High heart rate alert notification title"
+  },
+  "healthNotifHeartLow": "Low heart rate detected",
+  "@healthNotifHeartLow": {
+    "description": "Low heart rate alert notification title"
+  },
+  "healthNotifHeartBody": "Your heart rate is {bpm} bpm. Consider resting and monitoring.",
+  "@healthNotifHeartBody": {
+    "description": "Heart rate alert notification body",
+    "placeholders": {
+      "bpm": {
+        "type": "int"
+      }
+    }
+  },
+  "healthNotifHygieneTitle": "Hygiene check-in",
+  "@healthNotifHygieneTitle": {
+    "description": "Hygiene reminder notification title"
+  },
+  "healthNotifHygieneBody": "Time for your personal hygiene routine.",
+  "@healthNotifHygieneBody": {
+    "description": "Hygiene reminder notification body"
+  },
+  "healthNotifGerdTitle": "GERD warning",
+  "@healthNotifGerdTitle": {
+    "description": "GERD warning notification title"
+  },
+  "healthNotifGerdBody": "Stop eating now to avoid reflux before bed.",
+  "@healthNotifGerdBody": {
+    "description": "GERD warning notification body"
+  },
+
+  "vitalsMin": "Min: {value}",
+  "@vitalsMin": {
+    "description": "Minimum heart rate display",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "vitalsMax": "Max: {value}",
+  "@vitalsMax": {
+    "description": "Maximum heart rate display",
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "vitalsMetabolicTarget": "target < 35",
+  "@vitalsMetabolicTarget": {
+    "description": "Hint for metabolic age target"
+  },
+
+  "notifSectionAiAgent": "AI Agent",
+  "@notifSectionAiAgent": {
+    "description": "Notification settings section title for AI agent"
+  },
+  "notifAiPush": "AI push notifications",
+  "@notifAiPush": {
+    "description": "Toggle label for AI push notifications"
+  },
+  "notifAiPushSubtitle": "Desktop alerts when agent needs attention",
+  "@notifAiPushSubtitle": {
+    "description": "Subtitle for AI push notifications toggle"
+  },
+  "notifAiVoice": "AI voice alerts",
+  "@notifAiVoice": {
+    "description": "Toggle label for AI voice alerts"
+  },
+  "notifAiVoiceSubtitle": "Speak notifications aloud via TTS",
+  "@notifAiVoiceSubtitle": {
+    "description": "Subtitle for AI voice alerts toggle"
+  },
+  "notifPushConnected": "Push to connected apps",
+  "@notifPushConnected": {
+    "description": "Toggle label for pushing to connected apps"
+  },
+  "notifPushConnectedSubtitle": "Send notifications to mobile & web via tunnel",
+  "@notifPushConnectedSubtitle": {
+    "description": "Subtitle for push to connected apps toggle"
+  },
+  "notifSectionVoiceSchedule": "Voice & Schedule",
+  "@notifSectionVoiceSchedule": {
+    "description": "Notification settings section title for voice & schedule"
+  },
+  "notifVoiceLabel": "Voice",
+  "@notifVoiceLabel": {
+    "description": "Voice configuration row label"
+  },
+  "notifSystemDefault": "System default",
+  "@notifSystemDefault": {
+    "description": "Fallback value when no custom voice is set"
+  },
+  "notifSpeedLabel": "Speed",
+  "@notifSpeedLabel": {
+    "description": "Voice speed configuration row label"
+  },
+  "notifDefaultLabel": "Default",
+  "@notifDefaultLabel": {
+    "description": "Default value display for voice settings"
+  },
+  "notifSpeedWpm": "{speed} wpm",
+  "@notifSpeedWpm": {
+    "description": "Voice speed in words per minute",
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "notifVolumeLabel": "Volume",
+  "@notifVolumeLabel": {
+    "description": "Voice volume configuration row label"
+  },
+  "notifQuietHours": "Quiet hours",
+  "@notifQuietHours": {
+    "description": "Quiet hours configuration row label"
+  },
+  "notifQuietOff": "Off",
+  "@notifQuietOff": {
+    "description": "Quiet hours disabled display"
+  },
+  "notifQuietRange": "{start} – {end}",
+  "@notifQuietRange": {
+    "description": "Quiet hours time range display",
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "notifVoiceName": "Voice Name",
+  "@notifVoiceName": {
+    "description": "Dialog title for editing voice name"
+  },
+  "notifVoiceNameHint": "e.g. Samantha",
+  "@notifVoiceNameHint": {
+    "description": "Hint text for voice name input"
+  },
+  "notifSpeedWpmLabel": "Speed (words/min)",
+  "@notifSpeedWpmLabel": {
+    "description": "Dialog title for editing voice speed"
+  },
+  "notifSpeedHint": "e.g. 180",
+  "@notifSpeedHint": {
+    "description": "Hint text for speed input"
+  },
+  "notifVolumeRange": "Volume (0.0-1.0)",
+  "@notifVolumeRange": {
+    "description": "Dialog title for editing volume"
+  },
+  "notifVolumeHint": "e.g. 0.8",
+  "@notifVolumeHint": {
+    "description": "Hint text for volume input"
+  },
+  "notifQuietHoursTitle": "Quiet Hours",
+  "@notifQuietHoursTitle": {
+    "description": "Dialog title for editing quiet hours"
+  },
+  "notifQuietStart": "Start (HH:MM)",
+  "@notifQuietStart": {
+    "description": "Label for quiet hours start time"
+  },
+  "notifQuietStartHint": "22:00",
+  "@notifQuietStartHint": {
+    "description": "Hint for quiet hours start time"
+  },
+  "notifQuietEnd": "End (HH:MM)",
+  "@notifQuietEnd": {
+    "description": "Label for quiet hours end time"
+  },
+  "notifQuietEndHint": "08:00",
+  "@notifQuietEndHint": {
+    "description": "Hint for quiet hours end time"
+  },
+  "notifTurnOff": "Turn Off",
+  "@notifTurnOff": {
+    "description": "Button to turn off quiet hours"
+  },
+  "notifFailedToSave": "Failed to save: {error}",
+  "@notifFailedToSave": {
+    "description": "Error message when saving notification settings fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "notifCouldNotLoad": "Could not load settings",
+  "@notifCouldNotLoad": {
+    "description": "Error message when loading notification settings fails"
+  },
+
+  "categoryAll": "All",
+  "@categoryAll": {
+    "description": "Category filter chip: all"
+  },
+  "categoryWeb": "Web",
+  "@categoryWeb": {
+    "description": "Category filter chip: web"
+  },
+  "categoryMobile": "Mobile",
+  "@categoryMobile": {
+    "description": "Category filter chip: mobile"
+  },
+  "categoryBackend": "Backend",
+  "@categoryBackend": {
+    "description": "Category filter chip: backend"
+  },
+  "categorySystems": "Systems",
+  "@categorySystems": {
+    "description": "Category filter chip: systems"
+  },
+  "categoryDevOps": "DevOps",
+  "@categoryDevOps": {
+    "description": "Category filter chip: devops"
+  },
+  "categoryData": "Data",
+  "@categoryData": {
+    "description": "Category filter chip: data"
+  },
+  "categoryManagement": "Management",
+  "@categoryManagement": {
+    "description": "Category filter chip: management"
+  },
+
+  "moreOptionsSemantics": "More options",
+  "@moreOptionsSemantics": {
+    "description": "Semantics label for the three-dot context menu button"
+  },
+
+  "searchDotDotDot": "Search...",
+  "@searchDotDotDot": {
+    "description": "Placeholder text in the desktop shell search bar"
+  },
+
+  "newEntityTitle": "New {entity}",
+  "@newEntityTitle": {
+    "description": "Title when creating a new entity",
+    "placeholders": {
+      "entity": { "type": "String" }
+    }
+  },
+  "editEntityTitle": "Edit {entity}",
+  "@editEntityTitle": {
+    "description": "Title when editing an existing entity",
+    "placeholders": {
+      "entity": { "type": "String" }
+    }
+  },
+  "systemPromptHint": "System prompt (Markdown)...",
+  "@systemPromptHint": {
+    "description": "Hint text for agent body editor"
+  },
+  "docContentHint": "Document content (Markdown)...",
+  "@docContentHint": {
+    "description": "Hint text for doc body editor"
+  },
+  "descriptionMarkdownHint": "Description (Markdown)...",
+  "@descriptionMarkdownHint": {
+    "description": "Hint text for generic entity body editor"
+  },
+  "describeWhatYouWant": "Describe what you want...",
+  "@describeWhatYouWant": {
+    "description": "Hint text for the smart action prompt input"
+  },
+  "fieldIsRequired": "{field} is required",
+  "@fieldIsRequired": {
+    "description": "Validation message when a required field is empty",
+    "placeholders": {
+      "field": { "type": "String" }
+    }
+  },
+  "selectFieldHint": "Select {field}",
+  "@selectFieldHint": {
+    "description": "Hint text for dropdown field selection",
+    "placeholders": {
+      "field": { "type": "String" }
+    }
+  },
+
+  "pmProjects": "Projects",
+  "@pmProjects": {
+    "description": "Sidebar header in project manager screen"
+  },
+  "pmFeaturesComplete": "{done}/{total} features complete",
+  "@pmFeaturesComplete": {
+    "description": "Feature completion count in project manager",
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "pmNoItems": "No items",
+  "@pmNoItems": {
+    "description": "Empty state text in kanban column"
+  },
+  "pmNAssigned": "{count} assigned",
+  "@pmNAssigned": {
+    "description": "Number of features assigned to a team member",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "pmNCompleted": "{count} completed",
+  "@pmNCompleted": {
+    "description": "Number of features completed by a team member",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "pmReports": "Reports",
+  "@pmReports": {
+    "description": "Reports section header"
+  },
+  "pmBurndownChart": "Burn-down Chart",
+  "@pmBurndownChart": {
+    "description": "Burn-down chart title"
+  },
+  "pmCompletion": "Completion",
+  "@pmCompletion": {
+    "description": "Completion donut chart title"
+  },
+  "pmVelocityMetrics": "Velocity Metrics",
+  "@pmVelocityMetrics": {
+    "description": "Velocity metrics card title"
+  },
+  "pmFeaturesDone": "Features Done",
+  "@pmFeaturesDone": {
+    "description": "Velocity metric: features done"
+  },
+  "pmInProgress": "In Progress",
+  "@pmInProgress": {
+    "description": "Velocity metric: in progress"
+  },
+  "pmBlockedReview": "Blocked / Review",
+  "@pmBlockedReview": {
+    "description": "Velocity metric: blocked or in review"
+  },
+  "pmAvgCycleTime": "Avg. Cycle Time",
+  "@pmAvgCycleTime": {
+    "description": "Velocity metric: average cycle time"
+  },
+  "pmThroughput7d": "Throughput (7d)",
+  "@pmThroughput7d": {
+    "description": "Velocity metric: throughput over 7 days"
+  },
+  "pmNFeatures": "{count} features",
+  "@pmNFeatures": {
+    "description": "Number of features for throughput metric",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "pmDays": "{count} days",
+  "@pmDays": {
+    "description": "Number of days for cycle time metric",
+    "placeholders": {
+      "count": { "type": "String" }
+    }
+  },
+  "kanbanTodo": "Todo",
+  "@kanbanTodo": {
+    "description": "Kanban column label: todo"
+  },
+  "kanbanInProgress": "In Progress",
+  "@kanbanInProgress": {
+    "description": "Kanban column label: in progress"
+  },
+  "kanbanInTesting": "In Testing",
+  "@kanbanInTesting": {
+    "description": "Kanban column label: in testing"
+  },
+  "kanbanInReview": "In Review",
+  "@kanbanInReview": {
+    "description": "Kanban column label: in review"
+  },
+  "kanbanDone": "Done",
+  "@kanbanDone": {
+    "description": "Kanban column label: done"
+  },
+  "tabBoard": "Board",
+  "@tabBoard": {
+    "description": "Tab label: Board"
+  },
+  "tabTimeline": "Timeline",
+  "@tabTimeline": {
+    "description": "Tab label: Timeline"
+  },
+  "tabTeam": "Team",
+  "@tabTeam": {
+    "description": "Tab label: Team"
+  },
+  "tabReports": "Reports",
+  "@tabReports": {
+    "description": "Tab label: Reports"
+  },
+
+  "featureDetailAssignee": "Assignee",
+  "@featureDetailAssignee": {
+    "description": "Metadata label: assignee"
+  },
+  "featureDetailEstimate": "Estimate",
+  "@featureDetailEstimate": {
+    "description": "Metadata label: estimate"
+  },
+  "featureDetailProject": "Project",
+  "@featureDetailProject": {
+    "description": "Metadata label: project"
+  },
+  "featureDetailLabels": "Labels",
+  "@featureDetailLabels": {
+    "description": "Metadata section header: labels"
+  },
+  "featureDetailUnassigned": "Unassigned",
+  "@featureDetailUnassigned": {
+    "description": "Default text when no assignee is set"
+  },
+  "settingsAgentInstructions": "Agent Instructions",
+  "settingsClaudeSettings": "Claude Settings",
+  "settingsTeam": "Team",
+
+  "claudeSettingsDefaultModel": "Default model",
+  "claudeSettingsLimits": "Limits",
+  "claudeSettingsToolPermissions": "Tool Permissions",
+  "agentInstructionsNewSection": "New Section",
+  "agentInstructionsContent": "Content (markdown)",
+  "reload": "Reload",
+
+  "publicProfileSection": "PUBLIC PROFILE",
+  "@publicProfileSection": {
+    "description": "Section header for public profile settings"
+  },
+  "handle": "Handle",
+  "@handle": {
+    "description": "Handle / username field label"
+  },
+  "handleHint": "@username",
+  "@handleHint": {
+    "description": "Handle field placeholder hint"
+  },
+  "publicProfileToggle": "Public Profile",
+  "@publicProfileToggle": {
+    "description": "Toggle label for public profile visibility"
+  },
+  "publicProfileSubtitle": "Allow anyone to view your profile",
+  "@publicProfileSubtitle": {
+    "description": "Subtitle for public profile toggle"
+  },
+  "showComments": "Show Comments",
+  "@showComments": {
+    "description": "Toggle label for showing comments on profile"
+  },
+  "showCommentsSubtitle": "Allow comments on your profile posts",
+  "@showCommentsSubtitle": {
+    "description": "Subtitle for show comments toggle"
+  },
+  "addCoverImage": "Add Cover Image",
+  "@addCoverImage": {
+    "description": "Placeholder text for empty cover image area"
+  },
+  "coverUpdated": "Cover updated",
+  "@coverUpdated": {
+    "description": "Snackbar message after cover image is updated"
+  },
+  "failedToUploadCover": "Failed to upload cover",
+  "@failedToUploadCover": {
+    "description": "Snackbar error message when cover upload fails"
+  },
+  "socialLinksSection": "SOCIAL LINKS",
+  "@socialLinksSection": {
+    "description": "Section header for social links"
+  },
+  "addLink": "Add Link",
+  "@addLink": {
+    "description": "Button label to add a new social link"
+  },
+  "coverImage": "Cover Image",
+  "coverImageDesc": "Upload a cover image for your public profile",
+  "uploadCover": "Upload Cover",
+  "publicProfile": "Public Profile",
+  "enablePublicProfile": "Enable Public Profile",
+  "enablePublicProfileDesc": "Allow others to view your profile and activity",
+  "showCommentsOnProfile": "Show Comments",
+  "showCommentsOnProfileDesc": "Display comments on your public profile page",
+  "socialLinks": "Social Links",
+  "socialLinksDesc": "Add your social profiles so others can find you",
+
+  "aiAgentSection": "AI Agent",
+  "@aiAgentSection": {
+    "description": "Section header for AI agent notification settings"
+  },
+  "couldNotLoadSettings": "Could not load settings",
+  "@couldNotLoadSettings": {
+    "description": "Error message when notification settings fail to load"
+  },
+  "voiceAndSchedule": "Voice & Schedule",
+  "@voiceAndSchedule": {
+    "description": "Section header for voice and schedule notification settings"
+  },
+  "aiPushNotifications": "AI push notifications",
+  "@aiPushNotifications": {
+    "description": "Toggle label for AI push notifications"
+  },
+  "aiPushNotificationsSubtitle": "Desktop alerts when agent needs attention",
+  "@aiPushNotificationsSubtitle": {
+    "description": "Subtitle for AI push notifications toggle"
+  },
+  "aiVoiceAlerts": "AI voice alerts",
+  "@aiVoiceAlerts": {
+    "description": "Toggle label for AI voice alerts"
+  },
+  "aiVoiceAlertsSubtitle": "Speak notifications aloud via TTS",
+  "@aiVoiceAlertsSubtitle": {
+    "description": "Subtitle for AI voice alerts toggle"
+  },
+  "pushToConnectedApps": "Push to connected apps",
+  "@pushToConnectedApps": {
+    "description": "Toggle label for pushing notifications to connected apps"
+  },
+  "pushToConnectedAppsSubtitle": "Send notifications to mobile & web via tunnel",
+  "@pushToConnectedAppsSubtitle": {
+    "description": "Subtitle for push to connected apps toggle"
+  },
+  "voiceLabel": "Voice",
+  "@voiceLabel": {
+    "description": "Voice setting label in notification settings"
+  },
+  "systemDefault": "System default",
+  "@systemDefault": {
+    "description": "Default value label for voice setting"
+  },
+  "voiceName": "Voice Name",
+  "@voiceName": {
+    "description": "Dialog title for editing voice name"
+  },
+  "speedLabel": "Speed",
+  "@speedLabel": {
+    "description": "Speed setting label in notification settings"
+  },
+  "defaultLabel": "Default",
+  "@defaultLabel": {
+    "description": "Default value label for settings"
+  },
+  "speedWordsPerMin": "Speed (words/min)",
+  "@speedWordsPerMin": {
+    "description": "Dialog title for editing speech speed"
+  },
+  "volumeLabel": "Volume",
+  "@volumeLabel": {
+    "description": "Volume setting label in notification settings"
+  },
+  "volumeRange": "Volume (0.0-1.0)",
+  "@volumeRange": {
+    "description": "Dialog title for editing volume"
+  },
+  "quietHours": "Quiet hours",
+  "@quietHours": {
+    "description": "Quiet hours setting label"
+  },
+  "quietHoursOff": "Off",
+  "@quietHoursOff": {
+    "description": "Quiet hours disabled state label"
+  },
+  "quietHoursTitle": "Quiet Hours",
+  "@quietHoursTitle": {
+    "description": "Dialog title for editing quiet hours"
+  },
+  "quietHoursStart": "Start (HH:MM)",
+  "@quietHoursStart": {
+    "description": "Label for quiet hours start time field"
+  },
+  "quietHoursEnd": "End (HH:MM)",
+  "@quietHoursEnd": {
+    "description": "Label for quiet hours end time field"
+  },
+  "turnOff": "Turn Off",
+  "@turnOff": {
+    "description": "Button label to turn off quiet hours"
+  },
+  "failedToSaveError": "Failed to save: {error}",
+  "@failedToSaveError": {
+    "description": "Error message when saving fails, with error details",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wpmSuffix": "{speed} wpm",
+  "@wpmSuffix": {
+    "description": "Words per minute display format",
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+
+  "plan": "Plan",
+  "@plan": {
+    "description": "Singular plan entity label"
+  },
+  "request": "Request",
+  "@request": {
+    "description": "Singular request entity label"
+  },
+  "entityCreated": "{entity} created",
+  "@entityCreated": {
+    "placeholders": {
+      "entity": {
+        "type": "String"
+      }
+    }
+  },
+  "entitySaved": "{entity} saved",
+  "@entitySaved": {
+    "placeholders": {
+      "entity": {
+        "type": "String"
+      }
+    }
+  },
+  "aiGeneratingEntity": "AI is generating your {entity}...",
+  "@aiGeneratingEntity": {
+    "placeholders": {
+      "entity": {
+        "type": "String"
+      }
+    }
+  },
+  "entityGeneratedSuccessfully": "{entity} generated successfully",
+  "@entityGeneratedSuccessfully": {
+    "placeholders": {
+      "entity": {
+        "type": "String"
+      }
+    }
+  },
+  "sendingPromptToAi": "Sending prompt to AI...",
+  "responseReceivedParsing": "Response received, parsing...",
+  "failedToParseAiResponse": "Failed to parse AI response as JSON",
+
+  "terminalToolbarSearch": "Search ({key}F)",
+  "@terminalToolbarSearch": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "terminalToolbarDecreaseFontSize": "Decrease font size",
+  "terminalToolbarIncreaseFontSize": "Increase font size",
+  "terminalToolbarCopy": "Copy ({key}C)",
+  "@terminalToolbarCopy": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "terminalToolbarPaste": "Paste ({key}V)",
+  "@terminalToolbarPaste": {
+    "placeholders": {
+      "key": {
+        "type": "String"
+      }
+    }
+  },
+  "terminalToolbarClear": "Clear",
+  "terminalToolbarSendInterrupt": "Send interrupt (Ctrl+C)",
+
+  "terminalTabCloseSession": "Close session",
+  "terminalTabNewSession": "New session",
+
+  "selectAll": "Select all",
+  "deleteSelected": "Delete selected",
+  "leaveEmptyForKeyAuth": "Leave empty for key auth",
+
+  "passkeysTitle": "Passkeys",
+  "@passkeysTitle": {
+    "description": "Section header for passkeys settings"
+  },
+  "passkeysDescription": "Passkeys use WebAuthn to let you sign in securely without a password. Use your fingerprint, face, or a hardware security key.",
+  "registeredPasskeys": "Registered Passkeys",
+  "noPasskeysRegistered": "No passkeys registered",
+  "registerPasskeyHint": "Register a passkey above to enable passwordless sign-in.",
+  "passkeyCreatedDate": "Created {date}  ·  Last used {time}",
+  "@passkeyCreatedDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "passkeySignInCount": "{count, plural, =1{1 sign-in} other{{count} sign-ins}}",
+  "@passkeySignInCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "clear": "Clear",
+  "@clear": {
+    "description": "Clear action button"
+  },
+
+  "agentInstructionsAgents": "Agents",
+  "@agentInstructionsAgents": {
+    "description": "Agents tab label in agent instructions settings"
+  },
+  "agentInstructionsContext": "Context",
+  "@agentInstructionsContext": {
+    "description": "Context tab label in agent instructions settings"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "orchestra": {
+      "args": [
+        "serve",
+        "--workspace",
+        "/Users/fadymondy/Sites/orchestra-agents/apps/flutter"
+      ],
+      "command": "/usr/local/bin/orchestra"
+    }
+  }
+}

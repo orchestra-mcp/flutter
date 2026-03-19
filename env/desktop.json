@@ -1,0 +1,13 @@
+{
+  "APP_ENV": "local",
+  "APP_NAME": "Orchestra Dev",
+  "API_BASE_URL": "http://localhost:8080",
+  "POWERSYNC_URL": "http://localhost:8585",
+  "WS_BASE_URL": "ws://localhost:8080",
+  "MCP_HOST": "localhost",
+  "MCP_PORT": "50101",
+  "GOOGLE_CLIENT_ID": "",
+  "ENABLE_FIREBASE": "false",
+  "ENABLE_ANALYTICS": "false",
+  "ENABLE_CRASHLYTICS": "false"
+}

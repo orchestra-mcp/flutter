@@ -1,0 +1,297 @@
+import 'package:powersync/powersync.dart';
+
+/// PowerSync client-side SQLite schema.
+///
+/// Mirrors the PostgreSQL tables defined in sync-rules.yaml.
+/// PowerSync auto-creates an `id` column (TEXT primary key).
+const powersyncSchema = Schema([
+  // ── Health tables ──────────────────────────────────────────────
+
+  Table('water_logs', [
+    Column.integer('user_id'),
+    Column.integer('amount_ml'),
+    Column.text('logged_at'),
+    Column.text('source'),
+    Column.integer('is_gout_flush'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('caffeine_logs', [
+    Column.integer('user_id'),
+    Column.text('drink_type'),
+    Column.integer('caffeine_mg'),
+    Column.integer('is_clean'),
+    Column.integer('sugar_g'),
+    Column.text('logged_at'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('meal_logs', [
+    Column.integer('user_id'),
+    Column.text('name'),
+    Column.integer('is_safe'),
+    Column.text('category'),
+    Column.text('triggers'),
+    Column.text('logged_at'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('pomodoro_sessions', [
+    Column.integer('user_id'),
+    Column.text('started_at'),
+    Column.text('ended_at'),
+    Column.integer('duration_min'),
+    Column.text('type'),
+    Column.integer('completed'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('sleep_configs', [
+    Column.integer('user_id'),
+    Column.text('target_bedtime'),
+    Column.text('shutdown_started_at'),
+    Column.integer('shutdown_active'),
+    Column.text('wake_time'),
+    Column.text('sleep_time'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('health_snapshots', [
+    Column.integer('user_id'),
+    Column.text('snapshot_date'),
+    Column.real('weight_kg'),
+    Column.real('body_fat_pct'),
+    Column.integer('metabolic_age'),
+    Column.integer('visceral_fat'),
+    Column.real('body_water_pct'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('health_profiles', [
+    Column.integer('user_id'),
+    Column.integer('target_water_ml'),
+    Column.integer('caffeine_limit_mg'),
+    Column.integer('pomodoro_duration_min'),
+    Column.text('conditions'),
+    Column.text('wake_time'),
+    Column.text('sleep_time'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('sleep_logs', [
+    Column.integer('user_id'),
+    Column.text('bed_time'),
+    Column.text('wake_time'),
+    Column.integer('quality_rating'),
+    Column.real('duration_hours'),
+    Column.text('logged_at'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  // ── App data tables ────────────────────────────────────────────
+
+  Table('notes', [
+    Column.integer('user_id'),
+    Column.text('title'),
+    Column.text('content'),
+    Column.integer('pinned'),
+    Column.text('tags'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('projects', [
+    Column.integer('user_id'),
+    Column.text('name'),
+    Column.text('slug'),
+    Column.text('description'),
+    Column.text('mode'),
+    Column.text('stacks'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('features', [
+    Column.text('project_slug'),
+    Column.integer('user_id'),
+    Column.text('title'),
+    Column.text('description'),
+    Column.text('status'),
+    Column.text('kind'),
+    Column.text('priority'),
+    Column.text('assignee'),
+    Column.text('labels'),
+    Column.text('body'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('agents', [
+    Column.integer('user_id'),
+    Column.text('name'),
+    Column.text('slug'),
+    Column.text('description'),
+    Column.text('content'),
+    Column.text('scope'),
+    Column.text('icon'),
+    Column.text('color'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('skills', [
+    Column.integer('user_id'),
+    Column.text('name'),
+    Column.text('slug'),
+    Column.text('description'),
+    Column.text('content'),
+    Column.text('scope'),
+    Column.text('icon'),
+    Column.text('color'),
+    Column.text('stacks'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('workflows', [
+    Column.integer('user_id'),
+    Column.text('project_slug'),
+    Column.text('name'),
+    Column.text('description'),
+    Column.text('steps'),
+    Column.text('states'),
+    Column.text('transitions'),
+    Column.text('gates'),
+    Column.text('initial_state'),
+    Column.integer('is_default'),
+    Column.text('status'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('docs', [
+    Column.integer('user_id'),
+    Column.text('doc_id'),
+    Column.text('title'),
+    Column.text('body'),
+    Column.text('category'),
+    Column.text('tags'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('delegations', [
+    Column.integer('user_id'),
+    Column.text('delegation_id'),
+    Column.text('from_person'),
+    Column.text('to_person'),
+    Column.text('question'),
+    Column.text('context'),
+    Column.text('response'),
+    Column.text('status'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('sessions', [
+    Column.integer('user_id'),
+    Column.text('name'),
+    Column.text('provider'),
+    Column.text('model'),
+    Column.text('status'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('plans', [
+    Column.integer('user_id'),
+    Column.text('project_slug'),
+    Column.text('plan_id'),
+    Column.text('title'),
+    Column.text('description'),
+    Column.text('status'),
+    Column.text('body'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('requests', [
+    Column.integer('user_id'),
+    Column.text('project_slug'),
+    Column.text('request_id'),
+    Column.text('title'),
+    Column.text('description'),
+    Column.text('kind'),
+    Column.text('priority'),
+    Column.text('status'),
+    Column.text('body'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('persons', [
+    Column.integer('user_id'),
+    Column.text('project_slug'),
+    Column.text('person_id'),
+    Column.text('name'),
+    Column.text('email'),
+    Column.text('role'),
+    Column.text('status'),
+    Column.text('bio'),
+    Column.text('body'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('workspaces', [
+    Column.integer('owner_id'),
+    Column.text('name'),
+    Column.text('folders'),
+    Column.text('primary_folder'),
+    Column.text('status'),
+    Column.text('metadata'),
+    Column.integer('version'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('teams', [
+    Column.text('name'),
+    Column.text('slug'),
+    Column.text('plan'),
+    Column.text('avatar_url'),
+    Column.text('settings'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('memberships', [
+    Column.integer('user_id'),
+    Column.text('team_id'),
+    Column.text('role'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+  ]),
+
+  Table('user_settings', [
+    Column.integer('user_id'),
+    Column.text('key'),
+    Column.text('value'),
+    Column.text('updated_at'),
+  ]),
+]);
