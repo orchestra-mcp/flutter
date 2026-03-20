@@ -875,44 +875,71 @@ class McpTcpClient implements ApiClient {
 
   // Marketplace Admin
   @override
-  Future<Map<String, dynamic>> listPendingMarketplace() => _tool('list_pending_marketplace', {});
+  Future<Map<String, dynamic>> listPendingMarketplace() =>
+      _tool('list_pending_marketplace', {});
   @override
-  Future<Map<String, dynamic>> approveMarketplaceItem(int id) => _tool('approve_marketplace_item', {'id': id});
+  Future<Map<String, dynamic>> approveMarketplaceItem(int id) =>
+      _tool('approve_marketplace_item', {'id': id});
   @override
-  Future<Map<String, dynamic>> rejectMarketplaceItem(int id, {String reason = ''}) =>
-      _tool('reject_marketplace_item', {'id': id, 'reason': reason});
+  Future<Map<String, dynamic>> rejectMarketplaceItem(
+    int id, {
+    String reason = '',
+  }) => _tool('reject_marketplace_item', {'id': id, 'reason': reason});
 
   // User Gamification
   @override
-  Future<Map<String, dynamic>> listUserBadges(int userId) => _tool('list_user_badges', {'user_id': userId});
+  Future<Map<String, dynamic>> listUserBadges(int userId) =>
+      _tool('list_user_badges', {'user_id': userId});
   @override
-  Future<Map<String, dynamic>> awardUserBadge(int userId, Map<String, dynamic> body) => _tool('award_user_badge', {'user_id': userId, ...body});
+  Future<Map<String, dynamic>> awardUserBadge(
+    int userId,
+    Map<String, dynamic> body,
+  ) => _tool('award_user_badge', {'user_id': userId, ...body});
   @override
-  Future<void> revokeUserBadge(int userId, String badgeId) async => _tool('revoke_user_badge', {'user_id': userId, 'badge_id': badgeId});
+  Future<void> revokeUserBadge(int userId, String badgeId) async =>
+      _tool('revoke_user_badge', {'user_id': userId, 'badge_id': badgeId});
   @override
-  Future<Map<String, dynamic>> getUserPoints(int userId) => _tool('get_user_points', {'user_id': userId});
+  Future<Map<String, dynamic>> getUserPoints(int userId) =>
+      _tool('get_user_points', {'user_id': userId});
   @override
-  Future<Map<String, dynamic>> addUserPoints(int userId, Map<String, dynamic> body) => _tool('add_user_points', {'user_id': userId, ...body});
+  Future<Map<String, dynamic>> addUserPoints(
+    int userId,
+    Map<String, dynamic> body,
+  ) => _tool('add_user_points', {'user_id': userId, ...body});
 
   // Verification Admin
   @override
-  Future<Map<String, dynamic>> listVerificationTypes() => _tool('list_verification_types', {});
+  Future<Map<String, dynamic>> listVerificationTypes() =>
+      _tool('list_verification_types', {});
   @override
-  Future<Map<String, dynamic>> createVerificationType(Map<String, dynamic> body) => _tool('create_verification_type', body);
+  Future<Map<String, dynamic>> createVerificationType(
+    Map<String, dynamic> body,
+  ) => _tool('create_verification_type', body);
   @override
-  Future<Map<String, dynamic>> updateVerificationType(int id, Map<String, dynamic> body) => _tool('update_verification_type', {'id': id, ...body});
+  Future<Map<String, dynamic>> updateVerificationType(
+    int id,
+    Map<String, dynamic> body,
+  ) => _tool('update_verification_type', {'id': id, ...body});
   @override
-  Future<void> deleteVerificationType(int id) async => _tool('delete_verification_type', {'id': id});
+  Future<void> deleteVerificationType(int id) async =>
+      _tool('delete_verification_type', {'id': id});
 
   // Badge Admin
   @override
-  Future<Map<String, dynamic>> listBadgeDefinitions() => _tool('list_badge_definitions', {});
+  Future<Map<String, dynamic>> listBadgeDefinitions() =>
+      _tool('list_badge_definitions', {});
   @override
-  Future<Map<String, dynamic>> createBadgeDefinition(Map<String, dynamic> body) => _tool('create_badge_definition', body);
+  Future<Map<String, dynamic>> createBadgeDefinition(
+    Map<String, dynamic> body,
+  ) => _tool('create_badge_definition', body);
   @override
-  Future<Map<String, dynamic>> updateBadgeDefinition(int id, Map<String, dynamic> body) => _tool('update_badge_definition', {'id': id, ...body});
+  Future<Map<String, dynamic>> updateBadgeDefinition(
+    int id,
+    Map<String, dynamic> body,
+  ) => _tool('update_badge_definition', {'id': id, ...body});
   @override
-  Future<void> deleteBadgeDefinition(int id) async => _tool('delete_badge_definition', {'id': id});
+  Future<void> deleteBadgeDefinition(int id) async =>
+      _tool('delete_badge_definition', {'id': id});
 
   @override
   Future<Map<String, dynamic>> listAdminPages({
