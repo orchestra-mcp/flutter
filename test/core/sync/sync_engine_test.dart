@@ -137,7 +137,7 @@ void main() {
 
     test('status returns to idle after push', () async {
       await engine.push();
-      expect(engine.status, SyncStatus.idle);
+      expect(engine.status, SyncPhase.idle);
     });
   });
 
@@ -215,7 +215,7 @@ void main() {
 
     test('handles empty response gracefully', () async {
       await engine.pull();
-      expect(engine.status, SyncStatus.idle);
+      expect(engine.status, SyncPhase.idle);
     });
   });
 
