@@ -7,14 +7,15 @@ void main() {
   // ── TerminalSessionType ─────────────────────────────────────────────────────
 
   group('TerminalSessionType', () {
-    test('has three values: terminal, ssh, claude', () {
-      expect(TerminalSessionType.values.length, 3);
+    test('has four values: terminal, ssh, claude, remote', () {
+      expect(TerminalSessionType.values.length, 4);
       expect(
         TerminalSessionType.values,
         containsAll([
           TerminalSessionType.terminal,
           TerminalSessionType.ssh,
           TerminalSessionType.claude,
+          TerminalSessionType.remote,
         ]),
       );
     });

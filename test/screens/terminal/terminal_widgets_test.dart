@@ -360,14 +360,15 @@ void main() {
       expect(session.claudeModel, 'claude-sonnet-4-6');
     });
 
-    test('TerminalSessionType has 3 values', () {
-      expect(TerminalSessionType.values.length, 3);
+    test('TerminalSessionType has 4 values', () {
+      expect(TerminalSessionType.values.length, 4);
       expect(
         TerminalSessionType.values,
         contains(TerminalSessionType.terminal),
       );
       expect(TerminalSessionType.values, contains(TerminalSessionType.ssh));
       expect(TerminalSessionType.values, contains(TerminalSessionType.claude));
+      expect(TerminalSessionType.values, contains(TerminalSessionType.remote));
     });
 
     test('TerminalSessionStatus has 4 values', () {

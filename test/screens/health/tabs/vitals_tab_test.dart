@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:orchestra/core/health/health_service.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
+import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/screens/health/tabs/vitals_tab.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +26,8 @@ const _testTokens = OrchestraColorTokens(
 
 Widget _wrap(Widget child) {
   return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
     home: ThemeTokens(
       tokens: _testTokens,
       child: Scaffold(body: child),
@@ -118,7 +121,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('No Health Data'), findsOneWidget);
+      expect(find.text('No results found'), findsOneWidget);
       expect(find.text('Connect Health'), findsOneWidget);
     });
 

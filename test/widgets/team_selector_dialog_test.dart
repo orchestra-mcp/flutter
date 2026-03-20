@@ -5,6 +5,7 @@ import 'package:orchestra/core/sync/team_management_provider.dart';
 import 'package:orchestra/core/sync/team_management_service.dart';
 import 'package:orchestra/core/sync/team_share_models.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
+import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/widgets/team_selector_dialog.dart';
 
 /// Minimal dark theme tokens for testing.
@@ -55,6 +56,8 @@ Widget _buildApp({required TeamSelectorData selectorData, Widget? child}) {
       teamSelectorDataProvider.overrideWith((ref) async => selectorData),
     ],
     child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, navigator) =>
           ThemeTokens(tokens: _testTokens, child: navigator!),
       home: Scaffold(

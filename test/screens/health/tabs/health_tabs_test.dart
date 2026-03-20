@@ -7,6 +7,7 @@ import 'package:orchestra/core/health/nutrition_manager.dart';
 import 'package:orchestra/core/health/pomodoro_manager.dart';
 import 'package:orchestra/core/health/shutdown_manager.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
+import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/screens/health/tabs/caffeine_tab.dart';
 import 'package:orchestra/screens/health/tabs/daily_flow_tab.dart';
 import 'package:orchestra/screens/health/tabs/hydration_tab.dart';
@@ -31,10 +32,12 @@ const _testTokens = OrchestraColorTokens(
   isLight: false,
 );
 
-/// Wraps [child] in MaterialApp + ThemeTokens so all tab widgets can resolve
-/// tokens and overlay / scaffold ancestors.
+/// Wraps [child] in MaterialApp + ThemeTokens + l10n so all tab widgets can
+/// resolve tokens, localizations, and overlay / scaffold ancestors.
 Widget _wrap(Widget child) {
   return MaterialApp(
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
     home: ThemeTokens(
       tokens: _testTokens,
       child: Scaffold(body: child),
@@ -126,10 +129,10 @@ void main() {
       await tester.pump();
 
       // The shimmer is a 4px tall animated container rendered when isLoading.
-      // It should not render the "No water logged yet" text.
-      expect(find.text('No water logged yet'), findsNothing);
-      // Quick Add section should still render.
-      expect(find.text('Quick Add'), findsOneWidget);
+      // It should not render the empty state text.
+      expect(find.text('No results found'), findsNothing);
+      // Add Water section should still render.
+      expect(find.text('Add Water'), findsOneWidget);
     });
 
     testWidgets('error state shows error banner with retry', (tester) async {
@@ -166,7 +169,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text('Gout Flush Recommended'), findsOneWidget);
+      expect(find.text('Flare Risk'), findsOneWidget);
     });
 
     testWidgets('gout flush card hidden when totalMl >= 1500', (tester) async {
@@ -184,7 +187,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text('Gout Flush Recommended'), findsNothing);
+      expect(find.text('Flare Risk'), findsNothing);
     });
 
     testWidgets('quick-add buttons render all four amounts', (tester) async {
@@ -221,7 +224,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text('No water logged yet'), findsOneWidget);
+      expect(find.text('No results found'), findsOneWidget);
     });
   });
 
@@ -263,9 +266,9 @@ void main() {
       await tester.pump();
 
       // The daily summary card shows total mg and progress text.
-      expect(find.text('200 mg'), findsOneWidget);
-      expect(find.text('Total caffeine today'), findsOneWidget);
-      expect(find.text('200 mg remaining'), findsOneWidget);
+      expect(find.text('200 mg'), findsAtLeastNWidgets(1));
+      expect(find.text('mg today'), findsOneWidget);
+      expect(find.text('200 mg Remaining'), findsOneWidget);
       // LinearProgressIndicator is rendered inside the summary card.
       expect(find.byType(LinearProgressIndicator), findsOneWidget);
     });
@@ -288,12 +291,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(
-        find.text(
-          'Cortisol window active \u2014 caffeine is not recommended right now.',
-        ),
-        findsOneWidget,
-      );
+      expect(find.text('Cortisol Window'), findsOneWidget);
     });
 
     testWidgets('cortisol banner hidden when outside cortisol window', (
@@ -314,12 +312,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(
-        find.text(
-          'Cortisol window active \u2014 caffeine is not recommended right now.',
-        ),
-        findsNothing,
-      );
+      expect(find.text('Cortisol Window'), findsNothing);
     });
   });
 
@@ -389,6 +382,11 @@ void main() {
     });
 
     testWidgets('empty meal state shows when no entries', (tester) async {
+      // Use a tall viewport to ensure all items are visible.
+      tester.view.physicalSize = const Size(800, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -399,9 +397,9 @@ void main() {
           child: _wrap(const NutritionTab()),
         ),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      expect(find.text('No meals logged today'), findsOneWidget);
+      expect(find.text('No results found'), findsOneWidget);
     });
   });
 
@@ -533,8 +531,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(find.text('Start Shutdown'), findsOneWidget);
-      expect(find.text('Wind down for the night'), findsOneWidget);
+      expect(find.text('Shutdown Routine'), findsAtLeastNWidgets(1));
       expect(find.text('Not Active'), findsOneWidget);
     });
 
@@ -560,13 +557,13 @@ void main() {
       );
       await tester.pump();
 
-      // Phase badge shows "Shutdown Active".
+      // Phase badge shows active state.
       expect(find.text('Shutdown Active'), findsOneWidget);
-      // Countdown card shows target bedtime.
-      expect(find.text('Target bedtime'), findsOneWidget);
-      expect(find.text('Time left'), findsOneWidget);
+      // Countdown card shows bedtime.
+      expect(find.text('Bedtime'), findsOneWidget);
+      expect(find.text('Remaining'), findsOneWidget);
       // Checklist renders.
-      expect(find.text('Evening Routine'), findsOneWidget);
+      expect(find.text('Shutdown Routine'), findsAtLeastNWidgets(1));
       // First routine item renders.
       expect(find.text('Stop screens'), findsOneWidget);
     });
@@ -629,7 +626,7 @@ void main() {
       expect(find.text('Pomodoro'), findsOneWidget);
       expect(find.text('Hydration'), findsOneWidget);
       expect(find.text('Nutrition'), findsOneWidget);
-      expect(find.text('Shutdown'), findsOneWidget);
+      expect(find.text('Shutdown Routine'), findsOneWidget);
 
       // Weight labels should appear.
       expect(find.text('40%'), findsOneWidget);

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:orchestra/core/sync/team_share_models.dart';
 import 'package:orchestra/core/sync/team_sync_provider.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
+import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/widgets/team_updates_banner.dart';
 
 /// Minimal dark theme tokens for testing.
@@ -91,6 +92,8 @@ Widget _buildApp({required TeamUpdateStatus status}) {
   return ProviderScope(
     overrides: [teamUpdatesProvider.overrideWith((ref) async => status)],
     child: MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       builder: (context, navigator) =>
           ThemeTokens(tokens: _testTokens, child: navigator!),
       home: const Scaffold(

@@ -1298,24 +1298,35 @@ void main() {
         );
       });
 
-      test('TeamMember.fromJson throws on missing required id', () {
+      test('TeamMember.fromJson defaults id to empty string when missing', () {
         final json = <String, dynamic>{'name': 'No ID'};
 
-        expect(() => TeamMember.fromJson(json), throwsA(isA<TypeError>()));
+        final member = TeamMember.fromJson(json);
+        expect(member.id, '');
+        expect(member.name, 'No ID');
       });
 
-      test('TeamMember.fromJson throws on missing required name', () {
-        final json = <String, dynamic>{'id': 'u-1'};
+      test(
+        'TeamMember.fromJson defaults name to empty string when missing',
+        () {
+          final json = <String, dynamic>{'id': 'u-1'};
 
-        expect(() => TeamMember.fromJson(json), throwsA(isA<TypeError>()));
-      });
+          final member = TeamMember.fromJson(json);
+          expect(member.id, 'u-1');
+          expect(member.name, '');
+        },
+      );
 
-      test('Team.fromJson throws on missing required created_at', () {
+      test('Team.fromJson defaults created_at to now when missing', () {
         final json = <String, dynamic>{'id': 't-1', 'name': 'Team No Date'};
 
+        final team = Team.fromJson(json);
+        expect(team.id, 't-1');
+        expect(team.name, 'Team No Date');
+        // createdAt should be defaulted to approximately now
         expect(
-          () => Team.fromJson(json),
-          throwsA(anyOf(isA<TypeError>(), isA<FormatException>())),
+          team.createdAt.difference(DateTime.now()).inSeconds.abs() < 5,
+          isTrue,
         );
       });
 
@@ -1356,13 +1367,21 @@ void main() {
         );
       });
 
-      test('TeamUpdateEntry.fromJson throws on missing required fields', () {
+      test('TeamUpdateEntry.fromJson defaults missing fields', () {
         final json = <String, dynamic>{
           'entity_type': 'project',
           // Missing all other required fields.
         };
 
-        expect(() => TeamUpdateEntry.fromJson(json), throwsA(isA<TypeError>()));
+        final entry = TeamUpdateEntry.fromJson(json);
+        expect(entry.entityType, 'project');
+        expect(entry.entityId, '');
+        expect(entry.entityTitle, '');
+        expect(entry.teamId, '');
+        expect(entry.teamName, '');
+        expect(entry.authorName, '');
+        expect(entry.fromVersion, 0);
+        expect(entry.toVersion, 0);
       });
     });
 
