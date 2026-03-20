@@ -14,18 +14,32 @@ void main() {
     });
   });
 
-  group('AiInsights.placeholder', () {
-    test('produces non-empty wins and concerns', () {
-      final insights = AiInsights.placeholder();
-      expect(insights.top3Wins, isNotEmpty);
-      expect(insights.top3Concerns, isNotEmpty);
-      expect(insights.recommendations, isNotEmpty);
-      expect(insights.triggerAnalysis, isNotEmpty);
+  group('AiInsights', () {
+    test('constructor stores all fields', () {
+      final now = DateTime.now();
+      final insights = AiInsights(
+        top3Wins: ['win1', 'win2', 'win3'],
+        top3Concerns: ['concern1'],
+        recommendations: ['rec1', 'rec2'],
+        triggerAnalysis: 'No triggers detected',
+        generatedAt: now,
+      );
+      expect(insights.top3Wins, hasLength(3));
+      expect(insights.top3Concerns, hasLength(1));
+      expect(insights.recommendations, hasLength(2));
+      expect(insights.triggerAnalysis, 'No triggers detected');
+      expect(insights.generatedAt, now);
     });
 
-    test('generatedAt is recent', () {
+    test('generatedAt reflects construction time', () {
       final before = DateTime.now().subtract(const Duration(seconds: 1));
-      final insights = AiInsights.placeholder();
+      final insights = AiInsights(
+        top3Wins: ['a'],
+        top3Concerns: ['b'],
+        recommendations: ['c'],
+        triggerAnalysis: 'd',
+        generatedAt: DateTime.now(),
+      );
       expect(insights.generatedAt.isAfter(before), isTrue);
     });
   });
@@ -45,6 +59,13 @@ void main() {
       expect(state.isLoading, isFalse);
       expect(state.insights, isNull);
       expect(state.error, isNull);
+    });
+
+    test('copyWith updates fields', () {
+      const state = AiInsightState();
+      final updated = state.copyWith(isLoading: true);
+      expect(updated.isLoading, isTrue);
+      expect(updated.insights, isNull);
     });
   });
 }

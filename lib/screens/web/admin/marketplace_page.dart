@@ -17,6 +17,13 @@ final _marketplaceProvider = FutureProvider<Map<String, dynamic>>((ref) async {
   return {'marketplace': marketplace, 'plugins': plugins};
 });
 
+/// Pending marketplace submissions from admin API.
+final _pendingSubmissionsProvider = FutureProvider<List<dynamic>>((ref) async {
+  final api = ref.read(apiClientProvider);
+  final res = await api.listPendingMarketplace();
+  return (res['submissions'] as List?) ?? [];
+});
+
 /// User-shared items from PowerSync (skills/agents/workflows marked as shared).
 final _sharedSkillsProvider = FutureProvider<List<Map<String, dynamic>>>((
   ref,
@@ -65,7 +72,7 @@ class _MarketplacePageState extends ConsumerState<MarketplacePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
   }
 
   @override
@@ -114,6 +121,7 @@ class _MarketplacePageState extends ConsumerState<MarketplacePage>
             isScrollable: true,
             tabAlignment: TabAlignment.start,
             tabs: const [
+              Tab(text: 'Pending'),
               Tab(text: 'Plugins'),
               Tab(text: 'Packs'),
               Tab(text: 'Skills'),
@@ -127,6 +135,7 @@ class _MarketplacePageState extends ConsumerState<MarketplacePage>
             child: TabBarView(
               controller: _tabController,
               children: [
+                _PendingTab(search: _search),
                 _PluginsTab(search: _search),
                 _PacksTab(search: _search),
                 _SharedItemsTab(
@@ -911,6 +920,222 @@ void _showSharedItemSheet(
       ),
     ),
   );
+}
+
+// ── Pending Submissions Tab ──────────────────────────────────────────────────
+
+class _PendingTab extends ConsumerWidget {
+  const _PendingTab({required this.search});
+  final String search;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tokens = ThemeTokens.of(context);
+    final pending = ref.watch(_pendingSubmissionsProvider);
+
+    return pending.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(
+        child: Text(
+          'Failed to load: $e',
+          style: TextStyle(color: tokens.fgMuted),
+        ),
+      ),
+      data: (items) {
+        final filtered = search.isEmpty
+            ? items
+            : items
+                  .where(
+                    (i) =>
+                        (i['title'] ?? '').toString().toLowerCase().contains(
+                          search,
+                        ) ||
+                        (i['user_name'] ?? '')
+                            .toString()
+                            .toLowerCase()
+                            .contains(search),
+                  )
+                  .toList();
+
+        if (filtered.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.check_circle_outline, size: 48, color: tokens.fgDim),
+                const SizedBox(height: 12),
+                Text(
+                  'No pending submissions',
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: filtered.length,
+          itemBuilder: (context, index) {
+            final item = filtered[index] as Map<String, dynamic>;
+            final approved = item['approved'] == true;
+            final tags = item['tags']?.toString() ?? '[]';
+            final rejected = tags.contains('marketplace_rejected');
+
+            return GlassCard(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title + status badge
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            (item['title'] as String?) ?? 'Untitled',
+                            style: TextStyle(
+                              color: tokens.fgBright,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        if (approved)
+                          _StatusBadge(label: 'Approved', color: Colors.green)
+                        else if (rejected)
+                          _StatusBadge(label: 'Rejected', color: Colors.red)
+                        else
+                          _StatusBadge(label: 'Pending', color: Colors.amber),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // Submitter + date
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.person_outline,
+                          size: 14,
+                          color: tokens.fgDim,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          (item['user_name'] as String?) ?? 'Unknown',
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(Icons.schedule, size: 14, color: tokens.fgDim),
+                        const SizedBox(width: 4),
+                        Text(
+                          (item['created_at'] as String?) ?? '',
+                          style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    // Content preview
+                    Text(
+                      (item['content'] ?? '').toString().length > 200
+                          ? '${(item['content']).toString().substring(0, 200)}...'
+                          : (item['content'] ?? '').toString(),
+                      style: TextStyle(
+                        color: tokens.fgMuted,
+                        fontSize: 13,
+                        height: 1.4,
+                      ),
+                    ),
+                    // Approve / Reject buttons
+                    if (!approved && !rejected) ...[
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              final api = ref.read(apiClientProvider);
+                              await api.approveMarketplaceItem(
+                                item['id'] as int,
+                              );
+                              ref.invalidate(_pendingSubmissionsProvider);
+                            },
+                            icon: const Icon(Icons.check, size: 16),
+                            label: const Text('Approve'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green.shade700,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          OutlinedButton.icon(
+                            onPressed: () async {
+                              final api = ref.read(apiClientProvider);
+                              await api.rejectMarketplaceItem(
+                                item['id'] as int,
+                              );
+                              ref.invalidate(_pendingSubmissionsProvider);
+                            },
+                            icon: const Icon(Icons.close, size: 16),
+                            label: const Text('Reject'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.red.shade400,
+                              side: BorderSide(
+                                color: Colors.red.shade400.withValues(
+                                  alpha: 0.3,
+                                ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _StatusBadge extends StatelessWidget {
+  const _StatusBadge({required this.label, required this.color});
+  final String label;
+  final MaterialColor color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color.shade400,
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

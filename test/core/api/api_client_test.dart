@@ -6,12 +6,11 @@ void main() {
   group('Endpoints', () {
     test('static paths are correct', () {
       expect(Endpoints.authLogin, '/api/auth/login');
-      expect(Endpoints.authRefresh, '/api/auth/refresh');
+      expect(Endpoints.authLogout, '/api/auth/logout');
       expect(Endpoints.projects, '/api/projects');
-      expect(Endpoints.features, '/api/features');
       expect(Endpoints.notes, '/api/notes');
       expect(Endpoints.syncPush, '/api/sync/push');
-      expect(Endpoints.toolsCall, '/api/tools/call');
+      expect(Endpoints.mcpToolsCall, '/api/mcp/tools/call');
     });
 
     test('dynamic path helpers interpolate correctly', () {
@@ -19,7 +18,7 @@ void main() {
       expect(Endpoints.feature('f-1'), '/api/features/f-1');
       expect(Endpoints.note('n-2'), '/api/notes/n-2');
       expect(Endpoints.projectFeatures('p-1'), '/api/projects/p-1/features');
-      expect(Endpoints.projectNotes('p-2'), '/api/projects/p-2/notes');
+      expect(Endpoints.projectTree('p-2'), '/api/projects/p-2/tree');
     });
   });
 

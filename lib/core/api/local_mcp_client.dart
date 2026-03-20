@@ -1555,6 +1555,111 @@ class LocalMcpClient implements ApiClient {
   @override
   Future<Map<String, dynamic>> pullSync({String? since}) async => {};
 
+  // ── Marketplace Admin (delegate to restClient if available) ──────────────
+
+  @override
+  Future<Map<String, dynamic>> listPendingMarketplace() async {
+    if (restClient != null) return restClient!.listPendingMarketplace();
+    return {'submissions': <dynamic>[]};
+  }
+
+  @override
+  Future<Map<String, dynamic>> approveMarketplaceItem(int id) async {
+    if (restClient != null) return restClient!.approveMarketplaceItem(id);
+    throw UnsupportedError(
+      'approveMarketplaceItem requires restClient on LocalMcpClient',
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> rejectMarketplaceItem(
+    int id, {
+    String reason = '',
+  }) async {
+    if (restClient != null) {
+      return restClient!.rejectMarketplaceItem(id, reason: reason);
+    }
+    throw UnsupportedError(
+      'rejectMarketplaceItem requires restClient on LocalMcpClient',
+    );
+  }
+
+  // ── Verification Admin (delegate to restClient) ─────────────────────────
+
+  @override
+  Future<Map<String, dynamic>> listVerificationTypes() async {
+    if (restClient != null) return restClient!.listVerificationTypes();
+    return {'types': <dynamic>[]};
+  }
+
+  @override
+  Future<Map<String, dynamic>> createVerificationType(
+    Map<String, dynamic> body,
+  ) async {
+    if (restClient != null) return restClient!.createVerificationType(body);
+    throw UnsupportedError(
+      'createVerificationType requires restClient on LocalMcpClient',
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateVerificationType(
+    int id,
+    Map<String, dynamic> body,
+  ) async {
+    if (restClient != null) return restClient!.updateVerificationType(id, body);
+    throw UnsupportedError(
+      'updateVerificationType requires restClient on LocalMcpClient',
+    );
+  }
+
+  @override
+  Future<void> deleteVerificationType(int id) async {
+    if (restClient != null) return restClient!.deleteVerificationType(id);
+    throw UnsupportedError(
+      'deleteVerificationType requires restClient on LocalMcpClient',
+    );
+  }
+
+  // ── Badge Admin (delegate to restClient) ────────────────────────────────
+
+  @override
+  Future<Map<String, dynamic>> listBadgeDefinitions() async {
+    if (restClient != null) return restClient!.listBadgeDefinitions();
+    return {'badges': <dynamic>[]};
+  }
+
+  @override
+  Future<Map<String, dynamic>> createBadgeDefinition(
+    Map<String, dynamic> body,
+  ) async {
+    if (restClient != null) return restClient!.createBadgeDefinition(body);
+    throw UnsupportedError(
+      'createBadgeDefinition requires restClient on LocalMcpClient',
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateBadgeDefinition(
+    int id,
+    Map<String, dynamic> body,
+  ) async {
+    if (restClient != null) {
+      return restClient!.updateBadgeDefinition(id, body);
+    }
+    throw UnsupportedError(
+      'updateBadgeDefinition requires restClient on LocalMcpClient',
+    );
+  }
+
+  @override
+  Future<void> deleteBadgeDefinition(int id) async {
+    if (restClient != null) return restClient!.deleteBadgeDefinition(id);
+    throw UnsupportedError(
+      'deleteBadgeDefinition requires restClient on LocalMcpClient',
+    );
+  }
+
   // ── Tools (delegate to McpTcpClient) ────────────────────────────────────
 
   @override

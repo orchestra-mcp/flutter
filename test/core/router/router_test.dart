@@ -24,7 +24,7 @@ void main() {
 
     test('dynamic project routes interpolate correctly', () {
       expect(Routes.project('abc'), '/projects/abc');
-      expect(Routes.projectTree('xyz'), '/projects/xyz/tree');
+      expect(Routes.projectFeature('abc', 'f-1'), '/projects/abc/features/f-1');
     });
 
     test('dynamic library routes interpolate correctly', () {
