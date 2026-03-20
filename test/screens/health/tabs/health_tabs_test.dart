@@ -352,7 +352,7 @@ void main() {
         NutritionEntry(
           id: '1',
           food: const FoodItem(
-            title: 'Grilled Chicken',
+            title: {'en': 'Grilled Chicken'},
             category: FoodCategory.protein,
           ),
           portionSpoons: 2.0,
@@ -360,7 +360,10 @@ void main() {
         ),
         NutritionEntry(
           id: '2',
-          food: const FoodItem(title: 'Rice', category: FoodCategory.carb),
+          food: const FoodItem(
+            title: {'en': 'Rice'},
+            category: FoodCategory.carb,
+          ),
           portionSpoons: 3.0,
           timestamp: now,
         ),
