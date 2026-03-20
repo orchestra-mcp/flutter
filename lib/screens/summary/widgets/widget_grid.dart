@@ -261,7 +261,7 @@ class _EditableWidgetGrid extends StatelessWidget {
           );
         },
         itemCount: cards.length,
-        onReorderItem: (oldIndex, newIndex) => onReorder(oldIndex, newIndex),
+        onReorder: (oldIndex, newIndex) => onReorder(oldIndex, newIndex),
       ),
     );
   }
