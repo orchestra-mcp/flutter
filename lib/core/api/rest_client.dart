@@ -741,6 +741,58 @@ class RestClient implements ApiClient {
   Future<Map<String, dynamic>> testEmail() =>
       _post(Endpoints.adminTestEmail, {});
 
+  // Marketplace Admin
+  @override
+  Future<Map<String, dynamic>> listPendingMarketplace() =>
+      _get('/api/admin/marketplace/pending');
+
+  @override
+  Future<Map<String, dynamic>> approveMarketplaceItem(int id) =>
+      _post('/api/admin/marketplace/$id/approve', {});
+
+  @override
+  Future<Map<String, dynamic>> rejectMarketplaceItem(int id, {String reason = ''}) =>
+      _post('/api/admin/marketplace/$id/reject', {'reason': reason});
+
+  // User Gamification
+  @override
+  Future<Map<String, dynamic>> listUserBadges(int userId) => _get('/api/admin/users/$userId/badges');
+  @override
+  Future<Map<String, dynamic>> awardUserBadge(int userId, Map<String, dynamic> body) => _post('/api/admin/users/$userId/badges', body);
+  @override
+  Future<void> revokeUserBadge(int userId, String badgeId) => _delete('/api/admin/users/$userId/badges/$badgeId');
+  @override
+  Future<Map<String, dynamic>> getUserPoints(int userId) => _get('/api/admin/users/$userId/points');
+  @override
+  Future<Map<String, dynamic>> addUserPoints(int userId, Map<String, dynamic> body) => _post('/api/admin/users/$userId/points', body);
+
+  // Verification Admin
+  @override
+  Future<Map<String, dynamic>> listVerificationTypes() => _get('/api/admin/verifications');
+  @override
+  Future<Map<String, dynamic>> createVerificationType(Map<String, dynamic> body) => _post('/api/admin/verifications', body);
+  @override
+  Future<Map<String, dynamic>> updateVerificationType(int id, Map<String, dynamic> body) => _put('/api/admin/verifications/$id', body);
+  @override
+  Future<void> deleteVerificationType(int id) => _delete('/api/admin/verifications/$id');
+
+  // Badge Admin
+  @override
+  Future<Map<String, dynamic>> listBadgeDefinitions() =>
+      _get('/api/admin/badges');
+
+  @override
+  Future<Map<String, dynamic>> createBadgeDefinition(Map<String, dynamic> body) =>
+      _post('/api/admin/badges', body);
+
+  @override
+  Future<Map<String, dynamic>> updateBadgeDefinition(int id, Map<String, dynamic> body) =>
+      _put('/api/admin/badges/$id', body);
+
+  @override
+  Future<void> deleteBadgeDefinition(int id) =>
+      _delete('/api/admin/badges/$id');
+
   // Pages
   @override
   Future<Map<String, dynamic>> listAdminPages({
