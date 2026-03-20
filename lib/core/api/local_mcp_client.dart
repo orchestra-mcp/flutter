@@ -1670,4 +1670,30 @@ class LocalMcpClient implements ApiClient {
   }) => throw UnsupportedError(
     'callTool not available on LocalMcpClient — use mcpClientProvider',
   );
+
+  // ── Badges & Points (admin API — delegate to REST) ─────────────────────
+
+  @override
+  Future<Map<String, dynamic>> listUserBadges(int userId) async =>
+      restClient?.listUserBadges(userId) ?? {'badges': []};
+
+  @override
+  Future<Map<String, dynamic>> awardUserBadge(
+    int userId,
+    Map<String, dynamic> body,
+  ) async => restClient?.awardUserBadge(userId, body) ?? {};
+
+  @override
+  Future<void> revokeUserBadge(int userId, String badgeId) async =>
+      restClient?.revokeUserBadge(userId, badgeId);
+
+  @override
+  Future<Map<String, dynamic>> getUserPoints(int userId) async =>
+      restClient?.getUserPoints(userId) ?? {'points': 0};
+
+  @override
+  Future<Map<String, dynamic>> addUserPoints(
+    int userId,
+    Map<String, dynamic> body,
+  ) async => restClient?.addUserPoints(userId, body) ?? {};
 }

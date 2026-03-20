@@ -218,6 +218,47 @@ abstract class ApiClient {
   Future<void> deleteAdminSetting(String key);
   Future<Map<String, dynamic>> testEmail();
 
+  // ── Marketplace Admin ────────────────────────────────────────────────
+  Future<Map<String, dynamic>> listPendingMarketplace();
+  Future<Map<String, dynamic>> approveMarketplaceItem(int id);
+  Future<Map<String, dynamic>> rejectMarketplaceItem(
+    int id, {
+    String reason = '',
+  });
+
+  // ── User Gamification (Admin) ────────────────────────────────────────
+  Future<Map<String, dynamic>> listUserBadges(int userId);
+  Future<Map<String, dynamic>> awardUserBadge(
+    int userId,
+    Map<String, dynamic> body,
+  );
+  Future<void> revokeUserBadge(int userId, String badgeId);
+  Future<Map<String, dynamic>> getUserPoints(int userId);
+  Future<Map<String, dynamic>> addUserPoints(
+    int userId,
+    Map<String, dynamic> body,
+  );
+
+  // ── Verification Admin ───────────────────────────────────────────────
+  Future<Map<String, dynamic>> listVerificationTypes();
+  Future<Map<String, dynamic>> createVerificationType(
+    Map<String, dynamic> body,
+  );
+  Future<Map<String, dynamic>> updateVerificationType(
+    int id,
+    Map<String, dynamic> body,
+  );
+  Future<void> deleteVerificationType(int id);
+
+  // ── Badge Admin ─────────────────────────────────────────────────────
+  Future<Map<String, dynamic>> listBadgeDefinitions();
+  Future<Map<String, dynamic>> createBadgeDefinition(Map<String, dynamic> body);
+  Future<Map<String, dynamic>> updateBadgeDefinition(
+    int id,
+    Map<String, dynamic> body,
+  );
+  Future<void> deleteBadgeDefinition(int id);
+
   // Pages
   Future<Map<String, dynamic>> listAdminPages({
     String? search,
