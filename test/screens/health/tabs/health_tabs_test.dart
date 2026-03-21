@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:orchestra/core/config/user_settings_provider.dart';
 import 'package:orchestra/core/health/caffeine_manager.dart';
 import 'package:orchestra/core/health/hydration_manager.dart';
 import 'package:orchestra/core/health/nutrition_manager.dart';
@@ -48,6 +49,16 @@ Widget _wrap(Widget child) {
 // =============================================================================
 // Test notifiers — return controlled state from build(), avoid API calls
 // =============================================================================
+
+// Stub that returns empty settings without touching PowerSync.
+class _StubUserSettingsNotifier extends UserSettingsNotifier {
+  @override
+  Map<String, String> build() => const {};
+  @override
+  Future<void> set(String key, String value) async {}
+  @override
+  Future<void> refresh() async {}
+}
 
 class _TestHydrationNotifier extends HydrationNotifier {
   _TestHydrationNotifier(this._initial);
@@ -215,6 +226,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            userSettingsProvider.overrideWith(_StubUserSettingsNotifier.new),
             hydrationProvider.overrideWith(
               () => _TestHydrationNotifier(const HydrationState()),
             ),
@@ -224,7 +236,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('No results found'), findsOneWidget);
+      expect(
+        find.text('No results found', skipOffstage: false),
+        findsOneWidget,
+      );
     });
   });
 
