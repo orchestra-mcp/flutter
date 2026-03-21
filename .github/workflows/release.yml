@@ -44,6 +44,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate drift code
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Decode keystore
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -104,6 +107,9 @@ jobs:
 
       - name: Install CocoaPods
         run: cd ios && pod install
+
+      - name: Generate drift code
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Install Apple certificate and profile
         env:
@@ -173,6 +179,9 @@ jobs:
 
       - name: Install CocoaPods
         run: cd macos && pod install
+
+      - name: Generate drift code
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build macOS
         run: |
@@ -250,6 +259,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Generate drift code
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Build Linux
         run: |
           flutter build linux --release \
@@ -282,6 +294,9 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Generate drift code
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Windows
         run: |
