@@ -307,11 +307,11 @@ jobs:
 
           codesign --deep --force --options runtime \
             --sign "Developer ID Application" \
-            "build/macos/Build/Products/Release/Orchestra.app"
+            "build/macos/Build/Products/Release/orchestra.app"
 
       - name: Create DMG
         run: |
-          APP_PATH="build/macos/Build/Products/Release/Orchestra.app"
+          APP_PATH="build/macos/Build/Products/Release/orchestra.app"
           DMG_NAME="Orchestra-${{ needs.version.outputs.version }}-macos.dmg"
           hdiutil create -volname "Orchestra" -srcfolder "$APP_PATH" -ov -format UDZO "build/macos/$DMG_NAME"
 
