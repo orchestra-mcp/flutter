@@ -222,7 +222,7 @@ void main() {
           child: _wrap(const HydrationTab()),
         ),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       expect(find.text('No results found'), findsOneWidget);
     });
