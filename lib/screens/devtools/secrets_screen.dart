@@ -559,8 +559,9 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
           _buildAppBar(tokens),
           Expanded(
             child: asyncSecrets.when(
-              loading: () =>
-                  Center(child: CircularProgressIndicator(color: tokens.accent)),
+              loading: () => Center(
+                child: CircularProgressIndicator(color: tokens.accent),
+              ),
               error: (e, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16),

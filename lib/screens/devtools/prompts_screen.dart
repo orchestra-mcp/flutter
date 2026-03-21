@@ -445,34 +445,47 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
           _buildAppBar(tokens),
           Expanded(
             child: asyncPrompts.when(
-              loading: () =>
-                  Center(child: CircularProgressIndicator(color: tokens.accent)),
+              loading: () => Center(
+                child: CircularProgressIndicator(color: tokens.accent),
+              ),
               error: (e, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.error_outline_rounded,
-                          color: tokens.fgDim, size: 40),
+                      Icon(
+                        Icons.error_outline_rounded,
+                        color: tokens.fgDim,
+                        size: 40,
+                      ),
                       const SizedBox(height: 12),
-                      Text('Failed to load prompts',
-                          style: TextStyle(
-                              color: tokens.fgBright,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600)),
+                      Text(
+                        'Failed to load prompts',
+                        style: TextStyle(
+                          color: tokens.fgBright,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      Text('$e',
-                          style:
-                              TextStyle(color: tokens.fgMuted, fontSize: 13),
-                          textAlign: TextAlign.center),
+                      Text(
+                        '$e',
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(height: 16),
                       TextButton.icon(
                         onPressed: () => ref.invalidate(promptsProvider),
-                        icon: Icon(Icons.refresh_rounded,
-                            size: 16, color: tokens.accent),
-                        label: Text('Retry',
-                            style: TextStyle(color: tokens.accent)),
+                        icon: Icon(
+                          Icons.refresh_rounded,
+                          size: 16,
+                          color: tokens.accent,
+                        ),
+                        label: Text(
+                          'Retry',
+                          style: TextStyle(color: tokens.accent),
+                        ),
                       ),
                     ],
                   ),
@@ -484,7 +497,9 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                 if (filtered.isEmpty) return _buildNoResultsState(tokens);
                 return ListView.separated(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 8),
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
                   itemBuilder: (context, index) =>
@@ -498,8 +513,10 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showPromptDialog(),
         backgroundColor: tokens.accent,
-        child: Icon(Icons.add_rounded,
-            color: tokens.isLight ? Colors.white : tokens.bg),
+        child: Icon(
+          Icons.add_rounded,
+          color: tokens.isLight ? Colors.white : tokens.bg,
+        ),
       ),
     );
   }
@@ -516,15 +533,19 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.chat_bubble_outline_rounded,
-                  size: 48, color: tokens.fgDim.withValues(alpha: 0.4)),
+              Icon(
+                Icons.chat_bubble_outline_rounded,
+                size: 48,
+                color: tokens.fgDim.withValues(alpha: 0.4),
+              ),
               const SizedBox(height: 12),
               Text(
                 'Select a prompt',
                 style: TextStyle(
-                    color: tokens.fgMuted,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                  color: tokens.fgMuted,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
@@ -546,8 +567,10 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
       error: (e, _) => Scaffold(
         backgroundColor: tokens.bg,
         body: Center(
-          child: Text('Error: $e',
-              style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+          child: Text(
+            'Error: $e',
+            style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+          ),
         ),
       ),
       data: (prompts) {
@@ -556,8 +579,10 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
           return Scaffold(
             backgroundColor: tokens.bg,
             body: Center(
-              child: Text('Prompt not found.',
-                  style: TextStyle(color: tokens.fgMuted, fontSize: 13)),
+              child: Text(
+                'Prompt not found.',
+                style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+              ),
             ),
           );
         }

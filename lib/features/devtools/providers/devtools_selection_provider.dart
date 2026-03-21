@@ -52,8 +52,9 @@ class _SelectedSecretId extends Notifier<String?> {
   void select(String? id) => state = id;
 }
 
-final selectedSecretIdProvider =
-    NotifierProvider<_SelectedSecretId, String?>(_SelectedSecretId.new);
+final selectedSecretIdProvider = NotifierProvider<_SelectedSecretId, String?>(
+  _SelectedSecretId.new,
+);
 
 // ── Prompts selection ────────────────────────────────────────────────────────
 
@@ -63,5 +64,6 @@ class _SelectedPromptId extends Notifier<String?> {
   void select(String? id) => state = id;
 }
 
-final selectedPromptIdProvider =
-    NotifierProvider<_SelectedPromptId, String?>(_SelectedPromptId.new);
+final selectedPromptIdProvider = NotifierProvider<_SelectedPromptId, String?>(
+  _SelectedPromptId.new,
+);

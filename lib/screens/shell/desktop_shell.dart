@@ -1033,6 +1033,7 @@ class _SidebarPanel extends ConsumerWidget {
           TextButton(
             onPressed: () async {
               final name = nameCtrl.text.trim();
+              final url = urlCtrl.text.trim();
               if (name.isEmpty) return;
               Navigator.pop(ctx);
               try {
@@ -1042,9 +1043,7 @@ class _SidebarPanel extends ConsumerWidget {
                       collectionName: name,
                       name: 'Example Request',
                       method: 'GET',
-                      url: urlCtrl.text.trim().isEmpty
-                          ? 'https://api.example.com'
-                          : urlCtrl.text.trim(),
+                      url: url.isEmpty ? 'https://api.example.com' : url,
                     );
                 if (context.mounted) context.go(Routes.devtoolsApi);
               } catch (e) {
@@ -1179,10 +1178,10 @@ class _SidebarPanel extends ConsumerWidget {
           TextButton(
             onPressed: () async {
               final cmd = cmdCtrl.text.trim();
+              final wd = wdCtrl.text.trim();
               if (cmd.isEmpty) return;
               Navigator.pop(ctx);
               try {
-                final wd = wdCtrl.text.trim();
                 final process = await ref
                     .read(logRunnerProvider.notifier)
                     .run(cmd, workingDirectory: wd.isEmpty ? null : wd);
@@ -3058,7 +3057,9 @@ class _FilterChip extends StatelessWidget {
                 : tokens.border.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: selected ? color.withValues(alpha: 0.6) : Colors.transparent,
+              color: selected
+                  ? color.withValues(alpha: 0.6)
+                  : Colors.transparent,
             ),
           ),
           child: Text(
@@ -3066,8 +3067,7 @@ class _FilterChip extends StatelessWidget {
             style: TextStyle(
               color: selected ? color : tokens.fgDim,
               fontSize: 11,
-              fontWeight:
-                  selected ? FontWeight.w600 : FontWeight.normal,
+              fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ),
@@ -3116,8 +3116,11 @@ class _DatabaseSidebarState extends ConsumerState<_DatabaseSidebar> {
                   color: tokens.fgDim.withValues(alpha: 0.5),
                   fontSize: 12,
                 ),
-                prefixIcon:
-                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: tokens.fgDim,
+                  size: 14,
+                ),
                 suffixIcon: _query.isNotEmpty
                     ? GestureDetector(
                         onTap: () {
@@ -3264,8 +3267,11 @@ class _LogRunnerSidebarState extends ConsumerState<_LogRunnerSidebar> {
                   color: tokens.fgDim.withValues(alpha: 0.5),
                   fontSize: 12,
                 ),
-                prefixIcon:
-                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: tokens.fgDim,
+                  size: 14,
+                ),
                 suffixIcon: _query.isNotEmpty
                     ? GestureDetector(
                         onTap: () {
@@ -3464,8 +3470,11 @@ class _SecretsSidebarState extends ConsumerState<_SecretsSidebar> {
                   color: tokens.fgDim.withValues(alpha: 0.5),
                   fontSize: 12,
                 ),
-                prefixIcon:
-                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: tokens.fgDim,
+                  size: 14,
+                ),
                 suffixIcon: _query.isNotEmpty
                     ? GestureDetector(
                         onTap: () {
@@ -3587,8 +3596,7 @@ class _SecretsSidebarState extends ConsumerState<_SecretsSidebar> {
                           icon: Icons.copy_rounded,
                           label: 'Copy value',
                           onTap: () async {
-                            final notifier =
-                                ref.read(secretsProvider.notifier);
+                            final notifier = ref.read(secretsProvider.notifier);
                             final full = await notifier.getSecret(s.id);
                             if (full.value != null && context.mounted) {
                               await Clipboard.setData(
@@ -3693,8 +3701,11 @@ class _PromptsSidebarState extends ConsumerState<_PromptsSidebar> {
                   color: tokens.fgDim.withValues(alpha: 0.5),
                   fontSize: 12,
                 ),
-                prefixIcon:
-                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: tokens.fgDim,
+                  size: 14,
+                ),
                 suffixIcon: _query.isNotEmpty
                     ? GestureDetector(
                         onTap: () {
@@ -3751,8 +3762,7 @@ class _PromptsSidebarState extends ConsumerState<_PromptsSidebar> {
                   color: _trigColor(t),
                   tokens: tokens,
                   onTap: () => setState(
-                    () =>
-                        _triggerFilter = _triggerFilter == t ? null : t,
+                    () => _triggerFilter = _triggerFilter == t ? null : t,
                   ),
                 ),
             ],

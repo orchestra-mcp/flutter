@@ -15,20 +15,25 @@ import 'package:orchestra/features/devtools/providers/secrets_provider.dart';
 /// Prefetches all DevTools data in parallel at startup.
 /// Returns true when all five providers have loaded (regardless of errors).
 final devtoolsPrefetchProvider = FutureProvider<bool>((ref) async {
-  // Wait for each provider and log any errors so they surface in Flutter logs.
-  Future<T> _load<T>(Future<T> f, T fallback) =>
-      f.catchError((e, st) {
-        // ignore: avoid_print
-        print('[DevTools] prefetch error: $e');
-        return fallback;
-      });
+  // Use ref.read (not ref.watch) inside FutureProvider — ref.watch inside an
+  // async provider causes '_dependents.isEmpty' assertion errors in Flutter.
+  // The sidebars watch their own providers directly; this just triggers the
+  // initial load so data is ready before the user navigates.
+  Future<void> load(Future<void> Function() fn) async {
+    try {
+      await fn();
+    } catch (e) {
+      // ignore: avoid_print
+      print('[DevTools] prefetch error: $e');
+    }
+  }
 
   await Future.wait([
-    _load(ref.watch(apiCollectionProvider.future), <ApiCollection>[]),
-    _load(ref.watch(secretsProvider.future), <Secret>[]),
-    _load(ref.watch(databaseBrowserProvider.future), <DbConnection>[]),
-    _load(ref.watch(logRunnerProvider.future), <LogProcess>[]),
-    _load(ref.watch(promptsProvider.future), <Prompt>[]),
+    load(() => ref.read(apiCollectionProvider.future).then((_) {})),
+    load(() => ref.read(secretsProvider.future).then((_) {})),
+    load(() => ref.read(databaseBrowserProvider.future).then((_) {})),
+    load(() => ref.read(logRunnerProvider.future).then((_) {})),
+    load(() => ref.read(promptsProvider.future).then((_) {})),
   ]);
   return true;
 });
