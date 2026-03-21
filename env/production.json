@@ -2,7 +2,7 @@
   "APP_ENV": "production",
   "APP_NAME": "Orchestra",
   "API_BASE_URL": "https://orchestra-mcp.dev",
-  "POWERSYNC_URL": "https://orchestra-mcp.dev/api/powersync",
+  "POWERSYNC_URL": "https://orchestra-mcp.dev/api/powersync/",
   "WS_BASE_URL": "wss://orchestra-mcp.dev/api",
   "MARKETING_LOGIN_URL": "https://orchestra-mcp.dev/login",
   "MCP_HOST": "orchestra-mcp.dev",

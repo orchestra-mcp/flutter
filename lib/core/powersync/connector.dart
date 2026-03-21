@@ -64,10 +64,12 @@ class OrchestraBackendConnector extends PowerSyncBackendConnector {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final token = data['token'] as String;
       final expiresAt = data['expires_at'] as int;
+      final userId = data['user_id']?.toString();
 
       return PowerSyncCredentials(
         endpoint: powersyncUrl,
         token: token,
+        userId: userId,
         expiresAt: DateTime.fromMillisecondsSinceEpoch(expiresAt * 1000),
       );
     } catch (e) {
