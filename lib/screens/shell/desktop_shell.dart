@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orchestra/core/api/api_provider.dart';
 import 'package:orchestra/core/api/library_provider.dart';
+import 'package:orchestra/core/health/health_brief_generator.dart';
 import 'package:orchestra/core/auth/auth_provider.dart';
 import 'package:orchestra/core/router/app_router.dart';
 import 'package:orchestra/core/state/selection_state.dart';
@@ -19,12 +21,20 @@ import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/theme/theme_provider.dart';
 import 'package:orchestra/core/utils/platform_utils.dart';
 import 'package:orchestra/core/utils/url_utils.dart';
+import 'package:orchestra/features/devtools/providers/api_collection_provider.dart';
+import 'package:orchestra/features/devtools/providers/database_browser_provider.dart';
+import 'package:orchestra/features/devtools/providers/devtools_selection_provider.dart';
+import 'package:orchestra/features/devtools/providers/devtools_startup_provider.dart';
+import 'package:orchestra/features/devtools/providers/log_runner_provider.dart';
+import 'package:orchestra/features/devtools/providers/prompts_provider.dart';
+import 'package:orchestra/features/devtools/providers/secrets_provider.dart';
 import 'package:orchestra/features/terminal/terminal_session_model.dart';
 import 'package:orchestra/features/terminal/terminal_sessions_provider.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/screens/projects/projects_screen.dart';
 import 'package:orchestra/screens/tray/workspace_switcher.dart';
 import 'package:orchestra/widgets/entity_context_actions.dart';
+import 'package:orchestra/widgets/smart_action_dialog.dart';
 import 'package:orchestra/widgets/glass_list_tile.dart';
 import 'package:orchestra/widgets/spotlight_search.dart';
 import 'package:orchestra/widgets/update_banner.dart';
@@ -126,6 +136,36 @@ const _railDestinations = [
     sidebar: _SidebarType.delegations,
   ),
   _RailDest(
+    icon: Icons.api_rounded,
+    label: 'API',
+    route: Routes.devtoolsApi,
+    sidebar: _SidebarType.apiCollections,
+  ),
+  _RailDest(
+    icon: Icons.storage_rounded,
+    label: 'Database',
+    route: Routes.devtoolsDatabase,
+    sidebar: _SidebarType.database,
+  ),
+  _RailDest(
+    icon: Icons.receipt_long_rounded,
+    label: 'Log Runner',
+    route: Routes.devtoolsLogs,
+    sidebar: _SidebarType.logRunner,
+  ),
+  _RailDest(
+    icon: Icons.vpn_key_rounded,
+    label: 'Secrets',
+    route: Routes.devtoolsSecrets,
+    sidebar: _SidebarType.secrets,
+  ),
+  _RailDest(
+    icon: Icons.chat_bubble_outline_rounded,
+    label: 'Prompts',
+    route: Routes.devtoolsPrompts,
+    sidebar: _SidebarType.prompts,
+  ),
+  _RailDest(
     icon: Icons.terminal_rounded,
     label: 'Terminal',
     route: Routes.terminal,
@@ -174,6 +214,11 @@ String _localizedRailLabel(
     l10n.workflows,
     l10n.docs,
     l10n.delegations,
+    'API',
+    'Database',
+    'Log Runner',
+    'Secrets',
+    'Prompts',
     l10n.terminal,
     l10n.health,
   ];
@@ -216,6 +261,11 @@ enum _SidebarType {
   workflows,
   docs,
   delegations,
+  apiCollections,
+  database,
+  logRunner,
+  secrets,
+  prompts,
   terminal,
   health,
   settings,
@@ -245,6 +295,10 @@ class DesktopShell extends ConsumerWidget {
     final sidebarSection = ref.watch(_sidebarSectionProvider);
     final sidebarOpen = ref.watch(sidebarVisibleProvider);
     final showSidebar = canShowSidebar && sidebarOpen;
+
+    // Prefetch DevTools data at shell startup so sidebar counts and screens
+    // are instantly ready when the user navigates to DevTools.
+    ref.watch(devtoolsPrefetchProvider);
 
     // Rail highlights the sidebar section (not the route).
     final railIndex = sidebarOpen
@@ -493,6 +547,68 @@ class _IconRailItem extends StatelessWidget {
 
 // ── Header Bar ───────────────────────────────────────────────────────────────
 
+void _handleUniversalCreate(
+  BuildContext context,
+  WidgetRef ref,
+  UniversalActionType type,
+  String title,
+  String content,
+) {
+  switch (type) {
+    case UniversalActionType.note:
+      if (content.isNotEmpty) {
+        ref.read(noteRepositoryProvider).create(title: title, content: content);
+        ref.read(notesRefreshProvider.notifier).refresh();
+      } else {
+        context.push('${Routes.notes}/new');
+      }
+    case UniversalActionType.agent:
+      if (content.isNotEmpty) {
+        ref.read(apiClientProvider).createAgent({'name': title, 'content': content});
+        ref.invalidate(agentsProvider);
+      } else {
+        context.push('/library/agents/new');
+      }
+    case UniversalActionType.skill:
+      if (content.isNotEmpty) {
+        ref.read(apiClientProvider).createSkill({'name': title, 'description': content});
+        ref.invalidate(skillsProvider);
+      } else {
+        context.push('/library/skills/new');
+      }
+    case UniversalActionType.workflow:
+      context.push('/library/workflows/new');
+    case UniversalActionType.doc:
+      if (content.isNotEmpty) {
+        ref.read(apiClientProvider).createDoc({'title': title, 'content': content});
+        ref.invalidate(docsProvider);
+      } else {
+        context.push('/library/docs/new');
+      }
+    case UniversalActionType.feature:
+      context.push('/library/features/new');
+    case UniversalActionType.plan:
+      context.push('/library/plans/new');
+    case UniversalActionType.request:
+      context.push('/library/requests/new');
+    case UniversalActionType.person:
+      context.push('/library/persons/new');
+    case UniversalActionType.healthBrief:
+      final generator = HealthBriefGenerator(ref as Ref);
+      generator.generateAndSave().then((noteId) {
+        if (noteId != null && context.mounted) {
+          context.push('${Routes.notes}/$noteId');
+        }
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Generating health brief...'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+  }
+}
+
 class _HeaderBar extends ConsumerWidget {
   const _HeaderBar({required this.tokens});
 
@@ -571,6 +687,40 @@ class _HeaderBar extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 12),
+              // Universal create (+)
+              _HeaderIcon(
+                tokens: tokens,
+                icon: Icons.add_rounded,
+                onTap: () => showUniversalCreateMenu(
+                  context,
+                  ref,
+                  onCreate: (type, title, content) {
+                    _handleUniversalCreate(context, ref, type, title, content);
+                  },
+                ),
+              ),
+              const SizedBox(width: 4),
+              // Refresh
+              _HeaderIcon(
+                tokens: tokens,
+                icon: Icons.refresh_rounded,
+                onTap: () {
+                  ref.invalidate(agentsProvider);
+                  ref.invalidate(skillsProvider);
+                  ref.invalidate(workflowsProvider);
+                  ref.invalidate(docsProvider);
+                  ref.invalidate(projectsProvider);
+                  ref.invalidate(delegationsProvider);
+                  ref.invalidate(_sidebarNotesProvider);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Refreshed'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 4),
               // Notification bell
               _HeaderIcon(
                 tokens: tokens,
@@ -820,11 +970,221 @@ class _SidebarPanel extends ConsumerWidget {
         context.go('/library/workflows/new');
       case _SidebarType.docs:
         context.go('/library/docs/new');
+      case _SidebarType.apiCollections:
+        _showNewCollectionDialog(context, ref);
+      case _SidebarType.database:
+        _showConnectDatabaseDialog(context, ref);
+      case _SidebarType.logRunner:
+        _showRunCommandDialog(context, ref);
+      case _SidebarType.secrets:
+        _showNewSecretDialog(context, ref);
+      case _SidebarType.prompts:
+        _showNewPromptDialog(context, ref);
       case _SidebarType.terminal:
         break; // handled by PopupMenuButton in header
       default:
         break;
     }
+  }
+
+  // ── DevTools inline dialogs ───────────────────────────────────────────────
+
+  void _showNewCollectionDialog(BuildContext context, WidgetRef ref) {
+    final nameCtrl = TextEditingController();
+    final urlCtrl = TextEditingController();
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: tokens.bgAlt,
+        title: Text('New Collection', style: TextStyle(color: tokens.fgBright)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _DialogField(ctrl: nameCtrl, label: 'Name', hint: 'My API', tokens: tokens, autofocus: true),
+            const SizedBox(height: 12),
+            _DialogField(ctrl: urlCtrl, label: 'Base URL (optional)', hint: 'https://api.example.com', tokens: tokens),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel', style: TextStyle(color: tokens.fgMuted))),
+          TextButton(
+            onPressed: () async {
+              final name = nameCtrl.text.trim();
+              if (name.isEmpty) return;
+              Navigator.pop(ctx);
+              await ref.read(apiCollectionProvider.notifier).saveRequest(
+                collectionName: name,
+                name: 'Example Request',
+                method: 'GET',
+                url: urlCtrl.text.trim().isEmpty ? 'https://api.example.com' : urlCtrl.text.trim(),
+              );
+              if (context.mounted) context.go(Routes.devtoolsApi);
+            },
+            child: Text('Create', style: TextStyle(color: tokens.accent)),
+          ),
+        ],
+      ),
+    ).then((_) { nameCtrl.dispose(); urlCtrl.dispose(); });
+  }
+
+  void _showConnectDatabaseDialog(BuildContext context, WidgetRef ref) {
+    const drivers = ['postgres', 'sqlite', 'mysql', 'mongodb', 'redis'];
+    var selectedDriver = drivers.first;
+    final dsnCtrl = TextEditingController();
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setS) => AlertDialog(
+          backgroundColor: tokens.bgAlt,
+          title: Text('Connect Database', style: TextStyle(color: tokens.fgBright)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              DropdownButtonFormField<String>(
+                value: selectedDriver,
+                dropdownColor: tokens.bgAlt,
+                style: TextStyle(color: tokens.fgBright, fontSize: 13),
+                decoration: InputDecoration(
+                  labelText: 'Driver',
+                  labelStyle: TextStyle(color: tokens.fgDim),
+                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: tokens.borderFaint)),
+                  focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: tokens.accent)),
+                ),
+                items: drivers.map((d) => DropdownMenuItem(value: d, child: Text(d))).toList(),
+                onChanged: (v) => setS(() => selectedDriver = v ?? drivers.first),
+              ),
+              const SizedBox(height: 12),
+              _DialogField(ctrl: dsnCtrl, label: 'Connection String', hint: 'postgres://user:pass@localhost/db', tokens: tokens, autofocus: true),
+            ],
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel', style: TextStyle(color: tokens.fgMuted))),
+            TextButton(
+              onPressed: () async {
+                final dsn = dsnCtrl.text.trim();
+                if (dsn.isEmpty) return;
+                Navigator.pop(ctx);
+                try {
+                  await ref.read(databaseBrowserProvider.notifier).connect(driver: selectedDriver, dsn: dsn);
+                  if (context.mounted) context.go(Routes.devtoolsDatabase);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Connection failed: $e')));
+                  }
+                }
+              },
+              child: Text('Connect', style: TextStyle(color: tokens.accent)),
+            ),
+          ],
+        ),
+      ),
+    ).then((_) => dsnCtrl.dispose());
+  }
+
+  void _showRunCommandDialog(BuildContext context, WidgetRef ref) {
+    final cmdCtrl = TextEditingController();
+    final wdCtrl = TextEditingController();
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: tokens.bgAlt,
+        title: Text('Run Command', style: TextStyle(color: tokens.fgBright)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _DialogField(ctrl: cmdCtrl, label: 'Command', hint: 'npm run dev', tokens: tokens, autofocus: true, monospace: true),
+            const SizedBox(height: 12),
+            _DialogField(ctrl: wdCtrl, label: 'Working Directory (optional)', hint: '/path/to/project', tokens: tokens, monospace: true),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel', style: TextStyle(color: tokens.fgMuted))),
+          TextButton(
+            onPressed: () async {
+              final cmd = cmdCtrl.text.trim();
+              if (cmd.isEmpty) return;
+              Navigator.pop(ctx);
+              final wd = wdCtrl.text.trim();
+              final process = await ref.read(logRunnerProvider.notifier).run(
+                cmd,
+                workingDirectory: wd.isEmpty ? null : wd,
+              );
+              ref.read(selectedProcessIdProvider.notifier).select(process.id);
+              if (context.mounted) context.go(Routes.devtoolsLogs);
+            },
+            child: Text('Run', style: TextStyle(color: tokens.accent)),
+          ),
+        ],
+      ),
+    ).then((_) { cmdCtrl.dispose(); wdCtrl.dispose(); });
+  }
+
+  void _showNewSecretDialog(BuildContext context, WidgetRef ref) {
+    final nameCtrl = TextEditingController();
+    final valueCtrl = TextEditingController();
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: tokens.bgAlt,
+        title: Text('New Secret', style: TextStyle(color: tokens.fgBright)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _DialogField(ctrl: nameCtrl, label: 'Name', hint: 'MY_API_KEY', tokens: tokens, autofocus: true),
+            const SizedBox(height: 12),
+            _DialogField(ctrl: valueCtrl, label: 'Value', hint: '••••••••', tokens: tokens, obscure: true),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel', style: TextStyle(color: tokens.fgMuted))),
+          TextButton(
+            onPressed: () async {
+              final name = nameCtrl.text.trim();
+              final value = valueCtrl.text;
+              if (name.isEmpty || value.isEmpty) return;
+              Navigator.pop(ctx);
+              await ref.read(secretsProvider.notifier).createSecret(name: name, value: value);
+              if (context.mounted) context.go(Routes.devtoolsSecrets);
+            },
+            child: Text('Save', style: TextStyle(color: tokens.accent)),
+          ),
+        ],
+      ),
+    ).then((_) { nameCtrl.dispose(); valueCtrl.dispose(); });
+  }
+
+  void _showNewPromptDialog(BuildContext context, WidgetRef ref) {
+    final titleCtrl = TextEditingController();
+    final promptCtrl = TextEditingController();
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: tokens.bgAlt,
+        title: Text('New Prompt', style: TextStyle(color: tokens.fgBright)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _DialogField(ctrl: titleCtrl, label: 'Title', hint: 'Daily standup', tokens: tokens, autofocus: true),
+            const SizedBox(height: 12),
+            _DialogField(ctrl: promptCtrl, label: 'Prompt', hint: 'Summarize my tasks for today...', tokens: tokens, maxLines: 4),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel', style: TextStyle(color: tokens.fgMuted))),
+          TextButton(
+            onPressed: () async {
+              final t = titleCtrl.text.trim();
+              final p = promptCtrl.text.trim();
+              if (t.isEmpty || p.isEmpty) return;
+              Navigator.pop(ctx);
+              await ref.read(promptsProvider.notifier).createPrompt(title: t, prompt: p);
+              if (context.mounted) context.go(Routes.devtoolsPrompts);
+            },
+            child: Text('Create', style: TextStyle(color: tokens.accent)),
+          ),
+        ],
+      ),
+    ).then((_) { titleCtrl.dispose(); promptCtrl.dispose(); });
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref) {
@@ -837,6 +1197,11 @@ class _SidebarPanel extends ConsumerWidget {
       _SidebarType.workflows => 'Workflows',
       _SidebarType.docs => 'Docs',
       _SidebarType.delegations => 'Delegations',
+      _SidebarType.apiCollections => 'API Collections',
+      _SidebarType.database => 'Database',
+      _SidebarType.logRunner => 'Log Runner',
+      _SidebarType.secrets => 'Secrets',
+      _SidebarType.prompts => 'Prompts',
       _SidebarType.health => 'Health',
       _SidebarType.settings => 'Settings',
       _SidebarType.admin => 'Admin',
@@ -954,6 +1319,11 @@ class _SidebarPanel extends ConsumerWidget {
         onTap: (item) => context.go('/library/delegations/${item['id'] ?? ''}'),
       ),
       _SidebarType.dashboard => _DashboardSidebar(tokens: tokens),
+      _SidebarType.apiCollections => _ApiCollectionsSidebar(tokens: tokens),
+      _SidebarType.database => _DatabaseSidebar(tokens: tokens),
+      _SidebarType.logRunner => _LogRunnerSidebar(tokens: tokens),
+      _SidebarType.secrets => _SecretsSidebar(tokens: tokens),
+      _SidebarType.prompts => _PromptsSidebar(tokens: tokens),
       _SidebarType.health => _HealthSidebar(tokens: tokens),
       _SidebarType.settings => _SettingsSidebar(tokens: tokens),
       _SidebarType.admin => _AdminSidebar(tokens: tokens),
@@ -1495,7 +1865,9 @@ class _SidebarSelectionHeader extends StatelessWidget {
 
 /// Reactive provider for the notes list. Uses PowerSync watch query so it
 /// auto-updates when data changes locally or via sync from other devices.
+/// On desktop, watches [notesRefreshProvider] so MCP events trigger a re-fetch.
 final _sidebarNotesProvider = StreamProvider<List<Note>>((ref) {
+  ref.watch(notesRefreshProvider);
   return ref.watch(noteRepositoryProvider).watchAll();
 });
 
@@ -2196,6 +2568,58 @@ class _AsyncListSidebarState extends ConsumerState<_AsyncListSidebar> {
   }
 }
 
+// ── Shared dialog field ──────────────────────────────────────────────────────
+
+class _DialogField extends StatelessWidget {
+  const _DialogField({
+    required this.ctrl,
+    required this.label,
+    required this.hint,
+    required this.tokens,
+    this.autofocus = false,
+    this.obscure = false,
+    this.monospace = false,
+    this.maxLines = 1,
+  });
+
+  final TextEditingController ctrl;
+  final String label;
+  final String hint;
+  final OrchestraColorTokens tokens;
+  final bool autofocus;
+  final bool obscure;
+  final bool monospace;
+  final int maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: ctrl,
+      autofocus: autofocus,
+      obscureText: obscure,
+      maxLines: obscure ? 1 : maxLines,
+      style: TextStyle(
+        color: tokens.fgBright,
+        fontSize: 13,
+        fontFamily: monospace ? 'JetBrains Mono' : null,
+        fontFamilyFallback: monospace ? const ['monospace'] : null,
+      ),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
+        hintText: hint,
+        hintStyle: TextStyle(color: tokens.fgDim.withValues(alpha: 0.5), fontSize: 13),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: tokens.borderFaint),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: tokens.accent),
+        ),
+      ),
+    );
+  }
+}
+
 // ── Dashboard sidebar ────────────────────────────────────────────────────────
 
 class _DashboardSidebar extends StatelessWidget {
@@ -2225,6 +2649,388 @@ class _DashboardSidebar extends StatelessWidget {
             onTap: () => context.go(route),
           ),
       ],
+    );
+  }
+}
+
+// ── DevTools individual sidebars ─────────────────────────────────────────────
+
+class _ApiCollectionsSidebar extends ConsumerStatefulWidget {
+  const _ApiCollectionsSidebar({required this.tokens});
+  final OrchestraColorTokens tokens;
+
+  @override
+  ConsumerState<_ApiCollectionsSidebar> createState() =>
+      _ApiCollectionsSidebarState();
+}
+
+class _ApiCollectionsSidebarState
+    extends ConsumerState<_ApiCollectionsSidebar> {
+  final Set<String> _expanded = {};
+
+  OrchestraColorTokens get tokens => widget.tokens;
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(apiCollectionProvider);
+    final selectedCollId = ref.watch(selectedCollectionIdProvider);
+    final selectedEp = ref.watch(selectedEndpointProvider);
+
+    return async.when(
+      loading: () => Center(
+          child: CircularProgressIndicator(
+              color: tokens.accent, strokeWidth: 2)),
+      error: (e, _) => Padding(
+        padding: const EdgeInsets.all(16),
+        child:
+            Text('Error: $e', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+      ),
+      data: (collections) {
+        if (collections.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text('No collections.\nTap + to create one.',
+                style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          children: [
+            for (final c in collections) ...[
+              // Collection header row
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: () {
+                    setState(() {
+                      if (_expanded.contains(c.id)) {
+                        _expanded.remove(c.id);
+                      } else {
+                        _expanded.add(c.id);
+                      }
+                    });
+                    ref
+                        .read(selectedCollectionIdProvider.notifier)
+                        .select(c.id);
+                    ref.read(selectedEndpointProvider.notifier).select(null);
+                    context.go(Routes.devtoolsApi);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: c.id == selectedCollId
+                          ? tokens.accentSurface
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _expanded.contains(c.id)
+                              ? Icons.keyboard_arrow_down_rounded
+                              : Icons.chevron_right_rounded,
+                          size: 16,
+                          color: tokens.fgDim,
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(Icons.folder_rounded,
+                            size: 14,
+                            color: c.id == selectedCollId
+                                ? tokens.accent
+                                : const Color(0xFFFBBF24)),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            c.name,
+                            style: TextStyle(
+                              color: c.id == selectedCollId
+                                  ? tokens.accent
+                                  : tokens.fgBright,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 1),
+                          decoration: BoxDecoration(
+                            color: tokens.fgDim.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            '${c.endpoints.length}',
+                            style: TextStyle(
+                                color: tokens.fgDim,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              // Endpoints (expanded)
+              if (_expanded.contains(c.id))
+                for (final ep in c.endpoints)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 28, right: 8),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(6),
+                      onTap: () {
+                        ref
+                            .read(selectedCollectionIdProvider.notifier)
+                            .select(c.id);
+                        ref
+                            .read(selectedEndpointProvider.notifier)
+                            .select(ep);
+                        context.go(Routes.devtoolsApi);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 6),
+                        margin: const EdgeInsets.only(bottom: 2),
+                        decoration: BoxDecoration(
+                          color: ep.id == selectedEp?.id &&
+                                  c.id == selectedCollId
+                              ? tokens.accent.withValues(alpha: 0.1)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Row(
+                          children: [
+                            _MethodTag(method: ep.method, tokens: tokens),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                ep.name,
+                                style: TextStyle(
+                                  color: ep.id == selectedEp?.id &&
+                                          c.id == selectedCollId
+                                      ? tokens.accent
+                                      : tokens.fgBright,
+                                  fontSize: 12,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+            ],
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _MethodTag extends StatelessWidget {
+  const _MethodTag({required this.method, required this.tokens});
+  final String method;
+  final OrchestraColorTokens tokens;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = switch (method.toUpperCase()) {
+      'GET' => const Color(0xFF22C55E),
+      'POST' => const Color(0xFF3B82F6),
+      'PUT' => const Color(0xFFF59E0B),
+      'PATCH' => const Color(0xFF8B5CF6),
+      'DELETE' => const Color(0xFFEF4444),
+      _ => const Color(0xFF6B7280),
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Text(
+        method.toUpperCase().length > 3
+            ? method.toUpperCase().substring(0, 3)
+            : method.toUpperCase(),
+        style: TextStyle(
+            color: color, fontSize: 9, fontWeight: FontWeight.w800),
+      ),
+    );
+  }
+}
+
+class _DatabaseSidebar extends ConsumerWidget {
+  const _DatabaseSidebar({required this.tokens});
+  final OrchestraColorTokens tokens;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(databaseBrowserProvider);
+    final selectedId = ref.watch(selectedConnectionIdProvider);
+
+    return async.when(
+      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2)),
+      error: (e, _) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text('Error: $e', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+      ),
+      data: (connections) {
+        if (connections.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text('No connections.\nTap + to connect.', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          children: [
+            for (final c in connections)
+              _SidebarItem(
+                tokens: tokens,
+                icon: Icons.storage_rounded,
+                label: c.driver.toUpperCase(),
+                subtitle: c.dsn.length > 30 ? '${c.dsn.substring(0, 30)}…' : c.dsn,
+                isSelected: c.id == selectedId,
+                onTap: () {
+                  ref.read(selectedConnectionIdProvider.notifier).select(c.id);
+                  context.go(Routes.devtoolsDatabase);
+                },
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _LogRunnerSidebar extends ConsumerWidget {
+  const _LogRunnerSidebar({required this.tokens});
+  final OrchestraColorTokens tokens;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(logRunnerProvider);
+    final selectedId = ref.watch(selectedProcessIdProvider);
+
+    return async.when(
+      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2)),
+      error: (e, _) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text('Error: $e', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+      ),
+      data: (processes) {
+        if (processes.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text('No processes.\nTap + to run a command.', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          children: [
+            for (final p in processes)
+              _SidebarItem(
+                tokens: tokens,
+                icon: p.isRunning ? Icons.play_circle_filled_rounded : Icons.check_circle_rounded,
+                iconColor: p.isRunning ? const Color(0xFF22C55E) : tokens.fgDim,
+                label: p.command.length > 28 ? '${p.command.substring(0, 28)}…' : p.command,
+                subtitle: p.isRunning
+                    ? 'PID ${p.pid ?? '—'}${p.uptime != null ? ' · ${p.uptime}' : ''}'
+                    : p.status,
+                isSelected: p.id == selectedId,
+                onTap: () {
+                  ref.read(selectedProcessIdProvider.notifier).select(p.id);
+                  context.go(Routes.devtoolsLogs);
+                },
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _SecretsSidebar extends ConsumerWidget {
+  const _SecretsSidebar({required this.tokens});
+  final OrchestraColorTokens tokens;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(secretsProvider);
+
+    return async.when(
+      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2)),
+      error: (e, _) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text('Error: $e', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+      ),
+      data: (secrets) {
+        if (secrets.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text('No secrets.\nTap + to add one.', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          children: [
+            for (final s in secrets)
+              _SidebarItem(
+                tokens: tokens,
+                icon: Icons.vpn_key_rounded,
+                label: s.name,
+                subtitle: s.category,
+                onTap: () => context.go(Routes.devtoolsSecrets),
+              ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _PromptsSidebar extends ConsumerWidget {
+  const _PromptsSidebar({required this.tokens});
+  final OrchestraColorTokens tokens;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final async = ref.watch(promptsProvider);
+
+    return async.when(
+      loading: () => Center(child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2)),
+      error: (e, _) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Text('Error: $e', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+      ),
+      data: (prompts) {
+        if (prompts.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text('No prompts.\nTap + to create one.', style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+          );
+        }
+        return ListView(
+          padding: const EdgeInsets.only(top: 4, bottom: 8),
+          children: [
+            for (final p in prompts)
+              _SidebarItem(
+                tokens: tokens,
+                icon: Icons.chat_bubble_outline_rounded,
+                label: p.title,
+                subtitle: p.trigger,
+                onTap: () => context.go(Routes.devtoolsPrompts),
+              ),
+          ],
+        );
+      },
     );
   }
 }

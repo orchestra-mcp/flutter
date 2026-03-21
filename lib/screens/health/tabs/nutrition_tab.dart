@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orchestra/core/health/food_item_provider.dart';
 import 'package:orchestra/core/health/nutrition_manager.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
@@ -61,7 +62,11 @@ class NutritionTab extends ConsumerWidget {
           ],
 
           // Log meal
-          _LogMealCard(tokens: tokens, notifier: notifier),
+          _LogMealCard(
+            tokens: tokens,
+            notifier: notifier,
+            items: ref.watch(foodItemsProvider),
+          ),
           const SizedBox(height: 16),
 
           // Today's log — or empty state
@@ -674,10 +679,15 @@ class _CategoryBreakdownCard extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _LogMealCard extends StatefulWidget {
-  const _LogMealCard({required this.tokens, required this.notifier});
+  const _LogMealCard({
+    required this.tokens,
+    required this.notifier,
+    required this.items,
+  });
 
   final OrchestraColorTokens tokens;
   final NutritionNotifier notifier;
+  final List<FoodItem> items;
 
   @override
   State<_LogMealCard> createState() => _LogMealCardState();
@@ -689,7 +699,7 @@ class _LogMealCardState extends State<_LogMealCard> {
   String _query = '';
 
   List<FoodItem> get _filtered {
-    final foods = FoodRegistry.allFoods;
+    final foods = widget.items;
     if (_query.isEmpty) return foods;
     final q = _query.toLowerCase();
     return foods.where((f) {

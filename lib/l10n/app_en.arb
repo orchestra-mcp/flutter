@@ -304,6 +304,10 @@
   "@orchestrator": {
     "description": "Orchestrator settings section label"
   },
+  "devtools": "DevTools",
+  "@devtools": {
+    "description": "DevTools navigation label"
+  },
   "terminal": "Terminal",
   "@terminal": {
     "description": "Terminal settings label"
@@ -4178,6 +4182,116 @@
   "@activityNoMatchingFilters": {
     "description": "Empty state when no activities match filters"
   },
+  "activityGroupToday": "Today",
+  "@activityGroupToday": {
+    "description": "Time group header: today's activities"
+  },
+  "activityGroupYesterday": "Yesterday",
+  "@activityGroupYesterday": {
+    "description": "Time group header: yesterday's activities"
+  },
+  "activityGroupEarlier": "Earlier",
+  "@activityGroupEarlier": {
+    "description": "Time group header: older activities"
+  },
+  "activityLiveIndicator": "Live",
+  "@activityLiveIndicator": {
+    "description": "Badge shown when real-time WebSocket is connected"
+  },
+
+  "copied": "Copied",
+  "@copied": {
+    "description": "Label shown after copying text to clipboard"
+  },
+  "dismiss": "Dismiss",
+  "@dismiss": {
+    "description": "Button to dismiss/close a panel or notification"
+  },
+  "discard": "Discard",
+  "@discard": {
+    "description": "Button to discard generated content"
+  },
+  "useResult": "Use Result",
+  "@useResult": {
+    "description": "Button to accept/use AI-generated content"
+  },
+  "whatToCreate": "What would you like to create?",
+  "@whatToCreate": {
+    "description": "Subtitle in the universal create dialog type-picker"
+  },
+  "resultStreaming": "Streaming...",
+  "@resultStreaming": {
+    "description": "Status label when AI result is streaming in"
+  },
+  "resultComplete": "Complete",
+  "@resultComplete": {
+    "description": "Status label when AI result is complete"
+  },
+  "resultError": "Error",
+  "@resultError": {
+    "description": "Status label when AI result encountered an error"
+  },
+  "resultProcessing": "Processing...",
+  "@resultProcessing": {
+    "description": "Status label while waiting for AI result to begin"
+  },
+  "notifFeatureComplete": "Feature Complete",
+  "@notifFeatureComplete": {
+    "description": "Notification title when a feature is marked done"
+  },
+  "notifFeatureUpdated": "Feature Updated",
+  "@notifFeatureUpdated": {
+    "description": "Notification title when a feature status changes"
+  },
+  "notifSmartActionComplete": "Smart Action Complete",
+  "@notifSmartActionComplete": {
+    "description": "Notification title when a smart action finishes"
+  },
+  "notifNoteGenerated": "Note Generated",
+  "@notifNoteGenerated": {
+    "description": "Notification title when an AI note is generated"
+  },
+  "notifNoteReady": "\"{title}\" is ready for review",
+  "@notifNoteReady": {
+    "description": "Notification body when an AI note is ready",
+    "placeholders": {
+      "title": { "type": "String" }
+    }
+  },
+  "notifSyncComplete": "Sync Complete",
+  "@notifSyncComplete": {
+    "description": "Notification title when sync finishes"
+  },
+  "notifSyncItemsSynced": "{count} items synced",
+  "@notifSyncItemsSynced": {
+    "description": "Notification body showing how many items synced",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "notifAgentFinished": "Agent Finished",
+  "@notifAgentFinished": {
+    "description": "Notification title when an agent session completes"
+  },
+  "notifAgentSessionCompleted": "An agent session completed",
+  "@notifAgentSessionCompleted": {
+    "description": "Default notification body for agent completion"
+  },
+  "notifEntityDeleted": "{entityType} Deleted",
+  "@notifEntityDeleted": {
+    "description": "Notification title when a synced entity is deleted",
+    "placeholders": {
+      "entityType": { "type": "String" }
+    }
+  },
+  "notifEntityDeletedBody": "{entityType} {entityId} was removed",
+  "@notifEntityDeletedBody": {
+    "description": "Notification body when a synced entity is deleted",
+    "placeholders": {
+      "entityType": { "type": "String" },
+      "entityId": { "type": "String" }
+    }
+  },
 
   "smartActionSummarizeDesc": "Create a concise summary",
   "@smartActionSummarizeDesc": {
@@ -5076,5 +5190,493 @@
   "agentInstructionsContext": "Context",
   "@agentInstructionsContext": {
     "description": "Context tab label in agent instructions settings"
+  },
+
+  "wbNewWorkflow": "New Workflow",
+  "@wbNewWorkflow": {
+    "description": "Workflow builder title when no name is set"
+  },
+  "wbYaml": "YAML",
+  "@wbYaml": {
+    "description": "Button label to toggle YAML preview in workflow builder"
+  },
+  "wbExportPack": "Export Pack",
+  "@wbExportPack": {
+    "description": "Button label to export workflow as a pack"
+  },
+  "wbSave": "Save",
+  "@wbSave": {
+    "description": "Save button in workflow builder"
+  },
+  "wbSaved": "Workflow saved ({id})",
+  "@wbSaved": {
+    "description": "SnackBar message after saving a new workflow",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "wbUpdated": "Workflow updated",
+  "@wbUpdated": {
+    "description": "SnackBar message after updating an existing workflow"
+  },
+  "wbSaveFailed": "Save failed: {error}",
+  "@wbSaveFailed": {
+    "description": "SnackBar message when saving fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wbLoadFailed": "Failed to load workflow: {error}",
+  "@wbLoadFailed": {
+    "description": "SnackBar message when loading a workflow fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "wbAddState": "Add State",
+  "@wbAddState": {
+    "description": "Canvas toolbar button to add a new state"
+  },
+  "wbAddTransition": "Add Transition",
+  "@wbAddTransition": {
+    "description": "Canvas toolbar button to add a new transition"
+  },
+  "wbBadgeStart": "START",
+  "@wbBadgeStart": {
+    "description": "Badge label shown on the initial state node"
+  },
+  "wbBadgeEnd": "END",
+  "@wbBadgeEnd": {
+    "description": "Badge label shown on terminal state nodes"
+  },
+  "wbBadgeSkill": "skill",
+  "@wbBadgeSkill": {
+    "description": "Badge label shown on state nodes that have a skill attached"
+  },
+  "wbBadgeAgent": "agent",
+  "@wbBadgeAgent": {
+    "description": "Badge label shown on state nodes that have an agent attached"
+  },
+  "wbInspector": "Inspector",
+  "@wbInspector": {
+    "description": "Header label for the inspector panel in the workflow builder"
+  },
+  "wbInspectorState": "State",
+  "@wbInspectorState": {
+    "description": "Inspector type label when a state is selected"
+  },
+  "wbInspectorTransition": "Transition",
+  "@wbInspectorTransition": {
+    "description": "Inspector type label when a transition is selected"
+  },
+  "wbInspectorGate": "Gate",
+  "@wbInspectorGate": {
+    "description": "Inspector type label when a gate is selected"
+  },
+  "wbSectionWorkflow": "Workflow",
+  "@wbSectionWorkflow": {
+    "description": "Section label for workflow-level properties in inspector"
+  },
+  "wbFieldName": "Name",
+  "@wbFieldName": {
+    "description": "Form field label for workflow/state/gate name"
+  },
+  "wbFieldDescription": "Description",
+  "@wbFieldDescription": {
+    "description": "Form field label for workflow description"
+  },
+  "wbFieldProjectId": "Project ID",
+  "@wbFieldProjectId": {
+    "description": "Form field label for project ID"
+  },
+  "wbProjectIdHint": "Auto-detected if empty",
+  "@wbProjectIdHint": {
+    "description": "Hint text for the Project ID field"
+  },
+  "wbFieldInitialState": "Initial State",
+  "@wbFieldInitialState": {
+    "description": "Form field label for selecting the initial workflow state"
+  },
+  "wbSetAsDefault": "Set as default",
+  "@wbSetAsDefault": {
+    "description": "Toggle label to mark this workflow as the project default"
+  },
+  "wbSectionGates": "Gates",
+  "@wbSectionGates": {
+    "description": "Section label for the gates list in the workflow inspector"
+  },
+  "wbAddGate": "Add Gate",
+  "@wbAddGate": {
+    "description": "Button label to add a new gate"
+  },
+  "wbNoTerminalState": "No terminal state defined",
+  "@wbNoTerminalState": {
+    "description": "Validation hint when no terminal state exists"
+  },
+  "wbInvalidInitialState": "Initial state is not in states list",
+  "@wbInvalidInitialState": {
+    "description": "Validation hint when the initial state ID is not found in the states list"
+  },
+  "wbSectionState": "State",
+  "@wbSectionState": {
+    "description": "Section label in the state inspector panel"
+  },
+  "wbFieldStateId": "ID",
+  "@wbFieldStateId": {
+    "description": "Form field label for state ID"
+  },
+  "wbStateIdHint": "e.g. in-progress",
+  "@wbStateIdHint": {
+    "description": "Hint text for the state ID field"
+  },
+  "wbFieldStateLabel": "Label",
+  "@wbFieldStateLabel": {
+    "description": "Form field label for state display label"
+  },
+  "wbToggleTerminal": "Terminal (done) state",
+  "@wbToggleTerminal": {
+    "description": "Toggle label to mark a state as terminal"
+  },
+  "wbToggleActiveWork": "Active work (counts WIP)",
+  "@wbToggleActiveWork": {
+    "description": "Toggle label to mark a state as active-work (counts toward WIP limit)"
+  },
+  "wbSectionAttachedSkill": "Attached Skill",
+  "@wbSectionAttachedSkill": {
+    "description": "Section label for skill attachment in the state inspector"
+  },
+  "wbSectionAttachedAgent": "Attached Agent",
+  "@wbSectionAttachedAgent": {
+    "description": "Section label for agent attachment in the state inspector"
+  },
+  "wbRemoveState": "Remove State",
+  "@wbRemoveState": {
+    "description": "Button label to remove a state from the workflow"
+  },
+  "wbSectionTransition": "Transition",
+  "@wbSectionTransition": {
+    "description": "Section label in the transition inspector panel"
+  },
+  "wbFieldFrom": "From",
+  "@wbFieldFrom": {
+    "description": "Dropdown label for the source state of a transition"
+  },
+  "wbFieldTo": "To",
+  "@wbFieldTo": {
+    "description": "Dropdown label for the target state of a transition"
+  },
+  "wbFieldGateOptional": "Gate (optional)",
+  "@wbFieldGateOptional": {
+    "description": "Dropdown label for selecting an optional gate on a transition"
+  },
+  "wbGateNone": "None",
+  "@wbGateNone": {
+    "description": "Dropdown option representing no gate on a transition"
+  },
+  "wbEditGateTooltip": "Edit gate",
+  "@wbEditGateTooltip": {
+    "description": "Tooltip for the edit gate icon button in transition inspector"
+  },
+  "wbRemoveTransition": "Remove Transition",
+  "@wbRemoveTransition": {
+    "description": "Button label to remove a transition"
+  },
+  "wbSectionGate": "Gate",
+  "@wbSectionGate": {
+    "description": "Section label in the gate inspector panel"
+  },
+  "wbFieldGateId": "ID",
+  "@wbFieldGateId": {
+    "description": "Form field label for gate ID"
+  },
+  "wbGateIdHint": "e.g. code_complete",
+  "@wbGateIdHint": {
+    "description": "Hint text for the gate ID field"
+  },
+  "wbFieldGateLabel": "Label",
+  "@wbFieldGateLabel": {
+    "description": "Form field label for gate display label"
+  },
+  "wbFieldRequiredSection": "Required Section",
+  "@wbFieldRequiredSection": {
+    "description": "Form field label for the required evidence section in a gate"
+  },
+  "wbRequiredSectionHint": "e.g. Changes",
+  "@wbRequiredSectionHint": {
+    "description": "Hint text for the required section field"
+  },
+  "wbFieldFilePatterns": "File Patterns (one per line)",
+  "@wbFieldFilePatterns": {
+    "description": "Form field label for file patterns in a gate"
+  },
+  "wbFilePatternsHint": "_test.go\n.test.ts",
+  "@wbFilePatternsHint": {
+    "description": "Hint text for the file patterns field"
+  },
+  "wbFieldDocsFolder": "Docs Folder",
+  "@wbFieldDocsFolder": {
+    "description": "Form field label for the docs folder in a gate"
+  },
+  "wbDocsFolderHint": "docs (optional)",
+  "@wbDocsFolderHint": {
+    "description": "Hint text for the docs folder field"
+  },
+  "wbFieldSkippableFor": "Skippable For (comma-separated)",
+  "@wbFieldSkippableFor": {
+    "description": "Form field label for feature kinds that can skip this gate"
+  },
+  "wbSkippableForHint": "bug, hotfix, testcase",
+  "@wbSkippableForHint": {
+    "description": "Hint text for the skippable-for field"
+  },
+  "wbRemoveGate": "Remove Gate",
+  "@wbRemoveGate": {
+    "description": "Button label to remove a gate"
+  },
+  "wbGatesHeader": "GATES",
+  "@wbGatesHeader": {
+    "description": "Uppercase header label for the gates strip in the inspector"
+  },
+  "wbNoItemsInstalled": "No {type}s installed",
+  "@wbNoItemsInstalled": {
+    "description": "Message shown when no skills or agents are installed for the library picker",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "wbAttachItem": "Attach {type}",
+  "@wbAttachItem": {
+    "description": "Dropdown label for attaching a skill or agent to a state",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "wbSelectItem": "Select {type}",
+  "@wbSelectItem": {
+    "description": "Dropdown hint for selecting a skill or agent",
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "wbCopyYaml": "Copy YAML",
+  "@wbCopyYaml": {
+    "description": "Tooltip for the copy YAML button"
+  },
+  "wbYamlCopied": "YAML copied to clipboard",
+  "@wbYamlCopied": {
+    "description": "SnackBar message after copying YAML to clipboard"
+  },
+  "wbExportTitle": "Export as Pack",
+  "@wbExportTitle": {
+    "description": "Title of the export pack bottom sheet"
+  },
+  "wbExportSubtitle": "Commit these files to a GitHub repo and install with install_pack.",
+  "@wbExportSubtitle": {
+    "description": "Subtitle instruction in the export pack sheet"
+  },
+  "wbNextSteps": "Next steps",
+  "@wbNextSteps": {
+    "description": "Subsection header for next steps in the export sheet"
+  },
+  "wbStep1": "1. Create a GitHub repo: your-org/pack-{slug}",
+  "@wbStep1": {
+    "description": "Export instruction step 1",
+    "placeholders": {
+      "slug": {
+        "type": "String"
+      }
+    }
+  },
+  "wbStep2": "2. Add pack.json + workflow/{slug}.yaml",
+  "@wbStep2": {
+    "description": "Export instruction step 2",
+    "placeholders": {
+      "slug": {
+        "type": "String"
+      }
+    }
+  },
+  "wbStep3": "3. Install: install_pack repo:github.com/your-org/pack-{slug}",
+  "@wbStep3": {
+    "description": "Export instruction step 3",
+    "placeholders": {
+      "slug": {
+        "type": "String"
+      }
+    }
+  },
+  "wbStep4": "4. Use /workflow-builder skill to generate skills per phase",
+  "@wbStep4": {
+    "description": "Export instruction step 4"
+  },
+  "wbFileCopied": "{filename} copied",
+  "@wbFileCopied": {
+    "description": "SnackBar message after copying a file to clipboard",
+    "placeholders": {
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+
+  "adminBadges": "Badges",
+  "@adminBadges": { "description": "Admin nav: badges section title" },
+  "adminPoints": "Points",
+  "@adminPoints": { "description": "Admin nav: points section title" },
+  "adminVerifications": "Verifications",
+  "@adminVerifications": { "description": "Admin nav: verifications section title" },
+  "adminCreateBadge": "Create Badge",
+  "@adminCreateBadge": { "description": "Dialog title and button for creating a badge" },
+  "adminEditBadge": "Edit Badge",
+  "@adminEditBadge": { "description": "Dialog title for editing a badge" },
+  "adminDeleteBadge": "Delete Badge",
+  "@adminDeleteBadge": { "description": "Dialog title for deleting a badge" },
+  "adminAddBadge": "Add Badge",
+  "@adminAddBadge": { "description": "Button label to open create badge dialog" },
+  "adminBadgeCreated": "Badge created",
+  "@adminBadgeCreated": { "description": "SnackBar after badge is created" },
+  "adminBadgeUpdated": "Badge updated",
+  "@adminBadgeUpdated": { "description": "SnackBar after badge is updated" },
+  "adminBadgeDeleted": "Badge deleted",
+  "@adminBadgeDeleted": { "description": "SnackBar after badge is deleted" },
+  "adminDeleteBadgeConfirm": "Are you sure you want to delete \"{name}\"? This cannot be undone.",
+  "@adminDeleteBadgeConfirm": {
+    "description": "Confirmation message before deleting a badge",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adminNoBadgesDefined": "No badges defined yet",
+  "@adminNoBadgesDefined": { "description": "Empty state when no badge definitions exist" },
+  "adminNoBadgesAwarded": "No badges awarded yet",
+  "@adminNoBadgesAwarded": { "description": "Empty state for user badge list" },
+  "adminSearchBadges": "Search badges...",
+  "@adminSearchBadges": { "description": "Hint text for badges search field" },
+  "adminNoBadgesMatching": "No badges matching \"{query}\"",
+  "@adminNoBadgesMatching": {
+    "description": "Empty state when badge search returns no results",
+    "placeholders": { "query": { "type": "String" } }
+  },
+  "adminBadgeName": "Name",
+  "@adminBadgeName": { "description": "Input label for badge name" },
+  "adminBadgeDescription": "Description",
+  "@adminBadgeDescription": { "description": "Input label for badge description" },
+  "adminBadgeCategory": "Category",
+  "@adminBadgeCategory": { "description": "Input label for badge category" },
+  "adminBadgeIcon": "Icon (emoji or name)",
+  "@adminBadgeIcon": { "description": "Input label for badge icon" },
+  "adminBadgeColor": "Color (hex)",
+  "@adminBadgeColor": { "description": "Input label for badge color" },
+  "adminAwardBadge": "Award Badge",
+  "@adminAwardBadge": { "description": "Button and dialog title for awarding a badge to a user" },
+  "adminBadgeAwarded": "Awarded {name}",
+  "@adminBadgeAwarded": {
+    "description": "SnackBar after awarding a badge",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adminPointsManagement": "Points Management",
+  "@adminPointsManagement": { "description": "Points admin page title" },
+  "adminPointsBalance": "Points Balance",
+  "@adminPointsBalance": { "description": "Label for points balance display" },
+  "adminAddOrDeductPoints": "Add or Deduct Points",
+  "@adminAddOrDeductPoints": { "description": "Section heading on points panel" },
+  "adminAwardPoints": "Award Points",
+  "@adminAwardPoints": { "description": "Dialog title and button for awarding points" },
+  "adminDeductPoints": "Deduct Points",
+  "@adminDeductPoints": { "description": "Dialog title and button for deducting points" },
+  "adminAwardPointsTo": "Award points to {name}",
+  "@adminAwardPointsTo": {
+    "description": "Dialog subtitle when awarding points",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adminDeductPointsFrom": "Deduct points from {name}",
+  "@adminDeductPointsFrom": {
+    "description": "Dialog subtitle when deducting points",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adminPointsAmount": "Amount",
+  "@adminPointsAmount": { "description": "Input label for points amount" },
+  "adminPointsReason": "Reason",
+  "@adminPointsReason": { "description": "Input label for points transaction reason" },
+  "adminPointsSavedPending": "Saved (API not connected yet)",
+  "@adminPointsSavedPending": { "description": "SnackBar when points saved locally pending API" },
+  "adminTransactionHistory": "Transaction History",
+  "@adminTransactionHistory": { "description": "Panel title for transaction history" },
+  "adminNoTransactions": "No transactions yet",
+  "@adminNoTransactions": { "description": "Empty state for transaction history" },
+  "adminSearchUsers": "Search users...",
+  "@adminSearchUsers": { "description": "Hint text for user search field" },
+  "adminNoUsersFound": "No users found",
+  "@adminNoUsersFound": { "description": "Empty state when user list is empty" },
+  "adminNoUsersMatching": "No users matching \"{query}\"",
+  "@adminNoUsersMatching": {
+    "description": "Empty state when user search returns no results",
+    "placeholders": { "query": { "type": "String" } }
+  },
+  "adminFailedToLoadUsers": "Failed to load users",
+  "@adminFailedToLoadUsers": { "description": "Error state when user list fails to load" },
+  "adminAward": "Award",
+  "@adminAward": { "description": "Button label to award points" },
+  "adminDeduct": "Deduct",
+  "@adminDeduct": { "description": "Button label to deduct points" },
+  "adminAwardPointsTooltip": "Award Points",
+  "@adminAwardPointsTooltip": { "description": "Tooltip for award points icon button" },
+  "adminDeductPointsTooltip": "Deduct Points",
+  "@adminDeductPointsTooltip": { "description": "Tooltip for deduct points icon button" },
+  "adminVerificationsTitle": "Verifications",
+  "@adminVerificationsTitle": { "description": "Verifications admin page title" },
+  "adminVerificationFor": "Verification: {name}",
+  "@adminVerificationFor": {
+    "description": "Dialog title for changing user verification tier",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adminVerificationSelectTier": "Select a verification tier for this user.",
+  "@adminVerificationSelectTier": { "description": "Dialog body for verification tier selection" },
+  "adminVerificationTier": "Verification Tier",
+  "@adminVerificationTier": { "description": "Input label for verification tier dropdown" },
+  "adminVerificationUpdated": "Verification updated to {tier}",
+  "@adminVerificationUpdated": {
+    "description": "SnackBar after updating verification tier",
+    "placeholders": { "tier": { "type": "String" } }
+  },
+  "adminChangeTier": "Change Tier",
+  "@adminChangeTier": { "description": "Button label to change verification tier" },
+  "adminSearchVerifications": "Search users by name, email, or handle...",
+  "@adminSearchVerifications": { "description": "Hint text for verifications search field" },
+  "adminNoVerificationUsersFound": "No users found",
+  "@adminNoVerificationUsersFound": { "description": "Empty state for verifications user list" },
+  "adminNoVerificationUsersMatching": "No users matching \"{query}\"",
+  "@adminNoVerificationUsersMatching": {
+    "description": "Empty state when verification search returns no results",
+    "placeholders": { "query": { "type": "String" } }
+  },
+  "adminFailedToLoadVerifications": "Failed to load users",
+  "@adminFailedToLoadVerifications": { "description": "Error state when verifications list fails to load" },
+  "adminPointsUpdated": "Points updated",
+  "@adminPointsUpdated": { "description": "SnackBar after points are updated" },
+  "adminPointsUpdatedWithBadges": "Points updated. Badges awarded: {badges}",
+  "@adminPointsUpdatedWithBadges": {
+    "description": "SnackBar after points updated and badges awarded",
+    "placeholders": { "badges": { "type": "String" } }
+  },
+  "adminErrorGeneric": "Error: {error}",
+  "@adminErrorGeneric": {
+    "description": "Generic error snackbar with error detail",
+    "placeholders": { "error": { "type": "String" } }
+  },
+  "adminFailedToLoad": "Failed to load: {error}",
+  "@adminFailedToLoad": {
+    "description": "Error message when a list fails to load",
+    "placeholders": { "error": { "type": "String" } }
   }
 }

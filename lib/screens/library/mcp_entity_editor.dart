@@ -9,7 +9,7 @@ import 'package:orchestra/core/providers/admin_settings_provider.dart';
 import 'package:orchestra/core/router/app_router.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/utils/platform_utils.dart';
-import 'package:orchestra/widgets/markdown/markdown_renderer.dart';
+import 'package:orchestra/widgets/markdown_editor.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -241,7 +241,6 @@ class _McpEntityEditorScreenState extends ConsumerState<McpEntityEditorScreen> {
   final _bodyController = TextEditingController();
   bool _loading = true;
   bool _saving = false;
-  bool _preview = false;
 
   // ── Smart action state ──────────────────────────────────────────────────
   bool _smartMode = false; // set true in initState if new + desktop
@@ -538,81 +537,98 @@ class _McpEntityEditorScreenState extends ConsumerState<McpEntityEditorScreen> {
         child: Column(
           children: [
             _buildToolbar(tokens),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Type badge
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _meta.color.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: _meta.color.withValues(alpha: 0.3),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(_meta.icon, color: _meta.color, size: 16),
-                            const SizedBox(width: 6),
-                            Text(
-                              widget.isNew
-                                  ? AppLocalizations.of(
-                                      context,
-                                    ).newEntityTitle(_meta.label)
-                                  : AppLocalizations.of(
-                                      context,
-                                    ).editEntityTitle(_meta.label),
-                              style: TextStyle(
-                                color: _meta.color,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Mode toggle (new entities on desktop only)
-                    if (widget.isNew && isDesktop) ...[
-                      _buildModeToggle(tokens),
+            // Smart mode or no body → scrollable layout
+            // Manual mode with body → split layout (fields + expanded editor)
+            if (_smartMode && widget.isNew)
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildTypeBadge(tokens),
                       const SizedBox(height: 16),
+                      if (widget.isNew && isDesktop) ...[
+                        _buildModeToggle(tokens),
+                        const SizedBox(height: 16),
+                      ],
+                      _buildSmartActionPanel(tokens),
                     ],
-
-                    // Smart Action panel OR manual form
-                    if (_smartMode && widget.isNew)
-                      _buildSmartActionPanel(tokens)
-                    else ...[
+                  ),
+                ),
+              )
+            else
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildTypeBadge(tokens),
+                      const SizedBox(height: 16),
+                      if (widget.isNew && isDesktop) ...[
+                        _buildModeToggle(tokens),
+                        const SizedBox(height: 16),
+                      ],
                       // Dynamic fields
                       for (final field in _meta.fields) ...[
                         _buildField(tokens, field),
                         const SizedBox(height: 12),
                       ],
-
-                      // Body/content area
+                      // Rich Markdown editor with toolbar + preview
                       if (_meta.hasBody) ...[
                         const SizedBox(height: 4),
                         Divider(color: tokens.border, height: 1),
-                        const SizedBox(height: 16),
-                        if (_preview)
-                          _buildPreview(tokens)
-                        else
-                          _buildBodyEditor(tokens),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: MarkdownEditor(
+                            controller: _bodyController,
+                            hintText: _bodyHint,
+                          ),
+                        ),
                       ],
                     ],
-                  ],
+                  ),
                 ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String get _bodyHint {
+    final l10n = AppLocalizations.of(context);
+    return switch (widget.entityType) {
+      McpEntityType.agent => l10n.systemPromptHint,
+      McpEntityType.doc => l10n.docContentHint,
+      _ => l10n.descriptionMarkdownHint,
+    };
+  }
+
+  Widget _buildTypeBadge(OrchestraColorTokens tokens) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: _meta.color.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: _meta.color.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(_meta.icon, color: _meta.color, size: 16),
+            const SizedBox(width: 6),
+            Text(
+              widget.isNew
+                  ? AppLocalizations.of(context).newEntityTitle(_meta.label)
+                  : AppLocalizations.of(context).editEntityTitle(_meta.label),
+              style: TextStyle(
+                color: _meta.color,
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -748,24 +764,6 @@ class _McpEntityEditorScreenState extends ConsumerState<McpEntityEditorScreen> {
 
           const Spacer(),
 
-          // Preview toggle (only if has body)
-          if (_meta.hasBody)
-            IconButton(
-              onPressed: () => setState(() => _preview = !_preview),
-              icon: Icon(
-                _preview ? Icons.edit_rounded : Icons.visibility_rounded,
-                size: 18,
-                color: tokens.fgMuted,
-              ),
-              tooltip: _preview
-                  ? AppLocalizations.of(context).edit
-                  : AppLocalizations.of(context).preview,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-            ),
-
-          const SizedBox(width: 8),
-
           // Save button
           FilledButton.icon(
             onPressed: _saving ? null : _save,
@@ -798,55 +796,6 @@ class _McpEntityEditorScreenState extends ConsumerState<McpEntityEditorScreen> {
         ],
       ),
     );
-  }
-
-  Widget _buildBodyEditor(OrchestraColorTokens tokens) {
-    final l10n = AppLocalizations.of(context);
-    final hint = switch (widget.entityType) {
-      McpEntityType.agent => l10n.systemPromptHint,
-      McpEntityType.doc => l10n.docContentHint,
-      _ => l10n.descriptionMarkdownHint,
-    };
-
-    return TextField(
-      controller: _bodyController,
-      style: TextStyle(
-        color: tokens.fgBright,
-        fontSize: 14,
-        height: 1.7,
-        fontFamily: 'monospace',
-      ),
-      decoration: InputDecoration(
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: tokens.fgDim,
-          fontSize: 14,
-          fontFamily: 'monospace',
-        ),
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.zero,
-      ),
-      maxLines: null,
-      minLines: 15,
-      keyboardType: TextInputType.multiline,
-    );
-  }
-
-  Widget _buildPreview(OrchestraColorTokens tokens) {
-    final text = _bodyController.text;
-    if (text.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 48),
-          child: Text(
-            AppLocalizations.of(context).nothingToPreview,
-            style: TextStyle(color: tokens.fgDim, fontSize: 14),
-          ),
-        ),
-      );
-    }
-
-    return MarkdownRendererWidget(content: text);
   }
 
   // ── Smart Action ────────────────────────────────────────────────────────

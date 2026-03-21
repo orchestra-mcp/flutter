@@ -9,6 +9,7 @@ import 'package:orchestra/core/api/local_mcp_client.dart';
 import 'package:orchestra/core/api/mcp_tcp_client.dart';
 import 'package:orchestra/core/api/rest_client.dart';
 import 'package:orchestra/core/mcp/mcp_action_logger.dart';
+import 'package:orchestra/core/powersync/sync_providers.dart';
 import 'package:orchestra/core/startup/startup_gate_provider.dart';
 import 'package:orchestra/core/storage/storage_provider.dart';
 import 'package:orchestra/core/tray/tray_action_handler.dart';
@@ -234,18 +235,40 @@ final mcpClientProvider = Provider<McpTcpClient?>((ref) {
   // Listen for server-pushed events and invalidate relevant providers.
   final notifSub = mcp.notifications.listen((json) {
     final method = json['method'] as String?;
-    if (method != 'notifications/event') return;
+    if (method != 'notifications/event' && method != 'notifications/data') {
+      return;
+    }
     final params = json['params'] as Map<String, dynamic>?;
     if (params == null) return;
 
     final topic = params['topic'] as String?;
     switch (topic) {
       case 'projects':
+        ref.invalidate(syncedProjectsProvider);
       case 'features':
-      case 'plans':
+        ref.invalidate(syncedFeaturesProvider);
         ref.invalidate(projectsProvider);
+      case 'plans':
+        ref.invalidate(syncedPlansProvider);
       case 'notes':
+        ref.invalidate(syncedNotesProvider);
         ref.read(notesRefreshProvider.notifier).refresh();
+      case 'agents':
+        ref.invalidate(syncedAgentsProvider);
+      case 'skills':
+        ref.invalidate(syncedSkillsProvider);
+      case 'workflows':
+        ref.invalidate(syncedWorkflowsProvider);
+      case 'docs':
+        ref.invalidate(syncedDocsProvider);
+      case 'delegations':
+        ref.invalidate(syncedDelegationsProvider);
+      case 'requests':
+        ref.invalidate(syncedRequestsProvider);
+      case 'persons':
+        ref.invalidate(syncedPersonsProvider);
+      case 'sessions':
+        ref.invalidate(syncedSessionsProvider);
     }
   });
 

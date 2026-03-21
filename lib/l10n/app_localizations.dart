@@ -554,6 +554,12 @@ abstract class AppLocalizations {
   /// **'Orchestrator'**
   String get orchestrator;
 
+  /// DevTools navigation label
+  ///
+  /// In en, this message translates to:
+  /// **'DevTools'**
+  String get devtools;
+
   /// Terminal settings label
   ///
   /// In en, this message translates to:
@@ -10718,6 +10724,150 @@ abstract class AppLocalizations {
   /// **'No activities match your filters'**
   String get activityNoMatchingFilters;
 
+  /// Time group header: today's activities
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get activityGroupToday;
+
+  /// Time group header: yesterday's activities
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get activityGroupYesterday;
+
+  /// Time group header: older activities
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get activityGroupEarlier;
+
+  /// Badge shown when real-time WebSocket is connected
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get activityLiveIndicator;
+
+  /// Label shown after copying text to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get copied;
+
+  /// Button to dismiss/close a panel or notification
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get dismiss;
+
+  /// Button to discard generated content
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discard;
+
+  /// Button to accept/use AI-generated content
+  ///
+  /// In en, this message translates to:
+  /// **'Use Result'**
+  String get useResult;
+
+  /// Subtitle in the universal create dialog type-picker
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to create?'**
+  String get whatToCreate;
+
+  /// Status label when AI result is streaming in
+  ///
+  /// In en, this message translates to:
+  /// **'Streaming...'**
+  String get resultStreaming;
+
+  /// Status label when AI result is complete
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get resultComplete;
+
+  /// Status label when AI result encountered an error
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get resultError;
+
+  /// Status label while waiting for AI result to begin
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get resultProcessing;
+
+  /// Notification title when a feature is marked done
+  ///
+  /// In en, this message translates to:
+  /// **'Feature Complete'**
+  String get notifFeatureComplete;
+
+  /// Notification title when a feature status changes
+  ///
+  /// In en, this message translates to:
+  /// **'Feature Updated'**
+  String get notifFeatureUpdated;
+
+  /// Notification title when a smart action finishes
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Action Complete'**
+  String get notifSmartActionComplete;
+
+  /// Notification title when an AI note is generated
+  ///
+  /// In en, this message translates to:
+  /// **'Note Generated'**
+  String get notifNoteGenerated;
+
+  /// Notification body when an AI note is ready
+  ///
+  /// In en, this message translates to:
+  /// **'\"{title}\" is ready for review'**
+  String notifNoteReady(String title);
+
+  /// Notification title when sync finishes
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Complete'**
+  String get notifSyncComplete;
+
+  /// Notification body showing how many items synced
+  ///
+  /// In en, this message translates to:
+  /// **'{count} items synced'**
+  String notifSyncItemsSynced(int count);
+
+  /// Notification title when an agent session completes
+  ///
+  /// In en, this message translates to:
+  /// **'Agent Finished'**
+  String get notifAgentFinished;
+
+  /// Default notification body for agent completion
+  ///
+  /// In en, this message translates to:
+  /// **'An agent session completed'**
+  String get notifAgentSessionCompleted;
+
+  /// Notification title when a synced entity is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'{entityType} Deleted'**
+  String notifEntityDeleted(String entityType);
+
+  /// Notification body when a synced entity is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'{entityType} {entityId} was removed'**
+  String notifEntityDeletedBody(String entityType, String entityId);
+
   /// Description for summarize smart action
   ///
   /// In en, this message translates to:
@@ -11989,6 +12139,774 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Context'**
   String get agentInstructionsContext;
+
+  /// Workflow builder title when no name is set
+  ///
+  /// In en, this message translates to:
+  /// **'New Workflow'**
+  String get wbNewWorkflow;
+
+  /// Button label to toggle YAML preview in workflow builder
+  ///
+  /// In en, this message translates to:
+  /// **'YAML'**
+  String get wbYaml;
+
+  /// Button label to export workflow as a pack
+  ///
+  /// In en, this message translates to:
+  /// **'Export Pack'**
+  String get wbExportPack;
+
+  /// Save button in workflow builder
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get wbSave;
+
+  /// SnackBar message after saving a new workflow
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow saved ({id})'**
+  String wbSaved(String id);
+
+  /// SnackBar message after updating an existing workflow
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow updated'**
+  String get wbUpdated;
+
+  /// SnackBar message when saving fails
+  ///
+  /// In en, this message translates to:
+  /// **'Save failed: {error}'**
+  String wbSaveFailed(String error);
+
+  /// SnackBar message when loading a workflow fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load workflow: {error}'**
+  String wbLoadFailed(String error);
+
+  /// Canvas toolbar button to add a new state
+  ///
+  /// In en, this message translates to:
+  /// **'Add State'**
+  String get wbAddState;
+
+  /// Canvas toolbar button to add a new transition
+  ///
+  /// In en, this message translates to:
+  /// **'Add Transition'**
+  String get wbAddTransition;
+
+  /// Badge label shown on the initial state node
+  ///
+  /// In en, this message translates to:
+  /// **'START'**
+  String get wbBadgeStart;
+
+  /// Badge label shown on terminal state nodes
+  ///
+  /// In en, this message translates to:
+  /// **'END'**
+  String get wbBadgeEnd;
+
+  /// Badge label shown on state nodes that have a skill attached
+  ///
+  /// In en, this message translates to:
+  /// **'skill'**
+  String get wbBadgeSkill;
+
+  /// Badge label shown on state nodes that have an agent attached
+  ///
+  /// In en, this message translates to:
+  /// **'agent'**
+  String get wbBadgeAgent;
+
+  /// Header label for the inspector panel in the workflow builder
+  ///
+  /// In en, this message translates to:
+  /// **'Inspector'**
+  String get wbInspector;
+
+  /// Inspector type label when a state is selected
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get wbInspectorState;
+
+  /// Inspector type label when a transition is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Transition'**
+  String get wbInspectorTransition;
+
+  /// Inspector type label when a gate is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Gate'**
+  String get wbInspectorGate;
+
+  /// Section label for workflow-level properties in inspector
+  ///
+  /// In en, this message translates to:
+  /// **'Workflow'**
+  String get wbSectionWorkflow;
+
+  /// Form field label for workflow/state/gate name
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get wbFieldName;
+
+  /// Form field label for workflow description
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get wbFieldDescription;
+
+  /// Form field label for project ID
+  ///
+  /// In en, this message translates to:
+  /// **'Project ID'**
+  String get wbFieldProjectId;
+
+  /// Hint text for the Project ID field
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-detected if empty'**
+  String get wbProjectIdHint;
+
+  /// Form field label for selecting the initial workflow state
+  ///
+  /// In en, this message translates to:
+  /// **'Initial State'**
+  String get wbFieldInitialState;
+
+  /// Toggle label to mark this workflow as the project default
+  ///
+  /// In en, this message translates to:
+  /// **'Set as default'**
+  String get wbSetAsDefault;
+
+  /// Section label for the gates list in the workflow inspector
+  ///
+  /// In en, this message translates to:
+  /// **'Gates'**
+  String get wbSectionGates;
+
+  /// Button label to add a new gate
+  ///
+  /// In en, this message translates to:
+  /// **'Add Gate'**
+  String get wbAddGate;
+
+  /// Validation hint when no terminal state exists
+  ///
+  /// In en, this message translates to:
+  /// **'No terminal state defined'**
+  String get wbNoTerminalState;
+
+  /// Validation hint when the initial state ID is not found in the states list
+  ///
+  /// In en, this message translates to:
+  /// **'Initial state is not in states list'**
+  String get wbInvalidInitialState;
+
+  /// Section label in the state inspector panel
+  ///
+  /// In en, this message translates to:
+  /// **'State'**
+  String get wbSectionState;
+
+  /// Form field label for state ID
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get wbFieldStateId;
+
+  /// Hint text for the state ID field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. in-progress'**
+  String get wbStateIdHint;
+
+  /// Form field label for state display label
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get wbFieldStateLabel;
+
+  /// Toggle label to mark a state as terminal
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal (done) state'**
+  String get wbToggleTerminal;
+
+  /// Toggle label to mark a state as active-work (counts toward WIP limit)
+  ///
+  /// In en, this message translates to:
+  /// **'Active work (counts WIP)'**
+  String get wbToggleActiveWork;
+
+  /// Section label for skill attachment in the state inspector
+  ///
+  /// In en, this message translates to:
+  /// **'Attached Skill'**
+  String get wbSectionAttachedSkill;
+
+  /// Section label for agent attachment in the state inspector
+  ///
+  /// In en, this message translates to:
+  /// **'Attached Agent'**
+  String get wbSectionAttachedAgent;
+
+  /// Button label to remove a state from the workflow
+  ///
+  /// In en, this message translates to:
+  /// **'Remove State'**
+  String get wbRemoveState;
+
+  /// Section label in the transition inspector panel
+  ///
+  /// In en, this message translates to:
+  /// **'Transition'**
+  String get wbSectionTransition;
+
+  /// Dropdown label for the source state of a transition
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get wbFieldFrom;
+
+  /// Dropdown label for the target state of a transition
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get wbFieldTo;
+
+  /// Dropdown label for selecting an optional gate on a transition
+  ///
+  /// In en, this message translates to:
+  /// **'Gate (optional)'**
+  String get wbFieldGateOptional;
+
+  /// Dropdown option representing no gate on a transition
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get wbGateNone;
+
+  /// Tooltip for the edit gate icon button in transition inspector
+  ///
+  /// In en, this message translates to:
+  /// **'Edit gate'**
+  String get wbEditGateTooltip;
+
+  /// Button label to remove a transition
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Transition'**
+  String get wbRemoveTransition;
+
+  /// Section label in the gate inspector panel
+  ///
+  /// In en, this message translates to:
+  /// **'Gate'**
+  String get wbSectionGate;
+
+  /// Form field label for gate ID
+  ///
+  /// In en, this message translates to:
+  /// **'ID'**
+  String get wbFieldGateId;
+
+  /// Hint text for the gate ID field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. code_complete'**
+  String get wbGateIdHint;
+
+  /// Form field label for gate display label
+  ///
+  /// In en, this message translates to:
+  /// **'Label'**
+  String get wbFieldGateLabel;
+
+  /// Form field label for the required evidence section in a gate
+  ///
+  /// In en, this message translates to:
+  /// **'Required Section'**
+  String get wbFieldRequiredSection;
+
+  /// Hint text for the required section field
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Changes'**
+  String get wbRequiredSectionHint;
+
+  /// Form field label for file patterns in a gate
+  ///
+  /// In en, this message translates to:
+  /// **'File Patterns (one per line)'**
+  String get wbFieldFilePatterns;
+
+  /// Hint text for the file patterns field
+  ///
+  /// In en, this message translates to:
+  /// **'_test.go\n.test.ts'**
+  String get wbFilePatternsHint;
+
+  /// Form field label for the docs folder in a gate
+  ///
+  /// In en, this message translates to:
+  /// **'Docs Folder'**
+  String get wbFieldDocsFolder;
+
+  /// Hint text for the docs folder field
+  ///
+  /// In en, this message translates to:
+  /// **'docs (optional)'**
+  String get wbDocsFolderHint;
+
+  /// Form field label for feature kinds that can skip this gate
+  ///
+  /// In en, this message translates to:
+  /// **'Skippable For (comma-separated)'**
+  String get wbFieldSkippableFor;
+
+  /// Hint text for the skippable-for field
+  ///
+  /// In en, this message translates to:
+  /// **'bug, hotfix, testcase'**
+  String get wbSkippableForHint;
+
+  /// Button label to remove a gate
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Gate'**
+  String get wbRemoveGate;
+
+  /// Uppercase header label for the gates strip in the inspector
+  ///
+  /// In en, this message translates to:
+  /// **'GATES'**
+  String get wbGatesHeader;
+
+  /// Message shown when no skills or agents are installed for the library picker
+  ///
+  /// In en, this message translates to:
+  /// **'No {type}s installed'**
+  String wbNoItemsInstalled(String type);
+
+  /// Dropdown label for attaching a skill or agent to a state
+  ///
+  /// In en, this message translates to:
+  /// **'Attach {type}'**
+  String wbAttachItem(String type);
+
+  /// Dropdown hint for selecting a skill or agent
+  ///
+  /// In en, this message translates to:
+  /// **'Select {type}'**
+  String wbSelectItem(String type);
+
+  /// Tooltip for the copy YAML button
+  ///
+  /// In en, this message translates to:
+  /// **'Copy YAML'**
+  String get wbCopyYaml;
+
+  /// SnackBar message after copying YAML to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'YAML copied to clipboard'**
+  String get wbYamlCopied;
+
+  /// Title of the export pack bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Export as Pack'**
+  String get wbExportTitle;
+
+  /// Subtitle instruction in the export pack sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Commit these files to a GitHub repo and install with install_pack.'**
+  String get wbExportSubtitle;
+
+  /// Subsection header for next steps in the export sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Next steps'**
+  String get wbNextSteps;
+
+  /// Export instruction step 1
+  ///
+  /// In en, this message translates to:
+  /// **'1. Create a GitHub repo: your-org/pack-{slug}'**
+  String wbStep1(String slug);
+
+  /// Export instruction step 2
+  ///
+  /// In en, this message translates to:
+  /// **'2. Add pack.json + workflow/{slug}.yaml'**
+  String wbStep2(String slug);
+
+  /// Export instruction step 3
+  ///
+  /// In en, this message translates to:
+  /// **'3. Install: install_pack repo:github.com/your-org/pack-{slug}'**
+  String wbStep3(String slug);
+
+  /// Export instruction step 4
+  ///
+  /// In en, this message translates to:
+  /// **'4. Use /workflow-builder skill to generate skills per phase'**
+  String get wbStep4;
+
+  /// SnackBar message after copying a file to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'{filename} copied'**
+  String wbFileCopied(String filename);
+
+  /// Admin nav: badges section title
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get adminBadges;
+
+  /// Admin nav: points section title
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get adminPoints;
+
+  /// Admin nav: verifications section title
+  ///
+  /// In en, this message translates to:
+  /// **'Verifications'**
+  String get adminVerifications;
+
+  /// Dialog title and button for creating a badge
+  ///
+  /// In en, this message translates to:
+  /// **'Create Badge'**
+  String get adminCreateBadge;
+
+  /// Dialog title for editing a badge
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Badge'**
+  String get adminEditBadge;
+
+  /// Dialog title for deleting a badge
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Badge'**
+  String get adminDeleteBadge;
+
+  /// Button label to open create badge dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Add Badge'**
+  String get adminAddBadge;
+
+  /// SnackBar after badge is created
+  ///
+  /// In en, this message translates to:
+  /// **'Badge created'**
+  String get adminBadgeCreated;
+
+  /// SnackBar after badge is updated
+  ///
+  /// In en, this message translates to:
+  /// **'Badge updated'**
+  String get adminBadgeUpdated;
+
+  /// SnackBar after badge is deleted
+  ///
+  /// In en, this message translates to:
+  /// **'Badge deleted'**
+  String get adminBadgeDeleted;
+
+  /// Confirmation message before deleting a badge
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{name}\"? This cannot be undone.'**
+  String adminDeleteBadgeConfirm(String name);
+
+  /// Empty state when no badge definitions exist
+  ///
+  /// In en, this message translates to:
+  /// **'No badges defined yet'**
+  String get adminNoBadgesDefined;
+
+  /// Empty state for user badge list
+  ///
+  /// In en, this message translates to:
+  /// **'No badges awarded yet'**
+  String get adminNoBadgesAwarded;
+
+  /// Hint text for badges search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search badges...'**
+  String get adminSearchBadges;
+
+  /// Empty state when badge search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No badges matching \"{query}\"'**
+  String adminNoBadgesMatching(String query);
+
+  /// Input label for badge name
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get adminBadgeName;
+
+  /// Input label for badge description
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get adminBadgeDescription;
+
+  /// Input label for badge category
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get adminBadgeCategory;
+
+  /// Input label for badge icon
+  ///
+  /// In en, this message translates to:
+  /// **'Icon (emoji or name)'**
+  String get adminBadgeIcon;
+
+  /// Input label for badge color
+  ///
+  /// In en, this message translates to:
+  /// **'Color (hex)'**
+  String get adminBadgeColor;
+
+  /// Button and dialog title for awarding a badge to a user
+  ///
+  /// In en, this message translates to:
+  /// **'Award Badge'**
+  String get adminAwardBadge;
+
+  /// SnackBar after awarding a badge
+  ///
+  /// In en, this message translates to:
+  /// **'Awarded {name}'**
+  String adminBadgeAwarded(String name);
+
+  /// Points admin page title
+  ///
+  /// In en, this message translates to:
+  /// **'Points Management'**
+  String get adminPointsManagement;
+
+  /// Label for points balance display
+  ///
+  /// In en, this message translates to:
+  /// **'Points Balance'**
+  String get adminPointsBalance;
+
+  /// Section heading on points panel
+  ///
+  /// In en, this message translates to:
+  /// **'Add or Deduct Points'**
+  String get adminAddOrDeductPoints;
+
+  /// Dialog title and button for awarding points
+  ///
+  /// In en, this message translates to:
+  /// **'Award Points'**
+  String get adminAwardPoints;
+
+  /// Dialog title and button for deducting points
+  ///
+  /// In en, this message translates to:
+  /// **'Deduct Points'**
+  String get adminDeductPoints;
+
+  /// Dialog subtitle when awarding points
+  ///
+  /// In en, this message translates to:
+  /// **'Award points to {name}'**
+  String adminAwardPointsTo(String name);
+
+  /// Dialog subtitle when deducting points
+  ///
+  /// In en, this message translates to:
+  /// **'Deduct points from {name}'**
+  String adminDeductPointsFrom(String name);
+
+  /// Input label for points amount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get adminPointsAmount;
+
+  /// Input label for points transaction reason
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get adminPointsReason;
+
+  /// SnackBar when points saved locally pending API
+  ///
+  /// In en, this message translates to:
+  /// **'Saved (API not connected yet)'**
+  String get adminPointsSavedPending;
+
+  /// Panel title for transaction history
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction History'**
+  String get adminTransactionHistory;
+
+  /// Empty state for transaction history
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions yet'**
+  String get adminNoTransactions;
+
+  /// Hint text for user search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search users...'**
+  String get adminSearchUsers;
+
+  /// Empty state when user list is empty
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get adminNoUsersFound;
+
+  /// Empty state when user search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No users matching \"{query}\"'**
+  String adminNoUsersMatching(String query);
+
+  /// Error state when user list fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load users'**
+  String get adminFailedToLoadUsers;
+
+  /// Button label to award points
+  ///
+  /// In en, this message translates to:
+  /// **'Award'**
+  String get adminAward;
+
+  /// Button label to deduct points
+  ///
+  /// In en, this message translates to:
+  /// **'Deduct'**
+  String get adminDeduct;
+
+  /// Tooltip for award points icon button
+  ///
+  /// In en, this message translates to:
+  /// **'Award Points'**
+  String get adminAwardPointsTooltip;
+
+  /// Tooltip for deduct points icon button
+  ///
+  /// In en, this message translates to:
+  /// **'Deduct Points'**
+  String get adminDeductPointsTooltip;
+
+  /// Verifications admin page title
+  ///
+  /// In en, this message translates to:
+  /// **'Verifications'**
+  String get adminVerificationsTitle;
+
+  /// Dialog title for changing user verification tier
+  ///
+  /// In en, this message translates to:
+  /// **'Verification: {name}'**
+  String adminVerificationFor(String name);
+
+  /// Dialog body for verification tier selection
+  ///
+  /// In en, this message translates to:
+  /// **'Select a verification tier for this user.'**
+  String get adminVerificationSelectTier;
+
+  /// Input label for verification tier dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Tier'**
+  String get adminVerificationTier;
+
+  /// SnackBar after updating verification tier
+  ///
+  /// In en, this message translates to:
+  /// **'Verification updated to {tier}'**
+  String adminVerificationUpdated(String tier);
+
+  /// Button label to change verification tier
+  ///
+  /// In en, this message translates to:
+  /// **'Change Tier'**
+  String get adminChangeTier;
+
+  /// Hint text for verifications search field
+  ///
+  /// In en, this message translates to:
+  /// **'Search users by name, email, or handle...'**
+  String get adminSearchVerifications;
+
+  /// Empty state for verifications user list
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get adminNoVerificationUsersFound;
+
+  /// Empty state when verification search returns no results
+  ///
+  /// In en, this message translates to:
+  /// **'No users matching \"{query}\"'**
+  String adminNoVerificationUsersMatching(String query);
+
+  /// Error state when verifications list fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load users'**
+  String get adminFailedToLoadVerifications;
+
+  /// SnackBar after points are updated
+  ///
+  /// In en, this message translates to:
+  /// **'Points updated'**
+  String get adminPointsUpdated;
+
+  /// SnackBar after points updated and badges awarded
+  ///
+  /// In en, this message translates to:
+  /// **'Points updated. Badges awarded: {badges}'**
+  String adminPointsUpdatedWithBadges(String badges);
+
+  /// Generic error snackbar with error detail
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {error}'**
+  String adminErrorGeneric(String error);
+
+  /// Error message when a list fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load: {error}'**
+  String adminFailedToLoad(String error);
 }
 
 class _AppLocalizationsDelegate

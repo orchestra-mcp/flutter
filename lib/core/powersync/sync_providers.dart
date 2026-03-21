@@ -221,3 +221,137 @@ final syncedUserSettingsProvider = StreamProvider<List<Map<String, dynamic>>>((
         (results) => results.map((r) => Map<String, dynamic>.from(r)).toList(),
       );
 });
+
+// ── Health ─────────────────────────────────────────────────────────────────
+
+final syncedHealthProfileProvider =
+    StreamProvider<List<Map<String, dynamic>>>((ref) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      return db
+          .watch('SELECT * FROM health_profiles ORDER BY updated_at DESC')
+          .map(
+            (results) =>
+                results.map((r) => Map<String, dynamic>.from(r)).toList(),
+          );
+    });
+
+final syncedSleepConfigProvider =
+    StreamProvider<List<Map<String, dynamic>>>((ref) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      return db
+          .watch('SELECT * FROM sleep_configs ORDER BY updated_at DESC')
+          .map(
+            (results) =>
+                results.map((r) => Map<String, dynamic>.from(r)).toList(),
+          );
+    });
+
+final syncedWaterLogsProvider =
+    StreamProvider.family<List<Map<String, dynamic>>, String?>((ref, date) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      if (date != null && date.isNotEmpty) {
+        return db
+            .watch(
+              'SELECT * FROM water_logs WHERE logged_at LIKE ? ORDER BY logged_at DESC',
+              parameters: ['$date%'],
+            )
+            .map(
+              (results) =>
+                  results.map((r) => Map<String, dynamic>.from(r)).toList(),
+            );
+      }
+      return db
+          .watch('SELECT * FROM water_logs ORDER BY logged_at DESC')
+          .map(
+            (results) =>
+                results.map((r) => Map<String, dynamic>.from(r)).toList(),
+          );
+    });
+
+final syncedMealLogsProvider =
+    StreamProvider.family<List<Map<String, dynamic>>, String?>((ref, date) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      if (date != null && date.isNotEmpty) {
+        return db
+            .watch(
+              'SELECT * FROM meal_logs WHERE logged_at LIKE ? ORDER BY logged_at DESC',
+              parameters: ['$date%'],
+            )
+            .map(
+              (results) =>
+                  results.map((r) => Map<String, dynamic>.from(r)).toList(),
+            );
+      }
+      return db
+          .watch('SELECT * FROM meal_logs ORDER BY logged_at DESC')
+          .map(
+            (results) =>
+                results.map((r) => Map<String, dynamic>.from(r)).toList(),
+          );
+    });
+
+final syncedCaffeineLogsProvider =
+    StreamProvider.family<List<Map<String, dynamic>>, String?>((ref, date) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      if (date != null && date.isNotEmpty) {
+        return db
+            .watch(
+              'SELECT * FROM caffeine_logs WHERE logged_at LIKE ? ORDER BY logged_at DESC',
+              parameters: ['$date%'],
+            )
+            .map(
+              (results) =>
+                  results.map((r) => Map<String, dynamic>.from(r)).toList(),
+            );
+      }
+      return db
+          .watch('SELECT * FROM caffeine_logs ORDER BY logged_at DESC')
+          .map(
+            (results) =>
+                results.map((r) => Map<String, dynamic>.from(r)).toList(),
+          );
+    });
+
+final syncedPomodoroSessionsProvider =
+    StreamProvider.family<List<Map<String, dynamic>>, String?>((ref, date) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      if (date != null && date.isNotEmpty) {
+        return db
+            .watch(
+              'SELECT * FROM pomodoro_sessions WHERE started_at LIKE ? ORDER BY started_at DESC',
+              parameters: ['$date%'],
+            )
+            .map(
+              (results) =>
+                  results.map((r) => Map<String, dynamic>.from(r)).toList(),
+            );
+      }
+      return db
+          .watch('SELECT * FROM pomodoro_sessions ORDER BY started_at DESC')
+          .map(
+            (results) =>
+                results.map((r) => Map<String, dynamic>.from(r)).toList(),
+          );
+    });
+
+final syncedHealthSnapshotsProvider = StreamProvider.family<
+    List<Map<String, dynamic>>,
+    ({String? from, String? to})>((ref, range) {
+  final db = ref.watch(powersyncDatabaseProvider);
+  if (range.from != null && range.to != null) {
+    return db
+        .watch(
+          'SELECT * FROM health_snapshots WHERE snapshot_date >= ? AND snapshot_date <= ? ORDER BY snapshot_date DESC',
+          parameters: [range.from!, range.to!],
+        )
+        .map(
+          (results) =>
+              results.map((r) => Map<String, dynamic>.from(r)).toList(),
+        );
+  }
+  return db
+      .watch('SELECT * FROM health_snapshots ORDER BY snapshot_date DESC')
+      .map(
+        (results) => results.map((r) => Map<String, dynamic>.from(r)).toList(),
+      );
+});

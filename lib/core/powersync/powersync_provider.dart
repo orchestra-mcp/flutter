@@ -17,7 +17,7 @@ PowerSyncDatabase? _db;
 
 /// Bump this when the PowerSync schema changes (table renames, column changes).
 /// Forces a full re-sync from server on app restart.
-const _schemaVersion = 10;
+const _schemaVersion = 11;
 
 /// Must be called once during app startup (before runApp or in main).
 ///

@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orchestra/core/health/pomodoro_manager.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
+import 'package:orchestra/core/utils/platform_utils.dart';
+import 'package:orchestra/features/pomodoro/pomodoro_floating_widget.dart';
 import 'package:orchestra/widgets/glass_card.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -682,6 +684,22 @@ class _Controls extends StatelessWidget {
           ),
           tooltip: l10n.skipToBreak,
         ),
+
+        // Float (desktop only)
+        if (isDesktop) ...[
+          const SizedBox(width: 4),
+          IconButton(
+            onPressed: () => PomodoroFloatingController.toggle(context),
+            icon: Icon(
+              PomodoroFloatingController.isVisible
+                  ? Icons.picture_in_picture_alt_rounded
+                  : Icons.picture_in_picture_rounded,
+              color: tokens.fgMuted,
+              size: 20,
+            ),
+            tooltip: 'Float',
+          ),
+        ],
       ],
     );
   }

@@ -14,6 +14,8 @@ sealed class WsEvent {
       'health.updated' => HealthDataUpdatedEvent.fromJson(json),
       'ping' => const PingEvent(),
       'mcp' => McpEvent.fromJson(json),
+      'sync' => SyncBroadcastEvent.fromJson(json),
+      'presence' => PresenceEvent.fromJson(json),
       _ => UnknownWsEvent(type: type, data: json),
     };
   }
@@ -265,6 +267,55 @@ class McpGenericEvent extends McpEvent {
         action: json['action'] as String? ?? '',
         data: json,
         sessionId: json['session_id'] as String? ?? '',
+        timestamp: json['timestamp'] as int? ?? 0,
+      );
+}
+
+// ── Sync broadcast events ──────────────────────────────────────────────────
+
+/// A real-time sync broadcast from the web-gate (entity CRUD operations).
+/// The Go backend broadcasts these when entities are created/updated/deleted.
+class SyncBroadcastEvent extends WsEvent {
+  const SyncBroadcastEvent({
+    required this.entityType,
+    required this.entityId,
+    required this.action,
+    required this.userId,
+    required this.timestamp,
+  });
+
+  final String entityType; // "note", "feature", "agent", "workflow", etc.
+  final String entityId;
+  final String action; // "upsert", "delete"
+  final int userId;
+  final int timestamp;
+
+  factory SyncBroadcastEvent.fromJson(Map<String, dynamic> json) =>
+      SyncBroadcastEvent(
+        entityType: json['entity_type'] as String? ?? '',
+        entityId: json['entity_id'] as String? ?? '',
+        action: json['action'] as String? ?? '',
+        userId: json['user_id'] as int? ?? 0,
+        timestamp: json['timestamp'] as int? ?? 0,
+      );
+}
+
+/// Presence change event (user came online or went offline).
+class PresenceEvent extends WsEvent {
+  const PresenceEvent({
+    required this.userId,
+    required this.action,
+    required this.timestamp,
+  });
+
+  final int userId;
+  final String action; // "online", "offline"
+  final int timestamp;
+
+  factory PresenceEvent.fromJson(Map<String, dynamic> json) =>
+      PresenceEvent(
+        userId: json['user_id'] as int? ?? 0,
+        action: json['action'] as String? ?? '',
         timestamp: json['timestamp'] as int? ?? 0,
       );
 }

@@ -85,7 +85,7 @@ class LocalMcpClient implements ApiClient {
     }
 
     try {
-      _db = sqlite3.open(dbPath, mode: OpenMode.readOnly);
+      _db = sqlite3.open(dbPath, mode: OpenMode.readWrite);
     } catch (e) {
       _dbFailed = true;
       debugPrint('[LocalMcpClient] Failed to open DB: $e');
@@ -112,7 +112,7 @@ class LocalMcpClient implements ApiClient {
     }
 
     try {
-      _globalDb = sqlite3.open(dbPath, mode: OpenMode.readOnly);
+      _globalDb = sqlite3.open(dbPath, mode: OpenMode.readWrite);
     } catch (e) {
       _globalDbFailed = true;
       debugPrint('[LocalMcpClient] Failed to open global DB: $e');
@@ -930,6 +930,15 @@ class LocalMcpClient implements ApiClient {
     } catch (_) {
       return [];
     }
+  }
+
+  @override
+  Future<Map<String, dynamic>> respondDelegation(String id, String response) async {
+    // Desktop delegates to REST client for write operations
+    if (restClient != null) {
+      return restClient!.respondDelegation(id, response);
+    }
+    throw UnimplementedError('respondDelegation requires REST client');
   }
 
   // ── Teams (delegated to REST API) ──────────────────────────────────

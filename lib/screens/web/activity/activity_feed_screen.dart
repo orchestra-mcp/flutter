@@ -2,156 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
+import 'package:orchestra/screens/web/activity/activity_feed_provider.dart';
 import 'package:orchestra/screens/web/activity/activity_models.dart';
 import 'package:orchestra/widgets/glass_card.dart';
 
-// ── Mock data ───────────────────────────────────────────────────────────────
-
-final _mockActivities = [
-  ActivityItem(
-    id: 'act-001',
-    userId: 'u1',
-    userName: 'Sarah Chen',
-    userAvatar: 'SC',
-    actionType: ActivityType.featureCreated,
-    entityType: 'feature',
-    entityId: 'FEAT-WVS',
-    entityTitle: 'AI insight engine',
-    description: 'Created new feature with priority P0',
-    timestamp: DateTime.now().subtract(const Duration(minutes: 2)),
-  ),
-  ActivityItem(
-    id: 'act-002',
-    userId: 'u2',
-    userName: 'Marcus Rivera',
-    userAvatar: 'MR',
-    actionType: ActivityType.featureStatusChanged,
-    entityType: 'feature',
-    entityId: 'FEAT-BHF',
-    entityTitle: 'Nutrition manager',
-    description: 'Moved from in-testing to in-review',
-    timestamp: DateTime.now().subtract(const Duration(minutes: 15)),
-  ),
-  ActivityItem(
-    id: 'act-003',
-    userId: 'u3',
-    userName: 'Aisha Patel',
-    userAvatar: 'AP',
-    actionType: ActivityType.delegationCreated,
-    entityType: 'delegation',
-    entityId: 'DEL-042',
-    entityTitle: 'Web auth storage',
-    description: 'Delegated to Marcus Rivera for code review',
-    timestamp: DateTime.now().subtract(const Duration(minutes: 42)),
-  ),
-  ActivityItem(
-    id: 'act-004',
-    userId: 'u4',
-    userName: 'James Wilson',
-    userAvatar: 'JW',
-    actionType: ActivityType.reviewSubmitted,
-    entityType: 'feature',
-    entityId: 'FEAT-UJV',
-    entityTitle: 'WebSocket transport layer',
-    description: 'Approved with no changes requested',
-    timestamp: DateTime.now().subtract(const Duration(hours: 1)),
-  ),
-  ActivityItem(
-    id: 'act-005',
-    userId: 'u1',
-    userName: 'Sarah Chen',
-    userAvatar: 'SC',
-    actionType: ActivityType.noteCreated,
-    entityType: 'note',
-    entityId: 'NOTE-8F2',
-    entityTitle: 'Architecture decision: QUIC vs gRPC',
-    description: 'Added design note with benchmarks',
-    timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-  ),
-  ActivityItem(
-    id: 'act-006',
-    userId: 'u2',
-    userName: 'Marcus Rivera',
-    userAvatar: 'MR',
-    actionType: ActivityType.commentAdded,
-    entityType: 'feature',
-    entityId: 'FEAT-FRU',
-    entityTitle: 'Web app shell',
-    description: 'Commented on responsive layout approach',
-    timestamp: DateTime.now().subtract(const Duration(hours: 3)),
-  ),
-  ActivityItem(
-    id: 'act-007',
-    userId: 'u3',
-    userName: 'Aisha Patel',
-    userAvatar: 'AP',
-    actionType: ActivityType.delegationCompleted,
-    entityType: 'delegation',
-    entityId: 'DEL-039',
-    entityTitle: 'Plugin host refactor',
-    description: 'Delegation completed successfully',
-    timestamp: DateTime.now().subtract(const Duration(hours: 5)),
-  ),
-  ActivityItem(
-    id: 'act-008',
-    userId: 'u4',
-    userName: 'James Wilson',
-    userAvatar: 'JW',
-    actionType: ActivityType.noteEdited,
-    entityType: 'note',
-    entityId: 'NOTE-4A1',
-    entityTitle: 'Sprint retrospective notes',
-    description: 'Updated action items section',
-    timestamp: DateTime.now().subtract(const Duration(hours: 8)),
-  ),
-  ActivityItem(
-    id: 'act-009',
-    userId: 'u1',
-    userName: 'Sarah Chen',
-    userAvatar: 'SC',
-    actionType: ActivityType.featureStatusChanged,
-    entityType: 'feature',
-    entityId: 'FEAT-HUF',
-    entityTitle: 'Public marketing pages',
-    description: 'Moved from in-progress to in-testing',
-    timestamp: DateTime.now().subtract(const Duration(hours: 12)),
-  ),
-  ActivityItem(
-    id: 'act-010',
-    userId: 'u2',
-    userName: 'Marcus Rivera',
-    userAvatar: 'MR',
-    actionType: ActivityType.featureCreated,
-    entityType: 'feature',
-    entityId: 'FEAT-KTT',
-    entityTitle: 'Workflow generator',
-    description: 'Created chore for CLAUDE.md generation',
-    timestamp: DateTime.now().subtract(const Duration(days: 1)),
-  ),
-];
-
-// ── Filter state ────────────────────────────────────────────────────────────
+// ── Filter state ─────────────────────────────────────────────────────────────
 
 class _ActivityFilterState {
   const _ActivityFilterState({
     this.selectedType,
     this.selectedUser,
-    this.newActivityCount = 0,
   });
 
   final ActivityType? selectedType;
   final String? selectedUser;
-  final int newActivityCount;
 
   _ActivityFilterState copyWith({
     ActivityType? Function()? selectedType,
     String? Function()? selectedUser,
-    int? newActivityCount,
   }) {
     return _ActivityFilterState(
       selectedType: selectedType != null ? selectedType() : this.selectedType,
       selectedUser: selectedUser != null ? selectedUser() : this.selectedUser,
-      newActivityCount: newActivityCount ?? this.newActivityCount,
     );
   }
 }
@@ -165,11 +37,6 @@ class _ActivityFilterNotifier extends Notifier<_ActivityFilterState> {
 
   void setUser(String? user) =>
       state = state.copyWith(selectedUser: () => user);
-
-  void addNewActivities(int count) =>
-      state = state.copyWith(newActivityCount: state.newActivityCount + count);
-
-  void clearNewActivities() => state = state.copyWith(newActivityCount: 0);
 }
 
 final _activityFilterProvider =
@@ -177,7 +44,7 @@ final _activityFilterProvider =
       _ActivityFilterNotifier.new,
     );
 
-// ── Screen ──────────────────────────────────────────────────────────────────
+// ── Screen ───────────────────────────────────────────────────────────────────
 
 /// Full-screen activity feed showing team-wide actions in real-time.
 class ActivityFeedScreen extends ConsumerWidget {
@@ -188,168 +55,269 @@ class ActivityFeedScreen extends ConsumerWidget {
     final tokens = ThemeTokens.of(context);
     final l10n = AppLocalizations.of(context);
     final filterState = ref.watch(_activityFilterProvider);
+    final feedAsync = ref.watch(activityFeedProvider);
 
-    // Apply filters to mock data.
-    var filtered = _mockActivities.toList();
-    if (filterState.selectedType != null) {
-      filtered = filtered
-          .where((a) => a.actionType == filterState.selectedType)
-          .toList();
-    }
-    if (filterState.selectedUser != null) {
-      filtered = filtered
-          .where((a) => a.userName == filterState.selectedUser)
-          .toList();
-    }
+    return feedAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(child: Text('$e')),
+      data: (feed) {
+        // Apply filters.
+        var allItems = feed.items;
+        if (filterState.selectedType != null) {
+          allItems = allItems
+              .where((a) => a.actionType == filterState.selectedType)
+              .toList();
+        }
+        if (filterState.selectedUser != null) {
+          allItems = allItems
+              .where((a) => a.userName == filterState.selectedUser)
+              .toList();
+        }
 
-    // Unique users for the user filter.
-    final users = _mockActivities.map((a) => a.userName).toSet().toList()
-      ..sort();
+        // Unique users from all unfiltered items for user-filter chips.
+        final users = feed.items.map((a) => a.userName).toSet().toList()..sort();
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── Header ──────────────────────────────────────────────────
-          Row(
+        // Group by time.
+        final groups = groupActivities(allItems);
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Text(
-                  l10n.activityFeedTitle,
-                  style: TextStyle(
-                    color: tokens.fgBright,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Icon(Icons.rss_feed_rounded, color: tokens.accent, size: 20),
-              const SizedBox(width: 6),
-              Text(
-                l10n.activityCount(filtered.length),
-                style: TextStyle(color: tokens.fgMuted, fontSize: 13),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-
-          // ── "New activities" banner ──────────────────────────────
-          if (filterState.newActivityCount > 0)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: GlassCard(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-                onTap: () {
-                  ref
-                      .read(_activityFilterProvider.notifier)
-                      .clearNewActivities();
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.arrow_upward_rounded,
-                      color: tokens.accent,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      l10n.activityNewCount(filterState.newActivityCount),
+              // ── Header ────────────────────────────────────────────────
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l10n.activityFeedTitle,
                       style: TextStyle(
-                        color: tokens.accent,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
+                        color: tokens.fgBright,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-
-          // ── Filter chips ────────────────────────────────────────
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _FilterChip(
-                label: l10n.activityAllTypes,
-                isSelected: filterState.selectedType == null,
-                tokens: tokens,
-                onTap: () =>
-                    ref.read(_activityFilterProvider.notifier).setType(null),
-              ),
-              for (final type in ActivityType.values)
-                _FilterChip(
-                  label: type.label,
-                  isSelected: filterState.selectedType == type,
-                  color: type.color,
-                  tokens: tokens,
-                  onTap: () =>
-                      ref.read(_activityFilterProvider.notifier).setType(type),
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          // ── User filter ─────────────────────────────────────────
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _FilterChip(
-                label: l10n.activityAllMembers,
-                isSelected: filterState.selectedUser == null,
-                tokens: tokens,
-                onTap: () =>
-                    ref.read(_activityFilterProvider.notifier).setUser(null),
-              ),
-              for (final user in users)
-                _FilterChip(
-                  label: user,
-                  isSelected: filterState.selectedUser == user,
-                  tokens: tokens,
-                  onTap: () =>
-                      ref.read(_activityFilterProvider.notifier).setUser(user),
-                ),
-            ],
-          ),
-          const SizedBox(height: 24),
-
-          // ── Timeline ────────────────────────────────────────────
-          if (filtered.isEmpty)
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 64),
-                child: Column(
-                  children: [
-                    Icon(Icons.inbox_outlined, color: tokens.fgDim, size: 48),
-                    const SizedBox(height: 12),
-                    Text(
-                      l10n.activityNoMatchingFilters,
-                      style: TextStyle(color: tokens.fgMuted, fontSize: 14),
+                  ),
+                  if (feed.isConnected) ...[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4CAF50).withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFF4CAF50).withValues(alpha: 0.4),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF4CAF50),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            l10n.activityLiveIndicator,
+                            style: const TextStyle(
+                              color: Color(0xFF4CAF50),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 10),
+                  ],
+                  Icon(Icons.rss_feed_rounded, color: tokens.accent, size: 20),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.activityCount(allItems.length),
+                    style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // ── "New activities" banner ────────────────────────────
+              if (feed.newCount > 0)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: GlassCard(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 10,
+                    ),
+                    onTap: () =>
+                        ref.read(activityFeedProvider.notifier).clearNewCount(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.arrow_upward_rounded,
+                          color: tokens.accent,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.activityNewCount(feed.newCount),
+                          style: TextStyle(
+                            color: tokens.accent,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+              // ── Type filter chips ──────────────────────────────────
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _FilterChip(
+                    label: l10n.activityAllTypes,
+                    isSelected: filterState.selectedType == null,
+                    tokens: tokens,
+                    onTap: () => ref
+                        .read(_activityFilterProvider.notifier)
+                        .setType(null),
+                  ),
+                  for (final type in ActivityType.values)
+                    _FilterChip(
+                      label: type.label,
+                      isSelected: filterState.selectedType == type,
+                      color: type.color,
+                      tokens: tokens,
+                      onTap: () => ref
+                          .read(_activityFilterProvider.notifier)
+                          .setType(type),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              // ── Member filter chips ────────────────────────────────
+              if (users.isNotEmpty)
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _FilterChip(
+                      label: l10n.activityAllMembers,
+                      isSelected: filterState.selectedUser == null,
+                      tokens: tokens,
+                      onTap: () => ref
+                          .read(_activityFilterProvider.notifier)
+                          .setUser(null),
+                    ),
+                    for (final user in users)
+                      _FilterChip(
+                        label: user,
+                        isSelected: filterState.selectedUser == user,
+                        tokens: tokens,
+                        onTap: () => ref
+                            .read(_activityFilterProvider.notifier)
+                            .setUser(user),
+                      ),
                   ],
                 ),
-              ),
-            )
-          else
-            ...filtered.map(
-              (activity) => Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: _ActivityCard(activity: activity, tokens: tokens),
-              ),
-            ),
-        ],
-      ),
+              const SizedBox(height: 24),
+
+              // ── Timeline ───────────────────────────────────────────
+              if (allItems.isEmpty)
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 64),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.inbox_outlined,
+                          color: tokens.fgDim,
+                          size: 48,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          feed.items.isEmpty
+                              ? l10n.activityNoActivityYet
+                              : l10n.activityNoMatchingFilters,
+                          style:
+                              TextStyle(color: tokens.fgMuted, fontSize: 14),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              else
+                for (final (group, groupItems) in groups) ...[
+                  _TimeGroupHeader(
+                    label: switch (group) {
+                      ActivityTimeGroup.today => l10n.activityGroupToday,
+                      ActivityTimeGroup.yesterday =>
+                        l10n.activityGroupYesterday,
+                      ActivityTimeGroup.earlier => l10n.activityGroupEarlier,
+                    },
+                    tokens: tokens,
+                  ),
+                  const SizedBox(height: 8),
+                  for (final activity in groupItems)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _ActivityCard(
+                        activity: activity,
+                        tokens: tokens,
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                ],
+            ],
+          ),
+        );
+      },
     );
   }
 }
 
-// ── Activity card ───────────────────────────────────────────────────────────
+// ── Time group header ────────────────────────────────────────────────────────
+
+class _TimeGroupHeader extends StatelessWidget {
+  const _TimeGroupHeader({required this.label, required this.tokens});
+
+  final String label;
+  final OrchestraColorTokens tokens;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: tokens.fgDim,
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.8,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Divider(color: tokens.borderFaint, thickness: 1),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Activity card ────────────────────────────────────────────────────────────
 
 class _ActivityCard extends StatelessWidget {
   const _ActivityCard({required this.activity, required this.tokens});
@@ -364,7 +332,7 @@ class _ActivityCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Avatar ──────────────────────────────────────────────
+          // ── Avatar ────────────────────────────────────────────────
           Container(
             width: 40,
             height: 40,
@@ -385,7 +353,7 @@ class _ActivityCard extends StatelessWidget {
           ),
           const SizedBox(width: 14),
 
-          // ── Content ─────────────────────────────────────────────
+          // ── Content ───────────────────────────────────────────────
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,18 +378,19 @@ class _ActivityCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         activity.actionType.label.toLowerCase(),
-                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
+                        style:
+                            TextStyle(color: tokens.fgMuted, fontSize: 12),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       activity.relativeTime,
-                      style: TextStyle(color: tokens.fgDim, fontSize: 11),
+                      style:
+                          TextStyle(color: tokens.fgDim, fontSize: 11),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                // Entity link.
                 Row(
                   children: [
                     Container(
@@ -475,7 +444,7 @@ class _ActivityCard extends StatelessWidget {
   }
 }
 
-// ── Filter chip ─────────────────────────────────────────────────────────────
+// ── Filter chip ──────────────────────────────────────────────────────────────
 
 class _FilterChip extends StatelessWidget {
   const _FilterChip({

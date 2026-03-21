@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:orchestra/screens/installer/install_progress_model.dart';
 
 /// Downloads, extracts, and installs the Orchestra CLI binary.
@@ -40,9 +42,17 @@ class OrchestraInstaller {
 
       yield const InstallProgress(
         stage: InstallStage.verifying,
-        percent: 95,
+        percent: 90,
         message: 'Verifying installation…',
       );
+
+      // Auto-configure Claude Desktop if it's installed on the system.
+      yield const InstallProgress(
+        stage: InstallStage.configuringIde,
+        percent: 95,
+        message: 'Configuring Claude Desktop…',
+      );
+      await ensureClaudeDesktopConfig();
 
       yield const InstallProgress(
         stage: InstallStage.done,
@@ -56,6 +66,78 @@ class OrchestraInstaller {
         message: 'Installation failed.',
         error: e.toString(),
       );
+    }
+  }
+
+  /// Checks if Claude Desktop app is installed on the system.
+  static bool isClaudeDesktopInstalled() {
+    if (Platform.isMacOS) {
+      return Directory('/Applications/Claude.app').existsSync();
+    } else if (Platform.isWindows) {
+      final appData = Platform.environment['LOCALAPPDATA'] ?? '';
+      return Directory('$appData/Programs/Claude').existsSync() ||
+          Directory('$appData/Claude').existsSync();
+    } else {
+      // Linux: check for flatpak or snap
+      return File('/usr/bin/claude').existsSync() ||
+          Directory('${Platform.environment['HOME']}/.local/share/Claude').existsSync();
+    }
+  }
+
+  /// Returns true if Claude Desktop already has Orchestra MCP configured.
+  static bool _hasOrchestraInClaudeConfig() {
+    final path = _claudeDesktopConfigPath();
+    final file = File(path);
+    if (!file.existsSync()) return false;
+    try {
+      final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+      final servers = json['mcpServers'] as Map<String, dynamic>?;
+      return servers != null && servers.containsKey('orchestra');
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Auto-configures Claude Desktop with Orchestra MCP if Claude Desktop
+  /// is installed but Orchestra is not yet configured in it.
+  static Future<void> ensureClaudeDesktopConfig() async {
+    if (!isClaudeDesktopInstalled()) {
+      debugPrint('[Installer] Claude Desktop not found — skipping IDE config');
+      return;
+    }
+    if (_hasOrchestraInClaudeConfig()) {
+      debugPrint('[Installer] Claude Desktop already has Orchestra configured');
+      return;
+    }
+
+    debugPrint('[Installer] Configuring Orchestra MCP in Claude Desktop');
+    try {
+      final result = await Process.run('orchestra', [
+        'init',
+        '--ide',
+        'claude-desktop',
+      ]);
+      if (result.exitCode == 0) {
+        debugPrint('[Installer] Claude Desktop configured successfully');
+      } else {
+        debugPrint('[Installer] Claude Desktop config failed: ${result.stderr}');
+      }
+    } on ProcessException catch (e) {
+      debugPrint('[Installer] Process error: $e');
+    }
+  }
+
+  static String _claudeDesktopConfigPath() {
+    final home = Platform.environment['HOME'] ??
+        Platform.environment['USERPROFILE'] ??
+        '';
+    if (Platform.isMacOS) {
+      return '$home/Library/Application Support/Claude/claude_desktop_config.json';
+    } else if (Platform.isWindows) {
+      final appData = Platform.environment['APPDATA'] ?? '$home/AppData/Roaming';
+      return '$appData/Claude/claude_desktop_config.json';
+    } else {
+      return '$home/.config/Claude/claude_desktop_config.json';
     }
   }
 

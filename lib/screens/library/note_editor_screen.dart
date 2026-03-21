@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,8 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:orchestra/core/api/api_provider.dart';
+import 'package:orchestra/core/notifications/notification_store.dart';
 import 'package:orchestra/core/utils/platform_utils.dart';
-import 'package:orchestra/widgets/markdown/markdown_renderer.dart';
+import 'package:orchestra/widgets/markdown_editor.dart';
 import 'package:orchestra/core/storage/storage_provider.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
@@ -37,14 +39,22 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
   List<String> _tags = [];
   bool _loading = true;
   bool _saving = false;
-  bool _preview = false;
 
   // ── Smart action state ──────────────────────────────────────────────────
   bool _smartMode = false;
   bool _generating = false;
   String _selectedModel = 'sonnet';
   final _promptController = TextEditingController();
-  final List<_SmartEvent> _smartEvents = [];
+
+  // CLI-style spinner state
+  static const _spinnerChars = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+  int _spinnerIndex = 0;
+  Timer? _spinnerTimer;
+  String _currentStatus = '';
+  final _stopwatch = Stopwatch();
+  bool _spinnerComplete = false;
+  bool _spinnerError = false;
+  String _errorMessage = '';
 
   @override
   void initState() {
@@ -91,8 +101,36 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     return [];
   }
 
+  void _startSpinner() {
+    _spinnerIndex = 0;
+    _spinnerComplete = false;
+    _spinnerError = false;
+    _errorMessage = '';
+    _currentStatus = '';
+    _stopwatch.reset();
+    _stopwatch.start();
+    _spinnerTimer?.cancel();
+    _spinnerTimer = Timer.periodic(const Duration(milliseconds: 80), (_) {
+      if (!mounted) return;
+      setState(() => _spinnerIndex = (_spinnerIndex + 1) % _spinnerChars.length);
+    });
+  }
+
+  void _stopSpinner({bool error = false, String? errorMsg}) {
+    _spinnerTimer?.cancel();
+    _spinnerTimer = null;
+    _stopwatch.stop();
+    if (error) {
+      _spinnerError = true;
+      _errorMessage = errorMsg ?? 'Error';
+    } else {
+      _spinnerComplete = true;
+    }
+  }
+
   @override
   void dispose() {
+    _spinnerTimer?.cancel();
     _titleController.dispose();
     _contentController.dispose();
     _tagController.dispose();
@@ -173,22 +211,35 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
         child: Column(
           children: [
             _buildToolbar(tokens),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Mode toggle (new notes on desktop only)
-                    if (widget.isNew && isDesktop) ...[
-                      _buildModeToggle(tokens),
-                      const SizedBox(height: 16),
+            // Smart mode: scrollable panel
+            if (_smartMode && widget.isNew)
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (widget.isNew && isDesktop) ...[
+                        _buildModeToggle(tokens),
+                        const SizedBox(height: 16),
+                      ],
+                      _buildSmartActionPanel(tokens),
                     ],
-
-                    // Smart Action panel OR manual form
-                    if (_smartMode && widget.isNew)
-                      _buildSmartActionPanel(tokens)
-                    else ...[
+                  ),
+                ),
+              )
+            // Manual mode: title + tags scroll, editor fills remaining space
+            else
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (widget.isNew && isDesktop) ...[
+                        _buildModeToggle(tokens),
+                        const SizedBox(height: 16),
+                      ],
                       // Title field
                       TextField(
                         controller: _titleController,
@@ -222,18 +273,19 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                       // Divider
                       Divider(color: tokens.border, height: 1),
 
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
 
-                      // Content — editor or preview
-                      if (_preview)
-                        _buildPreview(tokens)
-                      else
-                        _buildEditor(tokens),
+                      // Rich Markdown editor with toolbar + preview
+                      Expanded(
+                        child: MarkdownEditor(
+                          controller: _contentController,
+                          hintText: l10n.writeMarkdownHint,
+                        ),
+                      ),
                     ],
-                  ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -271,21 +323,6 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
           ),
 
           const Spacer(),
-
-          // Preview toggle
-          IconButton(
-            onPressed: () => setState(() => _preview = !_preview),
-            icon: Icon(
-              _preview ? Icons.edit_rounded : Icons.visibility_rounded,
-              size: 18,
-              color: tokens.fgMuted,
-            ),
-            tooltip: _preview ? l10n.edit : l10n.preview,
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-          ),
-
-          const SizedBox(width: 8),
 
           // Save button
           FilledButton.icon(
@@ -401,50 +438,6 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     );
   }
 
-  Widget _buildEditor(OrchestraColorTokens tokens) {
-    final l10n = AppLocalizations.of(context);
-    return TextField(
-      controller: _contentController,
-      focusNode: _contentFocus,
-      style: TextStyle(
-        color: tokens.fgBright,
-        fontSize: 14,
-        height: 1.7,
-        fontFamily: 'monospace',
-      ),
-      decoration: InputDecoration(
-        hintText: l10n.writeMarkdownHint,
-        hintStyle: TextStyle(
-          color: tokens.fgDim,
-          fontSize: 14,
-          fontFamily: 'monospace',
-        ),
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.zero,
-      ),
-      maxLines: null,
-      minLines: 20,
-      keyboardType: TextInputType.multiline,
-    );
-  }
-
-  Widget _buildPreview(OrchestraColorTokens tokens) {
-    final l10n = AppLocalizations.of(context);
-    final text = _contentController.text;
-    if (text.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 48),
-          child: Text(
-            l10n.nothingToPreview,
-            style: TextStyle(color: tokens.fgDim, fontSize: 14),
-          ),
-        ),
-      );
-    }
-
-    return MarkdownRendererWidget(content: text);
-  }
 
   Color _tagColor(String tag) {
     const palette = [
@@ -609,66 +602,71 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
           ),
         ),
 
-        // Event log
-        if (_smartEvents.isNotEmpty) ...[
+        // CLI-style spinner status
+        if (_generating || _spinnerComplete || _spinnerError) ...[
           const SizedBox(height: 16),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: tokens.bg,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(color: tokens.borderFaint),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final event in _smartEvents)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 3),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          event.isError
-                              ? Icons.error_outline_rounded
-                              : event.isDone
-                              ? Icons.check_circle_outline_rounded
-                              : Icons.circle_outlined,
-                          size: 14,
-                          color: event.isError
-                              ? const Color(0xFFEF4444)
-                              : event.isDone
-                              ? const Color(0xFF22C55E)
-                              : tokens.fgDim,
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            event.message,
-                            style: TextStyle(
-                              color: event.isError
-                                  ? const Color(0xFFEF4444)
-                                  : tokens.fgMuted,
-                              fontSize: 12,
-                              fontFamily: 'monospace',
-                            ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: Row(
+                    key: ValueKey(_spinnerError ? 'err' : _spinnerComplete ? 'done' : _currentStatus),
+                    children: [
+                      if (_spinnerError)
+                        Text('✗ ', style: TextStyle(color: const Color(0xFFEF4444), fontSize: 14, fontFamily: 'monospace'))
+                      else if (_spinnerComplete)
+                        Text('✓ ', style: TextStyle(color: const Color(0xFF22C55E), fontSize: 14, fontFamily: 'monospace'))
+                      else
+                        Text('${_spinnerChars[_spinnerIndex]} ', style: TextStyle(color: _noteColor, fontSize: 14, fontFamily: 'monospace')),
+                      Expanded(
+                        child: Text(
+                          _spinnerError
+                              ? _errorMessage
+                              : _spinnerComplete
+                                  ? 'Done (${_stopwatch.elapsed.inSeconds}s)'
+                                  : _currentStatus.isEmpty
+                                      ? 'Starting...'
+                                      : _currentStatus,
+                          style: TextStyle(
+                            color: _spinnerError
+                                ? const Color(0xFFEF4444)
+                                : _spinnerComplete
+                                    ? const Color(0xFF22C55E)
+                                    : tokens.fgMuted,
+                            fontSize: 13,
+                            fontFamily: 'monospace',
+                            overflow: TextOverflow.ellipsis,
                           ),
+                          maxLines: 1,
                         ),
-                      ],
-                    ),
+                      ),
+                      if (!_spinnerComplete && !_spinnerError)
+                        Text(
+                          '${_stopwatch.elapsed.inSeconds}s',
+                          style: TextStyle(color: tokens.fgDim, fontSize: 12, fontFamily: 'monospace'),
+                        ),
+                    ],
                   ),
+                ),
                 if (_generating)
                   Padding(
-                    padding: const EdgeInsets.only(top: 6),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Shimmer.fromColors(
                       baseColor: tokens.bgAlt,
                       highlightColor: tokens.border,
                       child: Container(
-                        height: 14,
-                        width: 160,
+                        height: 3,
                         decoration: BoxDecoration(
                           color: tokens.bgAlt,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(2),
                         ),
                       ),
                     ),
@@ -681,10 +679,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     );
   }
 
-  void _addEvent(String message, {bool isError = false, bool isDone = false}) {
-    setState(() {
-      _smartEvents.add(_SmartEvent(message, isError: isError, isDone: isDone));
-    });
+  void _setStatus(String status) {
+    if (!mounted) return;
+    setState(() => _currentStatus = status);
   }
 
   Future<void> _generate() async {
@@ -694,101 +691,215 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     final l10n = AppLocalizations.of(context);
     final mcp = ref.read(mcpClientProvider);
     if (mcp == null) {
-      _addEvent(l10n.mcpNotAvailable, isError: true);
+      setState(() {
+        _spinnerError = true;
+        _errorMessage = l10n.mcpNotAvailable;
+      });
       return;
     }
 
-    setState(() {
-      _generating = true;
-      _smartEvents.clear();
-    });
-
-    _addEvent(l10n.sendingPrompt);
+    setState(() => _generating = true);
+    _startSpinner();
+    _setStatus(l10n.sendingPrompt);
 
     try {
-      const systemPrompt =
-          'You are creating a note. '
-          'Output ONLY a valid JSON object with these fields:\n'
-          '{"title": string (required), "content": string (detailed markdown content), '
-          '"tags": [array of short tag strings]}\n\n'
-          'Rules:\n'
-          '- Output ONLY the raw JSON object. No markdown code fences. No explanation.\n'
-          '- All values must be strings except tags which is an array of strings.\n'
-          '- For the content field, use proper markdown formatting.\n'
-          '- Tags should be short, lowercase, relevant keywords.';
+      final fullPrompt =
+          '$prompt\n\n'
+          'Use the available tools to scan the project, read relevant files, '
+          'and write a comprehensive markdown note based on what you find. '
+          'Your final response should be the complete note content in markdown format.';
 
-      _addEvent(l10n.aiGenerating);
+      _setStatus('Launching $_selectedModel...');
 
+      // Listen for real-time events from the bridge.
+      StreamSubscription<Map<String, dynamic>>? eventSub;
+      eventSub = mcp.notifications.listen((json) {
+        final result = json['result'] as Map<String, dynamic>?;
+        if (result != null && result['method'] == 'notifications/events') {
+          final params = result['params'];
+          if (params is List) {
+            for (final event in params) {
+              if (event is! Map<String, dynamic>) continue;
+              final type = event['type']?.toString() ?? '';
+              final text = event['text']?.toString() ?? '';
+
+              if (!mounted) continue;
+              switch (type) {
+                case 'text_chunk':
+                  if (text.trim().isNotEmpty) {
+                    final preview = text.trim();
+                    _setStatus(preview.length > 80 ? '${preview.substring(0, 77)}...' : preview);
+                  }
+                case 'tool_start':
+                  final toolName = event['tool_name']?.toString() ?? text;
+                  if (toolName.isNotEmpty) _setStatus('⚡ $toolName');
+                case 'tool_end':
+                  final toolName = event['tool_name']?.toString() ?? '';
+                  if (toolName.isNotEmpty) _setStatus('✓ $toolName');
+                case 'thinking':
+                  if (text.isNotEmpty) {
+                    _setStatus(text.length > 60 ? '${text.substring(0, 57)}...' : text);
+                  }
+              }
+            }
+          }
+        }
+      });
+
+      final sw = Stopwatch()..start();
+      debugPrint('[SmartAction] Calling ai_prompt wait=true, model=$_selectedModel');
       final result = await mcp.callTool('ai_prompt', {
-        'prompt': prompt,
-        'system_prompt': systemPrompt,
-        'wait': true,
+        'prompt': fullPrompt,
         'model': _selectedModel,
         'permission_mode': 'bypassPermissions',
-        'max_budget': 0.05,
-      }, timeout: const Duration(seconds: 300));
+        'max_budget': 1.00,
+        'wait': true,
+      }, timeout: const Duration(minutes: 10));
 
-      _addEvent(l10n.responseReceived);
+      await eventSub.cancel();
+      sw.stop();
 
-      // Check for tool-level error
-      if (result['isError'] == true) {
-        final c = result['content'];
-        final errText = (c is List && c.isNotEmpty && c[0] is Map)
-            ? c[0]['text']?.toString() ?? 'Unknown error'
-            : 'Unknown error';
-        _addEvent('AI error: $errText', isError: true);
-        setState(() => _generating = false);
-        return;
-      }
+      var responseText = _extractAiResponse(result);
+      debugPrint('[SmartAction] Done in ${sw.elapsedMilliseconds}ms, response: ${responseText.length} chars');
+      debugPrint('[SmartAction] Response preview: ${responseText.substring(0, responseText.length.clamp(0, 200))}');
+      _setStatus('Processing response...');
 
-      final parsed = _unwrapAndParse(result);
-      if (parsed == null) {
-        _addEvent(l10n.failedToParse, isError: true);
-        setState(() => _generating = false);
-        return;
-      }
+      // If the AI used create_note tool, redirect to the created note.
+      final noteIdMatch = RegExp(r'note-([a-f0-9]+)').firstMatch(responseText);
+      if (noteIdMatch != null) {
+        final noteId = 'note-${noteIdMatch.group(1)}';
+        debugPrint('[SmartAction] AI created note $noteId — redirecting');
+        _setStatus('Note created — opening...');
 
-      // Populate title
-      final title = parsed['title']?.toString();
-      if (title != null && title.isNotEmpty) {
-        _titleController.text = title;
-      }
-
-      // Populate content
-      final content = parsed['content']?.toString();
-      if (content != null && content.isNotEmpty) {
-        _contentController.text = content;
-      }
-
-      // Populate tags
-      final rawTags = parsed['tags'];
-      if (rawTags is List) {
-        _tags = rawTags.map((t) => t.toString()).toList();
-      } else if (rawTags is String && rawTags.isNotEmpty) {
+        // Extract title for the notification.
+        String noteTitle = prompt.length > 40 ? '${prompt.substring(0, 37)}...' : prompt;
         try {
-          final decoded = jsonDecode(rawTags);
-          if (decoded is List) {
-            _tags = decoded.map((t) => t.toString()).toList();
+          final noteResult = await mcp.callTool('get_note', {'id': noteId}, timeout: const Duration(seconds: 10));
+          final noteText = _extractText(noteResult);
+          final titleMatch = RegExp(r'title:\s*(.+)').firstMatch(noteText);
+          if (titleMatch != null) {
+            noteTitle = titleMatch.group(1)!.trim().replaceAll('"', '');
           }
-        } catch (_) {
-          _tags = rawTags.split(',').map((t) => t.trim()).toList();
+        } catch (_) {}
+
+        _stopSpinner();
+        ref.read(notificationStoreProvider.notifier).addSmartActionComplete(noteTitle, noteId: noteId);
+        ref.read(notesRefreshProvider.notifier).refresh();
+        setState(() => _generating = false);
+
+        if (mounted) {
+          context.go('/library/notes/$noteId');
+        }
+        return;
+      }
+
+      // No note ID found — AI returned content directly. Save it ourselves.
+      if (responseText.isEmpty || responseText.length < 20) {
+        _stopSpinner(error: true, errorMsg: 'No content generated');
+        setState(() => _generating = false);
+        return;
+      }
+
+      // Parse title from content.
+      String title = prompt.length > 60 ? '${prompt.substring(0, 57)}...' : prompt;
+      for (final line in responseText.split('\n')) {
+        final trimmed = line.trim();
+        if (trimmed.startsWith('#')) {
+          title = trimmed.replaceAll(RegExp(r'^#+\s*'), '');
+          break;
         }
       }
 
-      _addEvent(l10n.noteGenerated, isDone: true);
+      // Save via MCP and redirect to the new note.
+      String? savedNoteId;
+      try {
+        final saveResult = await mcp.callTool('create_note', {
+          'title': title,
+          'body': responseText,
+          'project_id': '.global',
+        }, timeout: const Duration(seconds: 10));
+        final saveText = _extractText(saveResult);
+        final idMatch = RegExp(r'note-([a-f0-9]+)').firstMatch(saveText);
+        if (idMatch != null) savedNoteId = 'note-${idMatch.group(1)}';
+      } catch (e) {
+        debugPrint('[SmartAction] MCP save failed: $e');
+      }
 
-      // Switch to manual mode for review
-      setState(() {
-        _generating = false;
-        _smartMode = false;
-      });
-    } catch (e) {
-      _addEvent(
-        'Error: ${e.toString().replaceAll('Exception: ', '')}',
-        isError: true,
-      );
+      _stopSpinner();
+      ref.read(notificationStoreProvider.notifier).addSmartActionComplete(title, noteId: savedNoteId);
+      ref.read(notesRefreshProvider.notifier).refresh();
       setState(() => _generating = false);
+
+      if (mounted && savedNoteId != null) {
+        context.go('/library/notes/$savedNoteId');
+      } else if (mounted) {
+        // Fallback: populate editor with content if we can't redirect.
+        _titleController.text = title;
+        _contentController.text = responseText;
+        _tags = ['ai-generated'];
+        setState(() => _smartMode = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Note "$title" generated!'), duration: const Duration(seconds: 4)),
+        );
+      }
+    } catch (e) {
+      debugPrint('[SmartAction] AI generation failed: $e');
+      _stopSpinner(error: true, errorMsg: e.toString().replaceAll('Exception: ', ''));
+      setState(() => _generating = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Generation failed: ${e.toString().replaceAll('Exception: ', '')}'),
+            backgroundColor: Colors.redAccent,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
     }
+  }
+
+  /// Extract the AI-generated content from the bridge response.
+  /// The bridge wraps the response in a JSON envelope:
+  /// {"response": "actual content", "cost_usd": 0.1, "model": "..."}
+  String _extractAiResponse(Map<String, dynamic> result) {
+    final raw = _extractText(result);
+
+    // Try to parse as bridge envelope JSON.
+    try {
+      final envelope = jsonDecode(raw);
+      if (envelope is Map<String, dynamic>) {
+        final response = envelope['response']?.toString() ?? '';
+        if (response.isNotEmpty) return response;
+      }
+    } catch (_) {}
+
+    // Not an envelope — use raw text.
+    // Strip markdown code fences if present.
+    var text = raw.trim();
+    if (text.startsWith('```')) {
+      final lines = text.split('\n');
+      if (lines.length >= 3) {
+        lines.removeAt(0);
+        if (lines.last.trim() == '```') lines.removeLast();
+        text = lines.join('\n').trim();
+      }
+    }
+
+    return text;
+  }
+
+  /// Extract text from an MCP tool result (handles content array format).
+  String _extractText(Map<String, dynamic> result) {
+    final content = result['content'];
+    if (content is List && content.isNotEmpty) {
+      final first = content[0];
+      if (first is Map && first['text'] != null) {
+        return first['text'].toString();
+      }
+    }
+    return result['response']?.toString() ??
+        result['text']?.toString() ??
+        result.toString();
   }
 
   Map<String, dynamic>? _unwrapAndParse(Map<String, dynamic> result) {
@@ -843,19 +954,23 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
           if (decoded is Map<String, dynamic>) return decoded;
         } catch (_) {}
       }
+
+      // Fallback: AI returned plain text — use it as content directly.
+      if (text.length > 10) {
+        final lines = text.split('\n');
+        final title = lines.first.replaceAll(RegExp(r'^#+\s*'), '').trim();
+        return {
+          'title': title.isNotEmpty ? title : 'AI Generated Note',
+          'content': text,
+          'tags': <String>[],
+        };
+      }
     }
     return null;
   }
 }
 
 // ── Smart Action helpers ──────────────────────────────────────────────────────
-
-class _SmartEvent {
-  const _SmartEvent(this.message, {this.isError = false, this.isDone = false});
-  final String message;
-  final bool isError;
-  final bool isDone;
-}
 
 class _ModelChip extends StatelessWidget {
   const _ModelChip({

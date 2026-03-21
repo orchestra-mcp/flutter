@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/tunnel/tunnel_protocol.dart';
+import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/widgets/glass_card.dart';
 
 /// An animated panel that displays the streaming result of a tunnel action.
@@ -81,12 +82,13 @@ class _ActionResultPanelState extends State<ActionResultPanel>
   @override
   Widget build(BuildContext context) {
     final tokens = ThemeTokens.of(context);
+    final l10n = AppLocalizations.of(context);
     final hasError =
         widget.error != null ||
         widget.response?.status == TunnelResponseStatus.failed;
     final resultText = widget.response?.result ?? '';
     final errorText =
-        widget.error ?? widget.response?.error ?? 'An unknown error occurred.';
+        widget.error ?? widget.response?.error ?? l10n.error;
     final progress = widget.response?.progress;
 
     return AnimatedSize(
@@ -162,16 +164,17 @@ class _PanelHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final statusColor = hasError
         ? const Color(0xFFEF4444)
         : isStreaming
         ? tokens.accent
         : const Color(0xFF22C55E);
     final statusLabel = hasError
-        ? 'Error'
+        ? l10n.resultError
         : isStreaming
-        ? 'Streaming...'
-        : 'Complete';
+        ? l10n.resultStreaming
+        : l10n.resultComplete;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -257,7 +260,7 @@ class _LoadingBody extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            'Processing...',
+            AppLocalizations.of(context).resultProcessing,
             style: TextStyle(fontSize: 13, color: tokens.fgMuted),
           ),
         ],
@@ -362,7 +365,7 @@ class _ErrorBody extends StatelessWidget {
               onPressed: onRetry,
               icon: Icon(Icons.refresh_rounded, size: 16, color: tokens.accent),
               label: Text(
-                'Retry',
+                AppLocalizations.of(context).retry,
                 style: TextStyle(fontSize: 12, color: tokens.accent),
               ),
             ),
@@ -408,7 +411,9 @@ class _PanelFooter extends StatelessWidget {
                   color: copied ? const Color(0xFF22C55E) : tokens.fgDim,
                 ),
                 label: Text(
-                  copied ? 'Copied' : 'Copy',
+                  copied
+                      ? AppLocalizations.of(context).copied
+                      : AppLocalizations.of(context).copy,
                   style: TextStyle(
                     fontSize: 12,
                     color: copied ? const Color(0xFF22C55E) : tokens.fgDim,
@@ -421,7 +426,7 @@ class _PanelFooter extends StatelessWidget {
                 onPressed: onDismiss,
                 icon: Icon(Icons.close_rounded, size: 14, color: tokens.fgDim),
                 label: Text(
-                  'Dismiss',
+                  AppLocalizations.of(context).dismiss,
                   style: TextStyle(fontSize: 12, color: tokens.fgDim),
                 ),
               ),

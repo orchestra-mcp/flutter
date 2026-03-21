@@ -173,7 +173,10 @@ class _SkillsScreenState extends ConsumerState<SkillsScreen> {
                       final name = (skill['name'] as String?) ?? 'Unknown';
                       final command = (skill['command'] as String?) ?? '';
                       final source = (skill['source'] as String?) ?? '';
-                      final id = name;
+                      final id =
+                          (skill['id'] as String?) ??
+                          (skill['slug'] as String?) ??
+                          name;
                       final bool isPinned = pinnedIds.contains(id);
                       final cust = ref.watch(entityCustomizationProvider)[id];
                       return GlassListTile(

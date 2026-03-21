@@ -1,83 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orchestra/core/notifications/notification_store.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/utils/date_utils.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/widgets/glass_card.dart';
-
-// ── Model ──────────────────────────────────────────────────────────────────────
-
-enum NotificationType { featureUpdate, healthAlert, mention }
-
-class NotificationItem {
-  const NotificationItem({
-    required this.id,
-    required this.type,
-    required this.title,
-    required this.body,
-    required this.timestamp,
-    this.isRead = false,
-  });
-
-  final String id;
-  final NotificationType type;
-  final String title;
-  final String body;
-  final DateTime timestamp;
-  final bool isRead;
-
-  NotificationItem copyWith({bool? isRead}) => NotificationItem(
-    id: id,
-    type: type,
-    title: title,
-    body: body,
-    timestamp: timestamp,
-    isRead: isRead ?? this.isRead,
-  );
-}
-
-// ── Placeholder data ───────────────────────────────────────────────────────────
-
-final _placeholderItems = [
-  NotificationItem(
-    id: '1',
-    type: NotificationType.featureUpdate,
-    title: 'FEAT-APJ advanced to in-review',
-    body: 'Summary screen is ready for your review.',
-    timestamp: DateTime.now().subtract(const Duration(minutes: 12)),
-  ),
-  NotificationItem(
-    id: '2',
-    type: NotificationType.mention,
-    title: 'You were mentioned in FEAT-UYK',
-    body: 'Please review the notifications screen implementation.',
-    timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-    isRead: true,
-  ),
-  NotificationItem(
-    id: '3',
-    type: NotificationType.healthAlert,
-    title: 'Hydration reminder',
-    body: "You've only had 400 ml today. Goal: 2 000 ml.",
-    timestamp: DateTime.now().subtract(const Duration(hours: 3)),
-  ),
-  NotificationItem(
-    id: '4',
-    type: NotificationType.featureUpdate,
-    title: 'FEAT-HAM marked done',
-    body: 'Search screen feature completed successfully.',
-    timestamp: DateTime.now().subtract(const Duration(days: 1)),
-    isRead: true,
-  ),
-  NotificationItem(
-    id: '5',
-    type: NotificationType.healthAlert,
-    title: 'Long sitting session detected',
-    body: "You've been sitting for 90 minutes. Time to move!",
-    timestamp: DateTime.now().subtract(const Duration(days: 1, hours: 2)),
-    isRead: true,
-  ),
-];
 
 // ── Screen ─────────────────────────────────────────────────────────────────────
 
@@ -93,48 +20,27 @@ class NotificationsScreen extends ConsumerStatefulWidget {
 }
 
 class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
-  late List<NotificationItem> _items;
-
-  @override
-  void initState() {
-    super.initState();
-    _items = List.of(_placeholderItems);
-  }
-
   Future<void> _onRefresh() async {
-    // Placeholder: real implementation calls SyncEngine.sync().
-    await Future<void>.delayed(const Duration(milliseconds: 800));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
   }
 
   void _dismiss(String id) {
-    setState(() {
-      final idx = _items.indexWhere((n) => n.id == id);
-      if (idx != -1) _items[idx] = _items[idx].copyWith(isRead: true);
-    });
+    ref.read(notificationStoreProvider.notifier).markRead(id);
   }
 
   void _markAllRead() {
-    setState(() {
-      _items = _items.map((n) => n.copyWith(isRead: true)).toList();
-    });
+    ref.read(notificationStoreProvider.notifier).markAllRead();
   }
-
-  List<NotificationItem> get _updates => _items
-      .where(
-        (n) =>
-            n.type == NotificationType.featureUpdate ||
-            n.type == NotificationType.mention,
-      )
-      .toList();
-
-  List<NotificationItem> get _healthAlerts =>
-      _items.where((n) => n.type == NotificationType.healthAlert).toList();
 
   @override
   Widget build(BuildContext context) {
     final tokens = ThemeTokens.of(context);
     final l10n = AppLocalizations.of(context);
-    final isEmpty = _items.isEmpty;
+    final items = ref.watch(notificationStoreProvider);
+    final isEmpty = items.isEmpty;
+
+    final updates = items.where((n) => n.type != 'health_alert').toList();
+    final healthAlerts = items.where((n) => n.type == 'health_alert').toList();
 
     return Scaffold(
       backgroundColor: tokens.bg,
@@ -180,7 +86,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         ),
                         child: Text(
                           l10n.markAllReadAction,
-                          style: TextStyle(fontSize: 13),
+                          style: const TextStyle(fontSize: 13),
                         ),
                       ),
                     ),
@@ -199,20 +105,20 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                       child: CustomScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         slivers: [
-                          if (_updates.isNotEmpty) ...[
+                          if (updates.isNotEmpty) ...[
                             _SectionHeader(label: l10n.updates, tokens: tokens),
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (_, i) => _NotificationTile(
-                                  item: _updates[i],
+                                  item: updates[i],
                                   tokens: tokens,
-                                  onDismissed: () => _dismiss(_updates[i].id),
+                                  onDismissed: () => _dismiss(updates[i].id),
                                 ),
-                                childCount: _updates.length,
+                                childCount: updates.length,
                               ),
                             ),
                           ],
-                          if (_healthAlerts.isNotEmpty) ...[
+                          if (healthAlerts.isNotEmpty) ...[
                             _SectionHeader(
                               label: l10n.healthAlerts,
                               tokens: tokens,
@@ -220,12 +126,12 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                             SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (_, i) => _NotificationTile(
-                                  item: _healthAlerts[i],
+                                  item: healthAlerts[i],
                                   tokens: tokens,
                                   onDismissed: () =>
-                                      _dismiss(_healthAlerts[i].id),
+                                      _dismiss(healthAlerts[i].id),
                                 ),
-                                childCount: _healthAlerts.length,
+                                childCount: healthAlerts.length,
                               ),
                             ),
                           ],
@@ -276,39 +182,70 @@ class _NotificationTile extends StatelessWidget {
     required this.onDismissed,
   });
 
-  final NotificationItem item;
+  final AppNotification item;
   final OrchestraColorTokens tokens;
   final VoidCallback onDismissed;
 
-  IconData get _icon {
-    switch (item.type) {
-      case NotificationType.featureUpdate:
-        return Icons.auto_awesome_rounded;
-      case NotificationType.healthAlert:
-        return Icons.favorite_rounded;
-      case NotificationType.mention:
-        return Icons.alternate_email_rounded;
-    }
+  IconData get _icon => switch (item.type) {
+    'feature_update' => Icons.auto_awesome_rounded,
+    'health_alert' => Icons.favorite_rounded,
+    'smart_action' => Icons.smart_toy_rounded,
+    'sync' => Icons.sync_rounded,
+    'agent_event' => Icons.security_rounded,
+    _ => Icons.notifications_rounded,
+  };
+
+  Color _iconColor(OrchestraColorTokens t) => switch (item.type) {
+    'feature_update' => t.accent,
+    'health_alert' => const Color(0xFF4ADE80),
+    'smart_action' => const Color(0xFFA78BFA),
+    'sync' => const Color(0xFF38BDF8),
+    'agent_event' => const Color(0xFFFBBF24),
+    _ => t.fgMuted,
+  };
+
+  /// Resolve a localized title from the stored `_titleKey` data field.
+  String _localizedTitle(AppLocalizations l10n) {
+    final key = item.data['_titleKey'] as String?;
+    return switch (key) {
+      'notifFeatureComplete' => l10n.notifFeatureComplete,
+      'notifFeatureUpdated' => l10n.notifFeatureUpdated,
+      'notifSmartActionComplete' => l10n.notifSmartActionComplete,
+      'notifNoteGenerated' => l10n.notifNoteGenerated,
+      'notifSyncComplete' => l10n.notifSyncComplete,
+      'notifAgentFinished' => l10n.notifAgentFinished,
+      'notifEntityDeleted' => l10n.notifEntityDeleted(
+          item.data['entity_type']?.toString() ?? ''),
+      _ => item.title,
+    };
   }
 
-  Color _iconColor(OrchestraColorTokens t) {
-    switch (item.type) {
-      case NotificationType.featureUpdate:
-        return t.accent;
-      case NotificationType.healthAlert:
-        return const Color(0xFF4ADE80);
-      case NotificationType.mention:
-        return const Color(0xFF38BDF8);
-    }
+  /// Resolve a localized body from the stored structured data.
+  String _localizedBody(AppLocalizations l10n) {
+    final key = item.data['_titleKey'] as String?;
+    return switch (key) {
+      'notifNoteGenerated' => l10n.notifNoteReady(
+          item.data['_bodyNoteTitle']?.toString() ?? item.body),
+      'notifSyncComplete' => l10n.notifSyncItemsSynced(
+          (item.data['_bodyCount'] as int?) ?? int.tryParse(item.body) ?? 0),
+      'notifEntityDeleted' => l10n.notifEntityDeletedBody(
+          item.data['entity_type']?.toString() ?? '',
+          item.data['entity_id']?.toString() ?? ''),
+      'notifAgentFinished' =>
+        item.body.isNotEmpty ? item.body : l10n.notifAgentSessionCompleted,
+      _ => item.body,
+    };
   }
 
   @override
   Widget build(BuildContext context) {
     final iconColor = _iconColor(tokens);
     final l10n = AppLocalizations.of(context);
+    final displayTitle = _localizedTitle(l10n);
+    final displayBody = _localizedBody(l10n);
     return Semantics(
       label:
-          '${item.title}, ${formatRelative(item.timestamp)}, '
+          '$displayTitle, ${formatRelative(item.timestamp)}, '
           '${item.isRead ? l10n.notificationRead : l10n.notificationUnread}',
       child: Dismissible(
         key: ValueKey(item.id),
@@ -342,7 +279,7 @@ class _NotificationTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item.title,
+                        displayTitle,
                         style: TextStyle(
                           color: tokens.fgBright,
                           fontSize: 14,
@@ -353,7 +290,7 @@ class _NotificationTile extends StatelessWidget {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        item.body,
+                        displayBody,
                         style: TextStyle(color: tokens.fgMuted, fontSize: 13),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

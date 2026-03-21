@@ -237,6 +237,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get orchestrator => 'المنسق';
 
   @override
+  String get devtools => 'DevTools';
+
+  @override
   String get terminal => 'الطرفية';
 
   @override
@@ -5680,6 +5683,86 @@ class AppLocalizationsAr extends AppLocalizations {
   String get activityNoMatchingFilters => 'لا توجد أنشطة تطابق الفلاتر';
 
   @override
+  String get activityGroupToday => 'اليوم';
+
+  @override
+  String get activityGroupYesterday => 'أمس';
+
+  @override
+  String get activityGroupEarlier => 'سابقاً';
+
+  @override
+  String get activityLiveIndicator => 'مباشر';
+
+  @override
+  String get copied => 'تم النسخ';
+
+  @override
+  String get dismiss => 'إغلاق';
+
+  @override
+  String get discard => 'تجاهل';
+
+  @override
+  String get useResult => 'استخدام النتيجة';
+
+  @override
+  String get whatToCreate => 'ماذا تريد أن تنشئ؟';
+
+  @override
+  String get resultStreaming => 'جاري البث...';
+
+  @override
+  String get resultComplete => 'اكتمل';
+
+  @override
+  String get resultError => 'خطأ';
+
+  @override
+  String get resultProcessing => 'جاري المعالجة...';
+
+  @override
+  String get notifFeatureComplete => 'اكتملت الميزة';
+
+  @override
+  String get notifFeatureUpdated => 'تحديث الميزة';
+
+  @override
+  String get notifSmartActionComplete => 'اكتمل الإجراء الذكي';
+
+  @override
+  String get notifNoteGenerated => 'تم إنشاء الملاحظة';
+
+  @override
+  String notifNoteReady(String title) {
+    return '\"$title\" جاهزة للمراجعة';
+  }
+
+  @override
+  String get notifSyncComplete => 'اكتملت المزامنة';
+
+  @override
+  String notifSyncItemsSynced(int count) {
+    return 'تمت مزامنة $count عنصر';
+  }
+
+  @override
+  String get notifAgentFinished => 'انتهى العميل';
+
+  @override
+  String get notifAgentSessionCompleted => 'اكتملت جلسة العميل';
+
+  @override
+  String notifEntityDeleted(String entityType) {
+    return 'تم حذف $entityType';
+  }
+
+  @override
+  String notifEntityDeletedBody(String entityType, String entityId) {
+    return 'تم إزالة $entityType $entityId';
+  }
+
+  @override
   String get smartActionSummarizeDesc => 'إنشاء ملخص موجز';
 
   @override
@@ -6394,4 +6477,436 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get agentInstructionsContext => 'السياق';
+
+  @override
+  String get wbNewWorkflow => 'سير عمل جديد';
+
+  @override
+  String get wbYaml => 'YAML';
+
+  @override
+  String get wbExportPack => 'تصدير الحزمة';
+
+  @override
+  String get wbSave => 'حفظ';
+
+  @override
+  String wbSaved(String id) {
+    return 'تم حفظ سير العمل ($id)';
+  }
+
+  @override
+  String get wbUpdated => 'تم تحديث سير العمل';
+
+  @override
+  String wbSaveFailed(String error) {
+    return 'فشل الحفظ: $error';
+  }
+
+  @override
+  String wbLoadFailed(String error) {
+    return 'فشل تحميل سير العمل: $error';
+  }
+
+  @override
+  String get wbAddState => 'إضافة حالة';
+
+  @override
+  String get wbAddTransition => 'إضافة انتقال';
+
+  @override
+  String get wbBadgeStart => 'بداية';
+
+  @override
+  String get wbBadgeEnd => 'نهاية';
+
+  @override
+  String get wbBadgeSkill => 'مهارة';
+
+  @override
+  String get wbBadgeAgent => 'وكيل';
+
+  @override
+  String get wbInspector => 'المفتش';
+
+  @override
+  String get wbInspectorState => 'الحالة';
+
+  @override
+  String get wbInspectorTransition => 'الانتقال';
+
+  @override
+  String get wbInspectorGate => 'البوابة';
+
+  @override
+  String get wbSectionWorkflow => 'سير العمل';
+
+  @override
+  String get wbFieldName => 'الاسم';
+
+  @override
+  String get wbFieldDescription => 'الوصف';
+
+  @override
+  String get wbFieldProjectId => 'معرّف المشروع';
+
+  @override
+  String get wbProjectIdHint => 'يُكتشف تلقائياً إذا كان فارغاً';
+
+  @override
+  String get wbFieldInitialState => 'الحالة الابتدائية';
+
+  @override
+  String get wbSetAsDefault => 'تعيين كافتراضي';
+
+  @override
+  String get wbSectionGates => 'البوابات';
+
+  @override
+  String get wbAddGate => 'إضافة بوابة';
+
+  @override
+  String get wbNoTerminalState => 'لم يتم تحديد حالة نهائية';
+
+  @override
+  String get wbInvalidInitialState =>
+      'الحالة الابتدائية غير موجودة في قائمة الحالات';
+
+  @override
+  String get wbSectionState => 'الحالة';
+
+  @override
+  String get wbFieldStateId => 'المعرّف';
+
+  @override
+  String get wbStateIdHint => 'مثال: قيد-التنفيذ';
+
+  @override
+  String get wbFieldStateLabel => 'التسمية';
+
+  @override
+  String get wbToggleTerminal => 'حالة نهائية (مكتملة)';
+
+  @override
+  String get wbToggleActiveWork => 'عمل نشط (يُحسب ضمن WIP)';
+
+  @override
+  String get wbSectionAttachedSkill => 'المهارة المرفقة';
+
+  @override
+  String get wbSectionAttachedAgent => 'الوكيل المرفق';
+
+  @override
+  String get wbRemoveState => 'حذف الحالة';
+
+  @override
+  String get wbSectionTransition => 'الانتقال';
+
+  @override
+  String get wbFieldFrom => 'من';
+
+  @override
+  String get wbFieldTo => 'إلى';
+
+  @override
+  String get wbFieldGateOptional => 'البوابة (اختياري)';
+
+  @override
+  String get wbGateNone => 'لا شيء';
+
+  @override
+  String get wbEditGateTooltip => 'تعديل البوابة';
+
+  @override
+  String get wbRemoveTransition => 'حذف الانتقال';
+
+  @override
+  String get wbSectionGate => 'البوابة';
+
+  @override
+  String get wbFieldGateId => 'المعرّف';
+
+  @override
+  String get wbGateIdHint => 'مثال: code_complete';
+
+  @override
+  String get wbFieldGateLabel => 'التسمية';
+
+  @override
+  String get wbFieldRequiredSection => 'القسم المطلوب';
+
+  @override
+  String get wbRequiredSectionHint => 'مثال: التغييرات';
+
+  @override
+  String get wbFieldFilePatterns => 'أنماط الملفات (سطر لكل نمط)';
+
+  @override
+  String get wbFilePatternsHint => '_test.go\n.test.ts';
+
+  @override
+  String get wbFieldDocsFolder => 'مجلد التوثيق';
+
+  @override
+  String get wbDocsFolderHint => 'docs (اختياري)';
+
+  @override
+  String get wbFieldSkippableFor => 'قابل للتخطي لـ (مفصول بفواصل)';
+
+  @override
+  String get wbSkippableForHint => 'bug, hotfix, testcase';
+
+  @override
+  String get wbRemoveGate => 'حذف البوابة';
+
+  @override
+  String get wbGatesHeader => 'البوابات';
+
+  @override
+  String wbNoItemsInstalled(String type) {
+    return 'لا توجد $type مثبتة';
+  }
+
+  @override
+  String wbAttachItem(String type) {
+    return 'إرفاق $type';
+  }
+
+  @override
+  String wbSelectItem(String type) {
+    return 'اختر $type';
+  }
+
+  @override
+  String get wbCopyYaml => 'نسخ YAML';
+
+  @override
+  String get wbYamlCopied => 'تم نسخ YAML إلى الحافظة';
+
+  @override
+  String get wbExportTitle => 'تصدير كحزمة';
+
+  @override
+  String get wbExportSubtitle =>
+      'قم بإيداع هذه الملفات في مستودع GitHub وثبّتها باستخدام install_pack.';
+
+  @override
+  String get wbNextSteps => 'الخطوات التالية';
+
+  @override
+  String wbStep1(String slug) {
+    return '١. أنشئ مستودع GitHub: your-org/pack-$slug';
+  }
+
+  @override
+  String wbStep2(String slug) {
+    return '٢. أضف pack.json + workflow/$slug.yaml';
+  }
+
+  @override
+  String wbStep3(String slug) {
+    return '٣. ثبّت: install_pack repo:github.com/your-org/pack-$slug';
+  }
+
+  @override
+  String get wbStep4 =>
+      '٤. استخدم مهارة /workflow-builder لتوليد المهارات لكل مرحلة';
+
+  @override
+  String wbFileCopied(String filename) {
+    return 'تم نسخ $filename';
+  }
+
+  @override
+  String get adminBadges => 'الشارات';
+
+  @override
+  String get adminPoints => 'النقاط';
+
+  @override
+  String get adminVerifications => 'التحقق';
+
+  @override
+  String get adminCreateBadge => 'إنشاء شارة';
+
+  @override
+  String get adminEditBadge => 'تعديل الشارة';
+
+  @override
+  String get adminDeleteBadge => 'حذف الشارة';
+
+  @override
+  String get adminAddBadge => 'إضافة شارة';
+
+  @override
+  String get adminBadgeCreated => 'تم إنشاء الشارة';
+
+  @override
+  String get adminBadgeUpdated => 'تم تحديث الشارة';
+
+  @override
+  String get adminBadgeDeleted => 'تم حذف الشارة';
+
+  @override
+  String adminDeleteBadgeConfirm(String name) {
+    return 'هل أنت متأكد من حذف \"$name\"؟ لا يمكن التراجع عن هذا.';
+  }
+
+  @override
+  String get adminNoBadgesDefined => 'لا توجد شارات محددة بعد';
+
+  @override
+  String get adminNoBadgesAwarded => 'لم تُمنح أي شارات بعد';
+
+  @override
+  String get adminSearchBadges => 'البحث في الشارات...';
+
+  @override
+  String adminNoBadgesMatching(String query) {
+    return 'لا توجد شارات تطابق \"$query\"';
+  }
+
+  @override
+  String get adminBadgeName => 'الاسم';
+
+  @override
+  String get adminBadgeDescription => 'الوصف';
+
+  @override
+  String get adminBadgeCategory => 'الفئة';
+
+  @override
+  String get adminBadgeIcon => 'الأيقونة (رمز تعبيري أو اسم)';
+
+  @override
+  String get adminBadgeColor => 'اللون (hex)';
+
+  @override
+  String get adminAwardBadge => 'منح الشارة';
+
+  @override
+  String adminBadgeAwarded(String name) {
+    return 'تم منح $name';
+  }
+
+  @override
+  String get adminPointsManagement => 'إدارة النقاط';
+
+  @override
+  String get adminPointsBalance => 'رصيد النقاط';
+
+  @override
+  String get adminAddOrDeductPoints => 'إضافة أو خصم نقاط';
+
+  @override
+  String get adminAwardPoints => 'منح نقاط';
+
+  @override
+  String get adminDeductPoints => 'خصم نقاط';
+
+  @override
+  String adminAwardPointsTo(String name) {
+    return 'منح نقاط لـ $name';
+  }
+
+  @override
+  String adminDeductPointsFrom(String name) {
+    return 'خصم نقاط من $name';
+  }
+
+  @override
+  String get adminPointsAmount => 'الكمية';
+
+  @override
+  String get adminPointsReason => 'السبب';
+
+  @override
+  String get adminPointsSavedPending => 'تم الحفظ (لم يتصل بالـ API بعد)';
+
+  @override
+  String get adminTransactionHistory => 'سجل المعاملات';
+
+  @override
+  String get adminNoTransactions => 'لا توجد معاملات بعد';
+
+  @override
+  String get adminSearchUsers => 'البحث عن المستخدمين...';
+
+  @override
+  String get adminNoUsersFound => 'لم يتم العثور على مستخدمين';
+
+  @override
+  String adminNoUsersMatching(String query) {
+    return 'لا يوجد مستخدمون يطابقون \"$query\"';
+  }
+
+  @override
+  String get adminFailedToLoadUsers => 'فشل تحميل المستخدمين';
+
+  @override
+  String get adminAward => 'منح';
+
+  @override
+  String get adminDeduct => 'خصم';
+
+  @override
+  String get adminAwardPointsTooltip => 'منح نقاط';
+
+  @override
+  String get adminDeductPointsTooltip => 'خصم نقاط';
+
+  @override
+  String get adminVerificationsTitle => 'التحقق';
+
+  @override
+  String adminVerificationFor(String name) {
+    return 'التحقق: $name';
+  }
+
+  @override
+  String get adminVerificationSelectTier => 'اختر مستوى التحقق لهذا المستخدم.';
+
+  @override
+  String get adminVerificationTier => 'مستوى التحقق';
+
+  @override
+  String adminVerificationUpdated(String tier) {
+    return 'تم تحديث التحقق إلى $tier';
+  }
+
+  @override
+  String get adminChangeTier => 'تغيير المستوى';
+
+  @override
+  String get adminSearchVerifications =>
+      'البحث بالاسم أو البريد الإلكتروني أو المعرّف...';
+
+  @override
+  String get adminNoVerificationUsersFound => 'لم يتم العثور على مستخدمين';
+
+  @override
+  String adminNoVerificationUsersMatching(String query) {
+    return 'لا يوجد مستخدمون يطابقون \"$query\"';
+  }
+
+  @override
+  String get adminFailedToLoadVerifications => 'فشل تحميل المستخدمين';
+
+  @override
+  String get adminPointsUpdated => 'تم تحديث النقاط';
+
+  @override
+  String adminPointsUpdatedWithBadges(String badges) {
+    return 'تم تحديث النقاط. الشارات الممنوحة: $badges';
+  }
+
+  @override
+  String adminErrorGeneric(String error) {
+    return 'خطأ: $error';
+  }
+
+  @override
+  String adminFailedToLoad(String error) {
+    return 'فشل التحميل: $error';
+  }
 }

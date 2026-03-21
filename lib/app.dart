@@ -11,6 +11,7 @@ import 'package:orchestra/core/startup/startup_gate_provider.dart';
 import 'package:orchestra/core/theme/app_theme.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/theme/theme_provider.dart';
+import 'package:orchestra/core/workspace/workspace_bridge_provider.dart';
 import 'package:orchestra/features/health/notification_scheduler.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
 
@@ -24,6 +25,8 @@ class OrchestraApp extends ConsumerWidget {
     final gate = ref.watch(startupGateProvider).value;
     if (gate == StartupGate.ready) {
       ref.read(mcpClientProvider);
+      // Initialize workspace bridge: scan files → SQLite + start file watcher.
+      ref.watch(workspaceBridgeInitProvider);
       // Sync health notifications whenever the profile changes.
       ref.watch(notificationSyncProvider);
       // Start MCP notification listener for real-time event delivery.

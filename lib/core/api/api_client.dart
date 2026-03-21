@@ -102,6 +102,7 @@ abstract class ApiClient {
 
   Future<List<Map<String, dynamic>>> listSessions();
   Future<List<Map<String, dynamic>>> listDelegations();
+  Future<Map<String, dynamic>> respondDelegation(String id, String response);
 
   // ── Teams ──────────────────────────────────────────────────────────────
   Future<List<Map<String, dynamic>>> listTeams();

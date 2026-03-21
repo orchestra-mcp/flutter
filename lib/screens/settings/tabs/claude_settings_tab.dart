@@ -123,6 +123,63 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
     return json;
   }
 
+  Future<void> _saveWithPreview() async {
+    final tokens = ThemeTokens.of(context);
+    final newJson = _toJson();
+    final newEncoded = const JsonEncoder.withIndent('  ').convert(newJson);
+    final oldEncoded = const JsonEncoder.withIndent('  ').convert(_rawJson);
+
+    if (newEncoded == oldEncoded) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('No changes to save.')));
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: tokens.bgAlt,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        title: Text(
+          'Save Changes?',
+          style: TextStyle(
+            color: tokens.fgBright,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        content: SizedBox(
+          width: 480,
+          height: 300,
+          child: SingleChildScrollView(
+            child: SelectableText(
+              newEncoded,
+              style: TextStyle(
+                color: tokens.fgMuted,
+                fontSize: 12,
+                fontFamily: 'monospace',
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text('Cancel', style: TextStyle(color: tokens.fgMuted)),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: FilledButton.styleFrom(backgroundColor: tokens.accent),
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) await _save();
+  }
+
   Future<void> _save() async {
     final l10n = AppLocalizations.of(context);
     try {
@@ -138,6 +195,9 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
       // Sync to user_settings for cross-device access.
       final settings = ref.read(userSettingsProvider.notifier);
       await settings.set('claude_settings_json', encoded);
+
+      // Update raw JSON to match saved state.
+      _rawJson = json;
 
       if (mounted) {
         ScaffoldMessenger.of(
@@ -187,7 +247,7 @@ class _ClaudeSettingsTabState extends ConsumerState<ClaudeSettingsTab> {
             IconButton(
               icon: Icon(Icons.save_rounded, color: tokens.accent),
               tooltip: l10n.save,
-              onPressed: _save,
+              onPressed: _saveWithPreview,
             ),
             IconButton(
               icon: Icon(Icons.refresh_rounded, color: tokens.fgMuted),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orchestra/core/api/api_provider.dart';
 import 'package:orchestra/core/powersync/powersync_provider.dart';
 import 'package:orchestra/core/router/app_router.dart';
 import 'package:orchestra/core/storage/repositories/project_repository.dart';
 import 'package:orchestra/core/storage/storage_provider.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
+import 'package:orchestra/core/utils/platform_utils.dart';
+import 'package:orchestra/core/workspace/workspace_bridge_provider.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
 import 'package:orchestra/widgets/glass_list_tile.dart';
 
@@ -43,16 +46,29 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen>
     _resolveSlug();
   }
 
+  @override
+  void didUpdateWidget(covariant ProjectDetailScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.projectId != widget.projectId) {
+      _projectSlug = null;
+      _resolveSlug();
+    }
+  }
+
   /// Resolve the project slug from the UUID for querying sub-entities.
   /// Features/plans/requests/persons use project_slug, not the UUID id.
   Future<void> _resolveSlug() async {
+    if (isDesktop) {
+      // On desktop, projectId IS the slug (from LocalMcpClient).
+      if (mounted) setState(() => _projectSlug = widget.projectId);
+      return;
+    }
     final db = ref.read(powersyncDatabaseProvider);
     final row = await db.getOptional(
       'SELECT slug, name FROM projects WHERE id = ?',
       [widget.projectId],
     );
     if (row != null && mounted) {
-      // Prefer slug, fall back to name, then to the raw projectId.
       final slug =
           (row['slug'] as String?) ??
           (row['name'] as String?) ??
@@ -89,10 +105,26 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _FeaturesTab(projectId: slug, tokens: tokens),
-                _PlansTab(projectId: slug, tokens: tokens),
-                _RequestsTab(projectId: slug, tokens: tokens),
-                _PersonsTab(projectId: slug, tokens: tokens),
+                _FeaturesTab(
+                  key: ValueKey('features-$slug'),
+                  projectId: slug,
+                  tokens: tokens,
+                ),
+                _PlansTab(
+                  key: ValueKey('plans-$slug'),
+                  projectId: slug,
+                  tokens: tokens,
+                ),
+                _RequestsTab(
+                  key: ValueKey('requests-$slug'),
+                  projectId: slug,
+                  tokens: tokens,
+                ),
+                _PersonsTab(
+                  key: ValueKey('persons-$slug'),
+                  projectId: slug,
+                  tokens: tokens,
+                ),
               ],
             ),
           ),
@@ -223,7 +255,11 @@ class _DetailTabBar extends StatelessWidget {
 // -- Features tab ------------------------------------------------------------
 
 class _FeaturesTab extends ConsumerWidget {
-  const _FeaturesTab({required this.projectId, required this.tokens});
+  const _FeaturesTab({
+    super.key,
+    required this.projectId,
+    required this.tokens,
+  });
 
   final String projectId;
   final OrchestraColorTokens tokens;
@@ -246,12 +282,21 @@ class _FeaturesTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final db = ref.read(powersyncDatabaseProvider);
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: db.getAll(
+    final Future<List<Map<String, dynamic>>> featuresFuture;
+    if (isDesktop) {
+      // Wait for bridge to finish syncing files → SQLite before querying.
+      featuresFuture = ref.read(workspaceBridgeReadyProvider.future).then(
+        (_) => ref.read(apiClientProvider).listFeatures(projectId: projectId),
+      );
+    } else {
+      final db = ref.read(powersyncDatabaseProvider);
+      featuresFuture = db.getAll(
         'SELECT * FROM features WHERE project_slug = ? ORDER BY updated_at DESC',
         [projectId],
-      ),
+      );
+    }
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: featuresFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator(color: tokens.accent));
@@ -279,8 +324,8 @@ class _FeaturesTab extends ConsumerWidget {
             return GlassListTile(
               leadingIcon: _statusIcon(status),
               leadingColor: _statusColor(status),
-              label: id,
-              description: '$title — $status',
+              label: title,
+              description: '$id — $status',
               onTap: () => context.push(Routes.projectFeature(projectId, id)),
             );
           },
@@ -293,7 +338,7 @@ class _FeaturesTab extends ConsumerWidget {
 // -- Plans tab ---------------------------------------------------------------
 
 class _PlansTab extends ConsumerWidget {
-  const _PlansTab({required this.projectId, required this.tokens});
+  const _PlansTab({super.key, required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
@@ -316,12 +361,20 @@ class _PlansTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final db = ref.read(powersyncDatabaseProvider);
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: db.getAll(
+    final Future<List<Map<String, dynamic>>> plansFuture;
+    if (isDesktop) {
+      plansFuture = ref.read(workspaceBridgeReadyProvider.future).then(
+        (_) => ref.read(apiClientProvider).listPlans(projectSlug: projectId),
+      );
+    } else {
+      final db = ref.read(powersyncDatabaseProvider);
+      plansFuture = db.getAll(
         'SELECT * FROM plans WHERE project_slug = ? ORDER BY updated_at DESC',
         [projectId],
-      ),
+      );
+    }
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: plansFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator(color: tokens.accent));
@@ -349,8 +402,8 @@ class _PlansTab extends ConsumerWidget {
             return GlassListTile(
               leadingIcon: _statusIcon(status),
               leadingColor: _statusColor(status),
-              label: id,
-              description: '$title — $status',
+              label: title,
+              description: '$id — $status',
               onTap: () => context.push(Routes.projectPlan(projectId, id)),
             );
           },
@@ -363,7 +416,11 @@ class _PlansTab extends ConsumerWidget {
 // -- Requests tab ------------------------------------------------------------
 
 class _RequestsTab extends ConsumerWidget {
-  const _RequestsTab({required this.projectId, required this.tokens});
+  const _RequestsTab({
+    super.key,
+    required this.projectId,
+    required this.tokens,
+  });
 
   final String projectId;
   final OrchestraColorTokens tokens;
@@ -384,12 +441,20 @@ class _RequestsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final db = ref.read(powersyncDatabaseProvider);
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: db.getAll(
+    final Future<List<Map<String, dynamic>>> requestsFuture;
+    if (isDesktop) {
+      requestsFuture = ref.read(workspaceBridgeReadyProvider.future).then(
+        (_) => ref.read(apiClientProvider).listRequests(projectSlug: projectId),
+      );
+    } else {
+      final db = ref.read(powersyncDatabaseProvider);
+      requestsFuture = db.getAll(
         'SELECT * FROM requests WHERE project_slug = ? ORDER BY updated_at DESC',
         [projectId],
-      ),
+      );
+    }
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: requestsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator(color: tokens.accent));
@@ -417,8 +482,8 @@ class _RequestsTab extends ConsumerWidget {
             return GlassListTile(
               leadingIcon: _kindIcon(kind),
               leadingColor: _kindColor(kind),
-              label: id,
-              description: '$title — $kind',
+              label: title,
+              description: '$id — $kind',
               onTap: () => context.push(Routes.projectRequest(projectId, id)),
             );
           },
@@ -431,19 +496,27 @@ class _RequestsTab extends ConsumerWidget {
 // -- Persons tab -------------------------------------------------------------
 
 class _PersonsTab extends ConsumerWidget {
-  const _PersonsTab({required this.projectId, required this.tokens});
+  const _PersonsTab({super.key, required this.projectId, required this.tokens});
 
   final String projectId;
   final OrchestraColorTokens tokens;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final db = ref.read(powersyncDatabaseProvider);
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: db.getAll(
+    final Future<List<Map<String, dynamic>>> personsFuture;
+    if (isDesktop) {
+      personsFuture = ref.read(workspaceBridgeReadyProvider.future).then(
+        (_) => ref.read(apiClientProvider).listPersons(projectSlug: projectId),
+      );
+    } else {
+      final db = ref.read(powersyncDatabaseProvider);
+      personsFuture = db.getAll(
         'SELECT * FROM persons WHERE project_slug = ? ORDER BY updated_at DESC',
         [projectId],
-      ),
+      );
+    }
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: personsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator(color: tokens.accent));

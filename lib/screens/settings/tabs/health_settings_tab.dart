@@ -167,7 +167,8 @@ class _HealthSettingsTabState extends ConsumerState<HealthSettingsTab> {
           ),
         ),
       ),
-      data: (raw) {
+      data: (rows) {
+        final raw = rows.isNotEmpty ? rows.first : <String, dynamic>{};
         final profile = _pendingProfile ?? raw;
         return ListView(
           padding: const EdgeInsets.all(20),

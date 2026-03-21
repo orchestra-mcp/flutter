@@ -87,6 +87,8 @@ List<String> _getTabLabels(AppLocalizations l10n) => [
   l10n.chats,
   l10n.teams,
   l10n.issues,
+  l10n.adminBadges,
+  l10n.adminPoints,
 ];
 
 // ── Role badge colors ───────────────────────────────────────────────────────
@@ -513,6 +515,10 @@ class _UserDetailContent extends ConsumerWidget {
         return _TeamsTab(userId: parsedUserId);
       case 5:
         return _IssuesTab(userId: parsedUserId);
+      case 6:
+        return _BadgesTab(userId: parsedUserId);
+      case 7:
+        return _PointsTab(userId: parsedUserId);
       default:
         return const SizedBox.shrink();
     }
@@ -1802,7 +1808,7 @@ class _ManageTeamsDialogState extends State<_ManageTeamsDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('Close', style: TextStyle(color: tokens.fgMuted)),
+          child: Text(AppLocalizations.of(context).close, style: TextStyle(color: tokens.fgMuted)),
         ),
       ],
     );
@@ -2108,7 +2114,7 @@ class _ProjectsTab extends ConsumerWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(16),
           itemCount: projects.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
           itemBuilder: (_, i) {
             final p = projects[i];
             final name = p['name'] as String? ?? 'Untitled';
@@ -2129,10 +2135,10 @@ class _ProjectsTab extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.folder_outlined,
                     size: 18,
-                    color: const Color(0xFF00E5FF),
+                    color: Color(0xFF00E5FF),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -2202,7 +2208,7 @@ class _NotesTab extends ConsumerWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(16),
           itemCount: notes.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
           itemBuilder: (_, i) {
             final n = notes[i];
             final title = n['title'] as String? ?? 'Untitled';
@@ -2284,7 +2290,7 @@ class _ChatsTab extends ConsumerWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(16),
           itemCount: sessions.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
           itemBuilder: (_, i) {
             final s = sessions[i];
             final name = s['name'] as String? ?? 'Unnamed Session';
@@ -2391,7 +2397,7 @@ class _TeamsTab extends ConsumerWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(16),
           itemCount: teams.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
           itemBuilder: (_, i) {
             final t = teams[i];
             final name = t['name'] as String? ?? 'Unnamed Team';
@@ -2503,7 +2509,7 @@ class _IssuesTab extends ConsumerWidget {
         return ListView.separated(
           padding: const EdgeInsets.all(16),
           itemCount: issues.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 8),
+          separatorBuilder: (_, _) => const SizedBox(height: 8),
           itemBuilder: (_, i) {
             final issue = issues[i];
             final id = issue['id'];
@@ -2600,4 +2606,199 @@ class _IssuesTab extends ConsumerWidget {
       },
     );
   }
+}
+
+// ── Badges Tab ───────────────────────────────────────────────────────────────
+
+final _userBadgesProvider = FutureProvider.autoDispose
+    .family<List<Map<String, dynamic>>, int>((ref, userId) async {
+      final api = ref.watch(apiClientProvider);
+      final resp = await api.listUserBadges(userId);
+      return (resp['badges'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+    });
+
+final _allBadgeDefsProvider = FutureProvider.autoDispose<List<Map<String, dynamic>>>((ref) async {
+  final api = ref.watch(apiClientProvider);
+  final resp = await api.listBadgeDefinitions();
+  return (resp['badges'] as List?)?.cast<Map<String, dynamic>>() ?? [];
+});
+
+class _BadgesTab extends ConsumerWidget {
+  const _BadgesTab({required this.userId});
+  final int userId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tokens = ThemeTokens.of(context);
+    final badgesAsync = ref.watch(_userBadgesProvider(userId));
+    final allDefsAsync = ref.watch(_allBadgeDefsProvider);
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(children: [
+          Text(AppLocalizations.of(context).adminBadges, style: TextStyle(color: tokens.fgBright, fontSize: 16, fontWeight: FontWeight.w700)),
+          const Spacer(),
+          allDefsAsync.when(
+            loading: () => const SizedBox.shrink(),
+            error: (_, _) => const SizedBox.shrink(),
+            data: (defs) => FilledButton.icon(
+              onPressed: () => _showAwardDialog(context, ref, defs),
+              icon: const Icon(Icons.add, size: 16),
+              label: Text(AppLocalizations.of(context).adminAwardBadge),
+              style: FilledButton.styleFrom(backgroundColor: tokens.accent, foregroundColor: Colors.white),
+            ),
+          ),
+        ]),
+        const SizedBox(height: 16),
+        Expanded(child: badgesAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(child: Text(AppLocalizations.of(context).adminErrorGeneric(e.toString()), style: TextStyle(color: tokens.fgMuted))),
+          data: (badges) {
+            if (badges.isEmpty) return Center(child: Text(AppLocalizations.of(context).adminNoBadgesAwarded, style: TextStyle(color: tokens.fgDim)));
+            return ListView.separated(
+              itemCount: badges.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 8),
+              itemBuilder: (context, index) {
+                final b = badges[index];
+                final color = _parseHexColorUD(b['badge_color'] as String? ?? '#888');
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  decoration: BoxDecoration(color: tokens.bg, borderRadius: BorderRadius.circular(10), border: Border.all(color: tokens.border)),
+                  child: Row(children: [
+                    Container(width: 36, height: 36, decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
+                      child: Center(child: Icon(Icons.military_tech, color: color, size: 20))),
+                    const SizedBox(width: 12),
+                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(b['badge_name'] as String? ?? '', style: TextStyle(color: tokens.fgBright, fontSize: 14, fontWeight: FontWeight.w600)),
+                      Text('${b['badge_category'] ?? ''} · ${b['awarded_at'] ?? ''}', style: TextStyle(color: tokens.fgDim, fontSize: 11)),
+                    ])),
+                    IconButton(icon: Icon(Icons.remove_circle_outline, size: 18, color: Colors.red.shade400), tooltip: 'Revoke',
+                      onPressed: () async { await ref.read(apiClientProvider).revokeUserBadge(userId, b['id'] as String); ref.invalidate(_userBadgesProvider(userId)); }),
+                  ]),
+                );
+              },
+            );
+          },
+        )),
+      ]),
+    );
+  }
+
+  void _showAwardDialog(BuildContext context, WidgetRef ref, List<Map<String, dynamic>> defs) {
+    final tokens = ThemeTokens.of(context);
+    showDialog<void>(context: context, builder: (ctx) => AlertDialog(
+      backgroundColor: tokens.bgAlt,
+      title: Text(AppLocalizations.of(context).adminAwardBadge, style: TextStyle(color: tokens.fgBright, fontSize: 16, fontWeight: FontWeight.w600)),
+      content: SizedBox(width: 320, height: 300, child: ListView.builder(itemCount: defs.length, itemBuilder: (context, index) {
+        final d = defs[index];
+        return ListTile(
+          leading: Icon(Icons.military_tech, color: _parseHexColorUD(d['color'] as String? ?? '#888')),
+          title: Text(d['name'] as String? ?? '', style: TextStyle(color: tokens.fgBright, fontSize: 13)),
+          subtitle: Text(d['category'] as String? ?? '', style: TextStyle(color: tokens.fgDim, fontSize: 11)),
+          onTap: () async {
+            await ref.read(apiClientProvider).awardUserBadge(userId, {'badge_definition_id': d['id'], 'note': 'Admin award'});
+            ref.invalidate(_userBadgesProvider(userId));
+            if (ctx.mounted) Navigator.of(ctx).pop();
+            if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).adminBadgeAwarded(d['name'] as String? ?? ''))));
+          },
+        );
+      })),
+      actions: [TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgDim)))],
+    ));
+  }
+}
+
+// ── Points Tab ───────────────────────────────────────────────────────────────
+
+final _userPointsProvider = FutureProvider.autoDispose.family<int, int>((ref, userId) async {
+  final api = ref.watch(apiClientProvider);
+  final resp = await api.getUserPoints(userId);
+  return (resp['points'] as num?)?.toInt() ?? 0;
+});
+
+class _PointsTab extends ConsumerStatefulWidget {
+  const _PointsTab({required this.userId});
+  final int userId;
+  @override
+  ConsumerState<_PointsTab> createState() => _PointsTabState();
+}
+
+class _PointsTabState extends ConsumerState<_PointsTab> {
+  final _amountCtrl = TextEditingController();
+  final _reasonCtrl = TextEditingController();
+  bool _saving = false;
+
+  @override
+  void dispose() { _amountCtrl.dispose(); _reasonCtrl.dispose(); super.dispose(); }
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = ThemeTokens.of(context);
+    final pointsAsync = ref.watch(_userPointsProvider(widget.userId));
+    return Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      pointsAsync.when(
+        loading: () => const SizedBox(height: 60),
+        error: (e, _) => Text('Error: $e', style: TextStyle(color: tokens.fgMuted)),
+        data: (points) => Container(padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(color: tokens.bg, borderRadius: BorderRadius.circular(12), border: Border.all(color: tokens.border)),
+          child: Row(children: [
+            const Icon(Icons.star_rounded, color: Color(0xFFF9A825), size: 32), const SizedBox(width: 12),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text('$points', style: TextStyle(color: tokens.fgBright, fontSize: 28, fontWeight: FontWeight.w800)),
+              Text(AppLocalizations.of(context).adminPointsBalance, style: TextStyle(color: tokens.fgDim, fontSize: 12)),
+            ]),
+          ]),
+        ),
+      ),
+      const SizedBox(height: 24),
+      Text(AppLocalizations.of(context).adminAddOrDeductPoints, style: TextStyle(color: tokens.fgBright, fontSize: 15, fontWeight: FontWeight.w600)),
+      const SizedBox(height: 12),
+      Row(children: [
+        SizedBox(width: 120, child: TextField(controller: _amountCtrl, keyboardType: const TextInputType.numberWithOptions(signed: true),
+          style: TextStyle(color: tokens.fgBright, fontSize: 14),
+          decoration: InputDecoration(labelText: 'Amount', hintText: '+50 or -10', labelStyle: TextStyle(color: tokens.fgDim, fontSize: 12), hintStyle: TextStyle(color: tokens.fgDim, fontSize: 12),
+            filled: true, fillColor: tokens.bg, border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.border)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.border)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.accent))))),
+        const SizedBox(width: 12),
+        Expanded(child: TextField(controller: _reasonCtrl, style: TextStyle(color: tokens.fgBright, fontSize: 14),
+          decoration: InputDecoration(labelText: 'Reason', hintText: 'e.g., Community contribution', labelStyle: TextStyle(color: tokens.fgDim, fontSize: 12), hintStyle: TextStyle(color: tokens.fgDim, fontSize: 12),
+            filled: true, fillColor: tokens.bg, border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.border)),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.border)),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: tokens.accent))))),
+        const SizedBox(width: 12),
+        FilledButton(onPressed: _saving ? null : _submit,
+          style: FilledButton.styleFrom(backgroundColor: tokens.accent, foregroundColor: Colors.white, padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14)),
+          child: Text(_saving ? 'Saving...' : 'Apply')),
+      ]),
+    ]));
+  }
+
+  Future<void> _submit() async {
+    final amount = int.tryParse(_amountCtrl.text);
+    if (amount == null || amount == 0) return;
+    setState(() => _saving = true);
+    try {
+      final api = ref.read(apiClientProvider);
+      final resp = await api.addUserPoints(widget.userId, {'amount': amount, 'reason': _reasonCtrl.text.trim().isEmpty ? 'Admin adjustment' : _reasonCtrl.text.trim()});
+      ref.invalidate(_userPointsProvider(widget.userId));
+      _amountCtrl.clear(); _reasonCtrl.clear();
+      if (mounted) {
+        final l10n = AppLocalizations.of(context);
+        final awarded = resp['badges_awarded'] as List?;
+        final msg = awarded != null && awarded.isNotEmpty
+            ? l10n.adminPointsUpdatedWithBadges(awarded.join(', '))
+            : l10n.adminPointsUpdated;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+      }
+    } catch (e) { if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).adminErrorGeneric(e.toString())))); }
+    if (mounted) setState(() => _saving = false);
+  }
+}
+
+Color _parseHexColorUD(String hex) {
+  final h = hex.replaceFirst('#', '');
+  if (h.length == 6) return Color(int.parse('FF$h', radix: 16));
+  return const Color(0xFF888888);
 }

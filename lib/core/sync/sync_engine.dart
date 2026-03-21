@@ -324,8 +324,32 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
           await _applyProjectDelta(delta);
         case 'note':
           await _applyNoteDelta(delta);
+        case 'agent':
+          await _applyAgentDelta(delta);
+        case 'workflow':
+          await _applyWorkflowDelta(delta);
+        case 'delegation':
+          await _applyDelegationDelta(delta);
+        case 'session':
+          await _applySessionDelta(delta);
+        case 'notification':
+          await _applyNotificationDelta(delta);
+        case 'health_log':
+        case 'water_log':
+        case 'caffeine_log':
+        case 'meal_log':
+        case 'pomodoro_session':
+        case 'sleep_log':
+        case 'health_snapshot':
+        case 'health_profile':
+          await _applyHealthLogDelta(delta);
+        case 'setting':
+        case 'user_setting':
+          await _applySettingDelta(delta);
         default:
-          // Unknown entity type — skip gracefully.
+          // Entity types without local Drift tables (plans, requests, persons,
+          // workspaces, teams, memberships, etc.) are handled by PowerSync
+          // directly and don't need manual delta application.
           break;
       }
     }
@@ -415,6 +439,199 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
                 DateTime.now(),
             updatedAt:
                 DateTime.tryParse(n['updated_at'] as String? ?? '') ??
+                DateTime.now(),
+          ),
+        );
+  }
+
+  Future<void> _applyAgentDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.agentsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
+      return;
+    }
+    final a = delta.data ?? {};
+    await _db
+        .into(_db.agentsTable)
+        .insertOnConflictUpdate(
+          AgentsTableCompanion.insert(
+            id: delta.entityId,
+            name: a['name'] as String? ?? '',
+            description: Value(a['description'] as String?),
+            provider: Value(a['provider'] as String? ?? 'claude'),
+            model: a['model'] as String? ?? '',
+            systemPrompt: Value(a['system_prompt'] as String?),
+            tools: Value(a['tools'] as String? ?? '[]'),
+            synced: const Value(true),
+            createdAt:
+                DateTime.tryParse(a['created_at'] as String? ?? '') ??
+                DateTime.now(),
+            updatedAt:
+                DateTime.tryParse(a['updated_at'] as String? ?? '') ??
+                DateTime.now(),
+          ),
+        );
+  }
+
+  Future<void> _applyWorkflowDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.workflowsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
+      return;
+    }
+    final w = delta.data ?? {};
+    await _db
+        .into(_db.workflowsTable)
+        .insertOnConflictUpdate(
+          WorkflowsTableCompanion.insert(
+            id: delta.entityId,
+            projectId: Value(w['project_id'] as String? ?? ''),
+            name: w['name'] as String? ?? '',
+            description: Value(w['description'] as String?),
+            initialState: Value(w['initial_state'] as String? ?? 'todo'),
+            states: Value(w['states'] as String? ?? '{}'),
+            transitions: Value(w['transitions'] as String? ?? '[]'),
+            gates: Value(w['gates'] as String? ?? '{}'),
+            isDefault: Value(w['is_default'] as bool? ?? false),
+            synced: const Value(true),
+            createdAt:
+                DateTime.tryParse(w['created_at'] as String? ?? '') ??
+                DateTime.now(),
+            updatedAt:
+                DateTime.tryParse(w['updated_at'] as String? ?? '') ??
+                DateTime.now(),
+          ),
+        );
+  }
+
+  Future<void> _applyDelegationDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.delegationsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
+      return;
+    }
+    final d = delta.data ?? {};
+    await _db
+        .into(_db.delegationsTable)
+        .insertOnConflictUpdate(
+          DelegationsTableCompanion.insert(
+            id: delta.entityId,
+            fromUserId: d['from_user_id'] as String? ?? '',
+            toUserId: d['to_user_id'] as String? ?? '',
+            task: d['task'] as String? ?? '',
+            status: Value(d['status'] as String? ?? 'pending'),
+            featureId: Value(d['feature_id'] as String?),
+            synced: const Value(true),
+            createdAt:
+                DateTime.tryParse(d['created_at'] as String? ?? '') ??
+                DateTime.now(),
+            updatedAt:
+                DateTime.tryParse(d['updated_at'] as String? ?? '') ??
+                DateTime.now(),
+          ),
+        );
+  }
+
+  Future<void> _applySessionDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.sessionsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
+      return;
+    }
+    final s = delta.data ?? {};
+    await _db
+        .into(_db.sessionsTable)
+        .insertOnConflictUpdate(
+          SessionsTableCompanion.insert(
+            id: delta.entityId,
+            name: s['name'] as String? ?? '',
+            accountId: s['account_id'] as String? ?? '',
+            status: Value(s['status'] as String? ?? 'active'),
+            metadata: Value(s['metadata'] as String? ?? '{}'),
+            synced: const Value(true),
+            startedAt:
+                DateTime.tryParse(s['started_at'] as String? ?? '') ??
+                DateTime.now(),
+            endedAt: Value(
+              DateTime.tryParse(s['ended_at'] as String? ?? ''),
+            ),
+          ),
+        );
+  }
+
+  Future<void> _applyNotificationDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.notificationsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
+      return;
+    }
+    final n = delta.data ?? {};
+    await _db
+        .into(_db.notificationsTable)
+        .insertOnConflictUpdate(
+          NotificationsTableCompanion.insert(
+            id: delta.entityId,
+            userId: n['user_id'] as String? ?? '',
+            type: n['type'] as String? ?? '',
+            title: n['title'] as String? ?? '',
+            body: Value(n['body'] as String?),
+            data: Value(n['data'] as String? ?? '{}'),
+            read: Value(n['read'] as bool? ?? false),
+            synced: const Value(true),
+            createdAt:
+                DateTime.tryParse(n['created_at'] as String? ?? '') ??
+                DateTime.now(),
+          ),
+        );
+  }
+
+  Future<void> _applyHealthLogDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.healthLogsTable,
+      )..where((t) => t.id.equals(delta.entityId))).go();
+      return;
+    }
+    final h = delta.data ?? {};
+    await _db
+        .into(_db.healthLogsTable)
+        .insertOnConflictUpdate(
+          HealthLogsTableCompanion.insert(
+            id: delta.entityId,
+            userId: h['user_id'] as String? ?? '',
+            category: h['category'] as String? ?? delta.entityType,
+            value: (h['value'] as num?)?.toDouble() ?? 0.0,
+            unit: Value(h['unit'] as String?),
+            metadata: Value(jsonEncode(h)),
+            synced: const Value(true),
+            loggedAt:
+                DateTime.tryParse(h['logged_at'] as String? ?? '') ??
+                DateTime.now(),
+          ),
+        );
+  }
+
+  Future<void> _applySettingDelta(SyncDelta delta) async {
+    if (delta.operation == SyncOperation.delete) {
+      await (_db.delete(
+        _db.settingsTable,
+      )..where((t) => t.key.equals(delta.entityId))).go();
+      return;
+    }
+    final s = delta.data ?? {};
+    await _db
+        .into(_db.settingsTable)
+        .insertOnConflictUpdate(
+          SettingsTableCompanion.insert(
+            key: delta.entityId,
+            value: jsonEncode(s['value'] ?? s),
+            updatedAt:
+                DateTime.tryParse(s['updated_at'] as String? ?? '') ??
                 DateTime.now(),
           ),
         );

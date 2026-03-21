@@ -49,6 +49,7 @@ import 'package:orchestra/screens/library/mcp_entity_editor.dart';
 import 'package:orchestra/screens/library/notes_screen.dart';
 import 'package:orchestra/screens/library/skills_screen.dart';
 import 'package:orchestra/screens/library/workflows_screen.dart';
+import 'package:orchestra/screens/workflow/workflow_builder_screen.dart';
 import 'package:orchestra/screens/projects/feature_detail_screen.dart';
 import 'package:orchestra/screens/projects/person_detail_screen.dart';
 import 'package:orchestra/screens/projects/plan_detail_screen.dart';
@@ -57,6 +58,11 @@ import 'package:orchestra/screens/projects/projects_screen.dart';
 import 'package:orchestra/screens/projects/request_detail_screen.dart';
 import 'package:orchestra/screens/splash/splash_screen.dart';
 import 'package:orchestra/screens/summary/summary_screen.dart';
+import 'package:orchestra/screens/devtools/api_collections_screen.dart';
+import 'package:orchestra/screens/devtools/database_browser_screen.dart';
+import 'package:orchestra/screens/devtools/log_runner_screen.dart';
+import 'package:orchestra/screens/devtools/prompts_screen.dart';
+import 'package:orchestra/screens/devtools/secrets_screen.dart';
 import 'package:orchestra/screens/terminal/terminal_screen.dart';
 import 'package:orchestra/screens/web/admin/admin_overview_page.dart';
 import 'package:orchestra/screens/web/admin/categories_page.dart';
@@ -123,6 +129,13 @@ abstract final class Routes {
   static String doc(String id) => '/library/docs/$id';
   static const delegations = '/library/delegations';
   static String delegation(String id) => '/library/delegations/$id';
+
+  // DevTools
+  static const devtoolsApi = '/devtools/api';
+  static const devtoolsDatabase = '/devtools/database';
+  static const devtoolsLogs = '/devtools/logs';
+  static const devtoolsSecrets = '/devtools/secrets';
+  static const devtoolsPrompts = '/devtools/prompts';
 
   // Terminal
   static const terminal = '/terminal';
@@ -686,9 +699,7 @@ GoRouter buildRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: 'new',
-                builder: (_, _) => const McpEntityEditorScreen(
-                  entityType: McpEntityType.workflow,
-                ),
+                builder: (_, _) => const WorkflowBuilderScreen(),
               ),
               GoRoute(
                 path: ':id',
@@ -702,6 +713,12 @@ GoRouter buildRouter(Ref ref) {
                     builder: (_, s) => McpEntityEditorScreen(
                       entityType: McpEntityType.workflow,
                       entityId: s.pathParameters['id'],
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'build',
+                    builder: (_, s) => WorkflowBuilderScreen(
+                      workflowId: s.pathParameters['id'],
                     ),
                   ),
                 ],
@@ -749,6 +766,32 @@ GoRouter buildRouter(Ref ref) {
                 ),
               ),
             ],
+          ),
+
+          // DevTools
+          GoRoute(
+            path: '/devtools',
+            redirect: (_, __) => Routes.devtoolsApi,
+          ),
+          GoRoute(
+            path: Routes.devtoolsApi,
+            builder: (_, _) => const ApiCollectionsScreen(),
+          ),
+          GoRoute(
+            path: Routes.devtoolsDatabase,
+            builder: (_, _) => const DatabaseBrowserScreen(),
+          ),
+          GoRoute(
+            path: Routes.devtoolsLogs,
+            builder: (_, _) => const LogRunnerScreen(),
+          ),
+          GoRoute(
+            path: Routes.devtoolsSecrets,
+            builder: (_, _) => const SecretsScreen(),
+          ),
+          GoRoute(
+            path: Routes.devtoolsPrompts,
+            builder: (_, _) => const PromptsScreen(),
           ),
 
           // Terminal

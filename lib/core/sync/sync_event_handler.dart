@@ -7,12 +7,6 @@ import 'package:orchestra/core/sync/team_sync_provider.dart';
 import 'package:orchestra/core/ws/ws_event.dart';
 import 'package:orchestra/core/ws/ws_manager.dart';
 import 'package:orchestra/core/ws/ws_provider.dart';
-import 'package:orchestra/core/health/caffeine_manager.dart';
-import 'package:orchestra/core/health/hydration_manager.dart';
-import 'package:orchestra/core/health/nutrition_manager.dart';
-import 'package:orchestra/core/health/pomodoro_manager.dart';
-import 'package:orchestra/core/health/shutdown_manager.dart';
-import 'package:orchestra/features/health/health_provider.dart';
 import 'package:orchestra/widgets/team_updates_banner.dart';
 
 // ── Sync event handler ───────────────────────────────────────────────────────
@@ -59,38 +53,9 @@ class SyncEventHandler {
         ref.invalidate(entitySharesProvider((entityType, entityId)));
         ref.invalidate(teamUpdatesProvider);
 
-      case HealthDataUpdatedEvent(:final dimension):
-        _onHealthUpdate(dimension);
-
       default:
         break;
     }
-  }
-
-  /// Invalidates the appropriate health provider(s) when a health data
-  /// change event arrives from another device via WebSocket.
-  void _onHealthUpdate(String dimension) {
-    switch (dimension) {
-      case 'hydration':
-        ref.invalidate(hydrationProvider);
-      case 'caffeine':
-        ref.invalidate(caffeineProvider);
-      case 'nutrition':
-        ref.invalidate(nutritionProvider);
-      case 'pomodoro':
-        ref.invalidate(pomodoroProvider);
-      case 'shutdown':
-        ref.invalidate(shutdownProvider);
-      case 'all':
-      default:
-        ref.invalidate(hydrationProvider);
-        ref.invalidate(caffeineProvider);
-        ref.invalidate(nutritionProvider);
-        ref.invalidate(pomodoroProvider);
-        ref.invalidate(shutdownProvider);
-    }
-    // Always refresh the aggregated health provider.
-    ref.invalidate(healthProvider);
   }
 
   void dispose() {

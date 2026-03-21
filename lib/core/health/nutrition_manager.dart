@@ -16,10 +16,14 @@ enum TriggerCondition { ibs, gerd, gout, fattyLiver }
 
 class FoodItem {
   const FoodItem({
+    this.id = '',
     required this.title,
     required this.category,
     this.triggerConditions = const [],
+    this.sortOrder = 0,
   });
+
+  final String id;
 
   /// JSON map: `{"en": "Grilled Chicken", "ar": "دجاج مشوي"}`.
   /// When from admin panel, this column stores JSONB.
@@ -27,6 +31,9 @@ class FoodItem {
 
   final FoodCategory category;
   final List<TriggerCondition> triggerConditions;
+
+  /// Display order in the list.
+  final int sortOrder;
 
   bool get isSafe => triggerConditions.isEmpty;
 
@@ -69,12 +76,25 @@ class FoodItem {
       _ => FoodCategory.snack,
     };
 
+    final id = json['id']?.toString() ?? '';
+    final sortOrder = (json['sort_order'] as num?)?.toInt() ?? 0;
+
     return FoodItem(
+      id: id,
       title: titleMap,
       category: category,
       triggerConditions: triggers,
+      sortOrder: sortOrder,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'category': category.name,
+    'trigger_conditions': triggerConditions.map((t) => t.name).toList(),
+    'sort_order': sortOrder,
+  };
 }
 
 class FoodRegistry {
@@ -85,132 +105,194 @@ class FoodRegistry {
   static const allFoods = <FoodItem>[
     // IBS / GERD triggers
     FoodItem(
+      id: 'whole_egg',
       title: {'en': 'Whole Egg', 'ar': 'بيضة كاملة'},
       category: FoodCategory.protein,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 0,
     ),
     FoodItem(
+      id: 'falafel',
       title: {'en': 'Falafel', 'ar': 'فلافل'},
       category: FoodCategory.snack,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 1,
     ),
     FoodItem(
+      id: 'deep_fried',
       title: {'en': 'Deep Fried', 'ar': 'مقلي'},
       category: FoodCategory.snack,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 2,
     ),
     FoodItem(
+      id: 'raw_onion',
       title: {'en': 'Raw Onion', 'ar': 'بصل نيء'},
       category: FoodCategory.snack,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 3,
     ),
     FoodItem(
+      id: 'raw_garlic',
       title: {'en': 'Raw Garlic', 'ar': 'ثوم نيء'},
       category: FoodCategory.snack,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 4,
     ),
     FoodItem(
+      id: 'cheddar_cheese',
       title: {'en': 'Cheddar Cheese', 'ar': 'جبنة شيدر'},
       category: FoodCategory.fat,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 5,
     ),
     FoodItem(
+      id: 'yellow_cheese',
       title: {'en': 'Yellow Cheese', 'ar': 'جبنة صفراء'},
       category: FoodCategory.fat,
       triggerConditions: [TriggerCondition.ibs, TriggerCondition.gerd],
+      sortOrder: 6,
     ),
     // Gout triggers
     FoodItem(
+      id: 'red_meat',
       title: {'en': 'Red Meat', 'ar': 'لحم أحمر'},
       category: FoodCategory.protein,
       triggerConditions: [TriggerCondition.gout],
+      sortOrder: 7,
     ),
     FoodItem(
+      id: 'liver',
       title: {'en': 'Liver', 'ar': 'كبدة'},
       category: FoodCategory.protein,
       triggerConditions: [TriggerCondition.gout],
+      sortOrder: 8,
     ),
     FoodItem(
+      id: 'duck',
       title: {'en': 'Duck', 'ar': 'بط'},
       category: FoodCategory.protein,
       triggerConditions: [TriggerCondition.gout],
+      sortOrder: 9,
     ),
     FoodItem(
+      id: 'beans',
       title: {'en': 'Beans', 'ar': 'فاصوليا'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.gout],
+      sortOrder: 10,
     ),
     FoodItem(
+      id: 'lentils',
       title: {'en': 'Lentils', 'ar': 'عدس'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.gout],
+      sortOrder: 11,
     ),
     FoodItem(
+      id: 'legumes',
       title: {'en': 'Legumes', 'ar': 'بقوليات'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.gout],
+      sortOrder: 12,
     ),
     // Fatty liver triggers
     FoodItem(
+      id: 'refined_sugar',
       title: {'en': 'Refined Sugar', 'ar': 'سكر مكرر'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.fattyLiver],
+      sortOrder: 13,
     ),
     FoodItem(
+      id: 'honey',
       title: {'en': 'Honey', 'ar': 'عسل'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.fattyLiver],
+      sortOrder: 14,
     ),
     FoodItem(
+      id: 'nutella',
       title: {'en': 'Nutella', 'ar': 'نوتيلا'},
       category: FoodCategory.fat,
       triggerConditions: [TriggerCondition.fattyLiver],
+      sortOrder: 15,
     ),
     FoodItem(
+      id: 'jam',
       title: {'en': 'Jam', 'ar': 'مربى'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.fattyLiver],
+      sortOrder: 16,
     ),
     FoodItem(
+      id: 'white_flour',
       title: {'en': 'White Flour', 'ar': 'دقيق أبيض'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.fattyLiver],
+      sortOrder: 17,
     ),
     FoodItem(
+      id: 'mixed_carbs',
       title: {'en': 'Mixed Carbs', 'ar': 'كربوهيدرات مختلطة'},
       category: FoodCategory.carb,
       triggerConditions: [TriggerCondition.fattyLiver],
+      sortOrder: 18,
     ),
     // Safe foods
     FoodItem(
+      id: 'grilled_chicken',
       title: {'en': 'Grilled Chicken', 'ar': 'دجاج مشوي'},
       category: FoodCategory.protein,
+      sortOrder: 19,
     ),
     FoodItem(
+      id: 'white_fish',
       title: {'en': 'White Fish', 'ar': 'سمك أبيض'},
       category: FoodCategory.protein,
+      sortOrder: 20,
     ),
     FoodItem(
+      id: 'cottage_cheese',
       title: {'en': 'Cottage Cheese', 'ar': 'جبنة قريش'},
       category: FoodCategory.protein,
+      sortOrder: 21,
     ),
     FoodItem(
+      id: 'greek_yogurt',
       title: {'en': 'Greek Yogurt', 'ar': 'زبادي يوناني'},
       category: FoodCategory.protein,
+      sortOrder: 22,
     ),
-    FoodItem(title: {'en': 'Oats', 'ar': 'شوفان'}, category: FoodCategory.carb),
     FoodItem(
+      id: 'oats',
+      title: {'en': 'Oats', 'ar': 'شوفان'},
+      category: FoodCategory.carb,
+      sortOrder: 23,
+    ),
+    FoodItem(
+      id: 'whole_wheat',
       title: {'en': 'Whole Wheat', 'ar': 'قمح كامل'},
       category: FoodCategory.carb,
+      sortOrder: 24,
     ),
-    FoodItem(title: {'en': 'Rice', 'ar': 'أرز'}, category: FoodCategory.carb),
     FoodItem(
+      id: 'rice',
+      title: {'en': 'Rice', 'ar': 'أرز'},
+      category: FoodCategory.carb,
+      sortOrder: 25,
+    ),
+    FoodItem(
+      id: 'olive_oil',
       title: {'en': 'Olive Oil', 'ar': 'زيت زيتون'},
       category: FoodCategory.fat,
+      sortOrder: 26,
     ),
     FoodItem(
+      id: 'avocado',
       title: {'en': 'Avocado', 'ar': 'أفوكادو'},
       category: FoodCategory.fat,
+      sortOrder: 27,
     ),
   ];
 
@@ -337,8 +419,9 @@ class NutritionNotifier extends Notifier<NutritionState> {
             '';
         final ts = DateTime.tryParse(loggedStr)?.toLocal();
         if (ts == null) continue;
-        if (ts.year != now.year || ts.month != now.month || ts.day != now.day)
+        if (ts.year != now.year || ts.month != now.month || ts.day != now.day) {
           continue;
+        }
 
         final foodName = row['name'] as String? ?? 'Unknown';
         final food =

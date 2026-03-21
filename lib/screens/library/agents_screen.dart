@@ -190,7 +190,10 @@ class _AgentsScreenState extends ConsumerState<AgentsScreen> {
                       final name = (agent['name'] as String?) ?? 'Unknown';
                       final description =
                           (agent['description'] as String?) ?? '';
-                      final id = name;
+                      final id =
+                          (agent['id'] as String?) ??
+                          (agent['slug'] as String?) ??
+                          name;
                       final bool isPinned = pinnedIds.contains(id);
                       final cust = ref.watch(entityCustomizationProvider)[id];
                       final color = cust?.color ?? _colorFromName(name);

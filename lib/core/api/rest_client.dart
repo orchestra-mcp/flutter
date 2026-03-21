@@ -401,6 +401,15 @@ class RestClient implements ApiClient {
     return [];
   }
 
+  @override
+  Future<Map<String, dynamic>> respondDelegation(String id, String response) async {
+    final r = await dio.post<Map<String, dynamic>>(
+      Endpoints.delegationRespond(id),
+      data: {'response': response},
+    );
+    return r.data ?? {};
+  }
+
   // ── Teams ────────────────────────────────────────────────────────────
 
   @override
@@ -938,7 +947,15 @@ class RestClient implements ApiClient {
   @override
   Future<Map<String, dynamic>> createAdminNotification(
     Map<String, dynamic> body,
-  ) => _post(Endpoints.adminNotifications, body);
+  ) {
+    // Backend send handler is at /send, not the list endpoint.
+    // Backend expects user_ids (array), not user_id (int).
+    final payload = Map<String, dynamic>.from(body);
+    if (payload.containsKey('user_id') && !payload.containsKey('user_ids')) {
+      payload['user_ids'] = [payload.remove('user_id')];
+    }
+    return _post(Endpoints.adminNotificationSend, payload);
+  }
 
   // Sponsors
   @override

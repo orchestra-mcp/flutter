@@ -93,6 +93,7 @@ abstract final class Endpoints {
   // ── Delegations ───────────────────────────────────────────────────────
   static const String delegations = '/api/delegations';
   static String delegation(String id) => '/api/delegations/$id';
+  static String delegationRespond(String id) => '/api/delegations/$id/respond';
 
   // ── Notifications ────────────────────────────────────────────────────
   static const String notifications = '/api/notifications';
@@ -229,6 +230,7 @@ abstract final class Endpoints {
 
   // Notifications
   static const String adminNotifications = '/api/admin/notifications';
+  static const String adminNotificationSend = '/api/admin/notifications/send';
 
   // Sponsors
   static const String adminSponsors = '/api/admin/sponsors';

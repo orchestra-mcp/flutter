@@ -237,6 +237,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orchestrator => 'Orchestrator';
 
   @override
+  String get devtools => 'DevTools';
+
+  @override
   String get terminal => 'Terminal';
 
   @override
@@ -5694,6 +5697,86 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activityNoMatchingFilters => 'No activities match your filters';
 
   @override
+  String get activityGroupToday => 'Today';
+
+  @override
+  String get activityGroupYesterday => 'Yesterday';
+
+  @override
+  String get activityGroupEarlier => 'Earlier';
+
+  @override
+  String get activityLiveIndicator => 'Live';
+
+  @override
+  String get copied => 'Copied';
+
+  @override
+  String get dismiss => 'Dismiss';
+
+  @override
+  String get discard => 'Discard';
+
+  @override
+  String get useResult => 'Use Result';
+
+  @override
+  String get whatToCreate => 'What would you like to create?';
+
+  @override
+  String get resultStreaming => 'Streaming...';
+
+  @override
+  String get resultComplete => 'Complete';
+
+  @override
+  String get resultError => 'Error';
+
+  @override
+  String get resultProcessing => 'Processing...';
+
+  @override
+  String get notifFeatureComplete => 'Feature Complete';
+
+  @override
+  String get notifFeatureUpdated => 'Feature Updated';
+
+  @override
+  String get notifSmartActionComplete => 'Smart Action Complete';
+
+  @override
+  String get notifNoteGenerated => 'Note Generated';
+
+  @override
+  String notifNoteReady(String title) {
+    return '\"$title\" is ready for review';
+  }
+
+  @override
+  String get notifSyncComplete => 'Sync Complete';
+
+  @override
+  String notifSyncItemsSynced(int count) {
+    return '$count items synced';
+  }
+
+  @override
+  String get notifAgentFinished => 'Agent Finished';
+
+  @override
+  String get notifAgentSessionCompleted => 'An agent session completed';
+
+  @override
+  String notifEntityDeleted(String entityType) {
+    return '$entityType Deleted';
+  }
+
+  @override
+  String notifEntityDeletedBody(String entityType, String entityId) {
+    return '$entityType $entityId was removed';
+  }
+
+  @override
   String get smartActionSummarizeDesc => 'Create a concise summary';
 
   @override
@@ -6411,4 +6494,436 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get agentInstructionsContext => 'Context';
+
+  @override
+  String get wbNewWorkflow => 'New Workflow';
+
+  @override
+  String get wbYaml => 'YAML';
+
+  @override
+  String get wbExportPack => 'Export Pack';
+
+  @override
+  String get wbSave => 'Save';
+
+  @override
+  String wbSaved(String id) {
+    return 'Workflow saved ($id)';
+  }
+
+  @override
+  String get wbUpdated => 'Workflow updated';
+
+  @override
+  String wbSaveFailed(String error) {
+    return 'Save failed: $error';
+  }
+
+  @override
+  String wbLoadFailed(String error) {
+    return 'Failed to load workflow: $error';
+  }
+
+  @override
+  String get wbAddState => 'Add State';
+
+  @override
+  String get wbAddTransition => 'Add Transition';
+
+  @override
+  String get wbBadgeStart => 'START';
+
+  @override
+  String get wbBadgeEnd => 'END';
+
+  @override
+  String get wbBadgeSkill => 'skill';
+
+  @override
+  String get wbBadgeAgent => 'agent';
+
+  @override
+  String get wbInspector => 'Inspector';
+
+  @override
+  String get wbInspectorState => 'State';
+
+  @override
+  String get wbInspectorTransition => 'Transition';
+
+  @override
+  String get wbInspectorGate => 'Gate';
+
+  @override
+  String get wbSectionWorkflow => 'Workflow';
+
+  @override
+  String get wbFieldName => 'Name';
+
+  @override
+  String get wbFieldDescription => 'Description';
+
+  @override
+  String get wbFieldProjectId => 'Project ID';
+
+  @override
+  String get wbProjectIdHint => 'Auto-detected if empty';
+
+  @override
+  String get wbFieldInitialState => 'Initial State';
+
+  @override
+  String get wbSetAsDefault => 'Set as default';
+
+  @override
+  String get wbSectionGates => 'Gates';
+
+  @override
+  String get wbAddGate => 'Add Gate';
+
+  @override
+  String get wbNoTerminalState => 'No terminal state defined';
+
+  @override
+  String get wbInvalidInitialState => 'Initial state is not in states list';
+
+  @override
+  String get wbSectionState => 'State';
+
+  @override
+  String get wbFieldStateId => 'ID';
+
+  @override
+  String get wbStateIdHint => 'e.g. in-progress';
+
+  @override
+  String get wbFieldStateLabel => 'Label';
+
+  @override
+  String get wbToggleTerminal => 'Terminal (done) state';
+
+  @override
+  String get wbToggleActiveWork => 'Active work (counts WIP)';
+
+  @override
+  String get wbSectionAttachedSkill => 'Attached Skill';
+
+  @override
+  String get wbSectionAttachedAgent => 'Attached Agent';
+
+  @override
+  String get wbRemoveState => 'Remove State';
+
+  @override
+  String get wbSectionTransition => 'Transition';
+
+  @override
+  String get wbFieldFrom => 'From';
+
+  @override
+  String get wbFieldTo => 'To';
+
+  @override
+  String get wbFieldGateOptional => 'Gate (optional)';
+
+  @override
+  String get wbGateNone => 'None';
+
+  @override
+  String get wbEditGateTooltip => 'Edit gate';
+
+  @override
+  String get wbRemoveTransition => 'Remove Transition';
+
+  @override
+  String get wbSectionGate => 'Gate';
+
+  @override
+  String get wbFieldGateId => 'ID';
+
+  @override
+  String get wbGateIdHint => 'e.g. code_complete';
+
+  @override
+  String get wbFieldGateLabel => 'Label';
+
+  @override
+  String get wbFieldRequiredSection => 'Required Section';
+
+  @override
+  String get wbRequiredSectionHint => 'e.g. Changes';
+
+  @override
+  String get wbFieldFilePatterns => 'File Patterns (one per line)';
+
+  @override
+  String get wbFilePatternsHint => '_test.go\n.test.ts';
+
+  @override
+  String get wbFieldDocsFolder => 'Docs Folder';
+
+  @override
+  String get wbDocsFolderHint => 'docs (optional)';
+
+  @override
+  String get wbFieldSkippableFor => 'Skippable For (comma-separated)';
+
+  @override
+  String get wbSkippableForHint => 'bug, hotfix, testcase';
+
+  @override
+  String get wbRemoveGate => 'Remove Gate';
+
+  @override
+  String get wbGatesHeader => 'GATES';
+
+  @override
+  String wbNoItemsInstalled(String type) {
+    return 'No ${type}s installed';
+  }
+
+  @override
+  String wbAttachItem(String type) {
+    return 'Attach $type';
+  }
+
+  @override
+  String wbSelectItem(String type) {
+    return 'Select $type';
+  }
+
+  @override
+  String get wbCopyYaml => 'Copy YAML';
+
+  @override
+  String get wbYamlCopied => 'YAML copied to clipboard';
+
+  @override
+  String get wbExportTitle => 'Export as Pack';
+
+  @override
+  String get wbExportSubtitle =>
+      'Commit these files to a GitHub repo and install with install_pack.';
+
+  @override
+  String get wbNextSteps => 'Next steps';
+
+  @override
+  String wbStep1(String slug) {
+    return '1. Create a GitHub repo: your-org/pack-$slug';
+  }
+
+  @override
+  String wbStep2(String slug) {
+    return '2. Add pack.json + workflow/$slug.yaml';
+  }
+
+  @override
+  String wbStep3(String slug) {
+    return '3. Install: install_pack repo:github.com/your-org/pack-$slug';
+  }
+
+  @override
+  String get wbStep4 =>
+      '4. Use /workflow-builder skill to generate skills per phase';
+
+  @override
+  String wbFileCopied(String filename) {
+    return '$filename copied';
+  }
+
+  @override
+  String get adminBadges => 'Badges';
+
+  @override
+  String get adminPoints => 'Points';
+
+  @override
+  String get adminVerifications => 'Verifications';
+
+  @override
+  String get adminCreateBadge => 'Create Badge';
+
+  @override
+  String get adminEditBadge => 'Edit Badge';
+
+  @override
+  String get adminDeleteBadge => 'Delete Badge';
+
+  @override
+  String get adminAddBadge => 'Add Badge';
+
+  @override
+  String get adminBadgeCreated => 'Badge created';
+
+  @override
+  String get adminBadgeUpdated => 'Badge updated';
+
+  @override
+  String get adminBadgeDeleted => 'Badge deleted';
+
+  @override
+  String adminDeleteBadgeConfirm(String name) {
+    return 'Are you sure you want to delete \"$name\"? This cannot be undone.';
+  }
+
+  @override
+  String get adminNoBadgesDefined => 'No badges defined yet';
+
+  @override
+  String get adminNoBadgesAwarded => 'No badges awarded yet';
+
+  @override
+  String get adminSearchBadges => 'Search badges...';
+
+  @override
+  String adminNoBadgesMatching(String query) {
+    return 'No badges matching \"$query\"';
+  }
+
+  @override
+  String get adminBadgeName => 'Name';
+
+  @override
+  String get adminBadgeDescription => 'Description';
+
+  @override
+  String get adminBadgeCategory => 'Category';
+
+  @override
+  String get adminBadgeIcon => 'Icon (emoji or name)';
+
+  @override
+  String get adminBadgeColor => 'Color (hex)';
+
+  @override
+  String get adminAwardBadge => 'Award Badge';
+
+  @override
+  String adminBadgeAwarded(String name) {
+    return 'Awarded $name';
+  }
+
+  @override
+  String get adminPointsManagement => 'Points Management';
+
+  @override
+  String get adminPointsBalance => 'Points Balance';
+
+  @override
+  String get adminAddOrDeductPoints => 'Add or Deduct Points';
+
+  @override
+  String get adminAwardPoints => 'Award Points';
+
+  @override
+  String get adminDeductPoints => 'Deduct Points';
+
+  @override
+  String adminAwardPointsTo(String name) {
+    return 'Award points to $name';
+  }
+
+  @override
+  String adminDeductPointsFrom(String name) {
+    return 'Deduct points from $name';
+  }
+
+  @override
+  String get adminPointsAmount => 'Amount';
+
+  @override
+  String get adminPointsReason => 'Reason';
+
+  @override
+  String get adminPointsSavedPending => 'Saved (API not connected yet)';
+
+  @override
+  String get adminTransactionHistory => 'Transaction History';
+
+  @override
+  String get adminNoTransactions => 'No transactions yet';
+
+  @override
+  String get adminSearchUsers => 'Search users...';
+
+  @override
+  String get adminNoUsersFound => 'No users found';
+
+  @override
+  String adminNoUsersMatching(String query) {
+    return 'No users matching \"$query\"';
+  }
+
+  @override
+  String get adminFailedToLoadUsers => 'Failed to load users';
+
+  @override
+  String get adminAward => 'Award';
+
+  @override
+  String get adminDeduct => 'Deduct';
+
+  @override
+  String get adminAwardPointsTooltip => 'Award Points';
+
+  @override
+  String get adminDeductPointsTooltip => 'Deduct Points';
+
+  @override
+  String get adminVerificationsTitle => 'Verifications';
+
+  @override
+  String adminVerificationFor(String name) {
+    return 'Verification: $name';
+  }
+
+  @override
+  String get adminVerificationSelectTier =>
+      'Select a verification tier for this user.';
+
+  @override
+  String get adminVerificationTier => 'Verification Tier';
+
+  @override
+  String adminVerificationUpdated(String tier) {
+    return 'Verification updated to $tier';
+  }
+
+  @override
+  String get adminChangeTier => 'Change Tier';
+
+  @override
+  String get adminSearchVerifications =>
+      'Search users by name, email, or handle...';
+
+  @override
+  String get adminNoVerificationUsersFound => 'No users found';
+
+  @override
+  String adminNoVerificationUsersMatching(String query) {
+    return 'No users matching \"$query\"';
+  }
+
+  @override
+  String get adminFailedToLoadVerifications => 'Failed to load users';
+
+  @override
+  String get adminPointsUpdated => 'Points updated';
+
+  @override
+  String adminPointsUpdatedWithBadges(String badges) {
+    return 'Points updated. Badges awarded: $badges';
+  }
+
+  @override
+  String adminErrorGeneric(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String adminFailedToLoad(String error) {
+    return 'Failed to load: $error';
+  }
 }

@@ -2,14 +2,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orchestra/core/api/api_provider.dart';
 import 'package:orchestra/core/powersync/powersync_provider.dart';
 import 'package:orchestra/core/utils/platform_utils.dart';
+import 'package:orchestra/core/workspace/workspace_scanner_provider.dart';
 
 /// Library providers — platform-aware routing:
 ///
-/// - **Desktop**: reads from API client (MCP workspace files on disk)
+/// - **Desktop**: reads directly from workspace files (`.projects/`, `.claude/`)
+///   via the workspace scanner. This ensures the UI always reflects the latest
+///   edits from Claude Code, text editors, or the CLI — even when the Orchestra
+///   SQLite DB hasn't been refreshed yet.
 /// - **Mobile/Web**: reads from PowerSync (synced from PostgreSQL)
 
 final agentsProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
   if (isDesktop) {
+    // WorkspaceBridge syncs files→SQLite on startup, so LocalMcpClient
+    // reads fresh data from the populated SQLite DB.
     final api = ref.watch(apiClientProvider);
     return Stream.fromFuture(api.listAgents());
   }
@@ -36,7 +42,6 @@ final workflowsProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
     return Stream.fromFuture(api.listWorkflows());
   }
   final db = ref.watch(powersyncDatabaseProvider);
-  // Deduplicate by name+project_slug, keeping the row with the latest updated_at.
   return db
       .watch(
         'SELECT w.* FROM workflows w '
@@ -122,6 +127,16 @@ final requestsProvider =
           .watch('SELECT * FROM requests ORDER BY updated_at DESC')
           .map((r) => r.map((row) => Map<String, dynamic>.from(row)).toList());
     });
+
+/// Provider to respond to a delegation (approve/decline).
+/// Returns the updated delegation map.
+final respondDelegationProvider = FutureProvider.family<Map<String, dynamic>, ({String id, String response})>((ref, params) async {
+  final api = ref.watch(apiClientProvider);
+  final result = await api.respondDelegation(params.id, params.response);
+  // Invalidate the delegations list to refresh
+  ref.invalidate(delegationsProvider);
+  return result;
+});
 
 final personsProvider = StreamProvider.family<List<Map<String, dynamic>>, String?>((
   ref,

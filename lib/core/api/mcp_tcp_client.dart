@@ -78,6 +78,7 @@ class McpTcpClient implements ApiClient {
       }
 
       await WorkspaceInitializer.ensureInitialized(_workspace);
+      await WorkspaceInitializer.ensureClaudeDesktopConfig(_workspace);
 
       // Step 1: Try connecting to an existing instance.
       if (await _tryConnect()) {
@@ -157,7 +158,7 @@ class McpTcpClient implements ApiClient {
 
   Future<void> _initialize() async {
     final result = await _send('initialize', {
-      'protocolVersion': '2024-11-05',
+      'protocolVersion': '2025-06-18',
       'capabilities': <String, dynamic>{},
       'clientInfo': {'name': 'orchestra-flutter', 'version': '1.0.0'},
     });
@@ -238,10 +239,24 @@ class McpTcpClient implements ApiClient {
   void _onMessage(dynamic raw) {
     try {
       final json = jsonDecode(raw as String) as Map<String, dynamic>;
+
+      // Debug: log ALL incoming messages to find streaming chunks.
+      if (!json.containsKey('id') || json['id'] == null) {
+        final preview = raw.toString();
+        debugPrint('[MCP-WS] No-ID message: ${preview.substring(0, preview.length.clamp(0, 150))}');
+      }
+
       final id = json['id'] as int?;
 
-      // Server-pushed notification (no id).
+      // Server-pushed notification (no id, has method).
       if (id == null && json.containsKey('method')) {
+        _notificationController.add(json);
+        return;
+      }
+
+      // Forward any no-id messages with result to notification stream.
+      // This catches: streaming chunks (result.stream_id), bridge events (result.method), etc.
+      if (id == null && json.containsKey('result')) {
         _notificationController.add(json);
         return;
       }
@@ -285,13 +300,49 @@ class McpTcpClient implements ApiClient {
     );
   }
 
+  // ── Streaming tool call ──────────────────────────────────────────────
+
+  /// Call a streaming tool. Sets `streaming: true` at the params level
+  /// so the webgate routes to the streaming handler. Chunks arrive as
+  /// notifications on the [notifications] stream.
+  Future<Map<String, dynamic>> callToolStreaming(
+    String name,
+    Map<String, dynamic> arguments, {
+    Duration timeout = const Duration(minutes: 10),
+  }) async {
+    if (_ws == null) throw StateError('Not connected to MCP server');
+
+    final id = _nextId++;
+    final payload = jsonEncode({
+      'jsonrpc': '2.0',
+      'id': id,
+      'method': 'tools/call',
+      'params': {
+        'name': name,
+        'arguments': arguments,
+        'streaming': true,
+      },
+    });
+    _ws!.sink.add(payload);
+
+    final c = Completer<Map<String, dynamic>>();
+    _pending[id] = c;
+    return c.future.timeout(
+      timeout,
+      onTimeout: () {
+        _pending.remove(id);
+        throw TimeoutException('MCP streaming call timed out: $name', timeout);
+      },
+    );
+  }
+
   // ── Tool call ─────────────────────────────────────────────────────────
 
   @override
   Future<Map<String, dynamic>> callTool(
     String name,
     Map<String, dynamic> arguments, {
-    Duration timeout = const Duration(seconds: 30),
+    Duration timeout = const Duration(minutes: 10),
   }) async {
     final sw = Stopwatch()..start();
     try {
@@ -625,6 +676,10 @@ class McpTcpClient implements ApiClient {
   Future<List<Map<String, dynamic>>> listDelegations() async =>
       ((await _tool('list_delegations', {}))['delegations'] as List)
           .cast<Map<String, dynamic>>();
+
+  @override
+  Future<Map<String, dynamic>> respondDelegation(String id, String response) async =>
+      await _tool('respond_delegation', {'delegation_id': id, 'response': response});
 
   @override
   Future<List<Map<String, dynamic>>> listTeams() async {

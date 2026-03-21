@@ -14,6 +14,7 @@ class _NotifIds {
   static const int mcpAgentSpawn = 11001;
   static const int mcpNotification = 11002;
   static const int mcpGeneric = 11003;
+  static const int mcpSync = 11004;
 }
 
 const _kChannelId = 'mcp_events';
@@ -31,6 +32,9 @@ const _kChannelName = 'MCP Events';
 ///   3. Emits the event on [onNotification] for in-app consumers.
 class NotificationListener {
   NotificationListener(this._ref);
+
+  /// Callback for handling notification taps. Set by the app shell.
+  static void Function(String route)? onNotificationTap;
 
   final Ref _ref;
   StreamSubscription<WsEvent>? _sub;
@@ -84,12 +88,17 @@ class NotificationListener {
   // ── Event handling ────────────────────────────────────────────────────────
 
   void _onWsEvent(WsEvent event) {
-    if (event is! McpEvent) return;
+    if (event is McpEvent) {
+      _notificationController.add(event);
+      unreadCount.value++;
+      _showLocalNotification(event);
+      return;
+    }
 
-    _notificationController.add(event);
-    unreadCount.value++;
-
-    _showLocalNotification(event);
+    if (event is SyncBroadcastEvent) {
+      _handleSyncBroadcast(event);
+      return;
+    }
   }
 
   /// Mark all notifications as read (resets badge count).
@@ -142,8 +151,11 @@ class NotificationListener {
   }
 
   static void _onNotificationResponse(NotificationResponse response) {
-    // Deep-link handling can be wired up here in the future.
-    debugPrint('[NotifListener] Notification tapped: ${response.payload}');
+    final payload = response.payload;
+    debugPrint('[NotifListener] Notification tapped: $payload');
+    if (payload != null && onNotificationTap != null) {
+      onNotificationTap!(payload);
+    }
   }
 
   Future<void> _showLocalNotification(McpEvent event) async {
@@ -151,8 +163,130 @@ class NotificationListener {
 
     final (int id, String title, String body) = _notifContent(event);
 
+    final isDelegation = event is McpNotificationEvent &&
+        event.entityType == 'delegation';
+
+    final payload = isDelegation
+        ? '/library/delegations/${event.entityId}'
+        : '/notifications';
+
+    final androidDetails = isDelegation
+        ? const AndroidNotificationDetails(
+            'delegation_events',
+            'Delegation Events',
+            channelDescription: 'Delegation approval requests',
+            importance: Importance.high,
+            priority: Priority.high,
+            groupKey: 'delegation_events',
+            actions: <AndroidNotificationAction>[
+              AndroidNotificationAction(
+                'approve_action',
+                'Approve',
+                showsUserInterface: true,
+              ),
+              AndroidNotificationAction(
+                'decline_action',
+                'Decline',
+                showsUserInterface: true,
+              ),
+            ],
+          )
+        : const AndroidNotificationDetails(
+            _kChannelId,
+            _kChannelName,
+            channelDescription:
+                'Notifications from MCP tool calls and agent events',
+            importance: Importance.defaultImportance,
+            priority: Priority.defaultPriority,
+            groupKey: _kChannelId,
+          );
+
     await _localNotif.show(
       id: id,
+      title: title,
+      body: body,
+      notificationDetails: NotificationDetails(
+        android: androidDetails,
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+        macOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+          presentSound: true,
+        ),
+      ),
+      payload: payload,
+    );
+  }
+
+  (int, String, String) _notifContent(McpEvent event) {
+    return switch (event) {
+      McpToolCalledEvent(:final toolName) => (
+        _NotifIds.mcpToolCall,
+        'Tool Called',
+        'Claude used $toolName',
+      ),
+      McpAgentSpawnedEvent(:final agentType) => (
+        _NotifIds.mcpAgentSpawn,
+        'Agent Spawned',
+        'Sub-agent "$agentType" started',
+      ),
+      McpNotificationEvent(:final entityType, :final entityId) => (
+        _NotifIds.mcpNotification,
+        entityType == 'delegation' ? 'Delegation Request' : 'Action Required',
+        '$entityType: $entityId needs your attention',
+      ),
+      McpGenericEvent(:final action) => (
+        _NotifIds.mcpGeneric,
+        'MCP Event',
+        action.isNotEmpty ? action : 'New event received',
+      ),
+    };
+  }
+
+  // ── Sync broadcast handling ──────────────────────────────────────────────
+
+  void _handleSyncBroadcast(SyncBroadcastEvent event) {
+    // Only show notifications for deletes (more significant than upserts)
+    // and for entity types that matter to the user.
+    if (event.action != 'delete') return;
+
+    final entityLabel = _entityLabel(event.entityType);
+    if (entityLabel == null) return;
+
+    unreadCount.value++;
+
+    _showSyncNotification(
+      title: '$entityLabel Deleted',
+      body: '${event.entityType} ${event.entityId} was removed',
+    );
+  }
+
+  String? _entityLabel(String entityType) {
+    return switch (entityType) {
+      'feature' => 'Feature',
+      'note' => 'Note',
+      'agent' => 'Agent',
+      'workflow' => 'Workflow',
+      'skill' => 'Skill',
+      'doc' => 'Doc',
+      'plan' => 'Plan',
+      'project' => 'Project',
+      _ => null,
+    };
+  }
+
+  Future<void> _showSyncNotification({
+    required String title,
+    required String body,
+  }) async {
+    if (!_localNotifInitialized) return;
+
+    await _localNotif.show(
+      id: _NotifIds.mcpSync,
       title: title,
       body: body,
       notificationDetails: const NotificationDetails(
@@ -176,33 +310,8 @@ class NotificationListener {
           presentSound: true,
         ),
       ),
-      payload: '/notifications',
+      payload: '/library',
     );
-  }
-
-  (int, String, String) _notifContent(McpEvent event) {
-    return switch (event) {
-      McpToolCalledEvent(:final toolName) => (
-        _NotifIds.mcpToolCall,
-        'Tool Called',
-        'Claude used $toolName',
-      ),
-      McpAgentSpawnedEvent(:final agentType) => (
-        _NotifIds.mcpAgentSpawn,
-        'Agent Spawned',
-        'Sub-agent "$agentType" started',
-      ),
-      McpNotificationEvent(:final entityType, :final entityId) => (
-        _NotifIds.mcpNotification,
-        'Action Required',
-        '$entityType: $entityId needs your attention',
-      ),
-      McpGenericEvent(:final action) => (
-        _NotifIds.mcpGeneric,
-        'MCP Event',
-        action.isNotEmpty ? action : 'New event received',
-      ),
-    };
   }
 }
 

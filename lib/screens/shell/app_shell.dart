@@ -2,6 +2,8 @@ import 'package:adaptive_platform_ui/adaptive_platform_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:orchestra/core/notifications/notification_listener.dart'
+    as notif;
 import 'package:orchestra/core/router/app_router.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/utils/platform_utils.dart';
@@ -24,6 +26,12 @@ class AppShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Wire notification deep-link handler so tapping a local notification
+    // navigates to the correct route (e.g. delegation detail).
+    notif.NotificationListener.onNotificationTap = (route) {
+      if (context.mounted) context.go(route);
+    };
+
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < _kMobileBreakpoint) {

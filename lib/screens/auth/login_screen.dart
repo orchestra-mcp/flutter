@@ -295,6 +295,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 4),
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: () => context.go('/passkey'),
+                      icon: Icon(
+                        Icons.fingerprint_rounded,
+                        size: 18,
+                        color: tokens.accent,
+                      ),
+                      label: Text(
+                        l10n.signInWithPasskey,
+                        style: TextStyle(fontSize: 14, color: tokens.accent),
+                      ),
+                      style: TextButton.styleFrom(
+                        tapTargetSize: MaterialTapTargetSize.padded,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

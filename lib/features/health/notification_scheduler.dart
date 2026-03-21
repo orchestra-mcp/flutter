@@ -254,6 +254,7 @@ final notificationSchedulerProvider = Provider<NotificationScheduler>((ref) {
 /// requiring manual refresh calls.
 final notificationSyncProvider = FutureProvider<void>((ref) async {
   final scheduler = ref.watch(notificationSchedulerProvider);
-  final profile = await ref.watch(healthProfileProvider.future);
-  await scheduler.syncFromProfile(profile);
+  final rows = await ref.watch(healthProfileProvider.future);
+  if (rows.isEmpty) return;
+  await scheduler.syncFromProfile(rows.first);
 });

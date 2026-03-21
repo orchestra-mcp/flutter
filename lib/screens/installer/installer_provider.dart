@@ -20,6 +20,18 @@ class InstallerNotifier extends AsyncNotifier<InstallProgress> {
     final detected = await detector.check();
 
     if (detected == DetectResult.found) {
+      // Orchestra binary exists — still ensure Claude Desktop is configured.
+      if (OrchestraInstaller.isClaudeDesktopInstalled()) {
+        state = const AsyncData(
+          InstallProgress(
+            stage: InstallStage.configuringIde,
+            percent: 95,
+            message: 'Configuring Claude Desktop…',
+          ),
+        );
+        // Trigger Claude Desktop config (no-op if already configured).
+        await OrchestraInstaller.ensureClaudeDesktopConfig();
+      }
       state = const AsyncData(
         InstallProgress(
           stage: InstallStage.done,

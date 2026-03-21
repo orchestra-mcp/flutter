@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orchestra/core/health/hydration_item.dart';
+import 'package:orchestra/core/health/hydration_item_provider.dart';
 import 'package:orchestra/core/health/hydration_manager.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
@@ -24,14 +26,13 @@ String _localizedHydrationStatus(
 class HydrationTab extends ConsumerWidget {
   const HydrationTab({super.key});
 
-  static const _quickAmounts = [150, 250, 350, 500];
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tokens = ThemeTokens.of(context);
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(hydrationProvider);
     final notifier = ref.read(hydrationProvider.notifier);
+    final items = ref.watch(hydrationItemsProvider);
 
     return RefreshIndicator(
       onRefresh: notifier.refresh,
@@ -97,34 +98,11 @@ class HydrationTab extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
 
-          // Quick-add buttons
-          GlassCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.addWater,
-                  style: TextStyle(
-                    color: tokens.fgBright,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: _quickAmounts
-                      .map(
-                        (ml) => _QuickAddButton(
-                          ml: ml,
-                          tokens: tokens,
-                          onTap: () => notifier.addWater(ml),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-            ),
+          // Searchable water item list
+          _WaterListCard(
+            tokens: tokens,
+            items: items,
+            onAdd: (item) => notifier.addWater(item.ml),
           ),
           const SizedBox(height: 16),
 
@@ -591,50 +569,173 @@ class _StatusChip extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Quick-add button
+// Searchable water item list card
 // ---------------------------------------------------------------------------
 
-class _QuickAddButton extends StatelessWidget {
-  const _QuickAddButton({
-    required this.ml,
+class _WaterListCard extends StatefulWidget {
+  const _WaterListCard({
     required this.tokens,
-    required this.onTap,
+    required this.items,
+    required this.onAdd,
   });
 
-  final int ml;
   final OrchestraColorTokens tokens;
-  final VoidCallback onTap;
+  final List<HydrationItem> items;
+  final ValueChanged<HydrationItem> onAdd;
+
+  @override
+  State<_WaterListCard> createState() => _WaterListCardState();
+}
+
+class _WaterListCardState extends State<_WaterListCard> {
+  String _query = '';
+
+  List<HydrationItem> get _filtered {
+    if (_query.isEmpty) return widget.items;
+    final q = _query.toLowerCase();
+    return widget.items.where((item) {
+      return item.title.values.any((v) => v.toLowerCase().contains(q));
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      label: AppLocalizations.of(context).addMlWater(ml),
-      button: true,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 64,
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: tokens.accent.withValues(alpha: 0.15),
-            border: Border.all(color: tokens.accent.withValues(alpha: 0.4)),
-            borderRadius: BorderRadius.circular(12),
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).languageCode;
+
+    return GlassCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.addWater,
+            style: TextStyle(
+              color: widget.tokens.fgBright,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
           ),
-          child: Column(
-            children: [
-              Icon(Icons.water_drop_rounded, color: tokens.accent, size: 18),
-              const SizedBox(height: 4),
-              Text(
-                AppLocalizations.of(context).mlLabel(ml),
-                style: TextStyle(
-                  color: tokens.accent,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
+          const SizedBox(height: 10),
+
+          // Search field
+          TextField(
+            onChanged: (v) => setState(() => _query = v),
+            style: TextStyle(color: widget.tokens.fgBright, fontSize: 14),
+            cursorColor: widget.tokens.accent,
+            decoration: InputDecoration(
+              hintText: l10n.search,
+              hintStyle: TextStyle(color: widget.tokens.fgDim, fontSize: 13),
+              prefixIcon: Icon(
+                Icons.search_rounded,
+                color: widget.tokens.fgDim,
+                size: 18,
+              ),
+              filled: true,
+              fillColor: widget.tokens.bg.withValues(alpha: 0.5),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: widget.tokens.borderFaint,
+                  width: 0.5,
                 ),
               ),
-            ],
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: widget.tokens.borderFaint,
+                  width: 0.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: widget.tokens.accent),
+              ),
+              isDense: true,
+            ),
           ),
-        ),
+          const SizedBox(height: 8),
+
+          // Item list
+          ..._filtered.map((item) {
+            final name = item.localizedTitle(locale);
+            return Dismissible(
+              key: ValueKey(item.id),
+              direction: DismissDirection.startToEnd,
+              confirmDismiss: (_) async {
+                widget.onAdd(item);
+                return false;
+              },
+              background: Container(
+                alignment: AlignmentDirectional.centerStart,
+                padding: const EdgeInsetsDirectional.only(start: 16),
+                decoration: BoxDecoration(
+                  color: widget.tokens.accent.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.add_rounded,
+                  color: widget.tokens.accent,
+                  size: 20,
+                ),
+              ),
+              child: InkWell(
+                onTap: () => widget.onAdd(item),
+                borderRadius: BorderRadius.circular(10),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 4,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: widget.tokens.accent.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Icon(
+                          item.icon,
+                          color: widget.tokens.accent,
+                          size: 16,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          name,
+                          style: TextStyle(
+                            color: widget.tokens.fgBright,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        l10n.mlLabel(item.ml),
+                        style: TextStyle(
+                          color: widget.tokens.fgDim,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.chevron_left_rounded,
+                        color: widget.tokens.fgDim,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }

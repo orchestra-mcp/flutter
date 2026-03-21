@@ -6,6 +6,7 @@ enum InstallStage {
   extracting,
   installing,
   verifying,
+  configuringIde,
   done,
   error,
 }

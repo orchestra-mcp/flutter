@@ -29,13 +29,20 @@ class MarkdownEditor extends StatefulWidget {
   const MarkdownEditor({
     super.key,
     this.initialText = '',
+    this.controller,
     this.onChanged,
     this.autoSaveDelay = const Duration(milliseconds: 500),
     this.hintText = 'Start writing markdown...',
   });
 
   /// Initial markdown text to populate the editor with.
+  /// Ignored when [controller] is provided.
   final String initialText;
+
+  /// Optional external controller. When provided, the editor uses this
+  /// controller instead of creating its own. The caller is responsible
+  /// for disposing it.
+  final TextEditingController? controller;
 
   /// Called after the user stops typing for [autoSaveDelay].
   final ValueChanged<String>? onChanged;
@@ -52,6 +59,7 @@ class MarkdownEditor extends StatefulWidget {
 
 class _MarkdownEditorState extends State<MarkdownEditor> {
   late final TextEditingController _controller;
+  late final bool _ownsController;
   late final FocusNode _focusNode;
   MarkdownEditorViewMode _viewMode = MarkdownEditorViewMode.editOnly;
   Timer? _debounce;
@@ -59,7 +67,8 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: widget.initialText);
+    _ownsController = widget.controller == null;
+    _controller = widget.controller ?? TextEditingController(text: widget.initialText);
     _focusNode = FocusNode();
     _controller.addListener(_onTextChanged);
   }
@@ -68,7 +77,7 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
   void dispose() {
     _debounce?.cancel();
     _controller.removeListener(_onTextChanged);
-    _controller.dispose();
+    if (_ownsController) _controller.dispose();
     _focusNode.dispose();
     super.dispose();
   }

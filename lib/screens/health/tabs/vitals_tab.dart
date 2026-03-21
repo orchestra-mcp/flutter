@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:orchestra/core/api/api_provider.dart';
 import 'package:orchestra/core/health/health_service.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/l10n/app_localizations.dart';
@@ -39,6 +40,9 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
   double? _weight;
   double? _bloodOxygen;
   double? _respiratoryRate;
+
+  // Latest saved Zepp Scale snapshot (pre-populates the form)
+  Map<String, dynamic>? _latestSnapshot;
 
   Timer? _liveTimer;
 
@@ -111,13 +115,16 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
     }
   }
 
-  /// Full data load — fetches all vitals.
+  /// Full data load — fetches all vitals and the latest saved snapshot.
   Future<void> _loadData() async {
     setState(() => _dataLoading = true);
     final hs = ref.read(healthServiceProvider);
+    final api = ref.read(apiClientProvider);
     final now = DateTime.now();
+    final todayStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
     try {
-      final results = await Future.wait([
+      final vitals = await Future.wait<dynamic>([
         hs.getSteps(now), // 0
         hs.getHeartRate(now), // 1
         hs.getActiveCalories(now), // 2
@@ -127,16 +134,24 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
         hs.getBloodOxygen(now), // 6
         hs.getRespiratoryRate(now), // 7
       ]);
+      List<Map<String, dynamic>> snapshots = [];
+      try {
+        snapshots =
+            await api.listSnapshots(from: todayStr, to: todayStr);
+      } catch (_) {
+        // Snapshot fetch failure is non-critical — form uses defaults.
+      }
       if (mounted) {
         setState(() {
-          _steps = results[0] as int?;
-          _heartRate = results[1] as int?;
-          _calories = results[2] as double?;
-          _heartRateRange = results[3] as ({int min, int max})?;
-          _sleepHours = results[4] as double?;
-          _weight = results[5] as double?;
-          _bloodOxygen = results[6] as double?;
-          _respiratoryRate = results[7] as double?;
+          _steps = vitals[0] as int?;
+          _heartRate = vitals[1] as int?;
+          _calories = vitals[2] as double?;
+          _heartRateRange = vitals[3] as ({int min, int max})?;
+          _sleepHours = vitals[4] as double?;
+          _weight = vitals[5] as double?;
+          _bloodOxygen = vitals[6] as double?;
+          _respiratoryRate = vitals[7] as double?;
+          _latestSnapshot = snapshots.isNotEmpty ? snapshots.last : null;
           _dataLoading = false;
         });
       }
@@ -242,9 +257,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 child: _MetricCard(
                   tokens: tokens,
                   title: l10n.sleep,
-                  value: _sleepHours != null
-                      ? _sleepHours!.toStringAsFixed(1)
-                      : null,
+                  value: _sleepHours?.toStringAsFixed(1),
                   unit: l10n.unitHours,
                   icon: Icons.bedtime_rounded,
                   iconColor: const Color(0xFF7C4DFF),
@@ -256,7 +269,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 child: _MetricCard(
                   tokens: tokens,
                   title: l10n.weight,
-                  value: _weight != null ? _weight!.toStringAsFixed(1) : null,
+                  value: _weight?.toStringAsFixed(1),
                   unit: AppLocalizations.of(context).unitKg,
                   icon: Icons.monitor_weight_rounded,
                   iconColor: const Color(0xFF26A69A),
@@ -274,9 +287,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 child: _MetricCard(
                   tokens: tokens,
                   title: l10n.bloodOxygen,
-                  value: _bloodOxygen != null
-                      ? '${_bloodOxygen!.round()}'
-                      : null,
+                  value: _bloodOxygen != null ? '${_bloodOxygen!.round()}' : null,
                   unit: AppLocalizations.of(context).unitPercent,
                   icon: Icons.water_drop_rounded,
                   iconColor: const Color(0xFF42A5F5),
@@ -288,9 +299,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 child: _MetricCard(
                   tokens: tokens,
                   title: l10n.breathing,
-                  value: _respiratoryRate != null
-                      ? _respiratoryRate!.toStringAsFixed(1)
-                      : null,
+                  value: _respiratoryRate?.toStringAsFixed(1),
                   unit: l10n.unitBreathsPerMin,
                   icon: Icons.air_rounded,
                   iconColor: const Color(0xFF66BB6A),
@@ -302,7 +311,17 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
           const SizedBox(height: 20),
 
           // Zepp Scale
-          _ZeppScaleSection(tokens: tokens, healthKitWeight: _weight),
+          _ZeppScaleSection(
+            tokens: tokens,
+            healthKitWeight: _weight,
+            latestSnapshot: _latestSnapshot,
+            vitals: (
+              steps: _steps,
+              calories: _calories,
+              heartRate: _heartRate,
+              sleepHours: _sleepHours,
+            ),
+          ),
         ],
       ),
     );
@@ -674,37 +693,87 @@ class _HeartRateCard extends StatelessWidget {
 // Zepp Scale section
 // ---------------------------------------------------------------------------
 
-class _ZeppScaleSection extends StatefulWidget {
-  const _ZeppScaleSection({required this.tokens, this.healthKitWeight});
+class _ZeppScaleSection extends ConsumerStatefulWidget {
+  const _ZeppScaleSection({
+    required this.tokens,
+    this.healthKitWeight,
+    this.latestSnapshot,
+    this.vitals,
+  });
 
   final OrchestraColorTokens tokens;
   final double? healthKitWeight;
+  final Map<String, dynamic>? latestSnapshot;
+  final ({int? steps, double? calories, int? heartRate, double? sleepHours})?
+  vitals;
 
   @override
-  State<_ZeppScaleSection> createState() => _ZeppScaleSectionState();
+  ConsumerState<_ZeppScaleSection> createState() => _ZeppScaleSectionState();
 }
 
-class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
+class _ZeppScaleSectionState extends ConsumerState<_ZeppScaleSection> {
   late final TextEditingController _weightCtrl;
-  final _bodyFatCtrl = TextEditingController(text: '22.1');
-  final _metAgeCtrl = TextEditingController(text: '34');
-  final _visceralCtrl = TextEditingController(text: '8');
-  final _waterCtrl = TextEditingController(text: '57.3');
+  late final TextEditingController _bodyFatCtrl;
+  late final TextEditingController _metAgeCtrl;
+  late final TextEditingController _visceralCtrl;
+  late final TextEditingController _waterCtrl;
+  bool _saving = false;
 
   @override
   void initState() {
     super.initState();
+    final s = widget.latestSnapshot;
     _weightCtrl = TextEditingController(
-      text: widget.healthKitWeight?.toStringAsFixed(1) ?? '82.4',
+      text: widget.healthKitWeight?.toStringAsFixed(1) ??
+          _snapshotStr(s, 'weight_kg', '82.4'),
     );
+    _bodyFatCtrl = TextEditingController(
+      text: _snapshotStr(s, 'body_fat_pct', '22.1'),
+    );
+    _metAgeCtrl = TextEditingController(
+      text: _snapshotStr(s, 'metabolic_age', '34'),
+    );
+    _visceralCtrl = TextEditingController(
+      text: _snapshotStr(s, 'visceral_fat', '8'),
+    );
+    _waterCtrl = TextEditingController(
+      text: _snapshotStr(s, 'body_water_pct', '57.3'),
+    );
+  }
+
+  String _snapshotStr(
+    Map<String, dynamic>? snapshot,
+    String key,
+    String fallback,
+  ) {
+    if (snapshot == null) return fallback;
+    final v = snapshot[key];
+    if (v == null) return fallback;
+    if (v is int) return v.toString();
+    if (v is double) return v.toStringAsFixed(v.truncateToDouble() == v ? 0 : 1);
+    return v.toString();
   }
 
   @override
   void didUpdateWidget(_ZeppScaleSection old) {
     super.didUpdateWidget(old);
+    // HealthKit weight takes precedence once loaded.
     if (widget.healthKitWeight != null &&
         old.healthKitWeight != widget.healthKitWeight) {
       _weightCtrl.text = widget.healthKitWeight!.toStringAsFixed(1);
+    }
+    // Pre-populate from snapshot when it first arrives.
+    if (widget.latestSnapshot != null &&
+        old.latestSnapshot != widget.latestSnapshot) {
+      final s = widget.latestSnapshot!;
+      _bodyFatCtrl.text = _snapshotStr(s, 'body_fat_pct', _bodyFatCtrl.text);
+      _metAgeCtrl.text = _snapshotStr(s, 'metabolic_age', _metAgeCtrl.text);
+      _visceralCtrl.text = _snapshotStr(s, 'visceral_fat', _visceralCtrl.text);
+      _waterCtrl.text = _snapshotStr(s, 'body_water_pct', _waterCtrl.text);
+      // Only use snapshot weight if HealthKit weight is unavailable.
+      if (widget.healthKitWeight == null) {
+        _weightCtrl.text = _snapshotStr(s, 'weight_kg', _weightCtrl.text);
+      }
     }
   }
 
@@ -716,6 +785,55 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
     _visceralCtrl.dispose();
     _waterCtrl.dispose();
     super.dispose();
+  }
+
+  Future<void> _save() async {
+    setState(() => _saving = true);
+    final now = DateTime.now();
+    final todayStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    try {
+      final body = <String, dynamic>{
+        'snapshot_date': todayStr,
+        if (double.tryParse(_weightCtrl.text) != null)
+          'weight_kg': double.parse(_weightCtrl.text),
+        if (double.tryParse(_bodyFatCtrl.text) != null)
+          'body_fat_pct': double.parse(_bodyFatCtrl.text),
+        if (int.tryParse(_visceralCtrl.text) != null)
+          'visceral_fat': int.parse(_visceralCtrl.text),
+        if (double.tryParse(_waterCtrl.text) != null)
+          'body_water_pct': double.parse(_waterCtrl.text),
+        if (int.tryParse(_metAgeCtrl.text) != null)
+          'metabolic_age': int.parse(_metAgeCtrl.text),
+        if (widget.vitals?.steps != null) 'steps': widget.vitals!.steps!,
+        if (widget.vitals?.calories != null)
+          'active_energy_cal': widget.vitals!.calories!,
+        if (widget.vitals?.heartRate != null)
+          'avg_heart_rate': widget.vitals!.heartRate!,
+        if (widget.vitals?.sleepHours != null)
+          'sleep_hours': widget.vitals!.sleepHours!,
+      };
+      await ref.read(apiClientProvider).upsertSnapshot(body);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context).settingsSaved),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context).failedToSave),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
   }
 
   @override
@@ -800,7 +918,7 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
           SizedBox(
             width: double.infinity,
             child: FilledButton(
-              onPressed: () {},
+              onPressed: _saving ? null : _save,
               style: FilledButton.styleFrom(
                 backgroundColor: tokens.accent,
                 foregroundColor: tokens.bg,
@@ -808,7 +926,16 @@ class _ZeppScaleSectionState extends State<_ZeppScaleSection> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: Text(AppLocalizations.of(context).saveMeasurements),
+              child: _saving
+                  ? SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: tokens.bg,
+                      ),
+                    )
+                  : Text(AppLocalizations.of(context).saveMeasurements),
             ),
           ),
         ],

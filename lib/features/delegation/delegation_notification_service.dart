@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:orchestra/core/router/app_router.dart';
 import 'package:orchestra/core/ws/ws_manager.dart';
 import 'package:orchestra/core/ws/ws_provider.dart';
 import 'package:orchestra/features/delegation/delegation_badge_provider.dart';
@@ -195,7 +197,7 @@ class DelegationNotificationService {
           label: 'View',
           textColor: event.color,
           onPressed: () {
-            // Navigate to delegation detail — wired by router
+            context.go(Routes.delegation(event.id));
           },
         ),
       ),
