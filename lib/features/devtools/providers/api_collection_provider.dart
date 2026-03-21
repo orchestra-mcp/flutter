@@ -244,6 +244,6 @@ final apiCollectionProvider =
 /// Fetches a single collection by ID.
 final apiCollectionDetailProvider =
     FutureProvider.family<ApiCollection, String>((ref, id) async {
-      final notifier = ref.watch(apiCollectionProvider.notifier);
+      final notifier = ref.read(apiCollectionProvider.notifier);
       return notifier.getCollection(id);
     });

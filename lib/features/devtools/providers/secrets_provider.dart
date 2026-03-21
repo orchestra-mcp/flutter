@@ -158,6 +158,6 @@ final secretDetailProvider = FutureProvider.family<Secret, String>((
   ref,
   secretId,
 ) async {
-  final notifier = ref.watch(secretsProvider.notifier);
+  final notifier = ref.read(secretsProvider.notifier);
   return notifier.getSecret(secretId);
 });

@@ -53,6 +53,7 @@ class OrchestraBackendConnector extends PowerSyncBackendConnector {
           'Authorization': 'Bearer $sessionToken',
           'Content-Type': 'application/json',
         },
+        body: jsonEncode({}),
       );
 
       if (response.statusCode != 200) {

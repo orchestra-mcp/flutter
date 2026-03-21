@@ -182,7 +182,7 @@ final dbTablesProvider = FutureProvider.family<List<DbTable>, String>((
   ref,
   connectionId,
 ) async {
-  final notifier = ref.watch(databaseBrowserProvider.notifier);
+  final notifier = ref.read(databaseBrowserProvider.notifier);
   return notifier.listTables(connectionId);
 });
 
@@ -192,6 +192,6 @@ final dbColumnsProvider =
       List<DbColumn>,
       ({String connectionId, String table})
     >((ref, params) async {
-      final notifier = ref.watch(databaseBrowserProvider.notifier);
+      final notifier = ref.read(databaseBrowserProvider.notifier);
       return notifier.describeTable(params.connectionId, params.table);
     });

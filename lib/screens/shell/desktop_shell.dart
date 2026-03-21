@@ -1058,10 +1058,7 @@ class _SidebarPanel extends ConsumerWidget {
           ),
         ],
       ),
-    ).then((_) {
-      nameCtrl.dispose();
-      urlCtrl.dispose();
-    });
+    );
   }
 
   void _showConnectDatabaseDialog(BuildContext context, WidgetRef ref) {
@@ -1138,7 +1135,7 @@ class _SidebarPanel extends ConsumerWidget {
           ],
         ),
       ),
-    ).then((_) => dsnCtrl.dispose());
+    );
   }
 
   void _showRunCommandDialog(BuildContext context, WidgetRef ref) {
@@ -1199,10 +1196,7 @@ class _SidebarPanel extends ConsumerWidget {
           ),
         ],
       ),
-    ).then((_) {
-      cmdCtrl.dispose();
-      wdCtrl.dispose();
-    });
+    );
   }
 
   void _showNewSecretDialog(BuildContext context, WidgetRef ref) {
@@ -1261,10 +1255,7 @@ class _SidebarPanel extends ConsumerWidget {
           ),
         ],
       ),
-    ).then((_) {
-      nameCtrl.dispose();
-      valueCtrl.dispose();
-    });
+    );
   }
 
   void _showNewPromptDialog(BuildContext context, WidgetRef ref) {
@@ -1323,10 +1314,7 @@ class _SidebarPanel extends ConsumerWidget {
           ),
         ],
       ),
-    ).then((_) {
-      titleCtrl.dispose();
-      promptCtrl.dispose();
-    });
+    );
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref) {

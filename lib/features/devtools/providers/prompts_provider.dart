@@ -134,6 +134,6 @@ final promptDetailProvider = FutureProvider.family<Prompt, String>((
   ref,
   promptId,
 ) async {
-  final notifier = ref.watch(promptsProvider.notifier);
+  final notifier = ref.read(promptsProvider.notifier);
   return notifier.getPrompt(promptId);
 });

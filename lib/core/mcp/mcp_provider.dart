@@ -21,7 +21,7 @@ final mcpClientProvider = Provider<McpClient>((ref) {
 /// Returns the connected [McpClient] so downstream providers can depend on
 /// the connection being ready.
 final mcpConnectionProvider = FutureProvider<McpClient>((ref) async {
-  final client = ref.watch(mcpClientProvider);
+  final client = ref.read(mcpClientProvider);
   final prefs = await SharedPreferences.getInstance();
 
   final serverUrl = prefs.getString('server_url') ?? 'http://localhost:9201';

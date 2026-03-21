@@ -253,8 +253,8 @@ final notificationSchedulerProvider = Provider<NotificationScheduler>((ref) {
 /// that notifications stay in sync with the user's latest settings without
 /// requiring manual refresh calls.
 final notificationSyncProvider = FutureProvider<void>((ref) async {
-  final scheduler = ref.watch(notificationSchedulerProvider);
-  final rows = await ref.watch(healthProfileProvider.future);
+  final scheduler = ref.read(notificationSchedulerProvider);
+  final rows = await ref.read(healthProfileProvider.future);
   if (rows.isEmpty) return;
   await scheduler.syncFromProfile(rows.first);
 });

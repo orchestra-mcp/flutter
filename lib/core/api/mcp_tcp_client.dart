@@ -344,7 +344,7 @@ class McpTcpClient implements ApiClient {
   }) async {
     final sw = Stopwatch()..start();
     try {
-      final result = await _send('tools/call', {
+      final raw = await _send('tools/call', {
         'name': name,
         'arguments': arguments,
       }, timeout: timeout);
@@ -355,7 +355,21 @@ class McpTcpClient implements ApiClient {
         durationMs: sw.elapsedMilliseconds,
         success: true,
       );
-      return result;
+      // Unwrap MCP content envelope: { content: [{type:"text", text:"<json>"}] }
+      final content = raw['content'];
+      if (content is List && content.isNotEmpty) {
+        final first = content[0];
+        if (first is Map && first['type'] == 'text') {
+          final text = first['text'] as String? ?? '';
+          if (text.isNotEmpty) {
+            try {
+              final decoded = jsonDecode(text);
+              if (decoded is Map<String, dynamic>) return decoded;
+            } catch (_) {}
+          }
+        }
+      }
+      return raw;
     } catch (e) {
       sw.stop();
       actionLogger?.log(

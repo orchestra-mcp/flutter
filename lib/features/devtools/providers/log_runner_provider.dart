@@ -155,6 +155,6 @@ final logOutputProvider = FutureProvider.family<List<String>, String>((
   ref,
   processId,
 ) async {
-  final notifier = ref.watch(logRunnerProvider.notifier);
+  final notifier = ref.read(logRunnerProvider.notifier);
   return notifier.getOutput(processId);
 });

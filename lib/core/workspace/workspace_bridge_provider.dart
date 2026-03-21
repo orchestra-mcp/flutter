@@ -19,7 +19,7 @@ final workspaceBridgeReadyProvider = FutureProvider<WorkspaceBridge?>((
 ) async {
   if (!isDesktop || kIsWeb) return null;
 
-  final workspace = ref.watch(workspacePathProvider);
+  final workspace = ref.read(workspacePathProvider);
   if (workspace.isEmpty) return null;
 
   // Reuse existing instance if workspace hasn't changed.
