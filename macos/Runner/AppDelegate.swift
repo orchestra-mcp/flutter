@@ -13,11 +13,20 @@ class AppDelegate: FlutterAppDelegate {
   }
 
   override func applicationDidFinishLaunching(_ notification: Notification) {
+    // Retry a few times in case mainFlutterWindow isn't ready immediately.
+    registerChannels()
+  }
+
+  private func registerChannels() {
     guard let controller = mainFlutterWindow?.contentViewController as? FlutterViewController else {
+      // Window not ready yet — retry after a short delay.
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+        self?.registerChannels()
+      }
       return
     }
 
-    // Lifecycle channel — existing
+    // Lifecycle channel
     let lifecycleChannel = FlutterMethodChannel(
       name: "com.orchestra.app/lifecycle",
       binaryMessenger: controller.engine.binaryMessenger

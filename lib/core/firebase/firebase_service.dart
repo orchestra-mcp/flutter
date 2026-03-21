@@ -5,6 +5,7 @@ import 'package:orchestra/core/firebase/analytics_service.dart';
 import 'package:orchestra/core/firebase/crashlytics_service.dart';
 import 'package:orchestra/core/firebase/messaging_service.dart';
 import 'package:orchestra/core/firebase/performance_service.dart';
+import 'package:orchestra/core/utils/platform_utils.dart';
 
 /// Initialises Firebase and all sub-services.
 /// Only runs when [Env.enableFirebase] is true.
@@ -14,6 +15,10 @@ abstract final class FirebaseService {
   static Future<void> init() async {
     if (!Env.enableFirebase) return;
     if (_initialised) return;
+    // Firebase Crashlytics accesses the macOS Keychain during init, which
+    // fails with errSecAuthFailed on unsigned macOS builds. Firebase is used
+    // for mobile push notifications — not needed on desktop.
+    if (isDesktop) return;
 
     await Firebase.initializeApp();
     _initialised = true;

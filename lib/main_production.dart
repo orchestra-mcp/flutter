@@ -25,7 +25,11 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_bgHandler);
   initFlavor();
   await initPowerSync();
-  await FirebaseService.init();
+  try {
+    await FirebaseService.init();
+  } catch (e) {
+    debugPrint('[main] Firebase init failed (non-fatal): $e');
+  }
   if (isDesktop) {
     await TrayService.instance.init();
     await FileAccessService.instance.restoreSavedAccess();

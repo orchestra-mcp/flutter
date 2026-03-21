@@ -18,7 +18,13 @@ void main() async {
   if (kIsWeb) usePathUrlStrategy();
   initFlavor();
   await initPowerSync();
-  await FirebaseService.init(); // no-op when ENABLE_FIREBASE=false
+  // Firebase init can fail on macOS when the app is unsigned (Keychain
+  // access denied). Wrap so it never blocks runApp().
+  try {
+    await FirebaseService.init(); // no-op when ENABLE_FIREBASE=false
+  } catch (e) {
+    debugPrint('[main] Firebase init failed (non-fatal): $e');
+  }
   if (isDesktop) {
     await TrayService.instance.init();
     // Restore saved security-scoped bookmarks for file access.

@@ -76,7 +76,14 @@ class FileAccessService {
   /// Probes whether we can access the filesystem without sandbox restrictions.
   Future<bool> _canAccessHomeDirectly() async {
     try {
-      final result = await _channel.invokeMethod<bool>('checkDirectAccess');
+      // Timeout prevents hanging when the native channel isn't registered yet
+      // (e.g. release builds where AppDelegate timing differs from debug).
+      final result = await _channel
+          .invokeMethod<bool>('checkDirectAccess')
+          .timeout(
+            const Duration(seconds: 3),
+            onTimeout: () => null,
+          );
       return result ?? false;
     } on PlatformException {
       // Channel not available (web) or method not found — assume no access.
