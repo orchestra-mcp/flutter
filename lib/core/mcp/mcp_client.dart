@@ -203,6 +203,40 @@ class McpClient {
 
     final result = message['result'];
     if (result is Map<String, dynamic>) {
+      // MCP responses wrap the actual data in a content array:
+      // { "content": [{"type": "text", "text": "<JSON>"}], "isError": false }
+      // Unwrap and parse the inner JSON text so callers get the actual data.
+      final isError = result['isError'] as bool? ?? false;
+      final content = result['content'];
+      if (content is List && content.isNotEmpty) {
+        final first = content.first;
+        if (first is Map<String, dynamic> && first['type'] == 'text') {
+          final text = first['text'] as String?;
+          if (text != null) {
+            if (isError) {
+              completer.completeError(
+                McpError(code: -32000, message: text, data: null),
+              );
+              return;
+            }
+            try {
+              final decoded = jsonDecode(text);
+              if (decoded is Map<String, dynamic>) {
+                completer.complete(decoded);
+                return;
+              }
+              // Non-object JSON (e.g. a plain string or array) — wrap it.
+              completer.complete(<String, dynamic>{'value': decoded});
+              return;
+            } on FormatException {
+              // Not valid JSON — return raw text.
+              completer.complete(<String, dynamic>{'text': text});
+              return;
+            }
+          }
+        }
+      }
+      // No content envelope — return the result map as-is.
       completer.complete(result);
     } else {
       completer.complete(<String, dynamic>{});

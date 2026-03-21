@@ -1035,17 +1035,25 @@ class _SidebarPanel extends ConsumerWidget {
               final name = nameCtrl.text.trim();
               if (name.isEmpty) return;
               Navigator.pop(ctx);
-              await ref
-                  .read(apiCollectionProvider.notifier)
-                  .saveRequest(
-                    collectionName: name,
-                    name: 'Example Request',
-                    method: 'GET',
-                    url: urlCtrl.text.trim().isEmpty
-                        ? 'https://api.example.com'
-                        : urlCtrl.text.trim(),
+              try {
+                await ref
+                    .read(apiCollectionProvider.notifier)
+                    .saveRequest(
+                      collectionName: name,
+                      name: 'Example Request',
+                      method: 'GET',
+                      url: urlCtrl.text.trim().isEmpty
+                          ? 'https://api.example.com'
+                          : urlCtrl.text.trim(),
+                    );
+                if (context.mounted) context.go(Routes.devtoolsApi);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to create collection: $e')),
                   );
-              if (context.mounted) context.go(Routes.devtoolsApi);
+                }
+              }
             },
             child: Text('Create', style: TextStyle(color: tokens.accent)),
           ),
@@ -1173,12 +1181,20 @@ class _SidebarPanel extends ConsumerWidget {
               final cmd = cmdCtrl.text.trim();
               if (cmd.isEmpty) return;
               Navigator.pop(ctx);
-              final wd = wdCtrl.text.trim();
-              final process = await ref
-                  .read(logRunnerProvider.notifier)
-                  .run(cmd, workingDirectory: wd.isEmpty ? null : wd);
-              ref.read(selectedProcessIdProvider.notifier).select(process.id);
-              if (context.mounted) context.go(Routes.devtoolsLogs);
+              try {
+                final wd = wdCtrl.text.trim();
+                final process = await ref
+                    .read(logRunnerProvider.notifier)
+                    .run(cmd, workingDirectory: wd.isEmpty ? null : wd);
+                ref.read(selectedProcessIdProvider.notifier).select(process.id);
+                if (context.mounted) context.go(Routes.devtoolsLogs);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to run command: $e')),
+                  );
+                }
+              }
             },
             child: Text('Run', style: TextStyle(color: tokens.accent)),
           ),
@@ -1229,10 +1245,18 @@ class _SidebarPanel extends ConsumerWidget {
               final value = valueCtrl.text;
               if (name.isEmpty || value.isEmpty) return;
               Navigator.pop(ctx);
-              await ref
-                  .read(secretsProvider.notifier)
-                  .createSecret(name: name, value: value);
-              if (context.mounted) context.go(Routes.devtoolsSecrets);
+              try {
+                await ref
+                    .read(secretsProvider.notifier)
+                    .createSecret(name: name, value: value);
+                if (context.mounted) context.go(Routes.devtoolsSecrets);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to save secret: $e')),
+                  );
+                }
+              }
             },
             child: Text('Save', style: TextStyle(color: tokens.accent)),
           ),
@@ -1283,10 +1307,18 @@ class _SidebarPanel extends ConsumerWidget {
               final p = promptCtrl.text.trim();
               if (t.isEmpty || p.isEmpty) return;
               Navigator.pop(ctx);
-              await ref
-                  .read(promptsProvider.notifier)
-                  .createPrompt(title: t, prompt: p);
-              if (context.mounted) context.go(Routes.devtoolsPrompts);
+              try {
+                await ref
+                    .read(promptsProvider.notifier)
+                    .createPrompt(title: t, prompt: p);
+                if (context.mounted) context.go(Routes.devtoolsPrompts);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to create prompt: $e')),
+                  );
+                }
+              }
             },
             child: Text('Create', style: TextStyle(color: tokens.accent)),
           ),
@@ -2994,209 +3026,818 @@ class _MethodTag extends StatelessWidget {
   }
 }
 
-class _DatabaseSidebar extends ConsumerWidget {
+// ── Filter chip ──────────────────────────────────────────────────────────────
+
+class _FilterChip extends StatelessWidget {
+  const _FilterChip({
+    required this.label,
+    required this.selected,
+    required this.color,
+    required this.tokens,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final Color color;
+  final OrchestraColorTokens tokens;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: selected
+                ? color.withValues(alpha: 0.2)
+                : tokens.border.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: selected ? color.withValues(alpha: 0.6) : Colors.transparent,
+            ),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: selected ? color : tokens.fgDim,
+              fontSize: 11,
+              fontWeight:
+                  selected ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DatabaseSidebar extends ConsumerStatefulWidget {
   const _DatabaseSidebar({required this.tokens});
   final OrchestraColorTokens tokens;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DatabaseSidebar> createState() => _DatabaseSidebarState();
+}
+
+class _DatabaseSidebarState extends ConsumerState<_DatabaseSidebar> {
+  final _searchCtrl = TextEditingController();
+  String _query = '';
+
+  OrchestraColorTokens get tokens => widget.tokens;
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final async = ref.watch(databaseBrowserProvider);
     final selectedId = ref.watch(selectedConnectionIdProvider);
 
-    return async.when(
-      loading: () => Center(
-        child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
-      ),
-      error: (e, _) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          'Error: $e',
-          style: TextStyle(color: tokens.fgDim, fontSize: 12),
-        ),
-      ),
-      data: (connections) {
-        if (connections.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'No connections.\nTap + to connect.',
-              style: TextStyle(color: tokens.fgDim, fontSize: 12),
-            ),
-          );
-        }
-        return ListView(
-          padding: const EdgeInsets.only(top: 4, bottom: 8),
-          children: [
-            for (final c in connections)
-              _SidebarItem(
-                tokens: tokens,
-                icon: Icons.storage_rounded,
-                label: c.driver.toUpperCase(),
-                subtitle: c.dsn.length > 30
-                    ? '${c.dsn.substring(0, 30)}…'
-                    : c.dsn,
-                isSelected: c.id == selectedId,
-                onTap: () {
-                  ref.read(selectedConnectionIdProvider.notifier).select(c.id);
-                  context.go(Routes.devtoolsDatabase);
-                },
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 6),
+          child: SizedBox(
+            height: 30,
+            child: TextField(
+              controller: _searchCtrl,
+              style: TextStyle(color: tokens.fgBright, fontSize: 12),
+              decoration: InputDecoration(
+                hintText: 'Search connections…',
+                hintStyle: TextStyle(
+                  color: tokens.fgDim.withValues(alpha: 0.5),
+                  fontSize: 12,
+                ),
+                prefixIcon:
+                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                suffixIcon: _query.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          _searchCtrl.clear();
+                          setState(() => _query = '');
+                        },
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 14,
+                          color: tokens.fgDim,
+                        ),
+                      )
+                    : null,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 6,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.accent),
+                ),
               ),
-          ],
-        );
-      },
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+        ),
+        Expanded(
+          child: async.when(
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: tokens.accent,
+                strokeWidth: 2,
+              ),
+            ),
+            error: (e, _) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Error: $e',
+                style: TextStyle(color: tokens.fgDim, fontSize: 12),
+              ),
+            ),
+            data: (connections) {
+              final filtered = _query.isEmpty
+                  ? connections
+                  : connections.where((c) {
+                      final q = _query.toLowerCase();
+                      return c.driver.toLowerCase().contains(q) ||
+                          c.dsn.toLowerCase().contains(q);
+                    }).toList();
+
+              if (connections.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No connections.\nTap + to connect.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              if (filtered.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No matches.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              return ListView(
+                padding: const EdgeInsets.only(top: 4, bottom: 8),
+                children: [
+                  for (final c in filtered)
+                    _SidebarItem(
+                      tokens: tokens,
+                      icon: Icons.storage_rounded,
+                      label: c.driver.toUpperCase(),
+                      subtitle: c.dsn.length > 30
+                          ? '${c.dsn.substring(0, 30)}…'
+                          : c.dsn,
+                      isSelected: c.id == selectedId,
+                      onTap: () {
+                        ref
+                            .read(selectedConnectionIdProvider.notifier)
+                            .select(c.id);
+                        context.go(Routes.devtoolsDatabase);
+                      },
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _LogRunnerSidebar extends ConsumerWidget {
+class _LogRunnerSidebar extends ConsumerStatefulWidget {
   const _LogRunnerSidebar({required this.tokens});
   final OrchestraColorTokens tokens;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_LogRunnerSidebar> createState() => _LogRunnerSidebarState();
+}
+
+class _LogRunnerSidebarState extends ConsumerState<_LogRunnerSidebar> {
+  final _searchCtrl = TextEditingController();
+  String _query = '';
+
+  OrchestraColorTokens get tokens => widget.tokens;
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final async = ref.watch(logRunnerProvider);
     final selectedId = ref.watch(selectedProcessIdProvider);
 
-    return async.when(
-      loading: () => Center(
-        child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
-      ),
-      error: (e, _) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          'Error: $e',
-          style: TextStyle(color: tokens.fgDim, fontSize: 12),
-        ),
-      ),
-      data: (processes) {
-        if (processes.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'No processes.\nTap + to run a command.',
-              style: TextStyle(color: tokens.fgDim, fontSize: 12),
-            ),
-          );
-        }
-        return ListView(
-          padding: const EdgeInsets.only(top: 4, bottom: 8),
-          children: [
-            for (final p in processes)
-              _SidebarItem(
-                tokens: tokens,
-                icon: p.isRunning
-                    ? Icons.play_circle_filled_rounded
-                    : Icons.check_circle_rounded,
-                iconColor: p.isRunning ? const Color(0xFF22C55E) : tokens.fgDim,
-                label: p.command.length > 28
-                    ? '${p.command.substring(0, 28)}…'
-                    : p.command,
-                subtitle: p.isRunning
-                    ? 'PID ${p.pid ?? '—'}${p.uptime != null ? ' · ${p.uptime}' : ''}'
-                    : p.status,
-                isSelected: p.id == selectedId,
-                onTap: () {
-                  ref.read(selectedProcessIdProvider.notifier).select(p.id);
-                  context.go(Routes.devtoolsLogs);
-                },
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 6),
+          child: SizedBox(
+            height: 30,
+            child: TextField(
+              controller: _searchCtrl,
+              style: TextStyle(color: tokens.fgBright, fontSize: 12),
+              decoration: InputDecoration(
+                hintText: 'Search processes…',
+                hintStyle: TextStyle(
+                  color: tokens.fgDim.withValues(alpha: 0.5),
+                  fontSize: 12,
+                ),
+                prefixIcon:
+                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                suffixIcon: _query.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          _searchCtrl.clear();
+                          setState(() => _query = '');
+                        },
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 14,
+                          color: tokens.fgDim,
+                        ),
+                      )
+                    : null,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 6,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.accent),
+                ),
               ),
-          ],
-        );
-      },
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+        ),
+        Expanded(
+          child: async.when(
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: tokens.accent,
+                strokeWidth: 2,
+              ),
+            ),
+            error: (e, _) => Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Error: $e',
+                style: TextStyle(color: tokens.fgDim, fontSize: 12),
+              ),
+            ),
+            data: (processes) {
+              final filtered = _query.isEmpty
+                  ? processes
+                  : processes.where((p) {
+                      final q = _query.toLowerCase();
+                      return p.command.toLowerCase().contains(q);
+                    }).toList();
+
+              if (processes.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No processes.\nTap + to run a command.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              if (filtered.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No matches.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              return ListView(
+                padding: const EdgeInsets.only(top: 4, bottom: 8),
+                children: [
+                  for (final p in filtered)
+                    _SidebarItem(
+                      tokens: tokens,
+                      icon: p.isRunning
+                          ? Icons.play_circle_filled_rounded
+                          : Icons.check_circle_rounded,
+                      iconColor: p.isRunning
+                          ? const Color(0xFF22C55E)
+                          : tokens.fgDim,
+                      label: p.command.length > 28
+                          ? '${p.command.substring(0, 28)}…'
+                          : p.command,
+                      subtitle: p.isRunning
+                          ? 'PID ${p.pid ?? '—'}${p.uptime != null ? ' · ${p.uptime}' : ''}'
+                          : p.status,
+                      isSelected: p.id == selectedId,
+                      onTap: () {
+                        ref
+                            .read(selectedProcessIdProvider.notifier)
+                            .select(p.id);
+                        context.go(Routes.devtoolsLogs);
+                      },
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _SecretsSidebar extends ConsumerWidget {
+class _SecretsSidebar extends ConsumerStatefulWidget {
   const _SecretsSidebar({required this.tokens});
   final OrchestraColorTokens tokens;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(secretsProvider);
+  ConsumerState<_SecretsSidebar> createState() => _SecretsSidebarState();
+}
 
-    return async.when(
-      loading: () => Center(
-        child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
-      ),
-      error: (e, _) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          'Error: $e',
-          style: TextStyle(color: tokens.fgDim, fontSize: 12),
-        ),
-      ),
-      data: (secrets) {
-        if (secrets.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'No secrets.\nTap + to add one.',
-              style: TextStyle(color: tokens.fgDim, fontSize: 12),
-            ),
-          );
-        }
-        return ListView(
-          padding: const EdgeInsets.only(top: 4, bottom: 8),
-          children: [
-            for (final s in secrets)
-              _SidebarItem(
-                tokens: tokens,
-                icon: Icons.vpn_key_rounded,
-                label: s.name,
-                subtitle: s.category,
-                onTap: () => context.go(Routes.devtoolsSecrets),
+class _SecretsSidebarState extends ConsumerState<_SecretsSidebar> {
+  final _searchCtrl = TextEditingController();
+  String _query = '';
+  String? _categoryFilter;
+
+  OrchestraColorTokens get tokens => widget.tokens;
+
+  static const _categories = [
+    'api_key',
+    'token',
+    'env',
+    'database',
+    'password',
+    'general',
+  ];
+
+  static String _catLabel(String c) => switch (c) {
+    'api_key' => 'API Key',
+    'token' => 'Token',
+    'env' => 'Env',
+    'database' => 'DB',
+    'password' => 'Pwd',
+    'general' => 'General',
+    _ => c,
+  };
+
+  static Color _catColor(String c) => switch (c) {
+    'api_key' => const Color(0xFF3B82F6),
+    'token' => const Color(0xFF8B5CF6),
+    'env' => const Color(0xFF22C55E),
+    'database' => const Color(0xFFF97316),
+    'password' => const Color(0xFFEF4444),
+    _ => const Color(0xFF6B7280),
+  };
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  List<Secret> _filter(List<Secret> all) {
+    var list = all;
+    if (_categoryFilter != null) {
+      list = list.where((s) => s.category == _categoryFilter).toList();
+    }
+    if (_query.isNotEmpty) {
+      final q = _query.toLowerCase();
+      list = list.where((s) {
+        return s.name.toLowerCase().contains(q) ||
+            (s.description?.toLowerCase().contains(q) ?? false) ||
+            s.tags.any((t) => t.toLowerCase().contains(q));
+      }).toList();
+    }
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(secretsProvider);
+    final selectedId = ref.watch(selectedSecretIdProvider);
+
+    return Column(
+      children: [
+        // Search bar
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+          child: SizedBox(
+            height: 30,
+            child: TextField(
+              controller: _searchCtrl,
+              style: TextStyle(color: tokens.fgBright, fontSize: 12),
+              decoration: InputDecoration(
+                hintText: 'Search secrets…',
+                hintStyle: TextStyle(
+                  color: tokens.fgDim.withValues(alpha: 0.5),
+                  fontSize: 12,
+                ),
+                prefixIcon:
+                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                suffixIcon: _query.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          _searchCtrl.clear();
+                          setState(() => _query = '');
+                        },
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 14,
+                          color: tokens.fgDim,
+                        ),
+                      )
+                    : null,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 6,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.accent),
+                ),
               ),
-          ],
-        );
-      },
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+        ),
+        // Category filter chips
+        SizedBox(
+          height: 28,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            scrollDirection: Axis.horizontal,
+            children: [
+              _FilterChip(
+                label: 'All',
+                selected: _categoryFilter == null,
+                color: tokens.accent,
+                tokens: tokens,
+                onTap: () => setState(() => _categoryFilter = null),
+              ),
+              for (final c in _categories)
+                _FilterChip(
+                  label: _catLabel(c),
+                  selected: _categoryFilter == c,
+                  color: _catColor(c),
+                  tokens: tokens,
+                  onTap: () => setState(
+                    () => _categoryFilter = _categoryFilter == c ? null : c,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 4),
+        // List
+        Expanded(
+          child: async.when(
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: tokens.accent,
+                strokeWidth: 2,
+              ),
+            ),
+            error: (e, _) => Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'Error: $e',
+                style: TextStyle(color: tokens.fgDim, fontSize: 12),
+              ),
+            ),
+            data: (secrets) {
+              final filtered = _filter(secrets);
+              if (secrets.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No secrets.\nTap + to add one.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              if (filtered.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No matches.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              return ListView(
+                padding: const EdgeInsets.only(top: 4, bottom: 8),
+                children: [
+                  for (final s in filtered)
+                    _SidebarItem(
+                      tokens: tokens,
+                      icon: Icons.vpn_key_rounded,
+                      iconColor: _catColor(s.category),
+                      label: s.name,
+                      subtitle: _catLabel(s.category),
+                      isSelected: s.id == selectedId,
+                      onTap: () {
+                        ref
+                            .read(selectedSecretIdProvider.notifier)
+                            .select(s.id);
+                        context.go(Routes.devtoolsSecrets);
+                      },
+                      contextMenuActions: [
+                        GlassListTileAction(
+                          icon: Icons.copy_rounded,
+                          label: 'Copy value',
+                          onTap: () async {
+                            final notifier =
+                                ref.read(secretsProvider.notifier);
+                            final full = await notifier.getSecret(s.id);
+                            if (full.value != null && context.mounted) {
+                              await Clipboard.setData(
+                                ClipboardData(text: full.value!),
+                              );
+                            }
+                          },
+                        ),
+                        GlassListTileAction(
+                          icon: Icons.delete_outline_rounded,
+                          label: 'Delete',
+                          isDestructive: true,
+                          onTap: () async {
+                            await ref
+                                .read(secretsProvider.notifier)
+                                .deleteSecret(s.id);
+                          },
+                        ),
+                      ],
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
 
-class _PromptsSidebar extends ConsumerWidget {
+class _PromptsSidebar extends ConsumerStatefulWidget {
   const _PromptsSidebar({required this.tokens});
   final OrchestraColorTokens tokens;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final async = ref.watch(promptsProvider);
+  ConsumerState<_PromptsSidebar> createState() => _PromptsSidebarState();
+}
 
-    return async.when(
-      loading: () => Center(
-        child: CircularProgressIndicator(color: tokens.accent, strokeWidth: 2),
-      ),
-      error: (e, _) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text(
-          'Error: $e',
-          style: TextStyle(color: tokens.fgDim, fontSize: 12),
-        ),
-      ),
-      data: (prompts) {
-        if (prompts.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              'No prompts.\nTap + to create one.',
-              style: TextStyle(color: tokens.fgDim, fontSize: 12),
-            ),
-          );
-        }
-        return ListView(
-          padding: const EdgeInsets.only(top: 4, bottom: 8),
-          children: [
-            for (final p in prompts)
-              _SidebarItem(
-                tokens: tokens,
-                icon: Icons.chat_bubble_outline_rounded,
-                label: p.title,
-                subtitle: p.trigger,
-                onTap: () => context.go(Routes.devtoolsPrompts),
+class _PromptsSidebarState extends ConsumerState<_PromptsSidebar> {
+  final _searchCtrl = TextEditingController();
+  String _query = '';
+  String? _triggerFilter;
+
+  OrchestraColorTokens get tokens => widget.tokens;
+
+  static const _triggers = ['startup', 'manual', 'scheduled'];
+
+  static String _trigLabel(String t) => switch (t) {
+    'startup' => 'Startup',
+    'manual' => 'Manual',
+    'scheduled' => 'Sched.',
+    _ => t,
+  };
+
+  static Color _trigColor(String t) => switch (t) {
+    'startup' => const Color(0xFF22C55E),
+    'manual' => const Color(0xFF3B82F6),
+    'scheduled' => const Color(0xFFF97316),
+    _ => const Color(0xFF6B7280),
+  };
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  List<Prompt> _filter(List<Prompt> all) {
+    var list = all;
+    if (_triggerFilter != null) {
+      list = list.where((p) => p.trigger == _triggerFilter).toList();
+    }
+    if (_query.isNotEmpty) {
+      final q = _query.toLowerCase();
+      list = list.where((p) {
+        return p.title.toLowerCase().contains(q) ||
+            p.prompt.toLowerCase().contains(q) ||
+            p.tags.any((t) => t.toLowerCase().contains(q));
+      }).toList();
+    }
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(promptsProvider);
+    final selectedId = ref.watch(selectedPromptIdProvider);
+
+    return Column(
+      children: [
+        // Search bar
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+          child: SizedBox(
+            height: 30,
+            child: TextField(
+              controller: _searchCtrl,
+              style: TextStyle(color: tokens.fgBright, fontSize: 12),
+              decoration: InputDecoration(
+                hintText: 'Search prompts…',
+                hintStyle: TextStyle(
+                  color: tokens.fgDim.withValues(alpha: 0.5),
+                  fontSize: 12,
+                ),
+                prefixIcon:
+                    Icon(Icons.search_rounded, color: tokens.fgDim, size: 14),
+                suffixIcon: _query.isNotEmpty
+                    ? GestureDetector(
+                        onTap: () {
+                          _searchCtrl.clear();
+                          setState(() => _query = '');
+                        },
+                        child: Icon(
+                          Icons.close_rounded,
+                          size: 14,
+                          color: tokens.fgDim,
+                        ),
+                      )
+                    : null,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 6,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.borderFaint),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(color: tokens.accent),
+                ),
               ),
-          ],
-        );
-      },
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+        ),
+        // Trigger filter chips
+        SizedBox(
+          height: 28,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            scrollDirection: Axis.horizontal,
+            children: [
+              _FilterChip(
+                label: 'All',
+                selected: _triggerFilter == null,
+                color: tokens.accent,
+                tokens: tokens,
+                onTap: () => setState(() => _triggerFilter = null),
+              ),
+              for (final t in _triggers)
+                _FilterChip(
+                  label: _trigLabel(t),
+                  selected: _triggerFilter == t,
+                  color: _trigColor(t),
+                  tokens: tokens,
+                  onTap: () => setState(
+                    () =>
+                        _triggerFilter = _triggerFilter == t ? null : t,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 4),
+        // List
+        Expanded(
+          child: async.when(
+            loading: () => Center(
+              child: CircularProgressIndicator(
+                color: tokens.accent,
+                strokeWidth: 2,
+              ),
+            ),
+            error: (e, _) => Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text(
+                'Error: $e',
+                style: TextStyle(color: tokens.fgDim, fontSize: 12),
+              ),
+            ),
+            data: (prompts) {
+              final filtered = _filter(prompts);
+              if (prompts.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No prompts.\nTap + to create one.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              if (filtered.isEmpty) {
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'No matches.',
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
+                  ),
+                );
+              }
+              return ListView(
+                padding: const EdgeInsets.only(top: 4, bottom: 8),
+                children: [
+                  for (final p in filtered)
+                    _SidebarItem(
+                      tokens: tokens,
+                      icon: Icons.chat_bubble_outline_rounded,
+                      iconColor: _trigColor(p.trigger),
+                      label: p.title,
+                      subtitle: _trigLabel(p.trigger),
+                      isSelected: p.id == selectedId,
+                      onTap: () {
+                        ref
+                            .read(selectedPromptIdProvider.notifier)
+                            .select(p.id);
+                        context.go(Routes.devtoolsPrompts);
+                      },
+                      contextMenuActions: [
+                        GlassListTileAction(
+                          icon: p.enabled
+                              ? Icons.toggle_off_rounded
+                              : Icons.toggle_on_rounded,
+                          label: p.enabled ? 'Disable' : 'Enable',
+                          onTap: () => ref
+                              .read(promptsProvider.notifier)
+                              .togglePrompt(p.id, enabled: !p.enabled),
+                        ),
+                        GlassListTileAction(
+                          icon: Icons.delete_outline_rounded,
+                          label: 'Delete',
+                          isDestructive: true,
+                          onTap: () => ref
+                              .read(promptsProvider.notifier)
+                              .deletePrompt(p.id),
+                        ),
+                      ],
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

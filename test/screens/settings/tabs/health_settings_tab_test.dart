@@ -54,11 +54,13 @@ void main() {
     testWidgets('shows loading indicator while health profile loads', (
       tester,
     ) async {
-      final completer = Completer<Map<String, dynamic>>();
+      final completer = Completer<List<Map<String, dynamic>>>();
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) => completer.future),
+            healthProfileProvider.overrideWith(
+              (ref) => completer.future.asStream(),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -80,7 +82,7 @@ void main() {
         ProviderScope(
           overrides: [
             healthProfileProvider.overrideWith(
-              (ref) => Future<Map<String, dynamic>>.error('network down'),
+              (ref) => Stream<List<Map<String, dynamic>>>.error('network down'),
             ),
           ],
           child: MaterialApp(
@@ -103,7 +105,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -132,7 +136,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -160,7 +166,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -184,7 +192,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -206,7 +216,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -240,7 +252,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => profile),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([profile]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -268,7 +282,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -299,7 +315,9 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            healthProfileProvider.overrideWith((ref) async => _sampleProfile()),
+            healthProfileProvider.overrideWith(
+              (ref) => Stream.value([_sampleProfile()]),
+            ),
           ],
           child: MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -324,7 +342,7 @@ void main() {
         ProviderScope(
           overrides: [
             healthProfileProvider.overrideWith(
-              (ref) async => <String, dynamic>{},
+              (ref) => Stream.value(<Map<String, dynamic>>[]),
             ),
           ],
           child: MaterialApp(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:orchestra/core/theme/color_tokens.dart';
 import 'package:orchestra/core/utils/platform_utils.dart';
+import 'package:orchestra/features/devtools/providers/devtools_selection_provider.dart';
 import 'package:orchestra/features/devtools/providers/secrets_provider.dart';
 import 'package:orchestra/widgets/glass_card.dart';
 
@@ -543,21 +544,23 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
   @override
   Widget build(BuildContext context) {
     final tokens = ThemeTokens.of(context);
-    final asyncSecrets = ref.watch(secretsProvider);
 
+    // On desktop the sidebar IS the list — show only the detail/empty state.
+    if (isDesktop) {
+      return _buildDesktop(tokens);
+    }
+
+    // Mobile: full-page list with search & header.
+    final asyncSecrets = ref.watch(secretsProvider);
     return Scaffold(
       backgroundColor: tokens.bg,
       body: Column(
         children: [
-          // ── AppBar area ─────────────────────────────────────────────────
           _buildAppBar(tokens),
-
-          // ── Secret list ─────────────────────────────────────────────────
           Expanded(
             child: asyncSecrets.when(
-              loading: () => Center(
-                child: CircularProgressIndicator(color: tokens.accent),
-              ),
+              loading: () =>
+                  Center(child: CircularProgressIndicator(color: tokens.accent)),
               error: (e, _) => Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -570,12 +573,8 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
               ),
               data: (secrets) {
                 final filtered = _filterSecrets(secrets);
-                if (secrets.isEmpty) {
-                  return _buildEmptyState(tokens);
-                }
-                if (filtered.isEmpty) {
-                  return _buildNoResultsState(tokens);
-                }
+                if (secrets.isEmpty) return _buildEmptyState(tokens);
+                if (filtered.isEmpty) return _buildNoResultsState(tokens);
                 return ListView.separated(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -583,25 +582,98 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
                   ),
                   itemCount: filtered.length,
                   separatorBuilder: (_, _) => const SizedBox(height: 8),
-                  itemBuilder: (context, index) {
-                    return _buildSecretCard(tokens, filtered[index]);
-                  },
+                  itemBuilder: (context, index) =>
+                      _buildSecretCard(tokens, filtered[index]),
                 );
               },
             ),
           ),
         ],
       ),
-      floatingActionButton: isMobile
-          ? FloatingActionButton(
-              onPressed: () => _showCreateDialog(),
-              backgroundColor: tokens.accent,
-              child: Icon(
-                Icons.add_rounded,
-                color: tokens.isLight ? Colors.white : tokens.bg,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showCreateDialog(),
+        backgroundColor: tokens.accent,
+        child: Icon(
+          Icons.add_rounded,
+          color: tokens.isLight ? Colors.white : tokens.bg,
+        ),
+      ),
+    );
+  }
+
+  // ── Desktop detail view ────────────────────────────────────────────────────
+
+  Widget _buildDesktop(OrchestraColorTokens tokens) {
+    final selectedId = ref.watch(selectedSecretIdProvider);
+
+    if (selectedId == null) {
+      return Scaffold(
+        backgroundColor: tokens.bg,
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.vpn_key_rounded,
+                size: 48,
+                color: tokens.fgDim.withValues(alpha: 0.4),
               ),
-            )
-          : null,
+              const SizedBox(height: 12),
+              Text(
+                'Select a secret',
+                style: TextStyle(
+                  color: tokens.fgMuted,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Choose from the sidebar or tap + to create one.',
+                style: TextStyle(color: tokens.fgDim, fontSize: 13),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final asyncSecrets = ref.watch(secretsProvider);
+    return asyncSecrets.when(
+      loading: () => Scaffold(
+        backgroundColor: tokens.bg,
+        body: Center(child: CircularProgressIndicator(color: tokens.accent)),
+      ),
+      error: (e, _) => Scaffold(
+        backgroundColor: tokens.bg,
+        body: Center(
+          child: Text(
+            'Error: $e',
+            style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+          ),
+        ),
+      ),
+      data: (secrets) {
+        final secret = secrets.where((s) => s.id == selectedId).firstOrNull;
+        if (secret == null) {
+          return Scaffold(
+            backgroundColor: tokens.bg,
+            body: Center(
+              child: Text(
+                'Secret not found.',
+                style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+              ),
+            ),
+          );
+        }
+        return Scaffold(
+          backgroundColor: tokens.bg,
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: _buildSecretCard(tokens, secret),
+          ),
+        );
+      },
     );
   }
 

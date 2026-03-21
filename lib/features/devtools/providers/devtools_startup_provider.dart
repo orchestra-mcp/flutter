@@ -15,17 +15,20 @@ import 'package:orchestra/features/devtools/providers/secrets_provider.dart';
 /// Prefetches all DevTools data in parallel at startup.
 /// Returns true when all five providers have loaded (regardless of errors).
 final devtoolsPrefetchProvider = FutureProvider<bool>((ref) async {
-  // Use ref.watch so providers stay alive and data is accessible via .value
+  // Wait for each provider and log any errors so they surface in Flutter logs.
+  Future<T> _load<T>(Future<T> f, T fallback) =>
+      f.catchError((e, st) {
+        // ignore: avoid_print
+        print('[DevTools] prefetch error: $e');
+        return fallback;
+      });
+
   await Future.wait([
-    ref
-        .watch(apiCollectionProvider.future)
-        .catchError((_) => <ApiCollection>[]),
-    ref.watch(secretsProvider.future).catchError((_) => <Secret>[]),
-    ref
-        .watch(databaseBrowserProvider.future)
-        .catchError((_) => <DbConnection>[]),
-    ref.watch(logRunnerProvider.future).catchError((_) => <LogProcess>[]),
-    ref.watch(promptsProvider.future).catchError((_) => <Prompt>[]),
+    _load(ref.watch(apiCollectionProvider.future), <ApiCollection>[]),
+    _load(ref.watch(secretsProvider.future), <Secret>[]),
+    _load(ref.watch(databaseBrowserProvider.future), <DbConnection>[]),
+    _load(ref.watch(logRunnerProvider.future), <LogProcess>[]),
+    _load(ref.watch(promptsProvider.future), <Prompt>[]),
   ]);
   return true;
 });

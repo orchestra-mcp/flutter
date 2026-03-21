@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:orchestra/screens/notifications/notifications_screen.dart';
+import 'package:orchestra/core/notifications/notification_store.dart';
 
 void main() {
-  group('NotificationItem', () {
+  group('AppNotification', () {
     test('isRead defaults to false', () {
-      final item = NotificationItem(
+      final item = AppNotification(
         id: '1',
-        type: NotificationType.mention,
+        type: 'mention',
         title: 'Test',
         body: 'Body',
         timestamp: DateTime(2026, 3, 16),
@@ -16,9 +16,9 @@ void main() {
 
     test('fields are stored correctly', () {
       final ts = DateTime(2026, 3, 16, 9, 0);
-      final item = NotificationItem(
+      final item = AppNotification(
         id: 'abc',
-        type: NotificationType.featureUpdate,
+        type: 'featureUpdate',
         title: 'Hello',
         body: 'World',
         timestamp: ts,

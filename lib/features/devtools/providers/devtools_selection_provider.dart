@@ -43,3 +43,25 @@ class _SelectedConnectionId extends Notifier<String?> {
 
 final selectedConnectionIdProvider =
     NotifierProvider<_SelectedConnectionId, String?>(_SelectedConnectionId.new);
+
+// ── Secrets selection ────────────────────────────────────────────────────────
+
+class _SelectedSecretId extends Notifier<String?> {
+  @override
+  String? build() => null;
+  void select(String? id) => state = id;
+}
+
+final selectedSecretIdProvider =
+    NotifierProvider<_SelectedSecretId, String?>(_SelectedSecretId.new);
+
+// ── Prompts selection ────────────────────────────────────────────────────────
+
+class _SelectedPromptId extends Notifier<String?> {
+  @override
+  String? build() => null;
+  void select(String? id) => state = id;
+}
+
+final selectedPromptIdProvider =
+    NotifierProvider<_SelectedPromptId, String?>(_SelectedPromptId.new);
