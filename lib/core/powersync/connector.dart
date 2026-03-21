@@ -87,11 +87,18 @@ class OrchestraBackendConnector extends PowerSyncBackendConnector {
       final ops = <Map<String, dynamic>>[];
 
       for (final op in transaction.crud) {
+        debugPrint('[PowerSync] CRUD op: table=${op.table} id=${op.id} op=${op.op}');
         // Discard stale CRUD entries from old table names.
-        if (_staleTables.contains(op.table)) continue;
+        if (_staleTables.contains(op.table)) {
+          debugPrint('[PowerSync] CRUD skipped (stale table): ${op.table}');
+          continue;
+        }
 
         // Skip non-UUID IDs from MCP workspace (e.g. "note-2ecdf1").
-        if (!_uuidRegex.hasMatch(op.id)) continue;
+        if (!_uuidRegex.hasMatch(op.id)) {
+          debugPrint('[PowerSync] CRUD skipped (non-UUID id): ${op.id}');
+          continue;
+        }
 
         ops.add({
           'table': op.table,
