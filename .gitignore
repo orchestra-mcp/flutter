@@ -51,7 +51,7 @@ lib/generated/
 
 # Environment files with secrets (local.json is safe, others may have API keys)
 env/staging.json
-env/production.json
+# env/production.json — committed without secrets; inject GOOGLE_CLIENT_ID via CI if needed
 
 # Firebase config (add via CI secrets)
 android/app/google-services.json

@@ -1,0 +1,14 @@
+{
+  "APP_ENV": "production",
+  "APP_NAME": "Orchestra",
+  "API_BASE_URL": "https://orchestra-mcp.com/api",
+  "POWERSYNC_URL": "https://orchestra-mcp.com/api/powersync",
+  "WS_BASE_URL": "wss://orchestra-mcp.com/api",
+  "MARKETING_LOGIN_URL": "https://orchestra-mcp.com/login",
+  "MCP_HOST": "orchestra-mcp.com",
+  "MCP_PORT": "50101",
+  "GOOGLE_CLIENT_ID": "",
+  "ENABLE_FIREBASE": "true",
+  "ENABLE_ANALYTICS": "true",
+  "ENABLE_CRASHLYTICS": "true"
+}

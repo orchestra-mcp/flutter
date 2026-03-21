@@ -69,6 +69,7 @@ jobs:
         run: |
           flutter build appbundle --release \
             --no-tree-shake-icons \
+            --dart-define-from-file=env/production.json \
             --build-name=${{ needs.version.outputs.version }} \
             --build-number=${{ needs.version.outputs.build_number }}
 
@@ -140,6 +141,7 @@ jobs:
         run: |
           flutter build ipa --release \
             --no-tree-shake-icons \
+            --dart-define-from-file=env/production.json \
             --build-name=${{ needs.version.outputs.version }} \
             --build-number=${{ needs.version.outputs.build_number }}
 
@@ -190,6 +192,7 @@ jobs:
         run: |
           flutter build macos --release \
             --no-tree-shake-icons \
+            --dart-define-from-file=env/production.json \
             --build-name=${{ needs.version.outputs.version }} \
             --build-number=${{ needs.version.outputs.build_number }}
 
@@ -270,6 +273,7 @@ jobs:
         run: |
           flutter build linux --release \
             --no-tree-shake-icons \
+            --dart-define-from-file=env/production.json \
             --build-name=${{ needs.version.outputs.version }} \
             --build-number=${{ needs.version.outputs.build_number }}
 
@@ -307,6 +311,7 @@ jobs:
         run: |
           flutter build windows --release `
             --no-tree-shake-icons `
+            --dart-define-from-file=env/production.json `
             --build-name=${{ needs.version.outputs.version }} `
             --build-number=${{ needs.version.outputs.build_number }}
 
