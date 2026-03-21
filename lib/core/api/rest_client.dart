@@ -81,12 +81,25 @@ class RestClient implements ApiClient {
   // ── Auth ──────────────────────────────────────────────────────────────
 
   @override
-  Future<Map<String, dynamic>> login(Map<String, dynamic> body) =>
-      _post(Endpoints.authLogin, body);
+  Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
+    // Skip auth interceptor — login must not inject a stale/expired token.
+    final r = await dio.post<Map<String, dynamic>>(
+      Endpoints.authLogin,
+      data: body,
+      options: Options(extra: {'skip_auth': true}),
+    );
+    return r.data!;
+  }
 
   @override
-  Future<Map<String, dynamic>> register(Map<String, dynamic> body) =>
-      _post(Endpoints.authRegister, body);
+  Future<Map<String, dynamic>> register(Map<String, dynamic> body) async {
+    final r = await dio.post<Map<String, dynamic>>(
+      Endpoints.authRegister,
+      data: body,
+      options: Options(extra: {'skip_auth': true}),
+    );
+    return r.data!;
+  }
 
   @override
   Future<Map<String, dynamic>> registerDevice(Map<String, dynamic> body) =>
