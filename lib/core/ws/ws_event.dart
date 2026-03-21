@@ -312,12 +312,11 @@ class PresenceEvent extends WsEvent {
   final String action; // "online", "offline"
   final int timestamp;
 
-  factory PresenceEvent.fromJson(Map<String, dynamic> json) =>
-      PresenceEvent(
-        userId: json['user_id'] as int? ?? 0,
-        action: json['action'] as String? ?? '',
-        timestamp: json['timestamp'] as int? ?? 0,
-      );
+  factory PresenceEvent.fromJson(Map<String, dynamic> json) => PresenceEvent(
+    userId: json['user_id'] as int? ?? 0,
+    action: json['action'] as String? ?? '',
+    timestamp: json['timestamp'] as int? ?? 0,
+  );
 }
 
 class UnknownWsEvent extends WsEvent {

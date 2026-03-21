@@ -144,7 +144,10 @@ void _showChangeTierDialog(
                 initialValue: tier,
                 dropdownColor: tokens.bgAlt,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, AppLocalizations.of(context).adminVerificationTier),
+                decoration: _inputDecoration(
+                  tokens,
+                  AppLocalizations.of(context).adminVerificationTier,
+                ),
                 items: _tiers
                     .map(
                       (t) => DropdownMenuItem(
@@ -169,7 +172,10 @@ void _showChangeTierDialog(
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgDim)),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: TextStyle(color: tokens.fgDim),
+            ),
           ),
           FilledButton(
             onPressed: () async {
@@ -327,7 +333,9 @@ class VerificationsAdminPage extends ConsumerWidget {
                       ref.read(_searchProvider.notifier).update(v),
                   style: TextStyle(color: tokens.fgBright, fontSize: 13),
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).adminSearchVerifications,
+                    hintText: AppLocalizations.of(
+                      context,
+                    ).adminSearchVerifications,
                     hintStyle: TextStyle(color: tokens.fgDim, fontSize: 13),
                     prefixIcon: Icon(
                       Icons.search,
@@ -362,15 +370,20 @@ class VerificationsAdminPage extends ConsumerWidget {
                       ? Center(
                           child: Text(
                             searchQuery.isEmpty
-                                ? AppLocalizations.of(context).adminNoVerificationUsersFound
-                                : AppLocalizations.of(context).adminNoVerificationUsersMatching(searchQuery),
+                                ? AppLocalizations.of(
+                                    context,
+                                  ).adminNoVerificationUsersFound
+                                : AppLocalizations.of(
+                                    context,
+                                  ).adminNoVerificationUsersMatching(
+                                    searchQuery,
+                                  ),
                             style: TextStyle(color: tokens.fgDim, fontSize: 14),
                           ),
                         )
                       : ListView.separated(
                           itemCount: filtered.length,
-                          separatorBuilder: (_, _) =>
-                              const SizedBox(height: 8),
+                          separatorBuilder: (_, _) => const SizedBox(height: 8),
                           itemBuilder: (context, index) {
                             return _UserVerificationTile(
                               tokens: tokens,

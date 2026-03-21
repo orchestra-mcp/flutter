@@ -7,14 +7,21 @@ void main() {
       test('parses complete JSON with all fields', () {
         final item = FoodItem.fromJson({
           'id': 'test_food',
-          'title': {'en': 'Test Food', 'ar': '\u0637\u0639\u0627\u0645 \u0627\u062e\u062a\u0628\u0627\u0631'},
+          'title': {
+            'en': 'Test Food',
+            'ar':
+                '\u0637\u0639\u0627\u0645 \u0627\u062e\u062a\u0628\u0627\u0631',
+          },
           'category': 'protein',
           'trigger_conditions': ['ibs', 'gerd'],
           'sort_order': 5,
         });
         expect(item.id, 'test_food');
         expect(item.category, FoodCategory.protein);
-        expect(item.triggerConditions, [TriggerCondition.ibs, TriggerCondition.gerd]);
+        expect(item.triggerConditions, [
+          TriggerCondition.ibs,
+          TriggerCondition.gerd,
+        ]);
         expect(item.sortOrder, 5);
         expect(item.isSafe, false);
       });
@@ -22,7 +29,11 @@ void main() {
       test('parses map title correctly', () {
         final item = FoodItem.fromJson({
           'id': 'map_title',
-          'title': {'en': 'Chicken', 'ar': '\u062f\u062c\u0627\u062c', 'fr': 'Poulet'},
+          'title': {
+            'en': 'Chicken',
+            'ar': '\u062f\u062c\u0627\u062c',
+            'fr': 'Poulet',
+          },
           'category': 'protein',
         });
         expect(item.title['en'], 'Chicken');
@@ -50,10 +61,7 @@ void main() {
       });
 
       test('defaults missing id to empty string', () {
-        final item = FoodItem.fromJson({
-          'title': 'Test',
-          'category': 'fat',
-        });
+        final item = FoodItem.fromJson({'title': 'Test', 'category': 'fat'});
         expect(item.id, '');
       });
 
@@ -71,7 +79,11 @@ void main() {
             'drink' => FoodCategory.drink,
             _ => FoodCategory.snack,
           };
-          expect(item.category, expected, reason: 'Category "$cat" should parse correctly');
+          expect(
+            item.category,
+            expected,
+            reason: 'Category "$cat" should parse correctly',
+          );
         }
       });
 
@@ -85,10 +97,7 @@ void main() {
       });
 
       test('defaults missing category to snack', () {
-        final item = FoodItem.fromJson({
-          'id': 'no_cat',
-          'title': 'No Cat',
-        });
+        final item = FoodItem.fromJson({'id': 'no_cat', 'title': 'No Cat'});
         expect(item.category, FoodCategory.snack);
       });
 
@@ -141,7 +150,10 @@ void main() {
       test('roundtrip produces equivalent map', () {
         final original = {
           'id': 'roundtrip',
-          'title': {'en': 'Grilled Chicken', 'ar': '\u062f\u062c\u0627\u062c \u0645\u0634\u0648\u064a'},
+          'title': {
+            'en': 'Grilled Chicken',
+            'ar': '\u062f\u062c\u0627\u062c \u0645\u0634\u0648\u064a',
+          },
           'category': 'protein',
           'trigger_conditions': ['ibs', 'gerd'],
           'sort_order': 3,
@@ -150,7 +162,10 @@ void main() {
         final json = item.toJson();
 
         expect(json['id'], 'roundtrip');
-        expect(json['title'], {'en': 'Grilled Chicken', 'ar': '\u062f\u062c\u0627\u062c \u0645\u0634\u0648\u064a'});
+        expect(json['title'], {
+          'en': 'Grilled Chicken',
+          'ar': '\u062f\u062c\u0627\u062c \u0645\u0634\u0648\u064a',
+        });
         expect(json['category'], 'protein');
         expect(json['trigger_conditions'], ['ibs', 'gerd']);
         expect(json['sort_order'], 3);
@@ -173,7 +188,13 @@ void main() {
           'category': 'fat',
         });
         final json = item.toJson();
-        expect(json.keys.toSet(), {'id', 'title', 'category', 'trigger_conditions', 'sort_order'});
+        expect(json.keys.toSet(), {
+          'id',
+          'title',
+          'category',
+          'trigger_conditions',
+          'sort_order',
+        });
       });
     });
 
@@ -181,7 +202,11 @@ void main() {
       test('returns correct locale when present', () {
         final item = FoodItem.fromJson({
           'id': 'loc',
-          'title': {'en': 'Chicken', 'ar': '\u062f\u062c\u0627\u062c', 'fr': 'Poulet'},
+          'title': {
+            'en': 'Chicken',
+            'ar': '\u062f\u062c\u0627\u062c',
+            'fr': 'Poulet',
+          },
           'category': 'protein',
         });
         expect(item.localizedName('fr'), 'Poulet');
@@ -268,8 +293,11 @@ void main() {
 
       test('all have non-empty ids', () {
         for (final food in FoodRegistry.allFoods) {
-          expect(food.id, isNotEmpty,
-              reason: 'Food item should have a non-empty id');
+          expect(
+            food.id,
+            isNotEmpty,
+            reason: 'Food item should have a non-empty id',
+          );
         }
       });
 
@@ -280,14 +308,26 @@ void main() {
 
       test('all have en and ar titles', () {
         for (final food in FoodRegistry.allFoods) {
-          expect(food.title.containsKey('en'), isTrue,
-              reason: '${food.id} should have en title');
-          expect(food.title.containsKey('ar'), isTrue,
-              reason: '${food.id} should have ar title');
-          expect(food.title['en'], isNotEmpty,
-              reason: '${food.id} en title should not be empty');
-          expect(food.title['ar'], isNotEmpty,
-              reason: '${food.id} ar title should not be empty');
+          expect(
+            food.title.containsKey('en'),
+            isTrue,
+            reason: '${food.id} should have en title',
+          );
+          expect(
+            food.title.containsKey('ar'),
+            isTrue,
+            reason: '${food.id} should have ar title',
+          );
+          expect(
+            food.title['en'],
+            isNotEmpty,
+            reason: '${food.id} en title should not be empty',
+          );
+          expect(
+            food.title['ar'],
+            isNotEmpty,
+            reason: '${food.id} ar title should not be empty',
+          );
         }
       });
 
@@ -342,10 +382,16 @@ void main() {
     group('safeFoods', () {
       test('only returns items with no trigger conditions', () {
         for (final food in FoodRegistry.safeFoods) {
-          expect(food.isSafe, isTrue,
-              reason: '${food.name} in safeFoods should have no triggers');
-          expect(food.triggerConditions, isEmpty,
-              reason: '${food.name} should have empty triggerConditions');
+          expect(
+            food.isSafe,
+            isTrue,
+            reason: '${food.name} in safeFoods should have no triggers',
+          );
+          expect(
+            food.triggerConditions,
+            isEmpty,
+            reason: '${food.name} should have empty triggerConditions',
+          );
         }
       });
 
@@ -353,13 +399,19 @@ void main() {
         final safeIds = FoodRegistry.safeFoods.map((f) => f.id).toSet();
         final triggerFoods = FoodRegistry.allFoods.where((f) => !f.isSafe);
         for (final trigger in triggerFoods) {
-          expect(safeIds.contains(trigger.id), isFalse,
-              reason: '${trigger.name} is a trigger food and should not be in safeFoods');
+          expect(
+            safeIds.contains(trigger.id),
+            isFalse,
+            reason:
+                '${trigger.name} is a trigger food and should not be in safeFoods',
+          );
         }
       });
 
       test('count equals allFoods minus trigger foods', () {
-        final triggerCount = FoodRegistry.allFoods.where((f) => !f.isSafe).length;
+        final triggerCount = FoodRegistry.allFoods
+            .where((f) => !f.isSafe)
+            .length;
         expect(
           FoodRegistry.safeFoods.length,
           FoodRegistry.allFoods.length - triggerCount,

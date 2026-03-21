@@ -19,7 +19,10 @@ void main() {
       });
       expect(prompt.id, 'pmt-1');
       expect(prompt.title, 'Database Setup');
-      expect(prompt.prompt, 'Initialize the database connection and run migrations');
+      expect(
+        prompt.prompt,
+        'Initialize the database connection and run migrations',
+      );
       expect(prompt.trigger, 'startup');
       expect(prompt.priority, 2);
       expect(prompt.enabled, true);
@@ -51,10 +54,7 @@ void main() {
     });
 
     test('handles null tags', () {
-      final prompt = Prompt.fromJson({
-        'id': 'pmt-3',
-        'tags': null,
-      });
+      final prompt = Prompt.fromJson({'id': 'pmt-3', 'tags': null});
       expect(prompt.tags, isEmpty);
     });
 
@@ -118,18 +118,16 @@ void main() {
     });
 
     test('filter by trigger type', () {
-      final filtered = prompts
-          .where((p) => p.trigger == 'manual')
-          .toList();
+      final filtered = prompts.where((p) => p.trigger == 'manual').toList();
       expect(filtered.length, 2);
-      expect(filtered.map((p) => p.title).toList(),
-          ['Quick Deploy', 'Code Review Prompt']);
+      expect(filtered.map((p) => p.title).toList(), [
+        'Quick Deploy',
+        'Code Review Prompt',
+      ]);
     });
 
     test('filter by tag', () {
-      final filtered = prompts
-          .where((p) => p.tags.contains('infra'))
-          .toList();
+      final filtered = prompts.where((p) => p.tags.contains('infra')).toList();
       expect(filtered.length, 1);
       expect(filtered[0].title, 'Database Setup');
     });

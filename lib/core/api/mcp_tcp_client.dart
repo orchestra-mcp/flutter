@@ -243,7 +243,9 @@ class McpTcpClient implements ApiClient {
       // Debug: log ALL incoming messages to find streaming chunks.
       if (!json.containsKey('id') || json['id'] == null) {
         final preview = raw.toString();
-        debugPrint('[MCP-WS] No-ID message: ${preview.substring(0, preview.length.clamp(0, 150))}');
+        debugPrint(
+          '[MCP-WS] No-ID message: ${preview.substring(0, preview.length.clamp(0, 150))}',
+        );
       }
 
       final id = json['id'] as int?;
@@ -317,11 +319,7 @@ class McpTcpClient implements ApiClient {
       'jsonrpc': '2.0',
       'id': id,
       'method': 'tools/call',
-      'params': {
-        'name': name,
-        'arguments': arguments,
-        'streaming': true,
-      },
+      'params': {'name': name, 'arguments': arguments, 'streaming': true},
     });
     _ws!.sink.add(payload);
 
@@ -678,8 +676,13 @@ class McpTcpClient implements ApiClient {
           .cast<Map<String, dynamic>>();
 
   @override
-  Future<Map<String, dynamic>> respondDelegation(String id, String response) async =>
-      await _tool('respond_delegation', {'delegation_id': id, 'response': response});
+  Future<Map<String, dynamic>> respondDelegation(
+    String id,
+    String response,
+  ) async => await _tool('respond_delegation', {
+    'delegation_id': id,
+    'response': response,
+  });
 
   @override
   Future<List<Map<String, dynamic>>> listTeams() async {

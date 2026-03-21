@@ -72,7 +72,9 @@ void main() {
 
   group('PowerSync schema — column types', () {
     Map<String, String> columnsOf(String tableName) {
-      final table = powersyncSchema.tables.firstWhere((t) => t.name == tableName);
+      final table = powersyncSchema.tables.firstWhere(
+        (t) => t.name == tableName,
+      );
       return {for (final c in table.columns) c.name: c.type.name};
     }
 

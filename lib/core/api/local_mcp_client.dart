@@ -933,7 +933,10 @@ class LocalMcpClient implements ApiClient {
   }
 
   @override
-  Future<Map<String, dynamic>> respondDelegation(String id, String response) async {
+  Future<Map<String, dynamic>> respondDelegation(
+    String id,
+    String response,
+  ) async {
     // Desktop delegates to REST client for write operations
     if (restClient != null) {
       return restClient!.respondDelegation(id, response);

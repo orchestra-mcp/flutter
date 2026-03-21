@@ -49,8 +49,16 @@ void main() {
     });
 
     test('copyWith preserves unchanged fields', () {
-      final item = _item(id: 'a1', actionType: ActivityType.featureCreated, userName: 'Alice');
-      final state = ActivityFeedState(items: [item], newCount: 3, isConnected: true);
+      final item = _item(
+        id: 'a1',
+        actionType: ActivityType.featureCreated,
+        userName: 'Alice',
+      );
+      final state = ActivityFeedState(
+        items: [item],
+        newCount: 3,
+        isConnected: true,
+      );
       final updated = state.copyWith(newCount: 0);
       expect(updated.items, [item]);
       expect(updated.isConnected, true);
@@ -113,9 +121,24 @@ void main() {
       final old = DateTime.now().subtract(const Duration(days: 5));
 
       final items = [
-        _item(id: 't1', actionType: ActivityType.featureCreated, userName: 'A', timestamp: now),
-        _item(id: 'y1', actionType: ActivityType.noteCreated, userName: 'B', timestamp: yesterday),
-        _item(id: 'e1', actionType: ActivityType.delegationCreated, userName: 'C', timestamp: old),
+        _item(
+          id: 't1',
+          actionType: ActivityType.featureCreated,
+          userName: 'A',
+          timestamp: now,
+        ),
+        _item(
+          id: 'y1',
+          actionType: ActivityType.noteCreated,
+          userName: 'B',
+          timestamp: yesterday,
+        ),
+        _item(
+          id: 'e1',
+          actionType: ActivityType.delegationCreated,
+          userName: 'C',
+          timestamp: old,
+        ),
       ];
       final groups = groupActivities(items);
       expect(groups.length, 3);
@@ -128,12 +151,26 @@ void main() {
       final now = DateTime.now();
       final yesterday = DateTime(now.year, now.month, now.day - 1, 10);
 
-      final todayItem = _item(id: 't1', actionType: ActivityType.featureCreated, userName: 'A', timestamp: now);
-      final yestItem = _item(id: 'y1', actionType: ActivityType.noteCreated, userName: 'B', timestamp: yesterday);
+      final todayItem = _item(
+        id: 't1',
+        actionType: ActivityType.featureCreated,
+        userName: 'A',
+        timestamp: now,
+      );
+      final yestItem = _item(
+        id: 'y1',
+        actionType: ActivityType.noteCreated,
+        userName: 'B',
+        timestamp: yesterday,
+      );
 
       final groups = groupActivities([todayItem, yestItem]);
-      final todayGroup = groups.firstWhere((g) => g.$1 == ActivityTimeGroup.today);
-      final yestGroup = groups.firstWhere((g) => g.$1 == ActivityTimeGroup.yesterday);
+      final todayGroup = groups.firstWhere(
+        (g) => g.$1 == ActivityTimeGroup.today,
+      );
+      final yestGroup = groups.firstWhere(
+        (g) => g.$1 == ActivityTimeGroup.yesterday,
+      );
 
       expect(todayGroup.$2, contains(todayItem));
       expect(yestGroup.$2, contains(yestItem));
@@ -142,7 +179,12 @@ void main() {
     test('only earlier items → single earlier group', () {
       final old = DateTime.now().subtract(const Duration(days: 7));
       final items = [
-        _item(id: 'e1', actionType: ActivityType.reviewSubmitted, userName: 'A', timestamp: old),
+        _item(
+          id: 'e1',
+          actionType: ActivityType.reviewSubmitted,
+          userName: 'A',
+          timestamp: old,
+        ),
       ];
       final groups = groupActivities(items);
       expect(groups.length, 1);
@@ -153,7 +195,8 @@ void main() {
   group('ActivityFeedScreen instantiation', () {
     test('ActivityFeedState can be constructed', () {
       expect(
-        () => const ActivityFeedState(items: [], newCount: 0, isConnected: false),
+        () =>
+            const ActivityFeedState(items: [], newCount: 0, isConnected: false),
         returnsNormally,
       );
     });

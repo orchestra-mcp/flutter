@@ -121,8 +121,9 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
       }
       final List<LogProcess> processes =
           ref.read(logRunnerProvider).value ?? [];
-      final LogProcess? process =
-          processes.where((LogProcess p) => p.id == processId).firstOrNull;
+      final LogProcess? process = processes
+          .where((LogProcess p) => p.id == processId)
+          .firstOrNull;
       if (process == null || !process.isRunning) {
         unawaited(_fetchOutput(processId));
         _pollTimer?.cancel();
@@ -164,7 +165,10 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Kill', style: TextStyle(color: Color(0xFFEF4444))),
+            child: const Text(
+              'Kill',
+              style: TextStyle(color: Color(0xFFEF4444)),
+            ),
           ),
         ],
       ),
@@ -210,8 +214,9 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
                     labelText: 'Command',
                     labelStyle: TextStyle(color: tokens.fgDim),
                     hintText: 'npm run dev',
-                    hintStyle:
-                        TextStyle(color: tokens.fgDim.withValues(alpha: 0.5)),
+                    hintStyle: TextStyle(
+                      color: tokens.fgDim.withValues(alpha: 0.5),
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: tokens.borderFaint),
                     ),
@@ -239,8 +244,9 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
                     labelText: 'Working Directory (optional)',
                     labelStyle: TextStyle(color: tokens.fgDim),
                     hintText: '/path/to/project',
-                    hintStyle:
-                        TextStyle(color: tokens.fgDim.withValues(alpha: 0.5)),
+                    hintStyle: TextStyle(
+                      color: tokens.fgDim.withValues(alpha: 0.5),
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: tokens.borderFaint),
                     ),
@@ -276,7 +282,9 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
   }
 
   Future<void> _runCommand(String command, String workingDirectory) async {
-    final process = await ref.read(logRunnerProvider.notifier).run(
+    final process = await ref
+        .read(logRunnerProvider.notifier)
+        .run(
           command,
           workingDirectory: workingDirectory.isEmpty ? null : workingDirectory,
         );
@@ -352,17 +360,25 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.terminal_rounded,
-                size: 48, color: tokens.fgDim.withValues(alpha: 0.3)),
+            Icon(
+              Icons.terminal_rounded,
+              size: 48,
+              color: tokens.fgDim.withValues(alpha: 0.3),
+            ),
             const SizedBox(height: 12),
-            Text('Select a process',
-                style: TextStyle(
-                    color: tokens.fgMuted,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              'Select a process',
+              style: TextStyle(
+                color: tokens.fgMuted,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 6),
-            Text('Choose a process from the sidebar, or tap + to run a command.',
-                style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+            Text(
+              'Choose a process from the sidebar, or tap + to run a command.',
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ),
           ],
         ),
       ),
@@ -441,8 +457,7 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
                   label: const Text('Run', style: TextStyle(fontSize: 13)),
                   style: FilledButton.styleFrom(
                     backgroundColor: tokens.accent,
-                    foregroundColor:
-                        tokens.isLight ? Colors.white : tokens.bg,
+                    foregroundColor: tokens.isLight ? Colors.white : tokens.bg,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 14,
                       vertical: 8,
@@ -478,12 +493,12 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
                 final filtered = _listSearch.isEmpty
                     ? processes
                     : processes
-                        .where(
-                          (p) => p.command
-                              .toLowerCase()
-                              .contains(_listSearch.toLowerCase()),
-                        )
-                        .toList();
+                          .where(
+                            (p) => p.command.toLowerCase().contains(
+                              _listSearch.toLowerCase(),
+                            ),
+                          )
+                          .toList();
 
                 if (processes.isEmpty) {
                   return _buildEmptyProcesses(tokens);
@@ -543,7 +558,11 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
             const SizedBox(height: 16),
             TextButton.icon(
               onPressed: _showRunDialog,
-              icon: Icon(Icons.play_arrow_rounded, size: 16, color: tokens.accent),
+              icon: Icon(
+                Icons.play_arrow_rounded,
+                size: 16,
+                color: tokens.accent,
+              ),
               label: Text(
                 'Run a command',
                 style: TextStyle(color: tokens.accent, fontSize: 13),
@@ -788,30 +807,30 @@ class _LogRunnerScreenState extends ConsumerState<LogRunnerScreen> {
                       ),
                     )
                   : filtered.isEmpty
-                      ? Center(
-                          child: Text(
-                            _searchPattern.isNotEmpty
-                                ? 'No lines match the pattern'
-                                : 'No output yet',
-                            style: const TextStyle(
-                              color: Color(0xFF6B7280),
-                              fontSize: 13,
-                              fontFamily: 'JetBrains Mono',
-                              fontFamilyFallback: ['monospace'],
-                            ),
-                          ),
-                        )
-                      : ListView.builder(
-                          controller: _scrollController,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          itemCount: filtered.length,
-                          itemBuilder: (context, index) {
-                            return _buildOutputLine(tokens, filtered[index]);
-                          },
+                  ? Center(
+                      child: Text(
+                        _searchPattern.isNotEmpty
+                            ? 'No lines match the pattern'
+                            : 'No output yet',
+                        style: const TextStyle(
+                          color: Color(0xFF6B7280),
+                          fontSize: 13,
+                          fontFamily: 'JetBrains Mono',
+                          fontFamilyFallback: ['monospace'],
                         ),
+                      ),
+                    )
+                  : ListView.builder(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) {
+                        return _buildOutputLine(tokens, filtered[index]);
+                      },
+                    ),
             ),
           ),
 
@@ -983,9 +1002,10 @@ class _PulsingDotState extends State<_PulsingDot>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 0.4, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0.4,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -1110,14 +1130,16 @@ class _HighlightedText extends StatelessWidget {
       if (match.start > lastEnd) {
         spans.add(TextSpan(text: text.substring(lastEnd, match.start)));
       }
-      spans.add(TextSpan(
-        text: text.substring(match.start, match.end),
-        style: const TextStyle(
-          backgroundColor: Color(0x66FBBF24),
-          color: Color(0xFFFBBF24),
-          fontWeight: FontWeight.w700,
+      spans.add(
+        TextSpan(
+          text: text.substring(match.start, match.end),
+          style: const TextStyle(
+            backgroundColor: Color(0x66FBBF24),
+            color: Color(0xFFFBBF24),
+            fontWeight: FontWeight.w700,
+          ),
         ),
-      ));
+      );
       lastEnd = match.end;
     }
 

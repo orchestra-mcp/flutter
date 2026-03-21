@@ -19,8 +19,10 @@ class WorkflowState {
   String label;
   bool terminal;
   bool activeWork;
+
   /// Optional skill attached to this phase (from .claude/skills/).
   String? skillSlug;
+
   /// Optional agent attached to this phase (from .claude/agents/).
   String? agentSlug;
 
@@ -129,13 +131,11 @@ class WorkflowGate {
         id: id,
         label: json['label'] as String? ?? id,
         requiredSection: json['required_section'] as String? ?? '',
-        filePatterns: (json['file_patterns'] as List<dynamic>?)
-                ?.cast<String>() ??
-            [],
+        filePatterns:
+            (json['file_patterns'] as List<dynamic>?)?.cast<String>() ?? [],
         docsFolder: json['docs_folder'] as String? ?? '',
-        skippableFor: (json['skippable_for'] as List<dynamic>?)
-                ?.cast<String>() ??
-            [],
+        skippableFor:
+            (json['skippable_for'] as List<dynamic>?)?.cast<String>() ?? [],
       );
 }
 
@@ -191,8 +191,9 @@ class WorkflowDraft {
   );
 
   /// Build the states map for MCP create_workflow / update_workflow.
-  Map<String, dynamic> statesMap() =>
-      {for (final s in states) s.id: s.toJson()};
+  Map<String, dynamic> statesMap() => {
+    for (final s in states) s.id: s.toJson(),
+  };
 
   /// Build the transitions list for MCP.
   List<Map<String, dynamic>> transitionsList() =>
@@ -266,7 +267,9 @@ class WorkflowDraft {
         .toList();
     final map = {
       'name': 'github.com/your-org/pack-$slug',
-      'description': description.isNotEmpty ? description : 'Custom $name workflow',
+      'description': description.isNotEmpty
+          ? description
+          : 'Custom $name workflow',
       'version': '0.1.0',
       'type': 'pack',
       'license': 'MIT',
@@ -295,19 +298,19 @@ class WorkflowDraft {
       initialState: json['initial_state'] as String? ?? '',
       isDefault: json['is_default'] as bool? ?? false,
       states: statesRaw.entries
-          .map((e) => WorkflowState.fromJson(
-                e.key,
-                e.value as Map<String, dynamic>,
-              ))
+          .map(
+            (e) =>
+                WorkflowState.fromJson(e.key, e.value as Map<String, dynamic>),
+          )
           .toList(),
       transitions: transRaw
           .map((e) => WorkflowTransition.fromJson(e as Map<String, dynamic>))
           .toList(),
       gates: gatesRaw.entries
-          .map((e) => WorkflowGate.fromJson(
-                e.key,
-                e.value as Map<String, dynamic>,
-              ))
+          .map(
+            (e) =>
+                WorkflowGate.fromJson(e.key, e.value as Map<String, dynamic>),
+          )
           .toList(),
     );
   }
@@ -346,7 +349,10 @@ class WorkflowBuilderNotifier extends Notifier<WorkflowDraft> {
   void addState() {
     final id = 'state-${state.states.length + 1}';
     state = state.copyWith(
-      states: [...state.states, WorkflowState(id: id, label: 'New State')],
+      states: [
+        ...state.states,
+        WorkflowState(id: id, label: 'New State'),
+      ],
     );
   }
 
@@ -358,17 +364,21 @@ class WorkflowBuilderNotifier extends Notifier<WorkflowDraft> {
     var transitions = state.transitions;
     if (oldId != updated.id) {
       transitions = transitions
-          .map((t) => WorkflowTransition(
-                from: t.from == oldId ? updated.id : t.from,
-                to: t.to == oldId ? updated.id : t.to,
-                gate: t.gate,
-              ))
+          .map(
+            (t) => WorkflowTransition(
+              from: t.from == oldId ? updated.id : t.from,
+              to: t.to == oldId ? updated.id : t.to,
+              gate: t.gate,
+            ),
+          )
           .toList();
     }
     state = state.copyWith(
       states: list,
       transitions: transitions,
-      initialState: state.initialState == oldId ? updated.id : state.initialState,
+      initialState: state.initialState == oldId
+          ? updated.id
+          : state.initialState,
     );
   }
 
@@ -415,7 +425,10 @@ class WorkflowBuilderNotifier extends Notifier<WorkflowDraft> {
   void addGate() {
     final id = 'gate_${state.gates.length + 1}';
     state = state.copyWith(
-      gates: [...state.gates, WorkflowGate(id: id, label: 'New Gate')],
+      gates: [
+        ...state.gates,
+        WorkflowGate(id: id, label: 'New Gate'),
+      ],
     );
   }
 
@@ -427,11 +440,13 @@ class WorkflowBuilderNotifier extends Notifier<WorkflowDraft> {
     var transitions = state.transitions;
     if (oldId != updated.id) {
       transitions = transitions
-          .map((t) => WorkflowTransition(
-                from: t.from,
-                to: t.to,
-                gate: t.gate == oldId ? updated.id : t.gate,
-              ))
+          .map(
+            (t) => WorkflowTransition(
+              from: t.from,
+              to: t.to,
+              gate: t.gate == oldId ? updated.id : t.gate,
+            ),
+          )
           .toList();
     }
     state = state.copyWith(gates: list, transitions: transitions);
@@ -442,11 +457,13 @@ class WorkflowBuilderNotifier extends Notifier<WorkflowDraft> {
     state = state.copyWith(
       gates: [...state.gates]..removeAt(index),
       transitions: state.transitions
-          .map((t) => WorkflowTransition(
-                from: t.from,
-                to: t.to,
-                gate: t.gate == id ? null : t.gate,
-              ))
+          .map(
+            (t) => WorkflowTransition(
+              from: t.from,
+              to: t.to,
+              gate: t.gate == id ? null : t.gate,
+            ),
+          )
           .toList(),
     );
   }
@@ -494,5 +511,5 @@ class WorkflowBuilderNotifier extends Notifier<WorkflowDraft> {
 
 final workflowBuilderProvider =
     NotifierProvider<WorkflowBuilderNotifier, WorkflowDraft>(
-  WorkflowBuilderNotifier.new,
-);
+      WorkflowBuilderNotifier.new,
+    );

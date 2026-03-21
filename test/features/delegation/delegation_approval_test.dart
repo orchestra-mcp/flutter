@@ -111,10 +111,7 @@ void main() {
     });
 
     test('delegation builds correct URL', () {
-      expect(
-        Endpoints.delegation('DEL-XYZ'),
-        '/api/delegations/DEL-XYZ',
-      );
+      expect(Endpoints.delegation('DEL-XYZ'), '/api/delegations/DEL-XYZ');
     });
   });
 

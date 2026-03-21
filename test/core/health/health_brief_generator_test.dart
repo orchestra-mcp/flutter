@@ -48,7 +48,7 @@ void main() {
     test('extracts text from content array', () {
       final result = <String, dynamic>{
         'content': [
-          {'type': 'text', 'text': 'Hello health brief'}
+          {'type': 'text', 'text': 'Hello health brief'},
         ],
       };
       expect(extractText(result), 'Hello health brief');
@@ -62,7 +62,7 @@ void main() {
     test('returns null for non-text content type', () {
       final result = <String, dynamic>{
         'content': [
-          {'type': 'image', 'url': 'https://example.com/img.png'}
+          {'type': 'image', 'url': 'https://example.com/img.png'},
         ],
       };
       expect(extractText(result), isNull);
@@ -81,7 +81,7 @@ void main() {
     test('prefers content array over text field', () {
       final result = <String, dynamic>{
         'content': [
-          {'type': 'text', 'text': 'From content'}
+          {'type': 'text', 'text': 'From content'},
         ],
         'text': 'From text field',
       };

@@ -23,9 +23,7 @@ class PomodoroFloatingController {
   /// Show the floating pomodoro widget as an overlay.
   static void show(BuildContext context) {
     if (_entry != null) return;
-    _entry = OverlayEntry(
-      builder: (_) => const _PomodoroOverlay(),
-    );
+    _entry = OverlayEntry(builder: (_) => const _PomodoroOverlay());
     Overlay.of(context).insert(_entry!);
   }
 
@@ -78,7 +76,10 @@ class _PomodoroOverlayState extends State<_PomodoroOverlay> {
       child: GestureDetector(
         onPanUpdate: (d) {
           setState(() {
-            _position = Offset(_position.dx + d.delta.dx, _position.dy + d.delta.dy);
+            _position = Offset(
+              _position.dx + d.delta.dx,
+              _position.dy + d.delta.dy,
+            );
           });
         },
         child: _minimized
@@ -187,10 +188,7 @@ class _PomodoroCard extends ConsumerWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF1A1A2E).withValues(alpha: 0.92),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 0.5,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 0.5),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.4),
@@ -211,7 +209,9 @@ class _PomodoroCard extends ConsumerWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: state.isRunning ? color : const Color(0xFF6B7280),
+                        color: state.isRunning
+                            ? color
+                            : const Color(0xFF6B7280),
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -231,10 +231,7 @@ class _PomodoroCard extends ConsumerWidget {
                       icon: Icons.unfold_less_rounded,
                       onTap: onMinimize,
                     ),
-                    _HeaderButton(
-                      icon: Icons.close_rounded,
-                      onTap: onClose,
-                    ),
+                    _HeaderButton(icon: Icons.close_rounded, onTap: onClose),
                   ],
                 ),
               ),
@@ -321,10 +318,7 @@ class _PomodoroCard extends ConsumerWidget {
                 padding: const EdgeInsets.only(bottom: 10),
                 child: Text(
                   '${state.completedToday} / ${state.dailyTarget} sessions',
-                  style: TextStyle(
-                    color: tokens.fgMuted,
-                    fontSize: 11,
-                  ),
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 11),
                 ),
               ),
             ],
@@ -378,10 +372,7 @@ class _ControlButton extends StatelessWidget {
           decoration: BoxDecoration(
             color: color.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: color.withValues(alpha: 0.3),
-              width: 0.5,
-            ),
+            border: Border.all(color: color.withValues(alpha: 0.3), width: 0.5),
           ),
           child: Icon(icon, color: color, size: 20),
         ),

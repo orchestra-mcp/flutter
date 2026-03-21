@@ -71,21 +71,30 @@ class HydrationItem {
 const hydrationItemPresets = <HydrationItem>[
   HydrationItem(
     id: 'small_glass',
-    title: {'en': 'Small Glass', 'ar': '\u0643\u0648\u0628 \u0635\u063a\u064a\u0631'},
+    title: {
+      'en': 'Small Glass',
+      'ar': '\u0643\u0648\u0628 \u0635\u063a\u064a\u0631',
+    },
     ml: 150,
     icon: Icons.local_drink_rounded,
     sortOrder: 0,
   ),
   HydrationItem(
     id: 'medium_glass',
-    title: {'en': 'Medium Glass', 'ar': '\u0643\u0648\u0628 \u0645\u062a\u0648\u0633\u0637'},
+    title: {
+      'en': 'Medium Glass',
+      'ar': '\u0643\u0648\u0628 \u0645\u062a\u0648\u0633\u0637',
+    },
     ml: 250,
     icon: Icons.water_drop_rounded,
     sortOrder: 1,
   ),
   HydrationItem(
     id: 'large_glass',
-    title: {'en': 'Large Glass', 'ar': '\u0643\u0648\u0628 \u0643\u0628\u064a\u0631'},
+    title: {
+      'en': 'Large Glass',
+      'ar': '\u0643\u0648\u0628 \u0643\u0628\u064a\u0631',
+    },
     ml: 350,
     icon: Icons.water_drop_rounded,
     sortOrder: 2,
@@ -99,7 +108,10 @@ const hydrationItemPresets = <HydrationItem>[
   ),
   HydrationItem(
     id: 'large_bottle',
-    title: {'en': 'Large Bottle', 'ar': '\u0632\u062c\u0627\u062c\u0629 \u0643\u0628\u064a\u0631\u0629'},
+    title: {
+      'en': 'Large Bottle',
+      'ar': '\u0632\u062c\u0627\u062c\u0629 \u0643\u0628\u064a\u0631\u0629',
+    },
     ml: 750,
     icon: Icons.water_rounded,
     sortOrder: 4,

@@ -769,10 +769,7 @@ GoRouter buildRouter(Ref ref) {
           ),
 
           // DevTools
-          GoRoute(
-            path: '/devtools',
-            redirect: (_, __) => Routes.devtoolsApi,
-          ),
+          GoRoute(path: '/devtools', redirect: (_, __) => Routes.devtoolsApi),
           GoRoute(
             path: Routes.devtoolsApi,
             builder: (_, _) => const ApiCollectionsScreen(),

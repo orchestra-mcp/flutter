@@ -115,10 +115,7 @@ void main() {
     });
 
     test('empty collection has zero endpoints', () {
-      final col = ApiCollection.fromJson({
-        'id': 'col-2',
-        'name': 'Empty',
-      });
+      final col = ApiCollection.fromJson({'id': 'col-2', 'name': 'Empty'});
       expect(col.endpoints, isEmpty);
     });
 
@@ -131,5 +128,4 @@ void main() {
       expect(ep.method, 'PATCH');
     });
   });
-
 }

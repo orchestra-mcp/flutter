@@ -48,67 +48,67 @@ class _ActionTypeMeta {
   final String? aiHint;
 
   static _ActionTypeMeta of(UniversalActionType type) => switch (type) {
-        UniversalActionType.note => const _ActionTypeMeta(
-            label: 'Note',
-            icon: Icons.sticky_note_2_rounded,
-            color: Color(0xFFFBBF24),
-            aiHint: 'e.g. Write meeting notes about...',
-          ),
-        UniversalActionType.agent => const _ActionTypeMeta(
-            label: 'Agent',
-            icon: Icons.smart_toy_rounded,
-            color: Color(0xFFA78BFA),
-            aiHint: 'e.g. Create an agent for code reviews...',
-          ),
-        UniversalActionType.skill => const _ActionTypeMeta(
-            label: 'Skill',
-            icon: Icons.bolt_rounded,
-            color: Color(0xFFF97316),
-            aiHint: 'e.g. Create a skill that generates docs...',
-          ),
-        UniversalActionType.workflow => const _ActionTypeMeta(
-            label: 'Workflow',
-            icon: Icons.account_tree_rounded,
-            color: Color(0xFFEC4899),
-            aiHint: 'e.g. Create a scrum workflow...',
-          ),
-        UniversalActionType.doc => const _ActionTypeMeta(
-            label: 'Doc',
-            icon: Icons.description_rounded,
-            color: Color(0xFF60A5FA),
-            aiHint: 'e.g. Write a getting started guide...',
-          ),
-        UniversalActionType.feature => const _ActionTypeMeta(
-            label: 'Feature',
-            icon: Icons.auto_awesome_rounded,
-            color: Color(0xFF00E5FF),
-            aiHint: 'e.g. Add dark mode support...',
-          ),
-        UniversalActionType.plan => const _ActionTypeMeta(
-            label: 'Plan',
-            icon: Icons.map_rounded,
-            color: Color(0xFF4ADE80),
-            aiHint: 'e.g. Plan the API migration in 3 phases...',
-          ),
-        UniversalActionType.request => const _ActionTypeMeta(
-            label: 'Request',
-            icon: Icons.inbox_rounded,
-            color: Color(0xFFFBBF24),
-            aiHint: 'e.g. Request a bulk export feature...',
-          ),
-        UniversalActionType.person => const _ActionTypeMeta(
-            label: 'Person',
-            icon: Icons.person_rounded,
-            color: Color(0xFF818CF8),
-            aiHint: 'e.g. Add team member Sarah, senior engineer...',
-          ),
-        UniversalActionType.healthBrief => const _ActionTypeMeta(
-            label: 'Health Brief',
-            icon: Icons.favorite_rounded,
-            color: Color(0xFFEF4444),
-            aiHint: "Generate a health brief from today's data",
-          ),
-      };
+    UniversalActionType.note => const _ActionTypeMeta(
+      label: 'Note',
+      icon: Icons.sticky_note_2_rounded,
+      color: Color(0xFFFBBF24),
+      aiHint: 'e.g. Write meeting notes about...',
+    ),
+    UniversalActionType.agent => const _ActionTypeMeta(
+      label: 'Agent',
+      icon: Icons.smart_toy_rounded,
+      color: Color(0xFFA78BFA),
+      aiHint: 'e.g. Create an agent for code reviews...',
+    ),
+    UniversalActionType.skill => const _ActionTypeMeta(
+      label: 'Skill',
+      icon: Icons.bolt_rounded,
+      color: Color(0xFFF97316),
+      aiHint: 'e.g. Create a skill that generates docs...',
+    ),
+    UniversalActionType.workflow => const _ActionTypeMeta(
+      label: 'Workflow',
+      icon: Icons.account_tree_rounded,
+      color: Color(0xFFEC4899),
+      aiHint: 'e.g. Create a scrum workflow...',
+    ),
+    UniversalActionType.doc => const _ActionTypeMeta(
+      label: 'Doc',
+      icon: Icons.description_rounded,
+      color: Color(0xFF60A5FA),
+      aiHint: 'e.g. Write a getting started guide...',
+    ),
+    UniversalActionType.feature => const _ActionTypeMeta(
+      label: 'Feature',
+      icon: Icons.auto_awesome_rounded,
+      color: Color(0xFF00E5FF),
+      aiHint: 'e.g. Add dark mode support...',
+    ),
+    UniversalActionType.plan => const _ActionTypeMeta(
+      label: 'Plan',
+      icon: Icons.map_rounded,
+      color: Color(0xFF4ADE80),
+      aiHint: 'e.g. Plan the API migration in 3 phases...',
+    ),
+    UniversalActionType.request => const _ActionTypeMeta(
+      label: 'Request',
+      icon: Icons.inbox_rounded,
+      color: Color(0xFFFBBF24),
+      aiHint: 'e.g. Request a bulk export feature...',
+    ),
+    UniversalActionType.person => const _ActionTypeMeta(
+      label: 'Person',
+      icon: Icons.person_rounded,
+      color: Color(0xFF818CF8),
+      aiHint: 'e.g. Add team member Sarah, senior engineer...',
+    ),
+    UniversalActionType.healthBrief => const _ActionTypeMeta(
+      label: 'Health Brief',
+      icon: Icons.favorite_rounded,
+      color: Color(0xFFEF4444),
+      aiHint: "Generate a health brief from today's data",
+    ),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -125,7 +125,7 @@ void showUniversalCreateMenu(
   UniversalActionType? preselectedType,
   String? projectId,
   required void Function(UniversalActionType type, String title, String content)
-      onCreate,
+  onCreate,
 }) {
   showDialog<void>(
     context: context,
@@ -177,11 +177,10 @@ class _UniversalCreateDialog extends StatefulWidget {
   final UniversalActionType? preselectedType;
   final String? projectId;
   final void Function(UniversalActionType type, String title, String content)
-      onCreate;
+  onCreate;
 
   @override
-  State<_UniversalCreateDialog> createState() =>
-      _UniversalCreateDialogState();
+  State<_UniversalCreateDialog> createState() => _UniversalCreateDialogState();
 }
 
 class _UniversalCreateDialogState extends State<_UniversalCreateDialog>
@@ -229,8 +228,7 @@ class _UniversalCreateDialogState extends State<_UniversalCreateDialog>
       _streamComplete = false;
       // For healthBrief, auto-fill prompt and stay on AI tab.
       if (type == UniversalActionType.healthBrief) {
-        _promptController.text =
-            _ActionTypeMeta.of(type).aiHint ?? '';
+        _promptController.text = _ActionTypeMeta.of(type).aiHint ?? '';
         _tabController.index = 0;
       } else {
         _tabController.index = 0;
@@ -311,10 +309,9 @@ class _UniversalCreateDialogState extends State<_UniversalCreateDialog>
       });
 
       // The stream_id in the final response matches the gate-st-{id} prefix.
-      final streamId = result['stream_id'] as String? ??
-          (result['content'] is List
-              ? null
-              : result['stream_id'] as String?);
+      final streamId =
+          result['stream_id'] as String? ??
+          (result['content'] is List ? null : result['stream_id'] as String?);
 
       if (streamId == null) {
         // No stream_id: streaming completed inline. The fallback text from
@@ -464,11 +461,13 @@ class _UniversalCreateDialogState extends State<_UniversalCreateDialog>
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: UniversalActionType.values
-                  .map((t) => _TypeChip(
-                        type: t,
-                        tokens: tokens,
-                        onTap: () => _selectType(t),
-                      ))
+                  .map(
+                    (t) => _TypeChip(
+                      type: t,
+                      tokens: tokens,
+                      onTap: () => _selectType(t),
+                    ),
+                  )
                   .toList(),
             ),
           ),
@@ -496,8 +495,11 @@ class _UniversalCreateDialogState extends State<_UniversalCreateDialog>
             children: [
               if (!_lockedType)
                 IconButton(
-                  icon: Icon(Icons.arrow_back_rounded,
-                      color: tokens.fgDim, size: 20),
+                  icon: Icon(
+                    Icons.arrow_back_rounded,
+                    color: tokens.fgDim,
+                    size: 20,
+                  ),
                   onPressed: _goBackToGrid,
                 ),
               if (_lockedType) const SizedBox(width: 12),

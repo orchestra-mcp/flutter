@@ -9,10 +9,7 @@ import 'package:orchestra/widgets/glass_card.dart';
 // ── Filter state ─────────────────────────────────────────────────────────────
 
 class _ActivityFilterState {
-  const _ActivityFilterState({
-    this.selectedType,
-    this.selectedUser,
-  });
+  const _ActivityFilterState({this.selectedType, this.selectedUser});
 
   final ActivityType? selectedType;
   final String? selectedUser;
@@ -75,7 +72,8 @@ class ActivityFeedScreen extends ConsumerWidget {
         }
 
         // Unique users from all unfiltered items for user-filter chips.
-        final users = feed.items.map((a) => a.userName).toSet().toList()..sort();
+        final users = feed.items.map((a) => a.userName).toSet().toList()
+          ..sort();
 
         // Group by time.
         final groups = groupActivities(allItems);
@@ -250,8 +248,7 @@ class ActivityFeedScreen extends ConsumerWidget {
                           feed.items.isEmpty
                               ? l10n.activityNoActivityYet
                               : l10n.activityNoMatchingFilters,
-                          style:
-                              TextStyle(color: tokens.fgMuted, fontSize: 14),
+                          style: TextStyle(color: tokens.fgMuted, fontSize: 14),
                         ),
                       ],
                     ),
@@ -272,10 +269,7 @@ class ActivityFeedScreen extends ConsumerWidget {
                   for (final activity in groupItems)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
-                      child: _ActivityCard(
-                        activity: activity,
-                        tokens: tokens,
-                      ),
+                      child: _ActivityCard(activity: activity, tokens: tokens),
                     ),
                   const SizedBox(height: 8),
                 ],
@@ -309,9 +303,7 @@ class _TimeGroupHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Expanded(
-          child: Divider(color: tokens.borderFaint, thickness: 1),
-        ),
+        Expanded(child: Divider(color: tokens.borderFaint, thickness: 1)),
       ],
     );
   }
@@ -378,15 +370,13 @@ class _ActivityCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         activity.actionType.label.toLowerCase(),
-                        style:
-                            TextStyle(color: tokens.fgMuted, fontSize: 12),
+                        style: TextStyle(color: tokens.fgMuted, fontSize: 12),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       activity.relativeTime,
-                      style:
-                          TextStyle(color: tokens.fgDim, fontSize: 11),
+                      style: TextStyle(color: tokens.fgDim, fontSize: 11),
                     ),
                   ],
                 ),

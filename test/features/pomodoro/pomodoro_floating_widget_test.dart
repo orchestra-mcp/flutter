@@ -53,10 +53,7 @@ void main() {
     });
 
     test('progress is near 1.0 at end of work phase', () {
-      const s = PomodoroState(
-        phase: PomodoroPhase.work,
-        secondsRemaining: 1,
-      );
+      const s = PomodoroState(phase: PomodoroPhase.work, secondsRemaining: 1);
       expect(s.progress, greaterThan(0.99));
     });
   });

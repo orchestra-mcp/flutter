@@ -118,22 +118,21 @@ void main() {
     });
 
     test('filter by ERROR', () {
-      final filtered =
-          lines.where((l) => RegExp('ERROR').hasMatch(l)).toList();
+      final filtered = lines.where((l) => RegExp('ERROR').hasMatch(l)).toList();
       expect(filtered.length, 2);
       expect(filtered[0], contains('port already in use'));
       expect(filtered[1], contains('timeout exceeded'));
     });
 
     test('case-insensitive filter', () {
-      final filtered =
-          lines.where((l) => RegExp('error', caseSensitive: false).hasMatch(l)).toList();
+      final filtered = lines
+          .where((l) => RegExp('error', caseSensitive: false).hasMatch(l))
+          .toList();
       expect(filtered.length, 2);
     });
 
     test('regex filter for port numbers', () {
-      final filtered =
-          lines.where((l) => RegExp(r':\d+').hasMatch(l)).toList();
+      final filtered = lines.where((l) => RegExp(r':\d+').hasMatch(l)).toList();
       expect(filtered.length, 1);
       expect(filtered[0], contains(':8080'));
     });

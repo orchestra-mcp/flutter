@@ -136,8 +136,7 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
       ]);
       List<Map<String, dynamic>> snapshots = [];
       try {
-        snapshots =
-            await api.listSnapshots(from: todayStr, to: todayStr);
+        snapshots = await api.listSnapshots(from: todayStr, to: todayStr);
       } catch (_) {
         // Snapshot fetch failure is non-critical — form uses defaults.
       }
@@ -287,7 +286,9 @@ class _VitalsTabState extends ConsumerState<VitalsTab> {
                 child: _MetricCard(
                   tokens: tokens,
                   title: l10n.bloodOxygen,
-                  value: _bloodOxygen != null ? '${_bloodOxygen!.round()}' : null,
+                  value: _bloodOxygen != null
+                      ? '${_bloodOxygen!.round()}'
+                      : null,
                   unit: AppLocalizations.of(context).unitPercent,
                   icon: Icons.water_drop_rounded,
                   iconColor: const Color(0xFF42A5F5),
@@ -724,7 +725,8 @@ class _ZeppScaleSectionState extends ConsumerState<_ZeppScaleSection> {
     super.initState();
     final s = widget.latestSnapshot;
     _weightCtrl = TextEditingController(
-      text: widget.healthKitWeight?.toStringAsFixed(1) ??
+      text:
+          widget.healthKitWeight?.toStringAsFixed(1) ??
           _snapshotStr(s, 'weight_kg', '82.4'),
     );
     _bodyFatCtrl = TextEditingController(
@@ -750,7 +752,8 @@ class _ZeppScaleSectionState extends ConsumerState<_ZeppScaleSection> {
     final v = snapshot[key];
     if (v == null) return fallback;
     if (v is int) return v.toString();
-    if (v is double) return v.toStringAsFixed(v.truncateToDouble() == v ? 0 : 1);
+    if (v is double)
+      return v.toStringAsFixed(v.truncateToDouble() == v ? 0 : 1);
     return v.toString();
   }
 

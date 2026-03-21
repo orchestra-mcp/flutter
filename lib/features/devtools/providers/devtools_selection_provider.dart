@@ -10,9 +10,7 @@ class _SelectedCollectionId extends Notifier<String?> {
 }
 
 final selectedCollectionIdProvider =
-    NotifierProvider<_SelectedCollectionId, String?>(
-  _SelectedCollectionId.new,
-);
+    NotifierProvider<_SelectedCollectionId, String?>(_SelectedCollectionId.new);
 
 class _SelectedEndpoint extends Notifier<ApiEndpoint?> {
   @override
@@ -21,9 +19,7 @@ class _SelectedEndpoint extends Notifier<ApiEndpoint?> {
 }
 
 final selectedEndpointProvider =
-    NotifierProvider<_SelectedEndpoint, ApiEndpoint?>(
-  _SelectedEndpoint.new,
-);
+    NotifierProvider<_SelectedEndpoint, ApiEndpoint?>(_SelectedEndpoint.new);
 
 // ── Log Runner selection ─────────────────────────────────────────────────────
 
@@ -33,8 +29,7 @@ class _SelectedProcessId extends Notifier<String?> {
   void select(String? id) => state = id;
 }
 
-final selectedProcessIdProvider =
-    NotifierProvider<_SelectedProcessId, String?>(
+final selectedProcessIdProvider = NotifierProvider<_SelectedProcessId, String?>(
   _SelectedProcessId.new,
 );
 
@@ -47,6 +42,4 @@ class _SelectedConnectionId extends Notifier<String?> {
 }
 
 final selectedConnectionIdProvider =
-    NotifierProvider<_SelectedConnectionId, String?>(
-  _SelectedConnectionId.new,
-);
+    NotifierProvider<_SelectedConnectionId, String?>(_SelectedConnectionId.new);

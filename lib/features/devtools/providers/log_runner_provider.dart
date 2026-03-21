@@ -30,7 +30,8 @@ class LogProcess {
       status: json['status'] as String? ?? 'unknown',
       pid: json['pid'] as int?,
       uptime: json['uptime'] as String?,
-      tailLines: (json['tail'] as List<dynamic>?)?.cast<String>() ??
+      tailLines:
+          (json['tail'] as List<dynamic>?)?.cast<String>() ??
           (json['lines'] as List<dynamic>?)?.cast<String>() ??
           [],
     );
@@ -146,12 +147,14 @@ class LogRunnerNotifier extends AsyncNotifier<List<LogProcess>> {
 
 final logRunnerProvider =
     AsyncNotifierProvider<LogRunnerNotifier, List<LogProcess>>(
-  LogRunnerNotifier.new,
-);
+      LogRunnerNotifier.new,
+    );
 
 /// Streams output for a given process ID.
-final logOutputProvider =
-    FutureProvider.family<List<String>, String>((ref, processId) async {
+final logOutputProvider = FutureProvider.family<List<String>, String>((
+  ref,
+  processId,
+) async {
   final notifier = ref.watch(logRunnerProvider.notifier);
   return notifier.getOutput(processId);
 });

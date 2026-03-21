@@ -47,7 +47,18 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
   final _promptController = TextEditingController();
 
   // CLI-style spinner state
-  static const _spinnerChars = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+  static const _spinnerChars = [
+    '⠋',
+    '⠙',
+    '⠹',
+    '⠸',
+    '⠼',
+    '⠴',
+    '⠦',
+    '⠧',
+    '⠇',
+    '⠏',
+  ];
   int _spinnerIndex = 0;
   Timer? _spinnerTimer;
   String _currentStatus = '';
@@ -112,7 +123,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     _spinnerTimer?.cancel();
     _spinnerTimer = Timer.periodic(const Duration(milliseconds: 80), (_) {
       if (!mounted) return;
-      setState(() => _spinnerIndex = (_spinnerIndex + 1) % _spinnerChars.length);
+      setState(
+        () => _spinnerIndex = (_spinnerIndex + 1) % _spinnerChars.length,
+      );
     });
   }
 
@@ -438,7 +451,6 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
     );
   }
 
-
   Color _tagColor(String tag) {
     const palette = [
       Color(0xFF38BDF8),
@@ -618,29 +630,56 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
                   child: Row(
-                    key: ValueKey(_spinnerError ? 'err' : _spinnerComplete ? 'done' : _currentStatus),
+                    key: ValueKey(
+                      _spinnerError
+                          ? 'err'
+                          : _spinnerComplete
+                          ? 'done'
+                          : _currentStatus,
+                    ),
                     children: [
                       if (_spinnerError)
-                        Text('✗ ', style: TextStyle(color: const Color(0xFFEF4444), fontSize: 14, fontFamily: 'monospace'))
+                        Text(
+                          '✗ ',
+                          style: TextStyle(
+                            color: const Color(0xFFEF4444),
+                            fontSize: 14,
+                            fontFamily: 'monospace',
+                          ),
+                        )
                       else if (_spinnerComplete)
-                        Text('✓ ', style: TextStyle(color: const Color(0xFF22C55E), fontSize: 14, fontFamily: 'monospace'))
+                        Text(
+                          '✓ ',
+                          style: TextStyle(
+                            color: const Color(0xFF22C55E),
+                            fontSize: 14,
+                            fontFamily: 'monospace',
+                          ),
+                        )
                       else
-                        Text('${_spinnerChars[_spinnerIndex]} ', style: TextStyle(color: _noteColor, fontSize: 14, fontFamily: 'monospace')),
+                        Text(
+                          '${_spinnerChars[_spinnerIndex]} ',
+                          style: TextStyle(
+                            color: _noteColor,
+                            fontSize: 14,
+                            fontFamily: 'monospace',
+                          ),
+                        ),
                       Expanded(
                         child: Text(
                           _spinnerError
                               ? _errorMessage
                               : _spinnerComplete
-                                  ? 'Done (${_stopwatch.elapsed.inSeconds}s)'
-                                  : _currentStatus.isEmpty
-                                      ? 'Starting...'
-                                      : _currentStatus,
+                              ? 'Done (${_stopwatch.elapsed.inSeconds}s)'
+                              : _currentStatus.isEmpty
+                              ? 'Starting...'
+                              : _currentStatus,
                           style: TextStyle(
                             color: _spinnerError
                                 ? const Color(0xFFEF4444)
                                 : _spinnerComplete
-                                    ? const Color(0xFF22C55E)
-                                    : tokens.fgMuted,
+                                ? const Color(0xFF22C55E)
+                                : tokens.fgMuted,
                             fontSize: 13,
                             fontFamily: 'monospace',
                             overflow: TextOverflow.ellipsis,
@@ -651,7 +690,11 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                       if (!_spinnerComplete && !_spinnerError)
                         Text(
                           '${_stopwatch.elapsed.inSeconds}s',
-                          style: TextStyle(color: tokens.fgDim, fontSize: 12, fontFamily: 'monospace'),
+                          style: TextStyle(
+                            color: tokens.fgDim,
+                            fontSize: 12,
+                            fontFamily: 'monospace',
+                          ),
                         ),
                     ],
                   ),
@@ -728,7 +771,11 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                 case 'text_chunk':
                   if (text.trim().isNotEmpty) {
                     final preview = text.trim();
-                    _setStatus(preview.length > 80 ? '${preview.substring(0, 77)}...' : preview);
+                    _setStatus(
+                      preview.length > 80
+                          ? '${preview.substring(0, 77)}...'
+                          : preview,
+                    );
                   }
                 case 'tool_start':
                   final toolName = event['tool_name']?.toString() ?? text;
@@ -738,7 +785,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
                   if (toolName.isNotEmpty) _setStatus('✓ $toolName');
                 case 'thinking':
                   if (text.isNotEmpty) {
-                    _setStatus(text.length > 60 ? '${text.substring(0, 57)}...' : text);
+                    _setStatus(
+                      text.length > 60 ? '${text.substring(0, 57)}...' : text,
+                    );
                   }
               }
             }
@@ -747,7 +796,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       });
 
       final sw = Stopwatch()..start();
-      debugPrint('[SmartAction] Calling ai_prompt wait=true, model=$_selectedModel');
+      debugPrint(
+        '[SmartAction] Calling ai_prompt wait=true, model=$_selectedModel',
+      );
       final result = await mcp.callTool('ai_prompt', {
         'prompt': fullPrompt,
         'model': _selectedModel,
@@ -760,8 +811,12 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       sw.stop();
 
       var responseText = _extractAiResponse(result);
-      debugPrint('[SmartAction] Done in ${sw.elapsedMilliseconds}ms, response: ${responseText.length} chars');
-      debugPrint('[SmartAction] Response preview: ${responseText.substring(0, responseText.length.clamp(0, 200))}');
+      debugPrint(
+        '[SmartAction] Done in ${sw.elapsedMilliseconds}ms, response: ${responseText.length} chars',
+      );
+      debugPrint(
+        '[SmartAction] Response preview: ${responseText.substring(0, responseText.length.clamp(0, 200))}',
+      );
       _setStatus('Processing response...');
 
       // If the AI used create_note tool, redirect to the created note.
@@ -772,9 +827,13 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
         _setStatus('Note created — opening...');
 
         // Extract title for the notification.
-        String noteTitle = prompt.length > 40 ? '${prompt.substring(0, 37)}...' : prompt;
+        String noteTitle = prompt.length > 40
+            ? '${prompt.substring(0, 37)}...'
+            : prompt;
         try {
-          final noteResult = await mcp.callTool('get_note', {'id': noteId}, timeout: const Duration(seconds: 10));
+          final noteResult = await mcp.callTool('get_note', {
+            'id': noteId,
+          }, timeout: const Duration(seconds: 10));
           final noteText = _extractText(noteResult);
           final titleMatch = RegExp(r'title:\s*(.+)').firstMatch(noteText);
           if (titleMatch != null) {
@@ -783,7 +842,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
         } catch (_) {}
 
         _stopSpinner();
-        ref.read(notificationStoreProvider.notifier).addSmartActionComplete(noteTitle, noteId: noteId);
+        ref
+            .read(notificationStoreProvider.notifier)
+            .addSmartActionComplete(noteTitle, noteId: noteId);
         ref.read(notesRefreshProvider.notifier).refresh();
         setState(() => _generating = false);
 
@@ -801,7 +862,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       }
 
       // Parse title from content.
-      String title = prompt.length > 60 ? '${prompt.substring(0, 57)}...' : prompt;
+      String title = prompt.length > 60
+          ? '${prompt.substring(0, 57)}...'
+          : prompt;
       for (final line in responseText.split('\n')) {
         final trimmed = line.trim();
         if (trimmed.startsWith('#')) {
@@ -826,7 +889,9 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
       }
 
       _stopSpinner();
-      ref.read(notificationStoreProvider.notifier).addSmartActionComplete(title, noteId: savedNoteId);
+      ref
+          .read(notificationStoreProvider.notifier)
+          .addSmartActionComplete(title, noteId: savedNoteId);
       ref.read(notesRefreshProvider.notifier).refresh();
       setState(() => _generating = false);
 
@@ -839,17 +904,25 @@ class _NoteEditorScreenState extends ConsumerState<NoteEditorScreen> {
         _tags = ['ai-generated'];
         setState(() => _smartMode = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Note "$title" generated!'), duration: const Duration(seconds: 4)),
+          SnackBar(
+            content: Text('Note "$title" generated!'),
+            duration: const Duration(seconds: 4),
+          ),
         );
       }
     } catch (e) {
       debugPrint('[SmartAction] AI generation failed: $e');
-      _stopSpinner(error: true, errorMsg: e.toString().replaceAll('Exception: ', ''));
+      _stopSpinner(
+        error: true,
+        errorMsg: e.toString().replaceAll('Exception: ', ''),
+      );
       setState(() => _generating = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Generation failed: ${e.toString().replaceAll('Exception: ', '')}'),
+            content: Text(
+              'Generation failed: ${e.toString().replaceAll('Exception: ', '')}',
+            ),
             backgroundColor: Colors.redAccent,
             duration: const Duration(seconds: 5),
           ),

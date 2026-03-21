@@ -62,7 +62,8 @@ class DbColumn {
       name: json['name'] as String? ?? json['column_name'] as String? ?? '',
       type: json['type'] as String? ?? json['data_type'] as String? ?? '',
       nullable: json['nullable'] as bool? ?? true,
-      defaultValue: json['default'] as String? ?? json['default_value'] as String?,
+      defaultValue:
+          json['default'] as String? ?? json['default_value'] as String?,
       primaryKey: json['primary_key'] as bool? ?? false,
     );
   }
@@ -127,9 +128,7 @@ class DatabaseBrowserNotifier extends AsyncNotifier<List<DbConnection>> {
 
   Future<void> disconnect(String connectionId) async {
     final mcp = await ref.read(mcpConnectionProvider.future);
-    await mcp.callTool('db_disconnect', {
-      'connection_id': connectionId,
-    });
+    await mcp.callTool('db_disconnect', {'connection_id': connectionId});
     ref.invalidateSelf();
   }
 
@@ -175,20 +174,24 @@ class DatabaseBrowserNotifier extends AsyncNotifier<List<DbConnection>> {
 
 final databaseBrowserProvider =
     AsyncNotifierProvider<DatabaseBrowserNotifier, List<DbConnection>>(
-  DatabaseBrowserNotifier.new,
-);
+      DatabaseBrowserNotifier.new,
+    );
 
 /// Lists tables for a given connection ID.
-final dbTablesProvider =
-    FutureProvider.family<List<DbTable>, String>((ref, connectionId) async {
+final dbTablesProvider = FutureProvider.family<List<DbTable>, String>((
+  ref,
+  connectionId,
+) async {
   final notifier = ref.watch(databaseBrowserProvider.notifier);
   return notifier.listTables(connectionId);
 });
 
 /// Describes columns for a (connectionId, tableName) pair.
-final dbColumnsProvider = FutureProvider.family<List<DbColumn>, ({String connectionId, String table})>(
-  (ref, params) async {
-    final notifier = ref.watch(databaseBrowserProvider.notifier);
-    return notifier.describeTable(params.connectionId, params.table);
-  },
-);
+final dbColumnsProvider =
+    FutureProvider.family<
+      List<DbColumn>,
+      ({String connectionId, String table})
+    >((ref, params) async {
+      final notifier = ref.watch(databaseBrowserProvider.notifier);
+      return notifier.describeTable(params.connectionId, params.table);
+    });

@@ -72,7 +72,6 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
   // Mobile tab controller (Schema / Query / Results)
   late TabController _mobileTabController;
 
-
   @override
   void initState() {
     super.initState();
@@ -199,8 +198,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
                         isExpanded: true,
                         dropdownColor: tokens.bgAlt,
                         underline: const SizedBox.shrink(),
-                        style:
-                            TextStyle(color: tokens.fgBright, fontSize: 14),
+                        style: TextStyle(color: tokens.fgBright, fontSize: 14),
                         icon: Icon(
                           Icons.keyboard_arrow_down_rounded,
                           color: tokens.fgMuted,
@@ -358,24 +356,31 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.storage_rounded,
-                size: 48, color: tokens.fgDim.withValues(alpha: 0.3)),
+            Icon(
+              Icons.storage_rounded,
+              size: 48,
+              color: tokens.fgDim.withValues(alpha: 0.3),
+            ),
             const SizedBox(height: 12),
-            Text('Select a connection',
-                style: TextStyle(
-                    color: tokens.fgMuted,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600)),
+            Text(
+              'Select a connection',
+              style: TextStyle(
+                color: tokens.fgMuted,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 6),
-            Text('Choose a database connection from the sidebar, or tap + to connect.',
-                style: TextStyle(color: tokens.fgDim, fontSize: 13)),
+            Text(
+              'Choose a database connection from the sidebar, or tap + to connect.',
+              style: TextStyle(color: tokens.fgDim, fontSize: 13),
+            ),
           ],
         ),
       );
     }
     return _buildDesktopDetail(tokens);
   }
-
 
   Widget _buildConnectionTile(
     OrchestraColorTokens tokens,
@@ -440,10 +445,11 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: (isConnected
-                      ? const Color(0xFF22C55E)
-                      : const Color(0xFFF59E0B))
-                  .withValues(alpha: 0.12),
+              color:
+                  (isConnected
+                          ? const Color(0xFF22C55E)
+                          : const Color(0xFFF59E0B))
+                      .withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
@@ -589,10 +595,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
                 ),
 
                 // RIGHT: Query results
-                SizedBox(
-                  width: 350,
-                  child: _buildResultsPane(tokens),
-                ),
+                SizedBox(width: 350, child: _buildResultsPane(tokens)),
               ],
             ),
           ),
@@ -617,9 +620,8 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
       backgroundColor: tokens.bg,
       body: SafeArea(
         child: asyncConnections.when(
-          loading: () => Center(
-            child: CircularProgressIndicator(color: tokens.accent),
-          ),
+          loading: () =>
+              Center(child: CircularProgressIndicator(color: tokens.accent)),
           error: (e, _) => Center(
             child: Text(
               'Failed to load connections:\n$e',
@@ -674,9 +676,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
           onPressed: _goBack,
         ),
         title: Text(
-          connection != null
-              ? _driverLabel(connection.driver)
-              : 'Database',
+          connection != null ? _driverLabel(connection.driver) : 'Database',
           style: TextStyle(
             color: tokens.fgBright,
             fontSize: 17,
@@ -820,10 +820,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     border: Border(
-                      right: BorderSide(
-                        color: tokens.borderFaint,
-                        width: 0.5,
-                      ),
+                      right: BorderSide(color: tokens.borderFaint, width: 0.5),
                     ),
                   ),
                   child: _buildTablesList(tokens, _selectedConnectionId!),
@@ -897,10 +894,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
                 );
               }
               return ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 itemCount: tables.length,
                 itemBuilder: (context, index) {
                   final table = tables[index];
@@ -1043,9 +1037,8 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
         // Columns list
         Expanded(
           child: asyncColumns.when(
-            loading: () => Center(
-              child: CircularProgressIndicator(color: tokens.accent),
-            ),
+            loading: () =>
+                Center(child: CircularProgressIndicator(color: tokens.accent)),
             error: (e, _) => Center(
               child: Text(
                 'Error: $e',
@@ -1433,10 +1426,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
     );
   }
 
-  Widget _buildResultsTable(
-    OrchestraColorTokens tokens,
-    DbQueryResult result,
-  ) {
+  Widget _buildResultsTable(OrchestraColorTokens tokens, DbQueryResult result) {
     return DataTable(
       headingRowColor: WidgetStateProperty.all(
         tokens.bgAlt.withValues(alpha: 0.6),
@@ -1460,10 +1450,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
       columnSpacing: 24,
       horizontalMargin: 16,
       border: TableBorder(
-        horizontalInside: BorderSide(
-          color: tokens.borderFaint,
-          width: 0.5,
-        ),
+        horizontalInside: BorderSide(color: tokens.borderFaint, width: 0.5),
       ),
       columns: result.columns.map((col) {
         return DataColumn(label: Text(col));
@@ -1508,11 +1495,7 @@ class _DatabaseBrowserScreenState extends ConsumerState<DatabaseBrowserScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: 40,
-              color: tokens.fgDim.withValues(alpha: 0.35),
-            ),
+            Icon(icon, size: 40, color: tokens.fgDim.withValues(alpha: 0.35)),
             const SizedBox(height: 12),
             Text(
               title,

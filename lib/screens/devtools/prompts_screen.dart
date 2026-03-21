@@ -95,10 +95,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text(
-          'Delete Prompt',
-          style: TextStyle(color: tokens.fgBright),
-        ),
+        title: Text('Delete Prompt', style: TextStyle(color: tokens.fgBright)),
         content: Text(
           'Permanently delete "${prompt.title}"? This cannot be undone.',
           style: TextStyle(color: tokens.fgMuted),
@@ -236,8 +233,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                               tokens,
                               selectedTrigger,
                               (value) {
-                                setDialogState(
-                                    () => selectedTrigger = value);
+                                setDialogState(() => selectedTrigger = value);
                               },
                             ),
                           ),
@@ -284,8 +280,9 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                               setDialogState(() => isEnabled = value);
                             },
                             activeThumbColor: tokens.accent,
-                            inactiveTrackColor:
-                                tokens.border.withValues(alpha: 0.3),
+                            inactiveTrackColor: tokens.border.withValues(
+                              alpha: 0.3,
+                            ),
                           ),
                         ],
                       ),
@@ -343,9 +340,9 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(isEditing
-                                ? 'Prompt updated'
-                                : 'Prompt created'),
+                            content: Text(
+                              isEditing ? 'Prompt updated' : 'Prompt created',
+                            ),
                             duration: const Duration(seconds: 2),
                             behavior: SnackBarBehavior.floating,
                           ),
@@ -356,7 +353,8 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'Failed to ${isEditing ? 'update' : 'create'}: $e'),
+                              'Failed to ${isEditing ? 'update' : 'create'}: $e',
+                            ),
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
@@ -412,10 +410,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
               Container(
                 width: 8,
                 height: 8,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
               ),
               const SizedBox(width: 8),
               Text(_triggerLabel(t)),
@@ -478,10 +473,15 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                       const SizedBox(height: 16),
                       TextButton.icon(
                         onPressed: () => ref.invalidate(promptsProvider),
-                        icon: Icon(Icons.refresh_rounded,
-                            size: 16, color: tokens.accent),
-                        label: Text('Retry',
-                            style: TextStyle(color: tokens.accent)),
+                        icon: Icon(
+                          Icons.refresh_rounded,
+                          size: 16,
+                          color: tokens.accent,
+                        ),
+                        label: Text(
+                          'Retry',
+                          style: TextStyle(color: tokens.accent),
+                        ),
                       ),
                     ],
                   ),
@@ -546,8 +546,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
           // Title row
           Row(
             children: [
-              Icon(Icons.auto_awesome_rounded,
-                  color: tokens.accent, size: 20),
+              Icon(Icons.auto_awesome_rounded, color: tokens.accent, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -563,8 +562,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                 const SizedBox(width: 8),
                 TextButton.icon(
                   onPressed: () => _showPromptDialog(),
-                  icon:
-                      Icon(Icons.add_rounded, size: 16, color: tokens.accent),
+                  icon: Icon(Icons.add_rounded, size: 16, color: tokens.accent),
                   label: Text(
                     'New Prompt',
                     style: TextStyle(color: tokens.accent, fontSize: 13),
@@ -664,10 +662,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           'Trigger',
-                          style: TextStyle(
-                            color: tokens.fgDim,
-                            fontSize: 13,
-                          ),
+                          style: TextStyle(color: tokens.fgDim, fontSize: 13),
                         ),
                       ),
                       dropdownColor: tokens.bgAlt,
@@ -773,10 +768,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
 
               // Trigger badge
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                   color: trigColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(6),
@@ -794,10 +786,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
 
               // Priority badge
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: tokens.border.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(6),
@@ -825,10 +814,8 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
                     value: prompt.enabled,
                     onChanged: (_) => _togglePrompt(prompt),
                     activeThumbColor: tokens.accent,
-                    inactiveTrackColor:
-                        tokens.border.withValues(alpha: 0.3),
-                    materialTapTargetSize:
-                        MaterialTapTargetSize.shrinkWrap,
+                    inactiveTrackColor: tokens.border.withValues(alpha: 0.3),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
               ),
@@ -872,16 +859,16 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
             const SizedBox(height: 6),
             Row(
               children: [
-                Icon(Icons.label_outline_rounded,
-                    size: 13, color: tokens.fgDim),
+                Icon(
+                  Icons.label_outline_rounded,
+                  size: 13,
+                  color: tokens.fgDim,
+                ),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     prompt.tags.join(', '),
-                    style: TextStyle(
-                      color: tokens.fgDim,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: tokens.fgDim, fontSize: 12),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -924,10 +911,7 @@ class _PromptsScreenState extends ConsumerState<PromptsScreen> {
           TextButton.icon(
             onPressed: () => _showPromptDialog(),
             icon: Icon(Icons.add_rounded, size: 16, color: tokens.accent),
-            label: Text(
-              'New Prompt',
-              style: TextStyle(color: tokens.accent),
-            ),
+            label: Text('New Prompt', style: TextStyle(color: tokens.accent)),
           ),
         ],
       ),
@@ -1036,10 +1020,7 @@ class _DialogTextField extends StatelessWidget {
       controller: controller,
       autofocus: autofocus,
       keyboardType: keyboardType,
-      style: TextStyle(
-        color: tokens.fgBright,
-        fontSize: 14,
-      ),
+      style: TextStyle(color: tokens.fgBright, fontSize: 14),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: tokens.fgDim),

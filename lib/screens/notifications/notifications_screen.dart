@@ -215,7 +215,8 @@ class _NotificationTile extends StatelessWidget {
       'notifSyncComplete' => l10n.notifSyncComplete,
       'notifAgentFinished' => l10n.notifAgentFinished,
       'notifEntityDeleted' => l10n.notifEntityDeleted(
-          item.data['entity_type']?.toString() ?? ''),
+        item.data['entity_type']?.toString() ?? '',
+      ),
       _ => item.title,
     };
   }
@@ -225,12 +226,15 @@ class _NotificationTile extends StatelessWidget {
     final key = item.data['_titleKey'] as String?;
     return switch (key) {
       'notifNoteGenerated' => l10n.notifNoteReady(
-          item.data['_bodyNoteTitle']?.toString() ?? item.body),
+        item.data['_bodyNoteTitle']?.toString() ?? item.body,
+      ),
       'notifSyncComplete' => l10n.notifSyncItemsSynced(
-          (item.data['_bodyCount'] as int?) ?? int.tryParse(item.body) ?? 0),
+        (item.data['_bodyCount'] as int?) ?? int.tryParse(item.body) ?? 0,
+      ),
       'notifEntityDeleted' => l10n.notifEntityDeletedBody(
-          item.data['entity_type']?.toString() ?? '',
-          item.data['entity_id']?.toString() ?? ''),
+        item.data['entity_type']?.toString() ?? '',
+        item.data['entity_id']?.toString() ?? '',
+      ),
       'notifAgentFinished' =>
         item.body.isNotEmpty ? item.body : l10n.notifAgentSessionCompleted,
       _ => item.body,

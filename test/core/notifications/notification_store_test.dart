@@ -109,7 +109,10 @@ void main() {
         title: 'notifFeatureComplete',
         body: 'My Feature → done',
         timestamp: DateTime(2026, 3, 21),
-        data: const {'_titleKey': 'notifFeatureComplete', 'title': 'My Feature'},
+        data: const {
+          '_titleKey': 'notifFeatureComplete',
+          'title': 'My Feature',
+        },
       );
       expect(n.data['_titleKey'], equals('notifFeatureComplete'));
     });
@@ -121,10 +124,7 @@ void main() {
         title: 'notifSyncComplete',
         body: '3',
         timestamp: DateTime(2026, 3, 21),
-        data: const {
-          '_titleKey': 'notifSyncComplete',
-          '_bodyCount': 3,
-        },
+        data: const {'_titleKey': 'notifSyncComplete', '_bodyCount': 3},
       );
       expect(n.data['_bodyCount'], equals(3));
     });

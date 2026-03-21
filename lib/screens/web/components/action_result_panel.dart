@@ -87,8 +87,7 @@ class _ActionResultPanelState extends State<ActionResultPanel>
         widget.error != null ||
         widget.response?.status == TunnelResponseStatus.failed;
     final resultText = widget.response?.result ?? '';
-    final errorText =
-        widget.error ?? widget.response?.error ?? l10n.error;
+    final errorText = widget.error ?? widget.response?.error ?? l10n.error;
     final progress = widget.response?.progress;
 
     return AnimatedSize(

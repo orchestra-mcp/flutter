@@ -80,7 +80,9 @@ class OrchestraInstaller {
     } else {
       // Linux: check for flatpak or snap
       return File('/usr/bin/claude').existsSync() ||
-          Directory('${Platform.environment['HOME']}/.local/share/Claude').existsSync();
+          Directory(
+            '${Platform.environment['HOME']}/.local/share/Claude',
+          ).existsSync();
     }
   }
 
@@ -120,7 +122,9 @@ class OrchestraInstaller {
       if (result.exitCode == 0) {
         debugPrint('[Installer] Claude Desktop configured successfully');
       } else {
-        debugPrint('[Installer] Claude Desktop config failed: ${result.stderr}');
+        debugPrint(
+          '[Installer] Claude Desktop config failed: ${result.stderr}',
+        );
       }
     } on ProcessException catch (e) {
       debugPrint('[Installer] Process error: $e');
@@ -128,13 +132,15 @@ class OrchestraInstaller {
   }
 
   static String _claudeDesktopConfigPath() {
-    final home = Platform.environment['HOME'] ??
+    final home =
+        Platform.environment['HOME'] ??
         Platform.environment['USERPROFILE'] ??
         '';
     if (Platform.isMacOS) {
       return '$home/Library/Application Support/Claude/claude_desktop_config.json';
     } else if (Platform.isWindows) {
-      final appData = Platform.environment['APPDATA'] ?? '$home/AppData/Roaming';
+      final appData =
+          Platform.environment['APPDATA'] ?? '$home/AppData/Roaming';
       return '$appData/Claude/claude_desktop_config.json';
     } else {
       return '$home/.config/Claude/claude_desktop_config.json';

@@ -148,7 +148,11 @@ void _showAwardDeductDialog(
         fontSize: 16,
         fontWeight: FontWeight.w600,
       ),
-      title: Text(isAward ? AppLocalizations.of(context).adminAwardPoints : AppLocalizations.of(context).adminDeductPoints),
+      title: Text(
+        isAward
+            ? AppLocalizations.of(context).adminAwardPoints
+            : AppLocalizations.of(context).adminDeductPoints,
+      ),
       content: SizedBox(
         width: 360,
         child: Column(
@@ -164,7 +168,10 @@ void _showAwardDeductDialog(
             TextField(
               controller: amountCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(context).adminPointsAmount),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(context).adminPointsAmount,
+              ),
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             ),
@@ -172,7 +179,10 @@ void _showAwardDeductDialog(
             TextField(
               controller: reasonCtrl,
               style: TextStyle(color: tokens.fgBright, fontSize: 13),
-              decoration: _inputDecoration(tokens, AppLocalizations.of(context).adminPointsReason),
+              decoration: _inputDecoration(
+                tokens,
+                AppLocalizations.of(context).adminPointsReason,
+              ),
               maxLines: 2,
             ),
           ],
@@ -181,7 +191,10 @@ void _showAwardDeductDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(ctx).pop(),
-          child: Text(AppLocalizations.of(context).cancel, style: TextStyle(color: tokens.fgDim)),
+          child: Text(
+            AppLocalizations.of(context).cancel,
+            style: TextStyle(color: tokens.fgDim),
+          ),
         ),
         FilledButton(
           onPressed: () {
@@ -208,7 +221,11 @@ void _showAwardDeductDialog(
                 : const Color(0xFFEF4444),
             foregroundColor: Colors.white,
           ),
-          child: Text(isAward ? AppLocalizations.of(context).adminAward : AppLocalizations.of(context).adminDeduct),
+          child: Text(
+            isAward
+                ? AppLocalizations.of(context).adminAward
+                : AppLocalizations.of(context).adminDeduct,
+          ),
         ),
       ],
     ),
@@ -303,7 +320,9 @@ class PointsAdminPage extends ConsumerWidget {
                             ref.read(_searchProvider.notifier).update(v),
                         style: TextStyle(color: tokens.fgBright, fontSize: 13),
                         decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context).adminSearchUsers,
+                          hintText: AppLocalizations.of(
+                            context,
+                          ).adminSearchUsers,
                           hintStyle: TextStyle(
                             color: tokens.fgDim,
                             fontSize: 13,
@@ -341,8 +360,12 @@ class PointsAdminPage extends ConsumerWidget {
                             ? Center(
                                 child: Text(
                                   searchQuery.isEmpty
-                                      ? AppLocalizations.of(context).adminNoUsersFound
-                                      : AppLocalizations.of(context).adminNoUsersMatching(searchQuery),
+                                      ? AppLocalizations.of(
+                                          context,
+                                        ).adminNoUsersFound
+                                      : AppLocalizations.of(
+                                          context,
+                                        ).adminNoUsersMatching(searchQuery),
                                   style: TextStyle(
                                     color: tokens.fgDim,
                                     fontSize: 14,

@@ -35,18 +35,12 @@ void main() {
       });
 
       test('defaults missing title to Unknown en map', () {
-        final item = HydrationItem.fromJson({
-          'id': 'x',
-          'ml': 200,
-        });
+        final item = HydrationItem.fromJson({'id': 'x', 'ml': 200});
         expect(item.title, {'en': 'Unknown'});
       });
 
       test('defaults missing id to empty string', () {
-        final item = HydrationItem.fromJson({
-          'title': 'Tea',
-          'ml': 150,
-        });
+        final item = HydrationItem.fromJson({'title': 'Tea', 'ml': 150});
         expect(item.id, '');
       });
 
@@ -60,10 +54,7 @@ void main() {
       });
 
       test('defaults missing ml to 0', () {
-        final item = HydrationItem.fromJson({
-          'id': 'no_ml',
-          'title': 'Empty',
-        });
+        final item = HydrationItem.fromJson({'id': 'no_ml', 'title': 'Empty'});
         expect(item.ml, 0);
       });
 
@@ -118,7 +109,10 @@ void main() {
       test('roundtrip produces equivalent map', () {
         final original = {
           'id': 'roundtrip',
-          'title': {'en': 'Sparkling Water', 'ar': '\u0645\u0627\u0621 \u063a\u0627\u0632\u064a\u0629'},
+          'title': {
+            'en': 'Sparkling Water',
+            'ar': '\u0645\u0627\u0621 \u063a\u0627\u0632\u064a\u0629',
+          },
           'ml': 330,
           'sort_order': 2,
         };
@@ -126,7 +120,10 @@ void main() {
         final json = item.toJson();
 
         expect(json['id'], 'roundtrip');
-        expect(json['title'], {'en': 'Sparkling Water', 'ar': '\u0645\u0627\u0621 \u063a\u0627\u0632\u064a\u0629'});
+        expect(json['title'], {
+          'en': 'Sparkling Water',
+          'ar': '\u0645\u0627\u0621 \u063a\u0627\u0632\u064a\u0629',
+        });
         expect(json['ml'], 330);
         expect(json['sort_order'], 2);
       });
@@ -199,7 +196,11 @@ void main() {
 
       test('all have non-empty ids', () {
         for (final item in hydrationItemPresets) {
-          expect(item.id, isNotEmpty, reason: 'Preset item should have a non-empty id');
+          expect(
+            item.id,
+            isNotEmpty,
+            reason: 'Preset item should have a non-empty id',
+          );
         }
       });
 
@@ -210,21 +211,36 @@ void main() {
 
       test('all have en and ar titles', () {
         for (final item in hydrationItemPresets) {
-          expect(item.title.containsKey('en'), isTrue,
-              reason: '${item.id} should have en title');
-          expect(item.title.containsKey('ar'), isTrue,
-              reason: '${item.id} should have ar title');
-          expect(item.title['en'], isNotEmpty,
-              reason: '${item.id} en title should not be empty');
-          expect(item.title['ar'], isNotEmpty,
-              reason: '${item.id} ar title should not be empty');
+          expect(
+            item.title.containsKey('en'),
+            isTrue,
+            reason: '${item.id} should have en title',
+          );
+          expect(
+            item.title.containsKey('ar'),
+            isTrue,
+            reason: '${item.id} should have ar title',
+          );
+          expect(
+            item.title['en'],
+            isNotEmpty,
+            reason: '${item.id} en title should not be empty',
+          );
+          expect(
+            item.title['ar'],
+            isNotEmpty,
+            reason: '${item.id} ar title should not be empty',
+          );
         }
       });
 
       test('all have positive ml values', () {
         for (final item in hydrationItemPresets) {
-          expect(item.ml, greaterThan(0),
-              reason: '${item.id} should have positive ml');
+          expect(
+            item.ml,
+            greaterThan(0),
+            reason: '${item.id} should have positive ml',
+          );
         }
       });
 

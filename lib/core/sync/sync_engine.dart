@@ -556,9 +556,7 @@ class SyncEngineNotifier extends Notifier<SyncEngineState> {
             startedAt:
                 DateTime.tryParse(s['started_at'] as String? ?? '') ??
                 DateTime.now(),
-            endedAt: Value(
-              DateTime.tryParse(s['ended_at'] as String? ?? ''),
-            ),
+            endedAt: Value(DateTime.tryParse(s['ended_at'] as String? ?? '')),
           ),
         );
   }

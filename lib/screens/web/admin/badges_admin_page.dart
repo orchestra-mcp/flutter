@@ -100,7 +100,10 @@ void _showCreateBadgeDialog(BuildContext context, WidgetRef ref) {
               TextField(
                 controller: descCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, l10n.adminBadgeDescription),
+                decoration: _inputDecoration(
+                  tokens,
+                  l10n.adminBadgeDescription,
+                ),
                 maxLines: 2,
               ),
               const SizedBox(height: 12),
@@ -159,9 +162,9 @@ void _showCreateBadgeDialog(BuildContext context, WidgetRef ref) {
               ref.invalidate(_badgesProvider);
               if (ctx.mounted) Navigator.of(ctx).pop();
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.adminBadgeCreated)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(l10n.adminBadgeCreated)));
               }
             },
             style: FilledButton.styleFrom(
@@ -218,7 +221,10 @@ void _showEditBadgeDialog(
               TextField(
                 controller: descCtrl,
                 style: TextStyle(color: tokens.fgBright, fontSize: 13),
-                decoration: _inputDecoration(tokens, l10n.adminBadgeDescription),
+                decoration: _inputDecoration(
+                  tokens,
+                  l10n.adminBadgeDescription,
+                ),
                 maxLines: 2,
               ),
               const SizedBox(height: 12),
@@ -272,9 +278,9 @@ void _showEditBadgeDialog(
               ref.invalidate(_badgesProvider);
               if (ctx.mounted) Navigator.of(ctx).pop();
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.adminBadgeUpdated)),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(l10n.adminBadgeUpdated)));
               }
             },
             style: FilledButton.styleFrom(
@@ -324,9 +330,9 @@ void _showDeleteBadgeDialog(
             ref.invalidate(_badgesProvider);
             if (ctx.mounted) Navigator.of(ctx).pop();
             if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.adminBadgeDeleted)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(l10n.adminBadgeDeleted)));
             }
           },
           style: FilledButton.styleFrom(

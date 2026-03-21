@@ -178,8 +178,8 @@ class _DelegationContent extends StatelessWidget {
                   color: status == 'answered'
                       ? const Color(0xFF4ADE80)
                       : status == 'pending'
-                          ? const Color(0xFFFBBF24)
-                          : const Color(0xFF6B7280),
+                      ? const Color(0xFFFBBF24)
+                      : const Color(0xFF6B7280),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -302,10 +302,7 @@ class _DelegationContent extends StatelessWidget {
                       controller: responseController,
                       maxLines: 4,
                       enabled: !submitting,
-                      style: TextStyle(
-                        color: tokens.fgBright,
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: tokens.fgBright, fontSize: 14),
                       decoration: InputDecoration(
                         hintText: 'Type your response...',
                         hintStyle: TextStyle(
@@ -359,7 +356,9 @@ class _DelegationContent extends StatelessWidget {
                                       Icons.check_circle_outline_rounded,
                                       size: 18,
                                     ),
-                              label: Text(submitting ? 'Sending...' : 'Respond'),
+                              label: Text(
+                                submitting ? 'Sending...' : 'Respond',
+                              ),
                               style: FilledButton.styleFrom(
                                 backgroundColor: const Color(0xFF4ADE80),
                                 foregroundColor: const Color(0xFF0A0A0A),

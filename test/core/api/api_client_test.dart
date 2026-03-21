@@ -23,19 +23,25 @@ void main() {
   });
 
   group('Admin notification endpoint', () {
-    test('adminNotificationSend points to /send endpoint not list endpoint', () {
-      expect(
-        Endpoints.adminNotificationSend,
-        '/api/admin/notifications/send',
-      );
-    });
+    test(
+      'adminNotificationSend points to /send endpoint not list endpoint',
+      () {
+        expect(
+          Endpoints.adminNotificationSend,
+          '/api/admin/notifications/send',
+        );
+      },
+    );
 
-    test('adminNotifications and adminNotificationSend are different paths', () {
-      expect(
-        Endpoints.adminNotifications,
-        isNot(equals(Endpoints.adminNotificationSend)),
-      );
-    });
+    test(
+      'adminNotifications and adminNotificationSend are different paths',
+      () {
+        expect(
+          Endpoints.adminNotifications,
+          isNot(equals(Endpoints.adminNotificationSend)),
+        );
+      },
+    );
 
     test('adminNotificationSend ends with /send', () {
       expect(Endpoints.adminNotificationSend, endsWith('/send'));

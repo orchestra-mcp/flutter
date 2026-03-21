@@ -17,9 +17,13 @@ import 'package:orchestra/features/devtools/providers/secrets_provider.dart';
 final devtoolsPrefetchProvider = FutureProvider<bool>((ref) async {
   // Use ref.watch so providers stay alive and data is accessible via .value
   await Future.wait([
-    ref.watch(apiCollectionProvider.future).catchError((_) => <ApiCollection>[]),
+    ref
+        .watch(apiCollectionProvider.future)
+        .catchError((_) => <ApiCollection>[]),
     ref.watch(secretsProvider.future).catchError((_) => <Secret>[]),
-    ref.watch(databaseBrowserProvider.future).catchError((_) => <DbConnection>[]),
+    ref
+        .watch(databaseBrowserProvider.future)
+        .catchError((_) => <DbConnection>[]),
     ref.watch(logRunnerProvider.future).catchError((_) => <LogProcess>[]),
     ref.watch(promptsProvider.future).catchError((_) => <Prompt>[]),
   ]);

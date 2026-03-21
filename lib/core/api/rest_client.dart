@@ -402,7 +402,10 @@ class RestClient implements ApiClient {
   }
 
   @override
-  Future<Map<String, dynamic>> respondDelegation(String id, String response) async {
+  Future<Map<String, dynamic>> respondDelegation(
+    String id,
+    String response,
+  ) async {
     final r = await dio.post<Map<String, dynamic>>(
       Endpoints.delegationRespond(id),
       data: {'response': response},

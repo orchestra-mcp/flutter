@@ -82,7 +82,9 @@ void main() {
     });
 
     test('getJson parses valid JSON map', () {
-      notifier.inject({'cfg': jsonEncode({'theme': 'dark', 'size': 14})});
+      notifier.inject({
+        'cfg': jsonEncode({'theme': 'dark', 'size': 14}),
+      });
       final j = notifier.getJson('cfg');
       expect(j, isNotNull);
       expect(j!['theme'], 'dark');
@@ -136,7 +138,8 @@ void main() {
         ],
       );
       addTearDown(container.dispose);
-      (container.read(userSettingsProvider.notifier) as _TestUserSettingsNotifier)
+      (container.read(userSettingsProvider.notifier)
+              as _TestUserSettingsNotifier)
           .inject({'theme': 'dark'});
       expect(container.read(userSettingProvider('theme')), 'dark');
     });

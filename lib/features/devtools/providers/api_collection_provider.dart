@@ -19,7 +19,8 @@ class ApiCollection {
   });
 
   factory ApiCollection.fromJson(Map<String, dynamic> json) {
-    final endpoints = (json['endpoints'] as List<dynamic>?)
+    final endpoints =
+        (json['endpoints'] as List<dynamic>?)
             ?.map((e) => ApiEndpoint.fromJson(e as Map<String, dynamic>))
             .toList() ??
         [];
@@ -231,21 +232,18 @@ class ApiCollectionNotifier extends AsyncNotifier<List<ApiCollection>> {
     Map<String, dynamic> variables,
   ) async {
     final mcp = await ref.read(mcpConnectionProvider.future);
-    await mcp.callTool('api_set_env', {
-      'name': name,
-      'variables': variables,
-    });
+    await mcp.callTool('api_set_env', {'name': name, 'variables': variables});
   }
 }
 
 final apiCollectionProvider =
     AsyncNotifierProvider<ApiCollectionNotifier, List<ApiCollection>>(
-  ApiCollectionNotifier.new,
-);
+      ApiCollectionNotifier.new,
+    );
 
 /// Fetches a single collection by ID.
 final apiCollectionDetailProvider =
     FutureProvider.family<ApiCollection, String>((ref, id) async {
-  final notifier = ref.watch(apiCollectionProvider.notifier);
-  return notifier.getCollection(id);
-});
+      final notifier = ref.watch(apiCollectionProvider.notifier);
+      return notifier.getCollection(id);
+    });

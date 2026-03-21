@@ -96,7 +96,9 @@ class HealthBriefGenerator {
     lines.add('## Caffeine');
     lines.add('- Total: ${caffeine.totalMg}mg');
     lines.add('- Status: ${caffeine.status.name}');
-    lines.add('- Clean transition: ${caffeine.cleanTransitionPercent.round()}%');
+    lines.add(
+      '- Clean transition: ${caffeine.cleanTransitionPercent.round()}%',
+    );
     if (caffeine.overDailyLimit) {
       lines.add('- WARNING: Over daily limit (> 400mg)');
     }
@@ -159,11 +161,13 @@ class HealthBriefGenerator {
       lines.add('## Vitals (HealthKit)');
       if (steps != null) lines.add('- Steps: $steps');
       if (hr != null) lines.add('- Heart rate: $hr bpm');
-      if (sleep != null) lines.add('- Sleep: ${sleep.toStringAsFixed(1)} hours');
+      if (sleep != null)
+        lines.add('- Sleep: ${sleep.toStringAsFixed(1)} hours');
       if (calories != null) {
         lines.add('- Active calories: ${calories.round()} kcal');
       }
-      if (weight != null) lines.add('- Weight: ${weight.toStringAsFixed(1)} kg');
+      if (weight != null)
+        lines.add('- Weight: ${weight.toStringAsFixed(1)} kg');
       if (oxygen != null) lines.add('- Blood oxygen: ${oxygen.round()}%');
       if (respiratory != null) {
         lines.add('- Respiratory rate: ${respiratory.round()} breaths/min');
@@ -205,7 +209,6 @@ class HealthBriefGenerator {
         return first['text'] as String?;
       }
     }
-    return result['text'] as String? ??
-        result['response'] as String?;
+    return result['text'] as String? ?? result['response'] as String?;
   }
 }

@@ -106,10 +106,7 @@ class _MockHealthService implements HealthService {
 // =============================================================================
 
 class _MockApiClient implements ApiClient {
-  _MockApiClient({
-    this.snapshots = const [],
-    this.shouldThrowOnUpsert = false,
-  });
+  _MockApiClient({this.snapshots = const [], this.shouldThrowOnUpsert = false});
 
   final List<Map<String, dynamic>> snapshots;
   final bool shouldThrowOnUpsert;
@@ -124,9 +121,7 @@ class _MockApiClient implements ApiClient {
   }) async => snapshots;
 
   @override
-  Future<Map<String, dynamic>> upsertSnapshot(
-    Map<String, dynamic> body,
-  ) async {
+  Future<Map<String, dynamic>> upsertSnapshot(Map<String, dynamic> body) async {
     lastUpsertBody = body;
     if (shouldThrowOnUpsert) throw Exception('network error');
     return {};
@@ -140,7 +135,6 @@ class _MockApiClient implements ApiClient {
 // =============================================================================
 // Helpers
 // =============================================================================
-
 
 // =============================================================================
 // Tests
@@ -368,7 +362,7 @@ void main() {
             'metabolic_age': 31,
             'visceral_fat': 7,
             'body_water_pct': 59.1,
-          }
+          },
         ],
       );
       await tester.pumpWidget(
@@ -408,7 +402,7 @@ void main() {
             'snapshot_date': '2026-03-20',
             'weight_kg': 79.0,
             'body_fat_pct': 21.0,
-          }
+          },
         ],
       );
       await tester.pumpWidget(
@@ -426,7 +420,10 @@ void main() {
           .widgetList<TextField>(find.byType(TextField))
           .toList();
       expect(fields[0].controller?.text, '82.0'); // HealthKit weight wins
-      expect(fields[1].controller?.text, '21'); // body fat from snapshot (whole number drops decimal)
+      expect(
+        fields[1].controller?.text,
+        '21',
+      ); // body fat from snapshot (whole number drops decimal)
     });
 
     testWidgets('Save button calls upsertSnapshot with form values', (
@@ -501,7 +498,9 @@ void main() {
       await tester.pump();
       await tester.tap(find.text('Save Measurements'));
       await tester.pump(); // kick off async save
-      await tester.pump(const Duration(seconds: 1)); // finish save + show snackbar
+      await tester.pump(
+        const Duration(seconds: 1),
+      ); // finish save + show snackbar
 
       expect(find.text('Settings saved'), findsOneWidget);
     });

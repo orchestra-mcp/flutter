@@ -18,31 +18,26 @@ void main() {
     });
 
     test('contains all expected types', () {
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.note));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.agent));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.skill));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.workflow));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.doc));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.feature));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.plan));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.request));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.person));
-      expect(UniversalActionType.values,
-          contains(UniversalActionType.healthBrief));
+      expect(UniversalActionType.values, contains(UniversalActionType.note));
+      expect(UniversalActionType.values, contains(UniversalActionType.agent));
+      expect(UniversalActionType.values, contains(UniversalActionType.skill));
+      expect(
+        UniversalActionType.values,
+        contains(UniversalActionType.workflow),
+      );
+      expect(UniversalActionType.values, contains(UniversalActionType.doc));
+      expect(UniversalActionType.values, contains(UniversalActionType.feature));
+      expect(UniversalActionType.values, contains(UniversalActionType.plan));
+      expect(UniversalActionType.values, contains(UniversalActionType.request));
+      expect(UniversalActionType.values, contains(UniversalActionType.person));
+      expect(
+        UniversalActionType.values,
+        contains(UniversalActionType.healthBrief),
+      );
     });
 
     test('all types have unique names', () {
-      final names =
-          UniversalActionType.values.map((t) => t.name).toSet();
+      final names = UniversalActionType.values.map((t) => t.name).toSet();
       expect(names.length, equals(UniversalActionType.values.length));
     });
 
@@ -85,31 +80,39 @@ void main() {
 
     test('contains the original 4 types', () {
       // ignore: deprecated_member_use_from_same_package
-      expect(SmartActionType.values, containsAll([
-        // ignore: deprecated_member_use_from_same_package
-        SmartActionType.note,
-        // ignore: deprecated_member_use_from_same_package
-        SmartActionType.agent,
-        // ignore: deprecated_member_use_from_same_package
-        SmartActionType.skill,
-        // ignore: deprecated_member_use_from_same_package
-        SmartActionType.workflow,
-      ]));
+      expect(
+        SmartActionType.values,
+        containsAll([
+          // ignore: deprecated_member_use_from_same_package
+          SmartActionType.note,
+          // ignore: deprecated_member_use_from_same_package
+          SmartActionType.agent,
+          // ignore: deprecated_member_use_from_same_package
+          SmartActionType.skill,
+          // ignore: deprecated_member_use_from_same_package
+          SmartActionType.workflow,
+        ]),
+      );
     });
 
     test('name strings match the Universal equivalents', () {
       // ignore: deprecated_member_use_from_same_package
-      expect(SmartActionType.note.name,
-          equals(UniversalActionType.note.name));
+      expect(SmartActionType.note.name, equals(UniversalActionType.note.name));
       // ignore: deprecated_member_use_from_same_package
-      expect(SmartActionType.agent.name,
-          equals(UniversalActionType.agent.name));
+      expect(
+        SmartActionType.agent.name,
+        equals(UniversalActionType.agent.name),
+      );
       // ignore: deprecated_member_use_from_same_package
-      expect(SmartActionType.skill.name,
-          equals(UniversalActionType.skill.name));
+      expect(
+        SmartActionType.skill.name,
+        equals(UniversalActionType.skill.name),
+      );
       // ignore: deprecated_member_use_from_same_package
-      expect(SmartActionType.workflow.name,
-          equals(UniversalActionType.workflow.name));
+      expect(
+        SmartActionType.workflow.name,
+        equals(UniversalActionType.workflow.name),
+      );
     });
   });
 
@@ -137,8 +140,8 @@ void main() {
     test('content array with text type extracts text', () {
       final result = {
         'content': [
-          {'type': 'text', 'text': 'Hello world'}
-        ]
+          {'type': 'text', 'text': 'Hello world'},
+        ],
       };
       expect(extractText(result), equals('Hello world'));
     });
@@ -146,8 +149,8 @@ void main() {
     test('content array with non-text type returns null', () {
       final result = {
         'content': [
-          {'type': 'image', 'data': 'base64...'}
-        ]
+          {'type': 'image', 'data': 'base64...'},
+        ],
       };
       expect(extractText(result), isNull);
     });
@@ -158,10 +161,7 @@ void main() {
     });
 
     test('empty content array with text field falls through to text', () {
-      final result = {
-        'content': <dynamic>[],
-        'text': 'fallback text',
-      };
+      final result = {'content': <dynamic>[], 'text': 'fallback text'};
       expect(extractText(result), equals('fallback text'));
     });
 
@@ -178,8 +178,8 @@ void main() {
     test('content with null text value returns null', () {
       final result = {
         'content': [
-          {'type': 'text', 'text': null}
-        ]
+          {'type': 'text', 'text': null},
+        ],
       };
       expect(extractText(result), isNull);
     });
@@ -189,7 +189,7 @@ void main() {
         'content': [
           {'type': 'image', 'data': '...'},
           {'type': 'text', 'text': 'Second item'},
-        ]
+        ],
       };
       // Only first item is checked; since it is image, falls through
       expect(extractText(result), isNull);
@@ -200,16 +200,13 @@ void main() {
         'content': [
           {'type': 'text', 'text': 'First'},
           {'type': 'text', 'text': 'Second'},
-        ]
+        ],
       };
       expect(extractText(result), equals('First'));
     });
 
     test('content is not a list (e.g. string) falls through to text', () {
-      final result = {
-        'content': 'raw string',
-        'text': 'fallback',
-      };
+      final result = {'content': 'raw string', 'text': 'fallback'};
       expect(extractText(result), equals('fallback'));
     });
 
@@ -300,8 +297,11 @@ void main() {
       // Verify all 10 types have an expected label.
       expect(expectedLabels.length, equals(UniversalActionType.values.length));
       for (final type in UniversalActionType.values) {
-        expect(expectedLabels.containsKey(type), isTrue,
-            reason: '${type.name} should have a label mapping');
+        expect(
+          expectedLabels.containsKey(type),
+          isTrue,
+          reason: '${type.name} should have a label mapping',
+        );
       }
     });
 

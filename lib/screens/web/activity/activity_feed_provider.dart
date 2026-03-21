@@ -138,8 +138,9 @@ class ActivityFeedNotifier extends AsyncNotifier<ActivityFeedState> {
 
   ActivityItem _featureEventToActivity(FeatureUpdateEvent event) {
     final isCreated = event.previousStatus.isEmpty;
-    final actionType =
-        isCreated ? ActivityType.featureCreated : ActivityType.featureStatusChanged;
+    final actionType = isCreated
+        ? ActivityType.featureCreated
+        : ActivityType.featureStatusChanged;
     final description = isCreated
         ? 'Created feature ${event.featureId}'
         : 'Moved from ${event.previousStatus} to ${event.status}';
@@ -166,23 +167,51 @@ class ActivityFeedNotifier extends AsyncNotifier<ActivityFeedState> {
   }) {
     switch (action) {
       case 'created_feature':
-        return (ActivityType.featureCreated, 'feature', details ?? 'New feature created');
+        return (
+          ActivityType.featureCreated,
+          'feature',
+          details ?? 'New feature created',
+        );
       case 'status_changed':
-        return (ActivityType.featureStatusChanged, 'feature', details ?? 'Status updated');
+        return (
+          ActivityType.featureStatusChanged,
+          'feature',
+          details ?? 'Status updated',
+        );
       case 'created_note':
         return (ActivityType.noteCreated, 'note', details ?? 'Note created');
       case 'edited_note':
         return (ActivityType.noteEdited, 'note', details ?? 'Note edited');
       case 'delegated':
-        return (ActivityType.delegationCreated, 'delegation', details ?? 'Delegation created');
+        return (
+          ActivityType.delegationCreated,
+          'delegation',
+          details ?? 'Delegation created',
+        );
       case 'completed_delegation':
-        return (ActivityType.delegationCompleted, 'delegation', details ?? 'Delegation completed');
+        return (
+          ActivityType.delegationCompleted,
+          'delegation',
+          details ?? 'Delegation completed',
+        );
       case 'submitted_review':
-        return (ActivityType.reviewSubmitted, 'feature', details ?? 'Review submitted');
+        return (
+          ActivityType.reviewSubmitted,
+          'feature',
+          details ?? 'Review submitted',
+        );
       case 'commented':
-        return (ActivityType.commentAdded, 'feature', details ?? 'Comment added');
+        return (
+          ActivityType.commentAdded,
+          'feature',
+          details ?? 'Comment added',
+        );
       default:
-        return (ActivityType.featureStatusChanged, 'feature', details ?? action);
+        return (
+          ActivityType.featureStatusChanged,
+          'feature',
+          details ?? action,
+        );
     }
   }
 
@@ -218,7 +247,11 @@ enum ActivityTimeGroup { today, yesterday, earlier }
 
 ActivityTimeGroup groupForItem(ActivityItem item) {
   final now = DateTime.now();
-  final itemDate = DateTime(item.timestamp.year, item.timestamp.month, item.timestamp.day);
+  final itemDate = DateTime(
+    item.timestamp.year,
+    item.timestamp.month,
+    item.timestamp.day,
+  );
   final today = DateTime(now.year, now.month, now.day);
   final yesterday = today.subtract(const Duration(days: 1));
   if (itemDate == today) return ActivityTimeGroup.today;

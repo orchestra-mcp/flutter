@@ -44,11 +44,7 @@ String _statusLabel(int code) {
 /// Right-pane response viewer showing status badge, duration, and tabs for
 /// the response body and headers.
 class ApiResponseViewer extends StatefulWidget {
-  const ApiResponseViewer({
-    super.key,
-    this.response,
-    this.error,
-  });
+  const ApiResponseViewer({super.key, this.response, this.error});
 
   /// The response to display. Null when no request has been sent yet.
   final ApiResponse? response;
@@ -99,7 +95,10 @@ class _ApiResponseViewerState extends State<ApiResponseViewer>
             children: [
               // Status badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: _statusColor(resp.statusCode).withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(6),
@@ -122,7 +121,10 @@ class _ApiResponseViewerState extends State<ApiResponseViewer>
 
               // Duration badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: tokens.bgAlt,
                   borderRadius: BorderRadius.circular(6),
@@ -344,10 +346,8 @@ class _ApiResponseViewerState extends State<ApiResponseViewer>
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: entries.length,
-      separatorBuilder: (_, __) => Divider(
-        color: tokens.borderFaint,
-        height: 1,
-      ),
+      separatorBuilder: (_, __) =>
+          Divider(color: tokens.borderFaint, height: 1),
       itemBuilder: (context, index) {
         final entry = entries[index];
         return Padding(

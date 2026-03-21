@@ -40,14 +40,15 @@ class WorkspaceInitializer {
 
   /// Returns the platform-specific path to Claude Desktop's config file.
   static String get _claudeDesktopConfigPath {
-    final home = Platform.environment['HOME'] ??
+    final home =
+        Platform.environment['HOME'] ??
         Platform.environment['USERPROFILE'] ??
         '';
     if (Platform.isMacOS) {
       return '$home/Library/Application Support/Claude/claude_desktop_config.json';
     } else if (Platform.isWindows) {
-      final appData = Platform.environment['APPDATA'] ??
-          '$home/AppData/Roaming';
+      final appData =
+          Platform.environment['APPDATA'] ?? '$home/AppData/Roaming';
       return '$appData/Claude/claude_desktop_config.json';
     } else {
       return '$home/.config/Claude/claude_desktop_config.json';
@@ -73,7 +74,9 @@ class WorkspaceInitializer {
   static Future<void> ensureClaudeDesktopConfig(String workspacePath) async {
     if (_hasClaudeDesktopConfig()) return;
 
-    debugPrint('[WorkspaceInit] Claude Desktop config missing — auto-installing Orchestra MCP');
+    debugPrint(
+      '[WorkspaceInit] Claude Desktop config missing — auto-installing Orchestra MCP',
+    );
     try {
       final result = await Process.run('orchestra', [
         'init',
@@ -85,7 +88,9 @@ class WorkspaceInitializer {
       if (result.exitCode == 0) {
         debugPrint('[WorkspaceInit] Claude Desktop config installed');
       } else {
-        debugPrint('[WorkspaceInit] Claude Desktop config install failed: ${result.stderr}');
+        debugPrint(
+          '[WorkspaceInit] Claude Desktop config install failed: ${result.stderr}',
+        );
       }
     } on ProcessException catch (e) {
       debugPrint('[WorkspaceInit] Process error: $e');

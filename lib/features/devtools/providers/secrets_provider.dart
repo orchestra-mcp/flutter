@@ -61,16 +61,12 @@ class SecretsNotifier extends AsyncNotifier<List<Secret>> {
       if (category != null) 'category': category,
     });
     final list = result['secrets'] as List<dynamic>? ?? [];
-    return list
-        .map((e) => Secret.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return list.map((e) => Secret.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<Secret> getSecret(String secretId) async {
     final mcp = await ref.read(mcpConnectionProvider.future);
-    final result = await mcp.callTool('get_secret', {
-      'secret_id': secretId,
-    });
+    final result = await mcp.callTool('get_secret', {'secret_id': secretId});
     return Secret.fromJson(result);
   }
 
@@ -126,9 +122,7 @@ class SecretsNotifier extends AsyncNotifier<List<Secret>> {
     final mcp = await ref.read(mcpConnectionProvider.future);
     final result = await mcp.callTool('search_secrets', {'query': query});
     final list = result['secrets'] as List<dynamic>? ?? [];
-    return list
-        .map((e) => Secret.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return list.map((e) => Secret.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<void> importEnv(
@@ -145,10 +139,7 @@ class SecretsNotifier extends AsyncNotifier<List<Secret>> {
     ref.invalidateSelf();
   }
 
-  Future<String> exportEnv({
-    String format = 'env',
-    String? scope,
-  }) async {
+  Future<String> exportEnv({String format = 'env', String? scope}) async {
     final mcp = await ref.read(mcpConnectionProvider.future);
     final result = await mcp.callTool('get_secret_env', {
       'format': format,
@@ -158,14 +149,15 @@ class SecretsNotifier extends AsyncNotifier<List<Secret>> {
   }
 }
 
-final secretsProvider =
-    AsyncNotifierProvider<SecretsNotifier, List<Secret>>(
+final secretsProvider = AsyncNotifierProvider<SecretsNotifier, List<Secret>>(
   SecretsNotifier.new,
 );
 
 /// Reveals a single secret's decrypted value.
-final secretDetailProvider =
-    FutureProvider.family<Secret, String>((ref, secretId) async {
+final secretDetailProvider = FutureProvider.family<Secret, String>((
+  ref,
+  secretId,
+) async {
   final notifier = ref.watch(secretsProvider.notifier);
   return notifier.getSecret(secretId);
 });

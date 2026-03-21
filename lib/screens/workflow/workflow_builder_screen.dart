@@ -33,8 +33,7 @@ class WorkflowBuilderScreen extends ConsumerStatefulWidget {
       _WorkflowBuilderScreenState();
 }
 
-class _WorkflowBuilderScreenState
-    extends ConsumerState<WorkflowBuilderScreen> {
+class _WorkflowBuilderScreenState extends ConsumerState<WorkflowBuilderScreen> {
   bool _loading = false;
   bool _showYaml = false;
   // Which state index is selected in the inspector (-1 = none).
@@ -86,15 +85,12 @@ class _WorkflowBuilderScreenState
   Future<void> _save() async {
     setState(() => _loading = true);
     try {
-      final id =
-          await ref.read(workflowBuilderProvider.notifier).save();
+      final id = await ref.read(workflowBuilderProvider.notifier).save();
       if (mounted) {
         final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(id != null
-                ? l10n.wbSaved(id)
-                : l10n.wbUpdated),
+            content: Text(id != null ? l10n.wbSaved(id) : l10n.wbUpdated),
           ),
         );
         if (widget.workflowId == null && id != null) {
@@ -159,14 +155,18 @@ class _WorkflowBuilderScreenState
         actions: [
           TextButton.icon(
             icon: Icon(Icons.code_rounded, size: 16, color: tokens.accent),
-            label: Text(l10n.wbYaml,
-                style: TextStyle(fontSize: 12, color: tokens.accent)),
+            label: Text(
+              l10n.wbYaml,
+              style: TextStyle(fontSize: 12, color: tokens.accent),
+            ),
             onPressed: () => setState(() => _showYaml = !_showYaml),
           ),
           TextButton.icon(
             icon: Icon(Icons.upload_rounded, size: 16, color: tokens.accent),
-            label: Text(l10n.wbExportPack,
-                style: TextStyle(fontSize: 12, color: tokens.accent)),
+            label: Text(
+              l10n.wbExportPack,
+              style: TextStyle(fontSize: 12, color: tokens.accent),
+            ),
             onPressed: _showExportSheet,
           ),
           const SizedBox(width: 4),
@@ -182,7 +182,9 @@ class _WorkflowBuilderScreenState
                     width: 14,
                     height: 14,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   )
                 : Text(l10n.wbSave, style: const TextStyle(fontSize: 13)),
           ),
@@ -192,70 +194,65 @@ class _WorkflowBuilderScreenState
       body: _loading
           ? Center(child: CircularProgressIndicator(color: tokens.accent))
           : _showYaml
-              ? _YamlPreview(draft: draft)
-              : Row(
-                  children: [
-                    // ── Canvas ──────────────────────────────────────────────
-                    Expanded(
-                      flex: 3,
-                      child: _WorkflowCanvas(
-                        draft: draft,
-                        nodePositions: _nodePositions,
-                        selectedState: _selectedState,
-                        onNodeTap: (i) => setState(() {
-                          _selectedState = i;
-                          _selectedTransition = -1;
-                          _selectedGate = -1;
-                        }),
-                        onNodeMove: (id, pos) =>
-                            setState(() => _nodePositions[id] = pos),
-                        onTransitionTap: (i) => setState(() {
-                          _selectedTransition = i;
-                          _selectedState = -1;
-                          _selectedGate = -1;
-                        }),
-                        onAddState: () {
-                          ref
-                              .read(workflowBuilderProvider.notifier)
-                              .addState();
-                          final draft = ref.read(workflowBuilderProvider);
-                          final last = draft.states.last;
-                          _nodePositions[last.id] = Offset(
-                            80.0 + (draft.states.length - 1) * 180,
-                            120,
-                          );
-                        },
-                        onAddTransition: () => ref
-                            .read(workflowBuilderProvider.notifier)
-                            .addTransition(),
-                      ),
-                    ),
-                    // ── Inspector ────────────────────────────────────────────
-                    Container(
-                      width: 300,
-                      decoration: BoxDecoration(
-                        color: tokens.bgAlt,
-                        border: Border(
-                          left: BorderSide(
-                            color: tokens.border,
-                            width: 1,
-                          ),
-                        ),
-                      ),
-                      child: _Inspector(
-                        draft: draft,
-                        selectedState: _selectedState,
-                        selectedTransition: _selectedTransition,
-                        selectedGate: _selectedGate,
-                        onSelectGate: (i) => setState(() {
-                          _selectedGate = i;
-                          _selectedState = -1;
-                          _selectedTransition = -1;
-                        }),
-                      ),
-                    ),
-                  ],
+          ? _YamlPreview(draft: draft)
+          : Row(
+              children: [
+                // ── Canvas ──────────────────────────────────────────────
+                Expanded(
+                  flex: 3,
+                  child: _WorkflowCanvas(
+                    draft: draft,
+                    nodePositions: _nodePositions,
+                    selectedState: _selectedState,
+                    onNodeTap: (i) => setState(() {
+                      _selectedState = i;
+                      _selectedTransition = -1;
+                      _selectedGate = -1;
+                    }),
+                    onNodeMove: (id, pos) =>
+                        setState(() => _nodePositions[id] = pos),
+                    onTransitionTap: (i) => setState(() {
+                      _selectedTransition = i;
+                      _selectedState = -1;
+                      _selectedGate = -1;
+                    }),
+                    onAddState: () {
+                      ref.read(workflowBuilderProvider.notifier).addState();
+                      final draft = ref.read(workflowBuilderProvider);
+                      final last = draft.states.last;
+                      _nodePositions[last.id] = Offset(
+                        80.0 + (draft.states.length - 1) * 180,
+                        120,
+                      );
+                    },
+                    onAddTransition: () => ref
+                        .read(workflowBuilderProvider.notifier)
+                        .addTransition(),
+                  ),
                 ),
+                // ── Inspector ────────────────────────────────────────────
+                Container(
+                  width: 300,
+                  decoration: BoxDecoration(
+                    color: tokens.bgAlt,
+                    border: Border(
+                      left: BorderSide(color: tokens.border, width: 1),
+                    ),
+                  ),
+                  child: _Inspector(
+                    draft: draft,
+                    selectedState: _selectedState,
+                    selectedTransition: _selectedTransition,
+                    selectedGate: _selectedGate,
+                    onSelectGate: (i) => setState(() {
+                      _selectedGate = i;
+                      _selectedState = -1;
+                      _selectedTransition = -1;
+                    }),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }
@@ -291,10 +288,7 @@ class _WorkflowCanvas extends StatelessWidget {
     return Stack(
       children: [
         // Grid background
-        CustomPaint(
-          painter: _GridPainter(tokens),
-          size: Size.infinite,
-        ),
+        CustomPaint(painter: _GridPainter(tokens), size: Size.infinite),
 
         // Transition arrows (drawn under nodes)
         CustomPaint(
@@ -328,8 +322,7 @@ class _WorkflowCanvas extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: t.gate != null && t.gate!.isNotEmpty
-                    ? Icon(Icons.lock_rounded,
-                        size: 14, color: tokens.accent)
+                    ? Icon(Icons.lock_rounded, size: 14, color: tokens.accent)
                     : null,
               ),
             ),
@@ -524,7 +517,9 @@ class _DraggableNode extends StatelessWidget {
             color: tokens.bgAlt,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: isSelected ? tokens.accent : _nodeColor.withValues(alpha: 0.5),
+              color: isSelected
+                  ? tokens.accent
+                  : _nodeColor.withValues(alpha: 0.5),
               width: isSelected ? 2 : 1.5,
             ),
             boxShadow: [
@@ -565,13 +560,25 @@ class _DraggableNode extends StatelessWidget {
                       Row(
                         children: [
                           if (isInitial)
-                            _NodeBadge(l10n.wbBadgeStart, const Color(0xFF3B82F6)),
+                            _NodeBadge(
+                              l10n.wbBadgeStart,
+                              const Color(0xFF3B82F6),
+                            ),
                           if (state.terminal)
-                            _NodeBadge(l10n.wbBadgeEnd, const Color(0xFF10B981)),
+                            _NodeBadge(
+                              l10n.wbBadgeEnd,
+                              const Color(0xFF10B981),
+                            ),
                           if (state.skillSlug != null)
-                            _NodeBadge(l10n.wbBadgeSkill, const Color(0xFFF97316)),
+                            _NodeBadge(
+                              l10n.wbBadgeSkill,
+                              const Color(0xFFF97316),
+                            ),
                           if (state.agentSlug != null)
-                            _NodeBadge(l10n.wbBadgeAgent, const Color(0xFFA78BFA)),
+                            _NodeBadge(
+                              l10n.wbBadgeAgent,
+                              const Color(0xFFA78BFA),
+                            ),
                         ],
                       ),
                     ],
@@ -602,7 +609,11 @@ class _NodeBadge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(fontSize: 8, color: color, fontWeight: FontWeight.w700),
+        style: TextStyle(
+          fontSize: 8,
+          color: color,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -642,11 +653,14 @@ class _CanvasButton extends StatelessWidget {
           children: [
             Icon(icon, size: 14, color: tokens.accent),
             const SizedBox(width: 5),
-            Text(label,
-                style: TextStyle(
-                    fontSize: 12,
-                    color: tokens.fgBright,
-                    fontWeight: FontWeight.w500)),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: tokens.fgBright,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ],
         ),
       ),
@@ -720,22 +734,31 @@ class _Inspector extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
           child: Row(
             children: [
-              Text(l10n.wbInspector,
-                  style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w700,
-                      color: tokens.fgMuted,
-                      letterSpacing: 0.5)),
+              Text(
+                l10n.wbInspector,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: tokens.fgMuted,
+                  letterSpacing: 0.5,
+                ),
+              ),
               const Spacer(),
               if (selectedState >= 0)
-                Text(l10n.wbInspectorState,
-                    style: TextStyle(fontSize: 11, color: tokens.accent)),
+                Text(
+                  l10n.wbInspectorState,
+                  style: TextStyle(fontSize: 11, color: tokens.accent),
+                ),
               if (selectedTransition >= 0)
-                Text(l10n.wbInspectorTransition,
-                    style: TextStyle(fontSize: 11, color: tokens.accent)),
+                Text(
+                  l10n.wbInspectorTransition,
+                  style: TextStyle(fontSize: 11, color: tokens.accent),
+                ),
               if (selectedGate >= 0)
-                Text(l10n.wbInspectorGate,
-                    style: TextStyle(fontSize: 11, color: tokens.accent)),
+                Text(
+                  l10n.wbInspectorGate,
+                  style: TextStyle(fontSize: 11, color: tokens.accent),
+                ),
             ],
           ),
         ),
@@ -770,8 +793,7 @@ class _WorkflowInspector extends ConsumerStatefulWidget {
   final OrchestraColorTokens tokens;
 
   @override
-  ConsumerState<_WorkflowInspector> createState() =>
-      _WorkflowInspectorState();
+  ConsumerState<_WorkflowInspector> createState() => _WorkflowInspectorState();
 }
 
 class _WorkflowInspectorState extends ConsumerState<_WorkflowInspector> {
@@ -832,20 +854,22 @@ class _WorkflowInspectorState extends ConsumerState<_WorkflowInspector> {
             label: l10n.wbFieldInitialState,
             value: widget.draft.initialState,
             items: widget.draft.states.map((s) => s.id).toList(),
-            labelFor: (id) =>
-                widget.draft.states
-                    .firstWhere((s) => s.id == id,
-                        orElse: () =>
-                            WorkflowState(id: id, label: id))
-                    .label,
+            labelFor: (id) => widget.draft.states
+                .firstWhere(
+                  (s) => s.id == id,
+                  orElse: () => WorkflowState(id: id, label: id),
+                )
+                .label,
             tokens: t,
             onChanged: widget.notifier.setInitialState,
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              Text(l10n.wbSetAsDefault,
-                  style: TextStyle(fontSize: 12, color: t.fgMuted)),
+              Text(
+                l10n.wbSetAsDefault,
+                style: TextStyle(fontSize: 12, color: t.fgMuted),
+              ),
               const Spacer(),
               Switch(
                 value: widget.draft.isDefault,
@@ -1004,12 +1028,16 @@ class _StateInspectorState extends ConsumerState<_StateInspector> {
           ),
           const SizedBox(height: 12),
           TextButton.icon(
-            icon: const Icon(Icons.delete_outline_rounded,
-                size: 14, color: Colors.redAccent),
-            label: Text(l10n.wbRemoveState,
-                style: const TextStyle(fontSize: 12, color: Colors.redAccent)),
-            onPressed: () =>
-                widget.notifier.removeState(widget.index),
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              size: 14,
+              color: Colors.redAccent,
+            ),
+            label: Text(
+              l10n.wbRemoveState,
+              style: const TextStyle(fontSize: 12, color: Colors.redAccent),
+            ),
+            onPressed: () => widget.notifier.removeState(widget.index),
           ),
         ],
       ),
@@ -1051,9 +1079,12 @@ class _TransitionInspector extends StatelessWidget {
             label: l10n.wbFieldFrom,
             value: t.from,
             items: stateIds,
-            labelFor: (id) =>
-                draft.states.firstWhere((s) => s.id == id,
-                    orElse: () => WorkflowState(id: id, label: id)).label,
+            labelFor: (id) => draft.states
+                .firstWhere(
+                  (s) => s.id == id,
+                  orElse: () => WorkflowState(id: id, label: id),
+                )
+                .label,
             tokens: tokens,
             onChanged: (v) => notifier.updateTransition(
               index,
@@ -1065,9 +1096,12 @@ class _TransitionInspector extends StatelessWidget {
             label: l10n.wbFieldTo,
             value: t.to,
             items: stateIds,
-            labelFor: (id) =>
-                draft.states.firstWhere((s) => s.id == id,
-                    orElse: () => WorkflowState(id: id, label: id)).label,
+            labelFor: (id) => draft.states
+                .firstWhere(
+                  (s) => s.id == id,
+                  orElse: () => WorkflowState(id: id, label: id),
+                )
+                .label,
             tokens: tokens,
             onChanged: (v) => notifier.updateTransition(
               index,
@@ -1098,12 +1132,14 @@ class _TransitionInspector extends StatelessWidget {
               if (t.gate != null && t.gate!.isNotEmpty) ...[
                 const SizedBox(width: 6),
                 IconButton(
-                  icon: Icon(Icons.edit_rounded,
-                      size: 14, color: tokens.accent),
+                  icon: Icon(
+                    Icons.edit_rounded,
+                    size: 14,
+                    color: tokens.accent,
+                  ),
                   tooltip: l10n.wbEditGateTooltip,
                   onPressed: () {
-                    final i = draft.gates
-                        .indexWhere((g) => g.id == t.gate);
+                    final i = draft.gates.indexWhere((g) => g.id == t.gate);
                     if (i >= 0) onSelectGate(i);
                   },
                 ),
@@ -1112,10 +1148,15 @@ class _TransitionInspector extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           TextButton.icon(
-            icon: const Icon(Icons.delete_outline_rounded,
-                size: 14, color: Colors.redAccent),
-            label: Text(l10n.wbRemoveTransition,
-                style: const TextStyle(fontSize: 12, color: Colors.redAccent)),
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              size: 14,
+              color: Colors.redAccent,
+            ),
+            label: Text(
+              l10n.wbRemoveTransition,
+              style: const TextStyle(fontSize: 12, color: Colors.redAccent),
+            ),
             onPressed: () => notifier.removeTransition(index),
           ),
         ],
@@ -1220,13 +1261,15 @@ class _GateInspectorState extends State<_GateInspector> {
             tokens: t,
             hint: l10n.wbFilePatternsHint,
             maxLines: 3,
-            onChanged: (v) => _update(g.copyWith(
-              filePatterns: v
-                  .split('\n')
-                  .map((s) => s.trim())
-                  .where((s) => s.isNotEmpty)
-                  .toList(),
-            )),
+            onChanged: (v) => _update(
+              g.copyWith(
+                filePatterns: v
+                    .split('\n')
+                    .map((s) => s.trim())
+                    .where((s) => s.isNotEmpty)
+                    .toList(),
+              ),
+            ),
           ),
           const SizedBox(height: 8),
           _InspectorField(
@@ -1242,20 +1285,27 @@ class _GateInspectorState extends State<_GateInspector> {
             ctrl: _skippableCtrl,
             tokens: t,
             hint: l10n.wbSkippableForHint,
-            onChanged: (v) => _update(g.copyWith(
-              skippableFor: v
-                  .split(',')
-                  .map((s) => s.trim())
-                  .where((s) => s.isNotEmpty)
-                  .toList(),
-            )),
+            onChanged: (v) => _update(
+              g.copyWith(
+                skippableFor: v
+                    .split(',')
+                    .map((s) => s.trim())
+                    .where((s) => s.isNotEmpty)
+                    .toList(),
+              ),
+            ),
           ),
           const SizedBox(height: 12),
           TextButton.icon(
-            icon: const Icon(Icons.delete_outline_rounded,
-                size: 14, color: Colors.redAccent),
-            label: Text(l10n.wbRemoveGate,
-                style: const TextStyle(fontSize: 12, color: Colors.redAccent)),
+            icon: const Icon(
+              Icons.delete_outline_rounded,
+              size: 14,
+              color: Colors.redAccent,
+            ),
+            label: Text(
+              l10n.wbRemoveGate,
+              style: const TextStyle(fontSize: 12, color: Colors.redAccent),
+            ),
             onPressed: () => widget.notifier.removeGate(widget.index),
           ),
         ],
@@ -1291,12 +1341,15 @@ class _GatesStrip extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(l10n.wbGatesHeader,
-                  style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: tokens.fgMuted,
-                      letterSpacing: 0.5)),
+              Text(
+                l10n.wbGatesHeader,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: tokens.fgMuted,
+                  letterSpacing: 0.5,
+                ),
+              ),
               const Spacer(),
               GestureDetector(
                 onTap: notifier.addGate,
@@ -1314,8 +1367,10 @@ class _GatesStrip extends StatelessWidget {
               return GestureDetector(
                 onTap: () => onSelect(i),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: selected
                         ? tokens.accent.withValues(alpha: 0.15)
@@ -1328,14 +1383,19 @@ class _GatesStrip extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.lock_rounded,
-                          size: 10,
-                          color: selected ? tokens.accent : tokens.fgMuted),
+                      Icon(
+                        Icons.lock_rounded,
+                        size: 10,
+                        color: selected ? tokens.accent : tokens.fgMuted,
+                      ),
                       const SizedBox(width: 4),
-                      Text(g.label,
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: selected ? tokens.accent : tokens.fgBright)),
+                      Text(
+                        g.label,
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: selected ? tokens.accent : tokens.fgBright,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1385,9 +1445,14 @@ class _LibraryPicker extends StatelessWidget {
             Icon(icon, size: 14, color: color),
             const SizedBox(width: 6),
             Expanded(
-              child: Text(currentValue!,
-                  style: TextStyle(
-                      fontSize: 12, color: tokens.fgBright, fontWeight: FontWeight.w500)),
+              child: Text(
+                currentValue!,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: tokens.fgBright,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
             GestureDetector(
               onTap: onClear,
@@ -1400,8 +1465,10 @@ class _LibraryPicker extends StatelessWidget {
 
     final l10n = AppLocalizations.of(context);
     if (options.isEmpty) {
-      return Text(l10n.wbNoItemsInstalled(label.toLowerCase()),
-          style: TextStyle(fontSize: 11, color: tokens.fgMuted));
+      return Text(
+        l10n.wbNoItemsInstalled(label.toLowerCase()),
+        style: TextStyle(fontSize: 11, color: tokens.fgMuted),
+      );
     }
 
     return DropdownButtonFormField<String>(
@@ -1412,24 +1479,27 @@ class _LibraryPicker extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: tokens.border),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         isDense: true,
       ),
       initialValue: null,
-      hint: Text(l10n.wbSelectItem(label),
-          style: TextStyle(fontSize: 12, color: tokens.fgMuted)),
+      hint: Text(
+        l10n.wbSelectItem(label),
+        style: TextStyle(fontSize: 12, color: tokens.fgMuted),
+      ),
       items: options
-          .map((s) => DropdownMenuItem(
-                value: s,
-                child: Row(
-                  children: [
-                    Icon(icon, size: 12, color: color),
-                    const SizedBox(width: 6),
-                    Text(s, style: const TextStyle(fontSize: 12)),
-                  ],
-                ),
-              ))
+          .map(
+            (s) => DropdownMenuItem(
+              value: s,
+              child: Row(
+                children: [
+                  Icon(icon, size: 12, color: color),
+                  const SizedBox(width: 6),
+                  Text(s, style: const TextStyle(fontSize: 12)),
+                ],
+              ),
+            ),
+          )
           .toList(),
       onChanged: (v) {
         if (v != null) onPick(v);
@@ -1480,9 +1550,9 @@ class _YamlPreview extends StatelessWidget {
             tooltip: l10n.wbCopyYaml,
             onPressed: () {
               Clipboard.setData(ClipboardData(text: yaml));
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(l10n.wbYamlCopied)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(l10n.wbYamlCopied)));
             },
           ),
         ),
@@ -1513,83 +1583,91 @@ class _ExportSheet extends StatelessWidget {
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.7,
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Handle
-          Center(
-            child: Container(
-              margin: const EdgeInsets.only(top: 8),
-              width: 36,
-              height: 4,
-              decoration: BoxDecoration(
-                color: tokens.border,
-                borderRadius: BorderRadius.circular(2),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Handle
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 8),
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: tokens.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
-            child: Text(l10n.wbExportTitle,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
+              child: Text(
+                l10n.wbExportTitle,
                 style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: tokens.fgBright)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              l10n.wbExportSubtitle,
-              style: TextStyle(fontSize: 12, color: tokens.fgMuted),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: tokens.fgBright,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Expanded(
-            child: ListView(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              children: [
-                _ExportFile(
-                  filename: 'pack.json',
-                  content: packJson,
-                  icon: Icons.data_object_rounded,
-                  tokens: tokens,
-                ),
-                const SizedBox(height: 10),
-                _ExportFile(
-                  filename: 'workflow/$slug.yaml',
-                  content: yaml,
-                  icon: Icons.account_tree_rounded,
-                  tokens: tokens,
-                ),
-                const SizedBox(height: 16),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: tokens.accent.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: tokens.accent.withValues(alpha: 0.2)),
+              child: Text(
+                l10n.wbExportSubtitle,
+                style: TextStyle(fontSize: 12, color: tokens.fgMuted),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  _ExportFile(
+                    filename: 'pack.json',
+                    content: packJson,
+                    icon: Icons.data_object_rounded,
+                    tokens: tokens,
                   ),
-                  child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(l10n.wbNextSteps,
-                          style: TextStyle(
+                  const SizedBox(height: 10),
+                  _ExportFile(
+                    filename: 'workflow/$slug.yaml',
+                    content: yaml,
+                    icon: Icons.account_tree_rounded,
+                    tokens: tokens,
+                  ),
+                  const SizedBox(height: 16),
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: tokens.accent.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: tokens.accent.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.wbNextSteps,
+                            style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
-                              color: tokens.accent)),
-                      const SizedBox(height: 6),
-                      _Step(l10n.wbStep1(slug), tokens),
-                      _Step(l10n.wbStep2(slug), tokens),
-                      _Step(l10n.wbStep3(slug), tokens),
-                      _Step(l10n.wbStep4, tokens),
-                    ],
+                              color: tokens.accent,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          _Step(l10n.wbStep1(slug), tokens),
+                          _Step(l10n.wbStep2(slug), tokens),
+                          _Step(l10n.wbStep3(slug), tokens),
+                          _Step(l10n.wbStep4, tokens),
+                        ],
+                      ),
+                    ),
                   ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
         ),
       ),
     );
@@ -1624,20 +1702,24 @@ class _ExportFile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
               color: tokens.bgAlt,
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(8)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(8),
+              ),
               border: Border(bottom: BorderSide(color: tokens.border)),
             ),
             child: Row(
               children: [
                 Icon(icon, size: 14, color: tokens.fgMuted),
                 const SizedBox(width: 6),
-                Text(filename,
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: tokens.fgBright,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'monospace')),
+                Text(
+                  filename,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: tokens.fgBright,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'monospace',
+                  ),
+                ),
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
@@ -1646,8 +1728,11 @@ class _ExportFile extends StatelessWidget {
                       SnackBar(content: Text(l10n.wbFileCopied(filename))),
                     );
                   },
-                  child: Icon(Icons.copy_rounded,
-                      size: 14, color: tokens.fgMuted),
+                  child: Icon(
+                    Icons.copy_rounded,
+                    size: 14,
+                    color: tokens.fgMuted,
+                  ),
                 ),
               ],
             ),
@@ -1659,10 +1744,11 @@ class _ExportFile extends StatelessWidget {
                   ? '${content.substring(0, 600)}\n...'
                   : content,
               style: TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 11,
-                  color: tokens.fgMuted,
-                  height: 1.5),
+                fontFamily: 'monospace',
+                fontSize: 11,
+                color: tokens.fgMuted,
+                height: 1.5,
+              ),
             ),
           ),
         ],
@@ -1678,10 +1764,12 @@ class _Step extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 3),
-        child: Text(text,
-            style: TextStyle(fontSize: 11, color: tokens.fgMuted, height: 1.4)),
-      );
+    padding: const EdgeInsets.only(top: 3),
+    child: Text(
+      text,
+      style: TextStyle(fontSize: 11, color: tokens.fgMuted, height: 1.4),
+    ),
+  );
 }
 
 // ── Shared inspector widgets ──────────────────────────────────────────────────
@@ -1693,17 +1781,17 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Text(
-          label.toUpperCase(),
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: tokens.fgMuted,
-            letterSpacing: 0.5,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.only(bottom: 8),
+    child: Text(
+      label.toUpperCase(),
+      style: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        color: tokens.fgMuted,
+        letterSpacing: 0.5,
+      ),
+    ),
+  );
 }
 
 class _ValidationHint extends StatelessWidget {
@@ -1713,19 +1801,20 @@ class _ValidationHint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 8),
-        child: Row(
-          children: [
-            const Icon(Icons.warning_amber_rounded,
-                size: 12, color: Colors.orange),
-            const SizedBox(width: 4),
-            Expanded(
-              child: Text(message,
-                  style: const TextStyle(fontSize: 11, color: Colors.orange)),
-            ),
-          ],
+    padding: const EdgeInsets.only(top: 8),
+    child: Row(
+      children: [
+        const Icon(Icons.warning_amber_rounded, size: 12, color: Colors.orange),
+        const SizedBox(width: 4),
+        Expanded(
+          child: Text(
+            message,
+            style: const TextStyle(fontSize: 11, color: Colors.orange),
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }
 
 class _InspectorField extends StatelessWidget {
@@ -1764,8 +1853,7 @@ class _InspectorField extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: tokens.border),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         isDense: true,
       ),
     );
@@ -1799,16 +1887,19 @@ class _InspectorDropdown<T> extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: tokens.border),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         isDense: true,
       ),
       items: items
-          .map((v) => DropdownMenuItem<T>(
-                value: v,
-                child: Text(labelFor(v),
-                    style: TextStyle(fontSize: 12, color: tokens.fgBright)),
-              ))
+          .map(
+            (v) => DropdownMenuItem<T>(
+              value: v,
+              child: Text(
+                labelFor(v),
+                style: TextStyle(fontSize: 12, color: tokens.fgBright),
+              ),
+            ),
+          )
           .toList(),
       onChanged: (v) {
         if (v != null) onChanged(v);
@@ -1831,20 +1922,22 @@ class _ToggleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(label,
-                  style: TextStyle(fontSize: 12, color: tokens.fgMuted)),
-            ),
-            Switch(
-              value: value,
-              activeThumbColor: tokens.accent,
-              onChanged: onChanged,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          ],
+    padding: const EdgeInsets.symmetric(vertical: 2),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(fontSize: 12, color: tokens.fgMuted),
+          ),
         ),
-      );
+        Switch(
+          value: value,
+          activeThumbColor: tokens.accent,
+          onChanged: onChanged,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      ],
+    ),
+  );
 }

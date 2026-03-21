@@ -130,13 +130,16 @@ final requestsProvider =
 
 /// Provider to respond to a delegation (approve/decline).
 /// Returns the updated delegation map.
-final respondDelegationProvider = FutureProvider.family<Map<String, dynamic>, ({String id, String response})>((ref, params) async {
-  final api = ref.watch(apiClientProvider);
-  final result = await api.respondDelegation(params.id, params.response);
-  // Invalidate the delegations list to refresh
-  ref.invalidate(delegationsProvider);
-  return result;
-});
+final respondDelegationProvider =
+    FutureProvider.family<Map<String, dynamic>, ({String id, String response})>(
+      (ref, params) async {
+        final api = ref.watch(apiClientProvider);
+        final result = await api.respondDelegation(params.id, params.response);
+        // Invalidate the delegations list to refresh
+        ref.invalidate(delegationsProvider);
+        return result;
+      },
+    );
 
 final personsProvider = StreamProvider.family<List<Map<String, dynamic>>, String?>((
   ref,

@@ -20,7 +20,8 @@ class AppNotification {
   });
 
   final String id;
-  final String type; // feature_update, health_alert, smart_action, sync, agent_event
+  final String
+  type; // feature_update, health_alert, smart_action, sync, agent_event
   final String title;
   final String body;
   final DateTime timestamp;
@@ -46,14 +47,17 @@ class AppNotification {
     'isRead': isRead,
   };
 
-  factory AppNotification.fromJson(Map<String, dynamic> json) => AppNotification(
-    id: json['id'] as String,
-    type: json['type'] as String? ?? 'general',
-    title: json['title'] as String? ?? '',
-    body: json['body'] as String? ?? '',
-    timestamp: DateTime.tryParse(json['timestamp'] as String? ?? '') ?? DateTime.now(),
-    isRead: json['isRead'] as bool? ?? false,
-  );
+  factory AppNotification.fromJson(Map<String, dynamic> json) =>
+      AppNotification(
+        id: json['id'] as String,
+        type: json['type'] as String? ?? 'general',
+        title: json['title'] as String? ?? '',
+        body: json['body'] as String? ?? '',
+        timestamp:
+            DateTime.tryParse(json['timestamp'] as String? ?? '') ??
+            DateTime.now(),
+        isRead: json['isRead'] as bool? ?? false,
+      );
 }
 
 /// Notification store — manages real notifications from MCP events,
@@ -153,7 +157,9 @@ class NotificationStoreNotifier extends Notifier<List<AppNotification>> {
               : featureTitle,
           data: {
             ...data,
-            '_titleKey': isDone ? 'notifFeatureComplete' : 'notifFeatureUpdated',
+            '_titleKey': isDone
+                ? 'notifFeatureComplete'
+                : 'notifFeatureUpdated',
           },
         );
       case 'smart_action':
@@ -170,7 +176,11 @@ class NotificationStoreNotifier extends Notifier<List<AppNotification>> {
           type: 'sync',
           title: 'notifSyncComplete',
           body: '$count',
-          data: {...data, '_titleKey': 'notifSyncComplete', '_bodyCount': count},
+          data: {
+            ...data,
+            '_titleKey': 'notifSyncComplete',
+            '_bodyCount': count,
+          },
         );
     }
   }
@@ -250,7 +260,9 @@ class NotificationStoreNotifier extends Notifier<List<AppNotification>> {
 
   /// Mark a notification as read.
   void markRead(String id) {
-    state = state.map((n) => n.id == id ? n.copyWith(isRead: true) : n).toList();
+    state = state
+        .map((n) => n.id == id ? n.copyWith(isRead: true) : n)
+        .toList();
     _persistToStorage();
   }
 
@@ -283,8 +295,8 @@ class NotificationStoreNotifier extends Notifier<List<AppNotification>> {
 
 final notificationStoreProvider =
     NotifierProvider<NotificationStoreNotifier, List<AppNotification>>(
-  NotificationStoreNotifier.new,
-);
+      NotificationStoreNotifier.new,
+    );
 
 /// Convenience provider for unread count (for badge display).
 final unreadNotificationCountProvider = Provider<int>((ref) {

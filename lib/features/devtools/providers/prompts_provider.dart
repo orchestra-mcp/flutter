@@ -63,16 +63,12 @@ class PromptsNotifier extends AsyncNotifier<List<Prompt>> {
       if (tag != null) 'tag': tag,
     });
     final list = result['prompts'] as List<dynamic>? ?? [];
-    return list
-        .map((e) => Prompt.fromJson(e as Map<String, dynamic>))
-        .toList();
+    return list.map((e) => Prompt.fromJson(e as Map<String, dynamic>)).toList();
   }
 
   Future<Prompt> getPrompt(String promptId) async {
     final mcp = await ref.read(mcpConnectionProvider.future);
-    final result = await mcp.callTool('get_prompt', {
-      'prompt_id': promptId,
-    });
+    final result = await mcp.callTool('get_prompt', {'prompt_id': promptId});
     return Prompt.fromJson(result);
   }
 
@@ -129,14 +125,15 @@ class PromptsNotifier extends AsyncNotifier<List<Prompt>> {
   }
 }
 
-final promptsProvider =
-    AsyncNotifierProvider<PromptsNotifier, List<Prompt>>(
+final promptsProvider = AsyncNotifierProvider<PromptsNotifier, List<Prompt>>(
   PromptsNotifier.new,
 );
 
 /// Fetches a single prompt with full content.
-final promptDetailProvider =
-    FutureProvider.family<Prompt, String>((ref, promptId) async {
+final promptDetailProvider = FutureProvider.family<Prompt, String>((
+  ref,
+  promptId,
+) async {
   final notifier = ref.watch(promptsProvider.notifier);
   return notifier.getPrompt(promptId);
 });

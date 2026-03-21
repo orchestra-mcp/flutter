@@ -14,7 +14,9 @@ WorkspaceBridge? _bridgeInstance;
 ///
 /// Downstream providers should `await ref.watch(workspaceBridgeReadyProvider.future)`
 /// before reading from the workspace SQLite DB.
-final workspaceBridgeReadyProvider = FutureProvider<WorkspaceBridge?>((ref) async {
+final workspaceBridgeReadyProvider = FutureProvider<WorkspaceBridge?>((
+  ref,
+) async {
   if (!isDesktop || kIsWeb) return null;
 
   final workspace = ref.watch(workspacePathProvider);

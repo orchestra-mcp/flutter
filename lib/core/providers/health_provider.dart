@@ -19,13 +19,14 @@ final healthSummaryProvider = FutureProvider<Map<String, dynamic>>((ref) {
 
 /// Today's hydration status — water logs (null date = all).
 /// Backed by PowerSync water_logs table.
-final hydrationStatusProvider =
-    StreamProvider<List<Map<String, dynamic>>>((ref) {
-      final db = ref.watch(powersyncDatabaseProvider);
-      return db
-          .watch('SELECT * FROM water_logs ORDER BY logged_at DESC')
-          .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
-    });
+final hydrationStatusProvider = StreamProvider<List<Map<String, dynamic>>>((
+  ref,
+) {
+  final db = ref.watch(powersyncDatabaseProvider);
+  return db
+      .watch('SELECT * FROM water_logs ORDER BY logged_at DESC')
+      .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
+});
 
 /// Water log entries for a given date (null = all).
 /// Backed by PowerSync db.watch() — reactive to writes from any device.
@@ -104,27 +105,31 @@ final pomodoroSessionsProvider =
 
 /// Shutdown / sleep config status.
 /// Backed by PowerSync sleep_configs table.
-final shutdownStatusProvider =
-    StreamProvider<List<Map<String, dynamic>>>((ref) {
-      final db = ref.watch(powersyncDatabaseProvider);
-      return db
-          .watch('SELECT * FROM sleep_configs ORDER BY updated_at DESC')
-          .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
-    });
-
-/// Health snapshots between two dates.
-final snapshotsProvider = StreamProvider.family<List<Map<String, dynamic>>,
-    ({String? from, String? to})>((ref, range) {
+final shutdownStatusProvider = StreamProvider<List<Map<String, dynamic>>>((
+  ref,
+) {
   final db = ref.watch(powersyncDatabaseProvider);
-  if (range.from != null && range.to != null) {
-    return db
-        .watch(
-          'SELECT * FROM health_snapshots WHERE snapshot_date >= ? AND snapshot_date <= ? ORDER BY snapshot_date DESC',
-          parameters: [range.from!, range.to!],
-        )
-        .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
-  }
   return db
-      .watch('SELECT * FROM health_snapshots ORDER BY snapshot_date DESC')
+      .watch('SELECT * FROM sleep_configs ORDER BY updated_at DESC')
       .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
 });
+
+/// Health snapshots between two dates.
+final snapshotsProvider =
+    StreamProvider.family<
+      List<Map<String, dynamic>>,
+      ({String? from, String? to})
+    >((ref, range) {
+      final db = ref.watch(powersyncDatabaseProvider);
+      if (range.from != null && range.to != null) {
+        return db
+            .watch(
+              'SELECT * FROM health_snapshots WHERE snapshot_date >= ? AND snapshot_date <= ? ORDER BY snapshot_date DESC',
+              parameters: [range.from!, range.to!],
+            )
+            .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
+      }
+      return db
+          .watch('SELECT * FROM health_snapshots ORDER BY snapshot_date DESC')
+          .map((r) => r.map((e) => Map<String, dynamic>.from(e)).toList());
+    });

@@ -67,10 +67,12 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
     if (_search.isEmpty) return all;
     final q = _search.toLowerCase();
     return all
-        .where((c) =>
-            c.name.toLowerCase().contains(q) ||
-            (c.description?.toLowerCase().contains(q) ?? false) ||
-            c.endpoints.any((e) => e.name.toLowerCase().contains(q)))
+        .where(
+          (c) =>
+              c.name.toLowerCase().contains(q) ||
+              (c.description?.toLowerCase().contains(q) ?? false) ||
+              c.endpoints.any((e) => e.name.toLowerCase().contains(q)),
+        )
         .toList();
   }
 
@@ -82,7 +84,9 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
       _responseError = null;
     });
     try {
-      final resp = await ref.read(apiCollectionProvider.notifier).sendRequest(
+      final resp = await ref
+          .read(apiCollectionProvider.notifier)
+          .sendRequest(
             method: data.method,
             url: data.url,
             headers: data.headers,
@@ -90,9 +94,17 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
             bodyType: data.bodyType,
             auth: data.auth,
           );
-      if (mounted) setState(() { _response = resp; _isSending = false; });
+      if (mounted)
+        setState(() {
+          _response = resp;
+          _isSending = false;
+        });
     } catch (e) {
-      if (mounted) setState(() { _responseError = e.toString(); _isSending = false; });
+      if (mounted)
+        setState(() {
+          _responseError = e.toString();
+          _isSending = false;
+        });
     }
   }
 
@@ -119,7 +131,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text('Delete Collection', style: TextStyle(color: tokens.fgBright)),
+        title: Text(
+          'Delete Collection',
+          style: TextStyle(color: tokens.fgBright),
+        ),
         content: Text(
           'This will permanently delete this collection and all its endpoints.',
           style: TextStyle(color: tokens.fgMuted),
@@ -131,7 +146,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Delete', style: TextStyle(color: Color(0xFFEF4444))),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Color(0xFFEF4444)),
+            ),
           ),
         ],
       ),
@@ -163,9 +181,20 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _InlineField(controller: nameCtrl, label: 'Collection Name', hint: 'My API', tokens: tokens, autofocus: true),
+            _InlineField(
+              controller: nameCtrl,
+              label: 'Collection Name',
+              hint: 'My API',
+              tokens: tokens,
+              autofocus: true,
+            ),
             const SizedBox(height: 12),
-            _InlineField(controller: urlCtrl, label: 'Base URL (optional)', hint: 'https://api.example.com', tokens: tokens),
+            _InlineField(
+              controller: urlCtrl,
+              label: 'Base URL (optional)',
+              hint: 'https://api.example.com',
+              tokens: tokens,
+            ),
           ],
         ),
         actions: [
@@ -178,7 +207,9 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
               final name = nameCtrl.text.trim();
               if (name.isEmpty) return;
               Navigator.pop(ctx);
-              await ref.read(apiCollectionProvider.notifier).saveRequest(
+              await ref
+                  .read(apiCollectionProvider.notifier)
+                  .saveRequest(
                     collectionName: name,
                     name: 'Example Request',
                     method: 'GET',
@@ -216,8 +247,9 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
     if (providerCollectionId != null &&
         providerCollectionId != _selectedCollectionId) {
       final collections = ref.read(apiCollectionProvider).value ?? [];
-      final col =
-          collections.where((c) => c.id == providerCollectionId).firstOrNull;
+      final col = collections
+          .where((c) => c.id == providerCollectionId)
+          .firstOrNull;
       if (col != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _expandedCollections.add(col.id);
@@ -250,8 +282,11 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border(
-                          right: BorderSide(
-                              color: tokens.borderFaint, width: 0.5)),
+                        right: BorderSide(
+                          color: tokens.borderFaint,
+                          width: 0.5,
+                        ),
+                      ),
                     ),
                     child: ApiRequestBuilder(
                       key: _builderKey,
@@ -267,8 +302,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
                 ),
                 SizedBox(
                   width: 340,
-                  child:
-                      ApiResponseViewer(response: _response, error: _responseError),
+                  child: ApiResponseViewer(
+                    response: _response,
+                    error: _responseError,
+                  ),
                 ),
               ],
             )
@@ -281,11 +318,19 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.api_rounded, size: 48, color: tokens.fgDim.withValues(alpha: 0.3)),
+          Icon(
+            Icons.api_rounded,
+            size: 48,
+            color: tokens.fgDim.withValues(alpha: 0.3),
+          ),
           const SizedBox(height: 12),
           Text(
             'Select an endpoint',
-            style: TextStyle(color: tokens.fgMuted, fontSize: 15, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: tokens.fgMuted,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 6),
           Text(
@@ -306,7 +351,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
         floatingActionButton: FloatingActionButton(
           onPressed: _showNewCollectionDialog,
           backgroundColor: tokens.accent,
-          child: Icon(Icons.add_rounded, color: tokens.isLight ? Colors.white : tokens.bg),
+          child: Icon(
+            Icons.add_rounded,
+            color: tokens.isLight ? Colors.white : tokens.bg,
+          ),
         ),
       );
     }
@@ -321,7 +369,11 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
         ),
         title: Text(
           _selectedEndpoint?.name ?? 'Request',
-          style: TextStyle(color: tokens.fgBright, fontSize: 17, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: tokens.fgBright,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(0.5),
@@ -346,7 +398,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
           Container(height: 0.5, color: tokens.borderFaint),
           Expanded(
             flex: 4,
-            child: ApiResponseViewer(response: _response, error: _responseError),
+            child: ApiResponseViewer(
+              response: _response,
+              error: _responseError,
+            ),
           ),
         ],
       ),
@@ -379,7 +434,9 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
                 icon: Icon(Icons.add_rounded, color: tokens.accent, size: 20),
                 style: IconButton.styleFrom(
                   backgroundColor: tokens.accent.withValues(alpha: 0.12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 onPressed: _showNewCollectionDialog,
                 tooltip: 'New Collection',
@@ -391,11 +448,16 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
         // Collection tiles
         Expanded(
           child: asyncCollections.when(
-            loading: () => Center(child: CircularProgressIndicator(color: tokens.accent)),
+            loading: () =>
+                Center(child: CircularProgressIndicator(color: tokens.accent)),
             error: (e, _) => Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text('Failed to load:\n$e', style: TextStyle(color: tokens.fgMuted, fontSize: 13), textAlign: TextAlign.center),
+                child: Text(
+                  'Failed to load:\n$e',
+                  style: TextStyle(color: tokens.fgMuted, fontSize: 13),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
             data: (all) {
@@ -420,9 +482,20 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.folder_open_rounded, size: 40, color: tokens.fgDim.withValues(alpha: 0.4)),
+            Icon(
+              Icons.folder_open_rounded,
+              size: 40,
+              color: tokens.fgDim.withValues(alpha: 0.4),
+            ),
             const SizedBox(height: 12),
-            Text('No collections', style: TextStyle(color: tokens.fgMuted, fontSize: 14, fontWeight: FontWeight.w600)),
+            Text(
+              'No collections',
+              style: TextStyle(
+                color: tokens.fgMuted,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
             const SizedBox(height: 6),
             Text(
               'Create a collection to organize your API requests.',
@@ -433,7 +506,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
             TextButton.icon(
               onPressed: _showNewCollectionDialog,
               icon: Icon(Icons.add_rounded, size: 16, color: tokens.accent),
-              label: Text('New Collection', style: TextStyle(color: tokens.accent, fontSize: 13)),
+              label: Text(
+                'New Collection',
+                style: TextStyle(color: tokens.accent, fontSize: 13),
+              ),
             ),
           ],
         ),
@@ -443,7 +519,10 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
 
   // ── Collection tile ───────────────────────────────────────────────────────
 
-  Widget _buildCollectionTile(OrchestraColorTokens tokens, ApiCollection collection) {
+  Widget _buildCollectionTile(
+    OrchestraColorTokens tokens,
+    ApiCollection collection,
+  ) {
     final isExpanded = _expandedCollections.contains(collection.id);
     final isActive = _selectedCollectionId == collection.id;
 
@@ -464,12 +543,18 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
           child: Row(
             children: [
               Icon(
-                isExpanded ? Icons.keyboard_arrow_down_rounded : Icons.chevron_right_rounded,
+                isExpanded
+                    ? Icons.keyboard_arrow_down_rounded
+                    : Icons.chevron_right_rounded,
                 color: tokens.fgMuted,
                 size: 18,
               ),
               const SizedBox(width: 6),
-              Icon(Icons.folder_rounded, size: 16, color: isActive ? tokens.accent : const Color(0xFFFBBF24)),
+              Icon(
+                Icons.folder_rounded,
+                size: 16,
+                color: isActive ? tokens.accent : const Color(0xFFFBBF24),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Column(
@@ -485,7 +570,8 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (collection.baseUrl != null && collection.baseUrl!.isNotEmpty)
+                    if (collection.baseUrl != null &&
+                        collection.baseUrl!.isNotEmpty)
                       Text(
                         collection.baseUrl!,
                         style: TextStyle(color: tokens.fgDim, fontSize: 11),
@@ -504,13 +590,21 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
                 ),
                 child: Text(
                   '${collection.endpoints.length}',
-                  style: TextStyle(color: tokens.fgDim, fontSize: 11, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    color: tokens.fgDim,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(width: 4),
               GestureDetector(
                 onTap: () => _deleteCollection(collection.id),
-                child: Icon(Icons.close_rounded, size: 14, color: tokens.fgDim.withValues(alpha: 0.5)),
+                child: Icon(
+                  Icons.close_rounded,
+                  size: 14,
+                  color: tokens.fgDim.withValues(alpha: 0.5),
+                ),
               ),
             ],
           ),
@@ -519,7 +613,9 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Column(
-              children: collection.endpoints.map((ep) => _buildEndpointTile(tokens, ep, collection.id)).toList(),
+              children: collection.endpoints
+                  .map((ep) => _buildEndpointTile(tokens, ep, collection.id))
+                  .toList(),
             ),
           ),
       ],
@@ -528,8 +624,14 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
 
   // ── Endpoint tile ─────────────────────────────────────────────────────────
 
-  Widget _buildEndpointTile(OrchestraColorTokens tokens, ApiEndpoint endpoint, String collectionId) {
-    final isActive = _selectedEndpoint?.id == endpoint.id && _selectedCollectionId == collectionId;
+  Widget _buildEndpointTile(
+    OrchestraColorTokens tokens,
+    ApiEndpoint endpoint,
+    String collectionId,
+  ) {
+    final isActive =
+        _selectedEndpoint?.id == endpoint.id &&
+        _selectedCollectionId == collectionId;
 
     return InkWell(
       onTap: () => _selectEndpoint(endpoint, collectionId),
@@ -538,9 +640,16 @@ class _ApiCollectionsScreenState extends ConsumerState<ApiCollectionsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         margin: const EdgeInsets.only(bottom: 2),
         decoration: BoxDecoration(
-          color: isActive ? tokens.accent.withValues(alpha: 0.1) : Colors.transparent,
+          color: isActive
+              ? tokens.accent.withValues(alpha: 0.1)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
-          border: isActive ? Border.all(color: tokens.accent.withValues(alpha: 0.3), width: 0.5) : null,
+          border: isActive
+              ? Border.all(
+                  color: tokens.accent.withValues(alpha: 0.3),
+                  width: 0.5,
+                )
+              : null,
         ),
         child: Row(
           children: [
@@ -585,7 +694,12 @@ class _MethodBadge extends StatelessWidget {
       child: Text(
         label,
         textAlign: TextAlign.center,
-        style: TextStyle(color: color, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 0.3),
+        style: TextStyle(
+          color: color,
+          fontSize: 9,
+          fontWeight: FontWeight.w800,
+          letterSpacing: 0.3,
+        ),
       ),
     );
   }
@@ -619,8 +733,12 @@ class _InlineField extends StatelessWidget {
         labelStyle: TextStyle(color: tokens.fgDim),
         hintText: hint,
         hintStyle: TextStyle(color: tokens.fgDim.withValues(alpha: 0.5)),
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: tokens.borderFaint)),
-        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: tokens.accent)),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: tokens.borderFaint),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: tokens.accent),
+        ),
       ),
     );
   }

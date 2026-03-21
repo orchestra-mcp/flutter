@@ -8,20 +8,20 @@ import 'package:orchestra/core/theme/color_tokens.dart';
 const _kMethods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
 Color methodColor(String method) => switch (method.toUpperCase()) {
-      'GET' => const Color(0xFF22C55E),
-      'POST' => const Color(0xFF3B82F6),
-      'PUT' => const Color(0xFFF97316),
-      'PATCH' => const Color(0xFFEAB308),
-      'DELETE' => const Color(0xFFEF4444),
-      _ => const Color(0xFF6B7280),
-    };
+  'GET' => const Color(0xFF22C55E),
+  'POST' => const Color(0xFF3B82F6),
+  'PUT' => const Color(0xFFF97316),
+  'PATCH' => const Color(0xFFEAB308),
+  'DELETE' => const Color(0xFFEF4444),
+  _ => const Color(0xFF6B7280),
+};
 
 // ── Header entry model ──────────────────────────────────────────────────────
 
 class _HeaderEntry {
   _HeaderEntry({String? key, String? value})
-      : keyController = TextEditingController(text: key ?? ''),
-        valueController = TextEditingController(text: value ?? '');
+    : keyController = TextEditingController(text: key ?? ''),
+      valueController = TextEditingController(text: value ?? '');
 
   final TextEditingController keyController;
   final TextEditingController valueController;
@@ -612,7 +612,11 @@ class ApiRequestBuilderState extends State<ApiRequestBuilder>
                 alignment: Alignment.centerRight,
                 child: TextButton.icon(
                   onPressed: _formatJson,
-                  icon: Icon(Icons.auto_fix_high, size: 14, color: tokens.accent),
+                  icon: Icon(
+                    Icons.auto_fix_high,
+                    size: 14,
+                    color: tokens.accent,
+                  ),
                   label: Text(
                     'Format JSON',
                     style: TextStyle(color: tokens.accent, fontSize: 12),

@@ -68,7 +68,14 @@ void main() {
     });
 
     test('parses all category types', () {
-      for (final cat in ['api_key', 'token', 'env', 'database', 'password', 'general']) {
+      for (final cat in [
+        'api_key',
+        'token',
+        'env',
+        'database',
+        'password',
+        'general',
+      ]) {
         final secret = Secret.fromJson({'category': cat});
         expect(secret.category, cat);
       }
@@ -127,20 +134,18 @@ void main() {
     });
 
     test('filter by category', () {
-      final filtered = secrets
-          .where((s) => s.category == 'database')
-          .toList();
+      final filtered = secrets.where((s) => s.category == 'database').toList();
       expect(filtered.length, 1);
       expect(filtered[0].name, 'DATABASE_URL');
     });
 
     test('filter by tag', () {
-      final filtered = secrets
-          .where((s) => s.tags.contains('infra'))
-          .toList();
+      final filtered = secrets.where((s) => s.tags.contains('infra')).toList();
       expect(filtered.length, 2);
-      expect(filtered.map((s) => s.name).toList(),
-          ['DATABASE_URL', 'REDIS_PASSWORD']);
+      expect(filtered.map((s) => s.name).toList(), [
+        'DATABASE_URL',
+        'REDIS_PASSWORD',
+      ]);
     });
 
     test('empty filter returns all', () {

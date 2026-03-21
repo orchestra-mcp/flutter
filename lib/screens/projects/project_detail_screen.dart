@@ -285,9 +285,12 @@ class _FeaturesTab extends ConsumerWidget {
     final Future<List<Map<String, dynamic>>> featuresFuture;
     if (isDesktop) {
       // Wait for bridge to finish syncing files → SQLite before querying.
-      featuresFuture = ref.read(workspaceBridgeReadyProvider.future).then(
-        (_) => ref.read(apiClientProvider).listFeatures(projectId: projectId),
-      );
+      featuresFuture = ref
+          .read(workspaceBridgeReadyProvider.future)
+          .then(
+            (_) =>
+                ref.read(apiClientProvider).listFeatures(projectId: projectId),
+          );
     } else {
       final db = ref.read(powersyncDatabaseProvider);
       featuresFuture = db.getAll(
@@ -363,9 +366,12 @@ class _PlansTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Future<List<Map<String, dynamic>>> plansFuture;
     if (isDesktop) {
-      plansFuture = ref.read(workspaceBridgeReadyProvider.future).then(
-        (_) => ref.read(apiClientProvider).listPlans(projectSlug: projectId),
-      );
+      plansFuture = ref
+          .read(workspaceBridgeReadyProvider.future)
+          .then(
+            (_) =>
+                ref.read(apiClientProvider).listPlans(projectSlug: projectId),
+          );
     } else {
       final db = ref.read(powersyncDatabaseProvider);
       plansFuture = db.getAll(
@@ -443,9 +449,13 @@ class _RequestsTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Future<List<Map<String, dynamic>>> requestsFuture;
     if (isDesktop) {
-      requestsFuture = ref.read(workspaceBridgeReadyProvider.future).then(
-        (_) => ref.read(apiClientProvider).listRequests(projectSlug: projectId),
-      );
+      requestsFuture = ref
+          .read(workspaceBridgeReadyProvider.future)
+          .then(
+            (_) => ref
+                .read(apiClientProvider)
+                .listRequests(projectSlug: projectId),
+          );
     } else {
       final db = ref.read(powersyncDatabaseProvider);
       requestsFuture = db.getAll(
@@ -505,9 +515,12 @@ class _PersonsTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Future<List<Map<String, dynamic>>> personsFuture;
     if (isDesktop) {
-      personsFuture = ref.read(workspaceBridgeReadyProvider.future).then(
-        (_) => ref.read(apiClientProvider).listPersons(projectSlug: projectId),
-      );
+      personsFuture = ref
+          .read(workspaceBridgeReadyProvider.future)
+          .then(
+            (_) =>
+                ref.read(apiClientProvider).listPersons(projectSlug: projectId),
+          );
     } else {
       final db = ref.read(powersyncDatabaseProvider);
       personsFuture = db.getAll(

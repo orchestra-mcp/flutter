@@ -152,7 +152,8 @@ Content B.
     });
 
     test('round-trips parse → reconstruct', () {
-      const original = '## Overview\n\nSome overview text.\n\n## Details\n\nDetail content.';
+      const original =
+          '## Overview\n\nSome overview text.\n\n## Details\n\nDetail content.';
       final sections = parseSections(original);
       final reconstructed = reconstructMarkdown(sections);
       // Re-parse the reconstructed text.

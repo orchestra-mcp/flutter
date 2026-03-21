@@ -163,8 +163,8 @@ class NotificationListener {
 
     final (int id, String title, String body) = _notifContent(event);
 
-    final isDelegation = event is McpNotificationEvent &&
-        event.entityType == 'delegation';
+    final isDelegation =
+        event is McpNotificationEvent && event.entityType == 'delegation';
 
     final payload = isDelegation
         ? '/library/delegations/${event.entityId}'

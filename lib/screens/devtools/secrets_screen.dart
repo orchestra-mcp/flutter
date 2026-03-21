@@ -131,10 +131,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: tokens.bgAlt,
-        title: Text(
-          'Delete Secret',
-          style: TextStyle(color: tokens.fgBright),
-        ),
+        title: Text('Delete Secret', style: TextStyle(color: tokens.fgBright)),
         content: Text(
           'Permanently delete "${secret.name}"? This cannot be undone.',
           style: TextStyle(color: tokens.fgMuted),
@@ -204,9 +201,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
     final nameCtrl = TextEditingController(text: existing?.name ?? '');
     final valueCtrl = TextEditingController(text: existing?.value ?? '');
     final descCtrl = TextEditingController(text: existing?.description ?? '');
-    final scopeCtrl = TextEditingController(
-      text: existing?.scope ?? 'global',
-    );
+    final scopeCtrl = TextEditingController(text: existing?.scope ?? 'global');
     final tagsCtrl = TextEditingController(
       text: existing?.tags.join(', ') ?? '',
     );
@@ -254,13 +249,9 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
                       const SizedBox(height: 12),
 
                       // Category dropdown
-                      _buildCategoryDropdown(
-                        tokens,
-                        selectedCategory,
-                        (value) {
-                          setDialogState(() => selectedCategory = value);
-                        },
-                      ),
+                      _buildCategoryDropdown(tokens, selectedCategory, (value) {
+                        setDialogState(() => selectedCategory = value);
+                      }),
                       const SizedBox(height: 12),
 
                       // Description
@@ -436,17 +427,16 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
                             tokens,
                             importCategory,
                             (value) {
-                              setDialogState(
-                                () => importCategory = value,
-                              );
+                              setDialogState(() => importCategory = value);
                             },
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: _DialogTextField(
-                            controller:
-                                TextEditingController(text: importScope),
+                            controller: TextEditingController(
+                              text: importScope,
+                            ),
                             label: 'Scope',
                             hint: 'global',
                             tokens: tokens,
@@ -473,7 +463,9 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
 
                     Navigator.pop(ctx);
 
-                    await ref.read(secretsProvider.notifier).importEnv(
+                    await ref
+                        .read(secretsProvider.notifier)
+                        .importEnv(
                           content,
                           category: importCategory,
                           scope: importScope,
@@ -532,10 +524,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
               Container(
                 width: 8,
                 height: 8,
-                decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
               ),
               const SizedBox(width: 8),
               Text(_categoryLabel(c)),
@@ -773,10 +762,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           'All',
-                          style: TextStyle(
-                            color: tokens.fgDim,
-                            fontSize: 13,
-                          ),
+                          style: TextStyle(color: tokens.fgDim, fontSize: 13),
                         ),
                       ),
                       dropdownColor: tokens.bgAlt,
@@ -906,15 +892,9 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
             runSpacing: 4,
             children: [
               // Category badge
-              _Badge(
-                label: _categoryLabel(secret.category),
-                color: catColor,
-              ),
+              _Badge(label: _categoryLabel(secret.category), color: catColor),
               // Scope badge
-              _Badge(
-                label: secret.scope,
-                color: tokens.fgDim,
-              ),
+              _Badge(label: secret.scope, color: tokens.fgDim),
               // Tags
               ...secret.tags.map(
                 (tag) => _Badge(
@@ -926,8 +906,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
           ),
 
           // ── Description ───────────────────────────────────────────────
-          if (secret.description != null &&
-              secret.description!.isNotEmpty) ...[
+          if (secret.description != null && secret.description!.isNotEmpty) ...[
             const SizedBox(height: 6),
             Text(
               secret.description!,
@@ -945,17 +924,11 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
           else
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 6,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: tokens.bg,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: tokens.borderFaint,
-                  width: 0.5,
-                ),
+                border: Border.all(color: tokens.borderFaint, width: 0.5),
               ),
               child: Text(
                 secret.maskedValue ?? '********',
@@ -1008,11 +981,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
               children: [
                 TextButton.icon(
                   onPressed: () => _showCreateDialog(),
-                  icon: Icon(
-                    Icons.add_rounded,
-                    size: 16,
-                    color: tokens.accent,
-                  ),
+                  icon: Icon(Icons.add_rounded, size: 16, color: tokens.accent),
                   label: Text(
                     'New Secret',
                     style: TextStyle(color: tokens.accent, fontSize: 13),
@@ -1078,10 +1047,7 @@ class _SecretsScreenState extends ConsumerState<SecretsScreen> {
 // ── Revealed value widget (fetches decrypted value) ──────────────────────────
 
 class _RevealedValue extends ConsumerWidget {
-  const _RevealedValue({
-    required this.secretId,
-    required this.tokens,
-  });
+  const _RevealedValue({required this.secretId, required this.tokens});
 
   final String secretId;
   final OrchestraColorTokens tokens;
@@ -1173,9 +1139,7 @@ class _DialogTextField extends StatelessWidget {
         labelText: label,
         labelStyle: TextStyle(color: tokens.fgDim),
         hintText: hint,
-        hintStyle: TextStyle(
-          color: tokens.fgDim.withValues(alpha: 0.5),
-        ),
+        hintStyle: TextStyle(color: tokens.fgDim.withValues(alpha: 0.5)),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: tokens.borderFaint),
         ),
@@ -1277,10 +1241,7 @@ class _SmallActionButton extends StatelessWidget {
               Icon(icon, color: color, size: 15),
               if (isDesktop) ...[
                 const SizedBox(width: 4),
-                Text(
-                  label,
-                  style: TextStyle(color: color, fontSize: 12),
-                ),
+                Text(label, style: TextStyle(color: color, fontSize: 12)),
               ],
             ],
           ),

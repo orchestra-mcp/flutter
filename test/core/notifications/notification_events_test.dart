@@ -55,7 +55,14 @@ void main() {
     });
 
     test('preserves all entity types', () {
-      for (final entityType in ['note', 'feature', 'agent', 'workflow', 'doc', 'plan']) {
+      for (final entityType in [
+        'note',
+        'feature',
+        'agent',
+        'workflow',
+        'doc',
+        'plan',
+      ]) {
         final json = {
           'type': 'sync',
           'entity_type': entityType,
@@ -70,7 +77,14 @@ void main() {
     });
 
     test('is a WsEvent subclass', () {
-      final json = {'type': 'sync', 'entity_type': 'note', 'entity_id': 'x', 'action': 'upsert', 'user_id': 1, 'timestamp': 0};
+      final json = {
+        'type': 'sync',
+        'entity_type': 'note',
+        'entity_id': 'x',
+        'action': 'upsert',
+        'user_id': 1,
+        'timestamp': 0,
+      };
       final event = WsEvent.fromJson(json);
       expect(event, isA<WsEvent>());
       expect(event, isA<SyncBroadcastEvent>());
@@ -119,7 +133,12 @@ void main() {
     });
 
     test('is a WsEvent subclass', () {
-      final json = {'type': 'presence', 'user_id': 1, 'action': 'online', 'timestamp': 0};
+      final json = {
+        'type': 'presence',
+        'user_id': 1,
+        'action': 'online',
+        'timestamp': 0,
+      };
       final event = WsEvent.fromJson(json);
       expect(event, isA<WsEvent>());
       expect(event, isA<PresenceEvent>());
@@ -146,19 +165,25 @@ void main() {
       );
     });
 
-    test('routes mcp type with agent_spawned action to McpAgentSpawnedEvent', () {
-      expect(
-        WsEvent.fromJson({'type': 'mcp', 'action': 'agent_spawned'}),
-        isA<McpAgentSpawnedEvent>(),
-      );
-    });
+    test(
+      'routes mcp type with agent_spawned action to McpAgentSpawnedEvent',
+      () {
+        expect(
+          WsEvent.fromJson({'type': 'mcp', 'action': 'agent_spawned'}),
+          isA<McpAgentSpawnedEvent>(),
+        );
+      },
+    );
 
-    test('routes mcp type with notification action to McpNotificationEvent', () {
-      expect(
-        WsEvent.fromJson({'type': 'mcp', 'action': 'notification'}),
-        isA<McpNotificationEvent>(),
-      );
-    });
+    test(
+      'routes mcp type with notification action to McpNotificationEvent',
+      () {
+        expect(
+          WsEvent.fromJson({'type': 'mcp', 'action': 'notification'}),
+          isA<McpNotificationEvent>(),
+        );
+      },
+    );
 
     test('routes ping type to PingEvent', () {
       expect(WsEvent.fromJson({'type': 'ping'}), isA<PingEvent>());
@@ -324,19 +349,13 @@ void main() {
     });
 
     test('invalid timestamp string defaults to DateTime.now()', () {
-      final json = {
-        'id': '2',
-        'timestamp': 'not-a-date',
-      };
+      final json = {'id': '2', 'timestamp': 'not-a-date'};
       final notif = AppNotification.fromJson(json);
       // DateTime.tryParse returns null for invalid strings, so it falls
       // back to DateTime.now(). We just verify it is a recent DateTime.
       expect(notif.timestamp, isA<DateTime>());
       final now = DateTime.now();
-      expect(
-        notif.timestamp.difference(now).inSeconds.abs(),
-        lessThan(5),
-      );
+      expect(notif.timestamp.difference(now).inSeconds.abs(), lessThan(5));
     });
 
     test('toJson includes all required fields', () {
@@ -415,10 +434,7 @@ void main() {
     });
 
     test('McpToolCalledEvent with missing optional fields', () {
-      final json = {
-        'type': 'mcp',
-        'action': 'tool_called',
-      };
+      final json = {'type': 'mcp', 'action': 'tool_called'};
       final event = WsEvent.fromJson(json) as McpToolCalledEvent;
       expect(event.toolName, equals(''));
       expect(event.entityType, equals('tool')); // default value
@@ -441,10 +457,7 @@ void main() {
     });
 
     test('McpAgentSpawnedEvent with missing fields', () {
-      final json = {
-        'type': 'mcp',
-        'action': 'agent_spawned',
-      };
+      final json = {'type': 'mcp', 'action': 'agent_spawned'};
       final event = WsEvent.fromJson(json) as McpAgentSpawnedEvent;
       expect(event.agentType, equals(''));
       expect(event.sessionId, equals(''));
@@ -468,10 +481,7 @@ void main() {
     });
 
     test('McpNotificationEvent with missing fields uses defaults', () {
-      final json = {
-        'type': 'mcp',
-        'action': 'notification',
-      };
+      final json = {'type': 'mcp', 'action': 'notification'};
       final event = WsEvent.fromJson(json) as McpNotificationEvent;
       expect(event.entityType, equals('notification')); // default value
       expect(event.entityId, equals(''));
@@ -495,24 +505,28 @@ void main() {
     });
 
     test('McpGenericEvent for empty action string', () {
-      final json = {
-        'type': 'mcp',
-        'session_id': 'sess-5',
-        'timestamp': 500,
-      };
+      final json = {'type': 'mcp', 'session_id': 'sess-5', 'timestamp': 500};
       final event = WsEvent.fromJson(json) as McpGenericEvent;
       expect(event.action, equals(''));
     });
 
     test('all McpEvent subtypes are WsEvent instances', () {
-      final toolEvent = WsEvent.fromJson(
-          {'type': 'mcp', 'action': 'tool_called'});
-      final agentEvent = WsEvent.fromJson(
-          {'type': 'mcp', 'action': 'agent_spawned'});
-      final notifEvent = WsEvent.fromJson(
-          {'type': 'mcp', 'action': 'notification'});
-      final genericEvent = WsEvent.fromJson(
-          {'type': 'mcp', 'action': 'unknown'});
+      final toolEvent = WsEvent.fromJson({
+        'type': 'mcp',
+        'action': 'tool_called',
+      });
+      final agentEvent = WsEvent.fromJson({
+        'type': 'mcp',
+        'action': 'agent_spawned',
+      });
+      final notifEvent = WsEvent.fromJson({
+        'type': 'mcp',
+        'action': 'notification',
+      });
+      final genericEvent = WsEvent.fromJson({
+        'type': 'mcp',
+        'action': 'unknown',
+      });
 
       expect(toolEvent, isA<WsEvent>());
       expect(toolEvent, isA<McpEvent>());
@@ -549,8 +563,21 @@ void main() {
     });
 
     test('handles various dimension values', () {
-      for (final dim in ['hydration', 'caffeine', 'nutrition', 'pomodoro', 'shutdown', 'weight', 'sleep', 'all']) {
-        final json = {'type': 'health.updated', 'dimension': dim, 'user_id': 'u1'};
+      for (final dim in [
+        'hydration',
+        'caffeine',
+        'nutrition',
+        'pomodoro',
+        'shutdown',
+        'weight',
+        'sleep',
+        'all',
+      ]) {
+        final json = {
+          'type': 'health.updated',
+          'dimension': dim,
+          'user_id': 'u1',
+        };
         final event = WsEvent.fromJson(json) as HealthDataUpdatedEvent;
         expect(event.dimension, equals(dim));
       }
