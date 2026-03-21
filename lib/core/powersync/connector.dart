@@ -126,6 +126,7 @@ class OrchestraBackendConnector extends PowerSyncBackendConnector {
         body: jsonEncode({'operations': ops}),
       );
 
+      debugPrint('[PowerSync] CRUD response: ${res.statusCode} ${res.body}');
       if (res.statusCode < 400) {
         await transaction.complete();
         debugPrint('[PowerSync] Batch uploaded ${ops.length} ops');
